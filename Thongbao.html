@@ -3,37 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thông báo trong ngày</title>
+    <title>Thông báo nội bộ</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f3f3f3;
         }
         .heading-container{
             max-width: 250px ;
-            margin: 5px auto;
-            padding: 5px;
-            background-color: aqua;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #4CAF50;
             border-radius: 10px;
-            
+            text-align: center;
         }
         .heading-container h1{
-            margin-left: 20px;
+            margin: 0;
+            color: white;
+            font-size: 24px;
         }
         .news-container {
             max-width: 800px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #f9fcfc;
+            background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .news-item {
             margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
             padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
         }
 
         .news-item:last-child {
@@ -42,6 +45,7 @@
 
         .news-item h2 {
             margin-top: 0;
+            color: #333;
         }
 
         .news-item p {
@@ -60,38 +64,49 @@
             text-transform: uppercase;
         }
 
-        
+        .news-item img {
+            display: block;
+            margin: 10px auto;
+            max-width: 100%;
+            border-radius: 5px;
+        }
+
+        .news-item:hover {
+            background-color: #f9f9f9;
+        }
     </style>
 </head>
 <body>
 <div class="heading-container">
-<h1>THÔNG BÁO</h1>
+    <h1>Thông báo nội bộ</h1>
 </div>
 <div class="news-container">
     
     <div class="news-item">
-        <h2>Thông báo 1</h2>
+        <h2>Đăng ký tăng ca</h2>
+        <p class="date">20/32024</p>
+        <p class="category">None</p>
+        <a href="Tangca.html">Đăng ký tại đây</a>
+        
+    </div>
+
+    <div class="news-item">
+        <h2>Thay đổi nhân sự</h2>
         <p class="date">20/3/2024</p>
-        <p class="category">Khoa sản</p>
-        <img src="https://scontent.fsgn16-1.fna.fbcdn.net/v/t39.30808-6/397885068_720757503420826_3549419895415166763_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFtRVBWfCAcBTTXSbp_Yd1shEvskkqDsnaES-ySSoOydnIn7wW7b8KJe_M4JOerjkprsv28W2nWsxTiSmvB7VZY&_nc_ohc=fHJzYfFFDKkAX86236Q&_nc_ht=scontent.fsgn16-1.fna&oh=00_AfBFbtYI6yOqeYaxhz9_gv21b29mItbbZfwDI_R_uSukcg&oe=65FFD0FE" alt="" width="50%" >
+        <p class="category">None</p>
+        <img src="" alt="">
         <p>Content 1.</p>
     </div>
 
     <div class="news-item">
-        <h2>Thông báo 2</h2>
+        <h2>Thông báo lịch nghỉ</h2>
         <p class="date">20/3/2024</p>
-        <p class="category">Khoa tim mạch</p>
-        <img src="https://scontent.fsgn16-1.fna.fbcdn.net/v/t39.30808-6/362214991_658357459661101_6246645425162989434_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEMcrtRiiO0lG3GzOy6NGhpGCn5s9-H5lsYKfmz34fmW96M1v8QN-dRtDS6Kxseo8TvFvK8OhujNPnHVc192OY4&_nc_ohc=sNp_Wh_Ne2YAX-TNC2C&_nc_ht=scontent.fsgn16-1.fna&oh=00_AfAv7fIiiKx30NloxItBcuAwiuW-IEWsOg0WouMCZfi4pg&oe=660016DA" width="50%">
+        <p class="category">None</p>
+        <img src="" alt="">
         <p>Content 2. </p>
     </div>
 
-    <div class="news-item">
-        <h2>Thông báo 3</h2>
-        <p class="date">20/32024</p>
-        <p class="category">Khoa nhi</p>
-        <img src="https://scontent.fsgn16-1.fna.fbcdn.net/v/t39.30808-6/361610534_658357509661096_9136732284558036430_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHtTBbMTglis6GJKUfh3XpT9jNbgm0WQLb2M1uCbRZAttgPiQdBTw749cyCOfCg5vmHaFmVltdjYriU6knMP1KK&_nc_ohc=ZwG2Ug2Fqk0AX8h0IV5&_nc_ht=scontent.fsgn16-1.fna&oh=00_AfDyhlZIWi1ql12tF6d5YR1tWeF3ANsW1BZD6Bwfyh-m8A&oe=65FF54B2" width="50%">
-        <p>Content 3.</p>
-    </div>
+    
 </div>
 
 </body>

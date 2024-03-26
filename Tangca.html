@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký tăng ca</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f3f3;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Đăng ký tăng ca</h1>
+        <form id="attendanceForm">
+            <label for="name">Họ và tên:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="department">Phòng ban:</label>
+            <input type="text" id="department" name="department" required>
+
+            <label for="reason">Lý do tăng ca:</label>
+            <input type="text" id="reason" name="reason" required>
+
+            <label for="date">Ngày đăng ký:</label>
+            <input type="date" id="date" name="date" required>
+
+            <input type="submit" value="Đăng ký tăng ca">
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById("attendanceForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+            var name = document.getElementById("name").value;
+            var department = document.getElementById("department").value;
+            var reason = document.getElementById("reason").value;
+            var date = document.getElementById("date").value;
+            var resultElement = document.getElementById("result");
+            resultElement.innerHTML = "<h2>Lịch sử đăng ký:</h2>" + 
+                                       "<p><strong>Họ và tên:</strong> " + name + "</p>" +
+                                       "<p><strong>Phòng ban:</strong> " + department + "</p>" +
+                                       "<p><strong>Lý do tăng ca:</strong> " + reason + "</p>" +
+                                       "<p><strong>Ngày đăng ký:</strong> " + date + "</p>";
+
+        });
+    </script>
+</body>
+</html>
