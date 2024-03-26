@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<body>
+    <style>
+        .notification {
+            background-color: #555;
+            color: white;
+            text-decoration: none;
+            padding: 15px 26px;
+            position: relative;
+            display: inline-block;
+            border-radius: 50px;
+        }
+        
+        .notification-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            padding: 12px 16px;
+            z-index: 1;
+            border: 1px solid #070303;
+            border-radius: 5px; 
+        }
+        .notification-content p {
+            border: 1px solid #070303;
+            border-radius: 5px; 
+            padding: 8px;
+        }   
+        .notification:hover .notification-content {
+        
+        display: block;
+        background: rgb(149, 242, 197);
+        }
+        
+        </style>    
+        
+        <div class="notification">
+          <span> <b>Thông báo</b></span>
+          <div class="notification-content">
+            <p><a href="http://127.0.0.1:5500/f8-shop/Thongbao.html">Thông báo trong ngày</a></p>
+            <p><a href="https://www.facebook.com/BKCSE.Multimedia">Nhân sự tăng ca</a></p>
+            <p><a href="https://www.facebook.com/profile.php?id=100053594627285">Thay đổi nhân sự</a></p>     
+          </div>
+
+        </div>
+        
+</body>
+</html>
