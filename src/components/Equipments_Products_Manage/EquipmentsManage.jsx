@@ -1,4 +1,6 @@
 export default function EquipmentsManage({ rows, deleteRow, editRow }) {
+
+    
     return (
         <div>
             <h1>Equipments</h1>

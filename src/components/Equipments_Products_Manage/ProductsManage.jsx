@@ -1,4 +1,12 @@
 export default function ProductsManage({rows, deleteRow, editRow}) {
+    
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    });
+    
     return (
         <div>
             <h1>Products and Services</h1>
@@ -19,8 +27,8 @@ export default function ProductsManage({rows, deleteRow, editRow}) {
                                 <tr key = {index}>
                                     <td>{index + 1}</td>
                                     <td>{row.name}</td>
-                                    <td>{row.cprice}</td>
-                                    <td>{row.sprice}</td>
+                                    <td>{formatter.format(row.cprice)}</td>
+                                    <td>{formatter.format(row.sprice)}</td>
                                     <td>{row.stock}</td>
                                     <td>{row.lowstock}</td>
                                     {/* <td>{row.tags.join(', ')}</td> */}
