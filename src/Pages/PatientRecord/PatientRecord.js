@@ -35,6 +35,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import CloseIcon from "@mui/icons-material/Close";
 import dayjs from "dayjs";
 function createData(STT, patientID, fullName, gender, CCCD, BHYT, BirthDay) {
   return {
@@ -48,26 +49,136 @@ function createData(STT, patientID, fullName, gender, CCCD, BHYT, BirthDay) {
     address: "abc",
     history: [
       {
-        date: "01/02/2023",
-        doctor: "Mr ",
-        diag: "Cúm mùa",
-      },
-      {
+        historyID: "1",
         date: "01/02/2023",
         doctor: "AB",
-        diag: "Cúm mùa",
+        disease: "Cúm mùa",
+        medicineList: [
+          {
+            medicine: "Panadol",
+            usage: "uống sau khi ăn",
+            dosagePerDay: "1 ngày 2 lần",
+            unit: "20 viên/10 ngày",
+          },
+          {
+            medicine: "paracetamol",
+            usage: "uống sau khi ăn",
+            dosagePerDay: "1 ngày 2 lần",
+            unit: "20 viên/10 ngày",
+          },
+        ],
+      },
+      {
+        historyID: "2",
+        date: "01/02/2023",
+        doctor: "AB",
+        disease: "Cúm mùa",
+        medicineList: [
+          {
+            medicine: "Panadol",
+            usage: "uống sau khi ăn",
+            dosagePerDay: "1 ngày 2 lần",
+            unit: "20 viên/10 ngày",
+          },
+        ],
       },
     ],
   };
 }
-
+// HistoryRowCustome
+function HistoryRow(props) {
+  const { historyRow } = props;
+  const [medicineListDialogOpen, setMedicineListDialogOpen] =
+    React.useState(false);
+  const handleClose = () => {
+    setMedicineListDialogOpen(false);
+  };
+  return (
+    <TableRow key={historyRow.date}>
+      <TableCell component="th" scope="row">
+        {historyRow.date}
+      </TableCell>
+      <TableCell>{historyRow.doctor}</TableCell>
+      <TableCell>{historyRow.disease}</TableCell>
+      <TableCell>
+        <Button
+          variant="text"
+          onClick={() => {
+            setMedicineListDialogOpen(!medicineListDialogOpen);
+          }}
+        >
+          Xem
+        </Button>
+        {/* DialogMedicineList */}
+        <Dialog
+          onClose={handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={medicineListDialogOpen}
+          fullWidth
+          maxWidth="md"
+        >
+          <DialogTitle sx={{ m: 0, p: 2 }}>Đơn thuốc</DialogTitle>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <DialogContent dividers>
+            <TableContainer component={Paper} sx={{ minWidth: 800 }}>
+              <Table sx={{ minWidth: 800 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Tên thuốc</TableCell>
+                    <TableCell>Cách uống</TableCell>
+                    <TableCell>Liều lượng</TableCell>
+                    <TableCell>Số lượng</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {historyRow.medicineList.map((row) => (
+                    <TableRow
+                      key={row.medicine}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.medicine}
+                      </TableCell>
+                      <TableCell>{row.usage}</TableCell>
+                      <TableCell>{row.dosagePerDay}</TableCell>
+                      <TableCell>{row.unit}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus onClick={handleClose}>
+              Xong
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </TableCell>
+    </TableRow>
+  );
+}
+// RowCustome
 function Row(props) {
   const handleCloseFormOpen = () => {
     setInfoFormOpen(false);
     setmodifyFormOpen(false);
+    setAddHistoryFormOpen(false);
   };
   const { row } = props;
   const [openSubRow, setOpenSubRow] = React.useState(false);
+  const [addHistoryFormOpen, setAddHistoryFormOpen] = React.useState(false);
   const [infoFormOpen, setInfoFormOpen] = React.useState(false);
   const [modifyFormOpen, setmodifyFormOpen] = React.useState(false);
   const [newGender, setNewGender] = React.useState(row.gender);
@@ -289,7 +400,7 @@ function Row(props) {
             }}
             // sx={{ width: "100%", maxWidth: "1000px" }}
           >
-            <DialogTitle>Thông tin hồ sơ bệnh án</DialogTitle>
+            <DialogTitle>Chỉnh sửa hồ sơ bệnh án</DialogTitle>
             <DialogContent>
               <DialogContentText></DialogContentText>
 
@@ -449,28 +560,191 @@ function Row(props) {
                 aria-label="add"
                 size="small"
                 color="success"
-                // onClick={() => setOpen(!open)}
+                onClick={() => setAddHistoryFormOpen(!addHistoryFormOpen)}
               >
                 <AddCircleIcon></AddCircleIcon>
               </IconButton>
+              {/* DialogHistoryAdd */}
+              <Dialog
+                fullWidth
+                maxWidth="sm"
+                open={addHistoryFormOpen}
+                onClose={handleCloseFormOpen}
+                PaperProps={{
+                  component: "form",
+                  onSubmit: (event) => {
+                    event.preventDefault();
+                    const formData = new FormData(event.currentTarget);
+                    const formJson = Object.fromEntries(formData.entries());
+                    // cách lấy data
+                    const newPatient = createData(
+                      "1",
+                      "100",
+                      formJson.fullName,
+                      formJson.gender,
+                      formJson.CCCD,
+                      formJson.BHYT,
+                      formJson.birthDay
+                    );
+                    console.log(newPatient);
+
+                    handleCloseFormOpen();
+                  },
+                }}
+                // sx={{ width: "100%", maxWidth: "1000px" }}
+              >
+                <DialogTitle>Thêm Lần Khám</DialogTitle>
+                <DialogContent>
+                  <DialogContentText></DialogContentText>
+
+                  <Box
+                    // direction="row"
+                    // // divider={<Divider orientation="vertical" flexItem />}
+                    // spacing={2}
+                    display={"flex"}
+                    flexWrap={"wrap"}
+                    justifyContent={"space-between"}
+                    // flexDirection={}
+                  >
+                    <Box display={"inline"} sx={{ width: "60%" }}>
+                      <TextField
+                        // disabled
+                        // autoFocus
+                        margin="dense"
+                        id="fullName"
+                        name="fullName"
+                        label="Họ và tên"
+                        type="text"
+                        fullWidth
+                        defaultValue={row.fullName}
+                        variant="standard"
+                        // InputProps={{
+                        //   readOnly: true,
+                        // }}
+                      />
+                    </Box>
+                    <Box
+                      display={"inline"}
+                      sx={{ width: "30%", minWidth: "120px" }}
+                    >
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          // readOnly
+                          size="small"
+                          label="Ngày sinh"
+                          id="birthDay"
+                          name="birthDay"
+                          // sx={{ padding: 0 }}
+                          format="DD/MM/YYYY"
+                          defaultValue={dayjs(row.BirthDay)}
+                        ></DatePicker>
+                      </LocalizationProvider>{" "}
+                    </Box>
+
+                    <Box
+                      display={"inline"}
+                      sx={{ width: "35%", minWidth: "150px" }}
+                    >
+                      <TextField
+                        // autoFocus
+                        // required
+                        // disabled
+                        margin="dense"
+                        id="CCCD"
+                        name="CCCD"
+                        label="Số CCCD"
+                        type="text"
+                        fullWidth
+                        defaultValue={row.CCCD}
+                        variant="standard"
+                        // InputProps={{
+                        //   readOnly: true,
+                        // }}
+                      />
+                    </Box>
+                    <Box
+                      display={"inline"}
+                      sx={{ width: "35%", minWidth: "150px" }}
+                    >
+                      <TextField
+                        autoFocus
+                        margin="dense"
+                        id="BHYT"
+                        name="BHYT"
+                        label="Số BHYT"
+                        type="text"
+                        fullWidth
+                        defaultValue={row.BHYT}
+                        variant="standard"
+                        // InputProps={{
+                        //   readOnly: true,
+                        // }}
+                      />
+                    </Box>
+                    <FormControl
+                      sx={{ m: 1, minWidth: 120, marginTop: "17px" }}
+                      size="small"
+                    >
+                      <InputLabel id="demo-select-small-label">
+                        Giới tính
+                      </InputLabel>
+                      <Select
+                        // displayEmpty
+                        // readOnly
+                        labelId="demo-select-small"
+                        id="gender"
+                        name="gender"
+                        // defaultValue={row.gender}
+                        label="Giới tính"
+                        value={newGender}
+                        onChange={handleChangeGender}
+                      >
+                        <MenuItem value={"Nam"}>Nam</MenuItem>
+                        <MenuItem value={"Nữ"}>Nữ</MenuItem>
+                        <MenuItem value={"Khác"}>Khác</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <Box display={"inline"} sx={{ width: "100%" }}>
+                      <TextField
+                        autoFocus
+                        margin="dense"
+                        id="address"
+                        name="address"
+                        label="Địa chỉ"
+                        type="text"
+                        fullWidth
+                        defaultValue={row.address}
+                        variant="standard"
+                        // InputProps={{
+                        //   readOnly: true,
+                        // }}
+                      />
+                    </Box>
+                  </Box>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseFormOpen}>hủy</Button>
+                  <Button type="submit">Xác nhận</Button>
+                </DialogActions>
+              </Dialog>
               <Table size="small" aria-label="history">
                 <TableHead>
                   <TableRow>
                     <TableCell>Ngày</TableCell>
                     <TableCell>Bác sĩ phụ trách</TableCell>
                     <TableCell>Chẩn đoán</TableCell>
+                    <TableCell>Đơn thuốc</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.doctor}</TableCell>
-                      <TableCell>{historyRow.diag}</TableCell>
-                    </TableRow>
-                  ))}
+                  {row.history.map((historyRow) => {
+                    return (
+                      <HistoryRow
+                        key={historyRow.historyID}
+                        historyRow={historyRow}
+                      ></HistoryRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </Box>
