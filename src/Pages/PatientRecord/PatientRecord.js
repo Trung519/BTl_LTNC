@@ -1,6 +1,7 @@
 import * as React from "react";
 // import styles from "./CollapsibleTable.module.css";
 import PropTypes from "prop-types";
+import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
@@ -37,7 +38,17 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CloseIcon from "@mui/icons-material/Close";
 import dayjs from "dayjs";
-function createData(STT, patientID, fullName, gender, CCCD, BHYT, BirthDay) {
+function createPatient(
+  STT,
+  patientID,
+  fullName,
+  gender,
+  CCCD,
+  BHYT,
+  BirthDay,
+  address = "",
+  history = []
+) {
   return {
     STT,
     patientID,
@@ -46,43 +57,8 @@ function createData(STT, patientID, fullName, gender, CCCD, BHYT, BirthDay) {
     CCCD,
     BHYT,
     BirthDay,
-    address: "abc",
-    history: [
-      {
-        historyID: "1",
-        date: "01/02/2023",
-        doctor: "AB",
-        disease: "Cúm mùa",
-        medicineList: [
-          {
-            medicine: "Panadol",
-            usage: "uống sau khi ăn",
-            dosagePerDay: "1 ngày 2 lần",
-            unit: "20 viên/10 ngày",
-          },
-          {
-            medicine: "paracetamol",
-            usage: "uống sau khi ăn",
-            dosagePerDay: "1 ngày 2 lần",
-            unit: "20 viên/10 ngày",
-          },
-        ],
-      },
-      {
-        historyID: "2",
-        date: "01/02/2023",
-        doctor: "AB",
-        disease: "Cúm mùa",
-        medicineList: [
-          {
-            medicine: "Panadol",
-            usage: "uống sau khi ăn",
-            dosagePerDay: "1 ngày 2 lần",
-            unit: "20 viên/10 ngày",
-          },
-        ],
-      },
-    ],
+    address,
+    history,
   };
 }
 // HistoryRowCustome
@@ -239,125 +215,122 @@ function Row(props) {
             <DialogContent>
               <DialogContentText></DialogContentText>
 
-              <Box
-                // direction="row"
-                // // divider={<Divider orientation="vertical" flexItem />}
-                // spacing={2}
-                display={"flex"}
-                flexWrap={"wrap"}
-                justifyContent={"space-between"}
-                // flexDirection={}
-              >
-                <Box display={"inline"} sx={{ width: "60%" }}>
-                  <TextField
-                    // disabled
-                    // autoFocus
-                    margin="dense"
-                    id="fullName"
-                    name="fullname"
-                    label="Họ và tên"
-                    type="text"
-                    fullWidth
-                    value={row.fullName}
-                    variant="standard"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  />
-                </Box>
-                <Box
-                  display={"inline"}
-                  sx={{ width: "30%", minWidth: "120px" }}
+              <Box sx={{ flexGrow: 1 }}>
+                <Grid
+                  container
+                  spacing={{ xs: 1, md: 2 }}
+                  columns={{ xs: 1, sm: 4, md: 12 }}
                 >
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      readOnly
+                  <Grid item xs={1} sm={3} md={8}>
+                    <TextField
+                      // disabled
+                      // autoFocus
+                      margin="dense"
+                      id="fullName"
+                      name="fullname"
+                      label="Họ và tên"
+                      type="text"
+                      fullWidth
+                      value={row.fullName}
+                      variant="standard"
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={0.5} sm={1} md={4}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <FormControl
+                        sx={{ minWidth: 120, marginTop: "17px" }}
+                        size="small"
+                      >
+                        <DatePicker
+                          readOnly
+                          size="small"
+                          label="Ngày sinh"
+                          // sx={{ padding: 0 }}
+                          format="DD/MM/YYYY"
+                          value={dayjs(row.BirthDay)}
+                        ></DatePicker>
+                      </FormControl>
+                    </LocalizationProvider>{" "}
+                  </Grid>
+                  <Grid item xs={0.5} sm={1} md={3}>
+                    <FormControl
+                      sx={{ minWidth: 120, marginTop: "17px" }}
                       size="small"
-                      label="Ngày sinh"
-                      // sx={{ padding: 0 }}
-                      format="DD/MM/YYYY"
-                      value={dayjs(row.BirthDay)}
-                    ></DatePicker>
-                  </LocalizationProvider>{" "}
-                </Box>
+                    >
+                      <InputLabel id="demo-select-small-label">
+                        Giới tính
+                      </InputLabel>
+                      <Select
+                        // displayEmpty
+                        readOnly
+                        labelId="demo-select-small"
+                        id="demo-select"
+                        // defaultValue={row.gender}
+                        label="Giới tính"
+                        value={row.gender}
+                      >
+                        <MenuItem value={"Nam"}>Nam</MenuItem>
+                        <MenuItem value={"Nữ"}>Nữ</MenuItem>
+                        <MenuItem value={"Khác"}>Khác</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={1} sm={2} md={4.5}>
+                    <TextField
+                      // autoFocus
+                      // required
+                      // disabled
+                      margin="dense"
+                      id="CCCD"
+                      name="CCCD"
+                      label="Số CCCD"
+                      type="text"
+                      fullWidth
+                      value={row.CCCD}
+                      variant="standard"
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={1} sm={2} md={4.5}>
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="BHYT"
+                      name="BHYT"
+                      label="Số BHYT"
+                      type="text"
+                      fullWidth
+                      value={row.BHYT}
+                      variant="standard"
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
 
-                <Box
-                  display={"inline"}
-                  sx={{ width: "35%", minWidth: "150px" }}
-                >
-                  <TextField
-                    // autoFocus
-                    // required
-                    // disabled
-                    margin="dense"
-                    id="CCCD"
-                    name="CCCD"
-                    label="Số CCCD"
-                    type="text"
-                    fullWidth
-                    value={row.CCCD}
-                    variant="standard"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  />
-                </Box>
-                <Box
-                  display={"inline"}
-                  sx={{ width: "35%", minWidth: "150px" }}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="BHYT"
-                    name="BHYT"
-                    label="Số BHYT"
-                    type="text"
-                    fullWidth
-                    value={row.BHYT}
-                    variant="standard"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  />
-                </Box>
-                <FormControl
-                  sx={{ m: 1, minWidth: 120, marginTop: "17px" }}
-                  size="small"
-                >
-                  <InputLabel id="demo-select-small-label">
-                    Giới tính
-                  </InputLabel>
-                  <Select
-                    // displayEmpty
-                    readOnly
-                    labelId="demo-select-small"
-                    id="demo-select"
-                    // defaultValue={row.gender}
-                    label="Giới tính"
-                    value={row.gender}
-                  >
-                    <MenuItem value={"Nam"}>Nam</MenuItem>
-                    <MenuItem value={"Nữ"}>Nữ</MenuItem>
-                    <MenuItem value={"Khác"}>Khác</MenuItem>
-                  </Select>
-                </FormControl>
-                <Box display={"inline"} sx={{ width: "100%" }}>
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="address"
-                    name="address"
-                    label="Địa chỉ"
-                    type="text"
-                    fullWidth
-                    value={row.address}
-                    variant="standard"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  />
-                </Box>
+                  <Grid item xs={1} sm={3} md={12}>
+                    {" "}
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="address"
+                      name="address"
+                      label="Địa chỉ"
+                      type="text"
+                      fullWidth
+                      value={row.address}
+                      variant="standard"
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
+                </Grid>
               </Box>
             </DialogContent>
             <DialogActions>
@@ -384,7 +357,7 @@ function Row(props) {
                 const formData = new FormData(event.currentTarget);
                 const formJson = Object.fromEntries(formData.entries());
                 // cách lấy data
-                const newPatient = createData(
+                const newPatient = createPatient(
                   "1",
                   "100",
                   formJson.fullName,
@@ -403,130 +376,117 @@ function Row(props) {
             <DialogTitle>Chỉnh sửa hồ sơ bệnh án</DialogTitle>
             <DialogContent>
               <DialogContentText></DialogContentText>
-
-              <Box
-                // direction="row"
-                // // divider={<Divider orientation="vertical" flexItem />}
-                // spacing={2}
-                display={"flex"}
-                flexWrap={"wrap"}
-                justifyContent={"space-between"}
-                // flexDirection={}
-              >
-                <Box display={"inline"} sx={{ width: "60%" }}>
-                  <TextField
-                    // disabled
-                    // autoFocus
-                    margin="dense"
-                    id="fullName"
-                    name="fullName"
-                    label="Họ và tên"
-                    type="text"
-                    fullWidth
-                    defaultValue={row.fullName}
-                    variant="standard"
-                    // InputProps={{
-                    //   readOnly: true,
-                    // }}
-                  />
-                </Box>
-                <Box
-                  display={"inline"}
-                  sx={{ width: "30%", minWidth: "120px" }}
+              <Box sx={{ flexGrow: 1 }}>
+                <Grid
+                  container
+                  spacing={{ xs: 1, md: 2 }}
+                  columns={{ xs: 1, sm: 4, md: 12 }}
                 >
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      // readOnly
+                  <Grid item xs={1} sm={3} md={8}>
+                    <TextField
+                      required
+                      margin="dense"
+                      id="fullName"
+                      name="fullName"
+                      label="Họ và tên"
+                      type="text"
+                      fullWidth
+                      defaultValue={row.fullName}
+                      variant="standard"
+                    />
+                  </Grid>
+                  <Grid item xs={0.5} sm={1} md={4}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <FormControl
+                        sx={{ minWidth: 120, marginTop: "17px" }}
+                        size="small"
+                      >
+                        <DatePicker
+                          required
+                          size="small"
+                          id="birthDay"
+                          name="birthDay"
+                          label="Ngày sinh"
+                          // sx={{ padding: 0 }}
+                          format="DD/MM/YYYY"
+                          defaultValue={dayjs(row.BirthDay)}
+                        ></DatePicker>
+                      </FormControl>
+                    </LocalizationProvider>{" "}
+                  </Grid>
+                  <Grid item xs={0.5} sm={1} md={3}>
+                    <FormControl
+                      sx={{ minWidth: 120, marginTop: "17px" }}
                       size="small"
-                      label="Ngày sinh"
-                      id="birthDay"
-                      name="birthDay"
-                      // sx={{ padding: 0 }}
-                      format="DD/MM/YYYY"
-                      defaultValue={dayjs(row.BirthDay)}
-                    ></DatePicker>
-                  </LocalizationProvider>{" "}
-                </Box>
+                    >
+                      <InputLabel>Giới tính</InputLabel>
+                      <Select
+                        // autoWidth
+                        // labelId="demo-select-small"
+                        required
+                        sx={{ height: "56" }}
+                        id="gender"
+                        name="gender"
+                        label="Giới tính"
+                        value={newGender}
+                        onChange={handleChangeGender}
+                      >
+                        <MenuItem value={"Nam"}>Nam</MenuItem>
+                        <MenuItem value={"Nữ"}>Nữ</MenuItem>
+                        <MenuItem value={"Khác"}>Khác</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={1} sm={2} md={4.5}>
+                    <TextField
+                      // autoFocus
+                      required
+                      margin="dense"
+                      id="CCCD"
+                      name="CCCD"
+                      label="Số CCCD"
+                      type="text"
+                      // inputProps={{ min: 0, style: { textAlign: "left" } }}
+                      fullWidth
+                      defaultValue={row.CCCD}
+                      // size="medium"
+                      variant="standard"
+                    ></TextField>
+                  </Grid>
+                  <Grid item xs={1} sm={2} md={4.5}>
+                    <TextField
+                      // autoFocus
+                      // required
+                      margin="dense"
+                      id="BHYT"
+                      name="BHYT"
+                      label="Số BHYT"
+                      defaultValue={row.BHYT}
+                      type="text"
+                      // inputProps={{ min: 0, style: { textAlign: "left" } }}
+                      fullWidth
+                      // size="medium"
+                      variant="standard"
+                    />
+                  </Grid>
 
-                <Box
-                  display={"inline"}
-                  sx={{ width: "35%", minWidth: "150px" }}
-                >
-                  <TextField
-                    // autoFocus
-                    // required
-                    // disabled
-                    margin="dense"
-                    id="CCCD"
-                    name="CCCD"
-                    label="Số CCCD"
-                    type="text"
-                    fullWidth
-                    defaultValue={row.CCCD}
-                    variant="standard"
-                    // InputProps={{
-                    //   readOnly: true,
-                    // }}
-                  />
-                </Box>
-                <Box
-                  display={"inline"}
-                  sx={{ width: "35%", minWidth: "150px" }}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="BHYT"
-                    name="BHYT"
-                    label="Số BHYT"
-                    type="text"
-                    fullWidth
-                    defaultValue={row.BHYT}
-                    variant="standard"
-                    // InputProps={{
-                    //   readOnly: true,
-                    // }}
-                  />
-                </Box>
-                <FormControl
-                  sx={{ m: 1, minWidth: 120, marginTop: "17px" }}
-                  size="small"
-                >
-                  <InputLabel id="demo-select-small-label">
-                    Giới tính
-                  </InputLabel>
-                  <Select
-                    // displayEmpty
-                    // readOnly
-                    labelId="demo-select-small"
-                    id="gender"
-                    name="gender"
-                    // defaultValue={row.gender}
-                    label="Giới tính"
-                    value={newGender}
-                    onChange={handleChangeGender}
-                  >
-                    <MenuItem value={"Nam"}>Nam</MenuItem>
-                    <MenuItem value={"Nữ"}>Nữ</MenuItem>
-                    <MenuItem value={"Khác"}>Khác</MenuItem>
-                  </Select>
-                </FormControl>
-                <Box display={"inline"} sx={{ width: "100%" }}>
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="address"
-                    name="address"
-                    label="Địa chỉ"
-                    type="text"
-                    fullWidth
-                    defaultValue={row.address}
-                    variant="standard"
-                    // InputProps={{
-                    //   readOnly: true,
-                    // }}
-                  />
-                </Box>
+                  <Grid item xs={1} sm={3} md={12}>
+                    <TextField
+                      autoFocus
+                      // required
+                      margin="dense"
+                      id="address"
+                      name="address"
+                      defaultValue={row.address}
+                      label="Địa chỉ"
+                      type="text"
+                      // inputProps={{ min: 0, style: { textAlign: "left" } }}
+                      fullWidth
+                      // size="medium"
+                      variant="standard"
+                    />
+                  </Grid>
+                </Grid>
               </Box>
             </DialogContent>
             <DialogActions>
@@ -577,7 +537,7 @@ function Row(props) {
                     const formData = new FormData(event.currentTarget);
                     const formJson = Object.fromEntries(formData.entries());
                     // cách lấy data
-                    const newPatient = createData(
+                    const newPatient = createPatient(
                       "1",
                       "100",
                       formJson.fullName,
@@ -773,18 +733,55 @@ Row.propTypes = {
     BirthDay: PropTypes.string.isRequired,
   }).isRequired,
 };
-
+//danh sach patients dung state de render ?
 const patients = [
-  createData(
+  createPatient(
     "1",
     "100",
     "Nguyễn Văn A",
     "Nam",
     "0000000000",
     "0000000000",
-    "01/01/2004"
+    "01/01/2004",
+    "",
+    [
+      {
+        historyID: "1",
+        date: "01/02/2023",
+        doctor: "AB",
+        disease: "Cúm mùa",
+        medicineList: [
+          {
+            medicine: "Panadol",
+            usage: "uống sau khi ăn",
+            dosagePerDay: "1 ngày 2 lần",
+            unit: "20 viên/10 ngày",
+          },
+          {
+            medicine: "paracetamol",
+            usage: "uống sau khi ăn",
+            dosagePerDay: "1 ngày 2 lần",
+            unit: "20 viên/10 ngày",
+          },
+        ],
+      },
+      {
+        historyID: "2",
+        date: "01/02/2023",
+        doctor: "AB",
+        disease: "Cúm mùa",
+        medicineList: [
+          {
+            medicine: "Panadol",
+            usage: "uống sau khi ăn",
+            dosagePerDay: "1 ngày 2 lần",
+            unit: "20 viên/10 ngày",
+          },
+        ],
+      },
+    ]
   ),
-  createData(
+  createPatient(
     "2",
     "101",
     "AAAAAAAAAAAAAAA",
@@ -793,7 +790,7 @@ const patients = [
     "11111111111",
     "01/01/2004"
   ),
-  createData(
+  createPatient(
     "3",
     "102",
     "BBBBBBBBBBBBBBBBB",
@@ -802,7 +799,7 @@ const patients = [
     "22222222222",
     "01/01/2004"
   ),
-  createData(
+  createPatient(
     "4",
     "103",
     "CCCCCCCCCCC",
@@ -811,7 +808,7 @@ const patients = [
     "3333333333333",
     "01/01/2004"
   ),
-  createData(
+  createPatient(
     "5",
     "102",
     "DDDDDDDDDDD",
@@ -820,7 +817,7 @@ const patients = [
     "444444444444",
     "01/01/2004"
   ),
-  createData(
+  createPatient(
     "6",
     "102",
     "EEEEEEEEE",
@@ -829,7 +826,7 @@ const patients = [
     "5555555",
     "01/01/2004"
   ),
-  createData(
+  createPatient(
     "7",
     "102",
     "FFFFFF",
@@ -838,7 +835,7 @@ const patients = [
     "666666666",
     "01/01/2004"
   ),
-  createData(
+  createPatient(
     "8",
     "102",
     "GGGGGGGGGG",
@@ -847,7 +844,7 @@ const patients = [
     "7777777777777",
     "01/01/2004"
   ),
-  createData(
+  createPatient(
     "9",
     "102",
     "HHHHHHHHHH",
@@ -856,7 +853,7 @@ const patients = [
     "88888888888",
     "01/01/2004"
   ),
-  createData(
+  createPatient(
     "10",
     "102",
     "IIIIIIIIII",
@@ -884,212 +881,241 @@ export default function PatientRecord() {
   };
   return (
     <Paper elevation={3} sx={{ m: 1 }}>
-      <Box display="flex" sx={{ paddingTop: "10px" }}>
-        <Typography
-          variant="h5"
-          // gutterBottom
-          component="div"
-          sx={{ padding: "15px 0 0 15px" }}
+      <Box sx={{ flexGrow: 1, marginRight: "10px" }}>
+        <Grid
+          container
+          spacing={{ xs: 1, md: 2 }}
+          columns={{ xs: 1, sm: 4, md: 12 }}
         >
-          HỒ SƠ BỆNH ÁN
-        </Typography>
-        <Button
-          variant="contained"
-          color="success"
-          sx={{ margin: "13px 0 0 13px" }}
-          onClick={handleClickNewFormOpen}
-        >
-          Thêm
-        </Button>
-        {/* DialogAdd */}
-        <Dialog
-          fullWidth
-          maxWidth="sm"
-          open={newFormOpen}
-          onClose={handleCloseNewFormOpen}
-          PaperProps={{
-            component: "form",
-            onSubmit: (event) => {
-              event.preventDefault();
-
-              const formData = new FormData(event.currentTarget);
-              const formJson = Object.fromEntries(formData.entries());
-              // cách lấy data
-              const newPatient = createData(
-                "1",
-                "100",
-                formJson.fullName,
-                formJson.gender,
-                formJson.CCCD,
-                formJson.BHYT,
-                formJson.birthDay
-              );
-              console.log(newPatient);
-              handleCloseNewFormOpen();
-            },
-          }}
-        >
-          <DialogTitle>Thêm hồ sơ bệnh án</DialogTitle>
-          <DialogContent>
-            <DialogContentText></DialogContentText>
-
-            <Box
-              display={"flex"}
-              flexWrap={"wrap"}
-              justifyContent={"space-between"}
+          <Grid item xs={1} sm={1.5} md={2} sx={{ margin: "15px 0 0 10px" }}>
+            <Typography
+              variant="h5"
+              // gutterBottom
+              component="div"
+              sx={{
+                display: "inline-block",
+              }}
             >
-              <Box display={"inline"} sx={{ width: "60%" }}>
-                <TextField
-                  autoFocus
-                  required
-                  margin="dense"
-                  id="fullName"
-                  name="fullName"
-                  label="Họ và tên"
-                  type="text"
-                  fullWidth
-                  variant="standard"
-                />
-              </Box>
-              <Box display={"inline"} sx={{ width: "30%", minWidth: "120px" }}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    size="small"
-                    id="birthDay"
-                    name="birthDay"
-                    label="Ngày sinh"
-                    sx={{ padding: 0 }}
-                    format="DD/MM/YYYY"
-                  ></DatePicker>
-                </LocalizationProvider>{" "}
-              </Box>
+              HỒ SƠ BỆNH ÁN
+            </Typography>
+          </Grid>
+          <Grid item xs={1} sm={0.5} md={0.7}>
+            <Button
+              variant="contained"
+              color="success"
+              sx={{ margin: "13px 0 0 13px" }}
+              onClick={handleClickNewFormOpen}
+            >
+              Thêm
+            </Button>
 
-              <Box display={"inline"} sx={{ width: "35%", minWidth: "150px" }}>
+            {/* DialogAdd */}
+            <Dialog
+              fullWidth
+              maxWidth="sm"
+              open={newFormOpen}
+              onClose={handleCloseNewFormOpen}
+              PaperProps={{
+                component: "form",
+                onSubmit: (event) => {
+                  event.preventDefault();
+
+                  const formData = new FormData(event.currentTarget);
+                  const formJson = Object.fromEntries(formData.entries());
+                  // cách lấy data
+                  const newPatient = createPatient(
+                    "1",
+                    "100",
+                    formJson.fullName,
+                    formJson.gender,
+                    formJson.CCCD,
+                    formJson.BHYT,
+                    formJson.birthDay
+                  );
+                  console.log(newPatient);
+                  handleCloseNewFormOpen();
+                },
+              }}
+            >
+              <DialogTitle>Thêm hồ sơ bệnh án</DialogTitle>
+              <DialogContent>
+                <DialogContentText></DialogContentText>
+                <Box sx={{ flexGrow: 1 }}>
+                  <Grid
+                    container
+                    spacing={{ xs: 1, md: 2 }}
+                    columns={{ xs: 1, sm: 4, md: 12 }}
+                  >
+                    <Grid item xs={1} sm={3} md={8}>
+                      <TextField
+                        required
+                        margin="dense"
+                        id="fullName"
+                        name="fullName"
+                        label="Họ và tên"
+                        type="text"
+                        fullWidth
+                        variant="standard"
+                      />
+                    </Grid>
+                    <Grid item xs={0.5} sm={1} md={4}>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <FormControl
+                          sx={{ minWidth: 120, marginTop: "17px" }}
+                          size="small"
+                        >
+                          <DatePicker
+                            required
+                            size="small"
+                            id="birthDay"
+                            name="birthDay"
+                            label="Ngày sinh"
+                            // sx={{ padding: 0 }}
+                            format="DD/MM/YYYY"
+                          ></DatePicker>
+                        </FormControl>
+                      </LocalizationProvider>{" "}
+                    </Grid>
+                    <Grid item xs={0.5} sm={1} md={3}>
+                      <FormControl
+                        sx={{ minWidth: 120, marginTop: "17px" }}
+                        size="small"
+                      >
+                        <InputLabel>Giới tính</InputLabel>
+                        <Select
+                          // autoWidth
+                          // labelId="demo-select-small"
+                          required
+                          sx={{ height: "56" }}
+                          id="gender"
+                          name="gender"
+                          label="Giới tính"
+                          value={newGender}
+                          onChange={handleChangeGender}
+                        >
+                          <MenuItem value={"Nam"}>Nam</MenuItem>
+                          <MenuItem value={"Nữ"}>Nữ</MenuItem>
+                          <MenuItem value={"Khác"}>Khác</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={1} sm={2} md={4.5}>
+                      <TextField
+                        // autoFocus
+                        required
+                        margin="dense"
+                        id="CCCD"
+                        name="CCCD"
+                        label="Số CCCD"
+                        type="text"
+                        // inputProps={{ min: 0, style: { textAlign: "left" } }}
+                        fullWidth
+                        // size="medium"
+                        variant="standard"
+                      ></TextField>
+                    </Grid>
+                    <Grid item xs={1} sm={2} md={4.5}>
+                      <TextField
+                        // autoFocus
+                        // required
+                        margin="dense"
+                        id="BHYT"
+                        name="BHYT"
+                        label="Số BHYT"
+                        type="text"
+                        // inputProps={{ min: 0, style: { textAlign: "left" } }}
+                        fullWidth
+                        // size="medium"
+                        variant="standard"
+                      />
+                    </Grid>
+
+                    <Grid item xs={1} sm={3} md={12}>
+                      <TextField
+                        autoFocus
+                        // required
+                        margin="dense"
+                        id="address"
+                        name="address"
+                        label="Địa chỉ"
+                        type="text"
+                        // inputProps={{ min: 0, style: { textAlign: "left" } }}
+                        fullWidth
+                        // size="medium"
+                        variant="standard"
+                      />
+                    </Grid>
+                  </Grid>
+                </Box>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseNewFormOpen}>hủy</Button>
+                <Button type="submit">Xác nhận</Button>
+              </DialogActions>
+            </Dialog>
+          </Grid>
+          <Grid item xs={1} sm={2} md={3}>
+            {/* Tìm kiếm theo họ tên */}
+            <Autocomplete
+              onChange={(event, value) => {
+                if (value === null) setRenderPatientList(patients);
+                else setRenderPatientList([value]);
+              }}
+              sx={{ width: 300 }}
+              options={patients}
+              getOptionLabel={(option) => option.fullName}
+              id="fullname_search"
+              clearOnEscape
+              renderInput={(params) => (
                 <TextField
-                  autoFocus
-                  required
-                  margin="dense"
-                  id="CCCD"
-                  name="CCCD"
-                  label="Số CCCD"
-                  type="text"
-                  // inputProps={{ min: 0, style: { textAlign: "left" } }}
-                  fullWidth
-                  // size="medium"
+                  {...params}
+                  label="Tìm kiếm theo họ tên"
                   variant="standard"
                 />
-              </Box>
-              <Box display={"inline"} sx={{ width: "35%", minWidth: "150px" }}>
+              )}
+            />
+          </Grid>
+          <Grid item xs={1} sm={2} md={3}>
+            <Autocomplete
+              onChange={(event, value) => {
+                if (value === null) setRenderPatientList(patients);
+                else setRenderPatientList([value]);
+              }}
+              sx={{ width: 300 }}
+              options={patients}
+              getOptionLabel={(option) => option.CCCD}
+              id="fullname_search"
+              clearOnEscape
+              renderInput={(params) => (
                 <TextField
-                  autoFocus
-                  // required
-                  margin="dense"
-                  id="BHYT"
-                  name="BHYT"
-                  label="Số BHYT"
-                  type="text"
-                  // inputProps={{ min: 0, style: { textAlign: "left" } }}
-                  fullWidth
-                  // size="medium"
+                  {...params}
+                  label="Tìm kiếm theo số CCCD"
                   variant="standard"
                 />
-              </Box>
-              <FormControl
-                sx={{ m: 1, minWidth: 120, marginTop: "17px" }}
-                size="small"
-              >
-                <InputLabel id="demo-select-small-label">Giới tính</InputLabel>
-                <Select
-                  // autoWidth
-                  // labelId="demo-select-small"
-                  id="gender"
-                  name="gender"
-                  label="Giới tính"
-                  value={newGender}
-                  onChange={handleChangeGender}
-                >
-                  <MenuItem value={"Nam"}>Nam</MenuItem>
-                  <MenuItem value={"Nữ"}>Nữ</MenuItem>
-                  <MenuItem value={"Khác"}>Khác</MenuItem>
-                </Select>
-              </FormControl>
-              <Box display={"inline"} sx={{ width: "100%" }}>
+              )}
+            />
+          </Grid>
+          <Grid item xs={1} sm={2} md={3}>
+            <Autocomplete
+              onChange={(event, value) => {
+                if (value === null) setRenderPatientList(patients);
+                else setRenderPatientList([value]);
+              }}
+              sx={{ width: 300 }}
+              options={patients}
+              getOptionLabel={(option) => option.BHYT}
+              id="fullname_search"
+              clearOnEscape
+              renderInput={(params) => (
                 <TextField
-                  autoFocus
-                  // required
-                  margin="dense"
-                  id="address"
-                  name="address"
-                  label="Địa chỉ"
-                  type="text"
-                  // inputProps={{ min: 0, style: { textAlign: "left" } }}
-                  fullWidth
-                  // size="medium"
+                  {...params}
+                  label="Tìm kiếm theo số BHYT"
                   variant="standard"
                 />
-              </Box>
-            </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseNewFormOpen}>hủy</Button>
-            <Button type="submit">Xác nhận</Button>
-          </DialogActions>
-        </Dialog>
-        {/* Tìm kiếm theo họ tên */}
-        <Autocomplete
-          onChange={(event, value) => {
-            if (value === null) setRenderPatientList(patients);
-            else setRenderPatientList([value]);
-          }}
-          sx={{ width: 300, marginLeft: "50px" }}
-          options={patients}
-          getOptionLabel={(option) => option.fullName}
-          id="fullname_search"
-          clearOnEscape
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Tìm kiếm theo họ tên"
-              variant="standard"
+              )}
             />
-          )}
-        />
-        <Autocomplete
-          onChange={(event, value) => {
-            if (value === null) setRenderPatientList(patients);
-            else setRenderPatientList([value]);
-          }}
-          sx={{ width: 300, marginLeft: "50px" }}
-          options={patients}
-          getOptionLabel={(option) => option.CCCD}
-          id="fullname_search"
-          clearOnEscape
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Tìm kiếm theo số CCCD"
-              variant="standard"
-            />
-          )}
-        />
-        <Autocomplete
-          onChange={(event, value) => {
-            if (value === null) setRenderPatientList(patients);
-            else setRenderPatientList([value]);
-          }}
-          sx={{ width: 300, marginLeft: "50px" }}
-          options={patients}
-          getOptionLabel={(option) => option.BHYT}
-          id="fullname_search"
-          clearOnEscape
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Tìm kiếm theo số BHYT"
-              variant="standard"
-            />
-          )}
-        />
+          </Grid>
+        </Grid>
       </Box>
       <Divider variant="middle" sx={{ m: 3 }} />
       <Paper elevation={0} sx={{ marginLeft: 1 }}>
