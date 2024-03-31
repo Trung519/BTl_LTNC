@@ -30,6 +30,7 @@ import FormControl from "@mui/material/FormControl";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -37,7 +38,6 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CloseIcon from "@mui/icons-material/Close";
-import dayjs from "dayjs";
 function createPatient(
   STT,
   patientID,
@@ -61,7 +61,7 @@ function createPatient(
     history,
   };
 }
-// HistoryRowCustome
+// HistoryRowCustom
 function HistoryRow(props) {
   const { historyRow } = props;
   const [medicineListDialogOpen, setMedicineListDialogOpen] =
@@ -145,7 +145,7 @@ function HistoryRow(props) {
     </TableRow>
   );
 }
-// RowCustome
+// RowCustom
 function Row(props) {
   const handleCloseFormOpen = () => {
     setInfoFormOpen(false);
@@ -200,19 +200,11 @@ function Row(props) {
             onClose={handleCloseFormOpen}
             PaperProps={{
               component: "form",
-              onSubmit: (event) => {
-                event.preventDefault();
-                const formData = new FormData(event.currentTarget);
-                const formJson = Object.fromEntries(formData.entries());
-                const email = formJson.email;
-                console.log(email);
-                handleCloseFormOpen();
-              },
             }}
             // sx={{ width: "100%", maxWidth: "1000px" }}
           >
             <DialogTitle>Thông tin hồ sơ bệnh án</DialogTitle>
-            <DialogContent>
+            <DialogContent dividers>
               <DialogContentText></DialogContentText>
 
               <Box sx={{ flexGrow: 1 }}>
@@ -231,8 +223,8 @@ function Row(props) {
                       label="Họ và tên"
                       type="text"
                       fullWidth
-                      value={row.fullName}
                       variant="standard"
+                      value={row.fullName}
                       InputProps={{
                         readOnly: true,
                       }}
@@ -245,12 +237,12 @@ function Row(props) {
                         size="small"
                       >
                         <DatePicker
-                          readOnly
                           size="small"
                           label="Ngày sinh"
                           // sx={{ padding: 0 }}
                           format="DD/MM/YYYY"
-                          value={dayjs(row.BirthDay)}
+                          readOnly
+                          value={dayjs(row.BirthDay, "DD/MM/YYYY")}
                         ></DatePicker>
                       </FormControl>
                     </LocalizationProvider>{" "}
@@ -280,9 +272,6 @@ function Row(props) {
                   </Grid>
                   <Grid item xs={1} sm={2} md={4.5}>
                     <TextField
-                      // autoFocus
-                      // required
-                      // disabled
                       margin="dense"
                       id="CCCD"
                       name="CCCD"
@@ -374,7 +363,7 @@ function Row(props) {
             // sx={{ width: "100%", maxWidth: "1000px" }}
           >
             <DialogTitle>Chỉnh sửa hồ sơ bệnh án</DialogTitle>
-            <DialogContent>
+            <DialogContent dividers>
               <DialogContentText></DialogContentText>
               <Box sx={{ flexGrow: 1 }}>
                 <Grid
@@ -409,7 +398,7 @@ function Row(props) {
                           label="Ngày sinh"
                           // sx={{ padding: 0 }}
                           format="DD/MM/YYYY"
-                          defaultValue={dayjs(row.BirthDay)}
+                          value={dayjs(row.BirthDay, "DD/MM/YYYY")}
                         ></DatePicker>
                       </FormControl>
                     </LocalizationProvider>{" "}
@@ -554,7 +543,7 @@ function Row(props) {
                 // sx={{ width: "100%", maxWidth: "1000px" }}
               >
                 <DialogTitle>Thêm Lần Khám</DialogTitle>
-                <DialogContent>
+                <DialogContent dividers>
                   <DialogContentText></DialogContentText>
 
                   <Box
@@ -742,7 +731,7 @@ const patients = [
     "Nam",
     "0000000000",
     "0000000000",
-    "01/01/2004",
+    "23/01/2004",
     "",
     [
       {
@@ -938,7 +927,7 @@ export default function PatientRecord() {
               }}
             >
               <DialogTitle>Thêm hồ sơ bệnh án</DialogTitle>
-              <DialogContent>
+              <DialogContent dividers>
                 <DialogContentText></DialogContentText>
                 <Box sx={{ flexGrow: 1 }}>
                   <Grid
@@ -1061,7 +1050,7 @@ export default function PatientRecord() {
                 if (value === null) setRenderPatientList(patients);
                 else setRenderPatientList([value]);
               }}
-              sx={{ width: 300 }}
+              sx={{ width: 300, marginLeft: "15px" }}
               options={patients}
               getOptionLabel={(option) => option.fullName}
               id="fullname_search"

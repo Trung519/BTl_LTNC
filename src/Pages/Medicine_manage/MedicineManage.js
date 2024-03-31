@@ -18,6 +18,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
+import FormControl from "@mui/material/FormControl";
+
 // import Paper from "@mui/material/Paper";
 
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -31,8 +37,6 @@ function createMedicine(
   medicineID,
   name,
   origin,
-  batch,
-  NSX,
   HSD,
   cost,
   sellPrice,
@@ -43,88 +47,366 @@ function createMedicine(
     medicineID,
     name,
     origin,
-    batch,
-    NSX,
     HSD,
-    stock,
     cost,
     sellPrice,
+    stock,
   };
 }
 const listMedicine = [
-  createMedicine(
-    "1",
-    "1",
-    "A",
-    "Trung Quốc",
-    "L1",
-    "01/01/2023",
-    "01/01/2024",
-    "1$",
-    "2$",
-    "200"
-  ),
-  createMedicine(
-    "2",
-    "2",
-    "B",
-    "Trung Quốc",
-    "L1",
-    "01/01/2023",
-    "01/01/2024",
-    "1$",
-    "2$",
-    "200"
-  ),
-  createMedicine(
-    "2",
-    "3",
-    "C",
-    "Trung Quốc",
-    "L1",
-    "01/01/2023",
-    "01/01/2024",
-    "1$",
-    "2$",
-    "200"
-  ),
-  createMedicine(
-    "3",
-    "4",
-    "D",
-    "Trung Quốc",
-    "L1",
-    "01/01/2023",
-    "01/01/2024",
-    "1$",
-    "2$",
-    "200"
-  ),
-  createMedicine(
-    "4",
-    "5",
-    "E",
-    "Trung Quốc",
-    "L1",
-    "01/01/2023",
-    "01/01/2024",
-    "1$",
-    "2$",
-    "200"
-  ),
-  createMedicine(
-    "5",
-    "6",
-    "F",
-    "Trung Quốc",
-    "L1",
-    "01/01/2023",
-    "01/01/2024",
-    "1$",
-    "2$",
-    "200"
-  ),
+  createMedicine("1", "1", "A", "Trung Quốc", "23/01/2024", "1$", "2$", "200"),
+  createMedicine("2", "2", "B", "Trung Quốc", "01/01/2024", "1$", "2$", "200"),
+  createMedicine("3", "4", "D", "Trung Quốc", "01/01/2024", "1$", "2$", "200"),
+  createMedicine("4", "5", "E", "Trung Quốc", "01/01/2024", "1$", "2$", "200"),
+  createMedicine("5", "6", "F", "Trung Quốc", "01/01/2024", "1$", "2$", "200"),
 ];
+// RowCustom
+function Row(props) {
+  const { row } = props;
+  const [infoFormOpen, setInfoFormOpen] = React.useState(false);
+  const [modifyFormOpen, setmodifyFormOpen] = React.useState(false);
+  const handleCloseFormOpen = () => {
+    setInfoFormOpen(false);
+    setmodifyFormOpen(false);
+  };
+  return (
+    <TableRow
+      key={row.medicineID}
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    >
+      <TableCell
+      // component="th" scope="row"
+      >
+        {row.STT}
+      </TableCell>
+      <TableCell>{row.medicineID}</TableCell>
+      <TableCell>{row.name}</TableCell>
+      <TableCell>{row.origin}</TableCell>
+      <TableCell>{row.HSD}</TableCell>
+      <TableCell>{row.stock}</TableCell>
+      <TableCell>{row.cost}</TableCell>
+      <TableCell>{row.sellPrice}</TableCell>
+      <TableCell>
+        <IconButton
+          aria-label="info"
+          size="small"
+          color="info"
+          onClick={() => {
+            setInfoFormOpen(!infoFormOpen);
+          }}
+        >
+          <InfoOutlinedIcon></InfoOutlinedIcon>
+        </IconButton>
+        {/* DialogInfo */}
+        <Dialog
+          fullWidth
+          maxWidth="sm"
+          open={infoFormOpen}
+          onClose={handleCloseFormOpen}
+          PaperProps={{
+            component: "form",
+          }}
+        >
+          <DialogTitle>Thông tin thuốc trong kho</DialogTitle>
+          <DialogContent dividers>
+            <DialogContentText></DialogContentText>
+
+            <Grid
+              container
+              spacing={{ xs: 1, md: 2 }}
+              columns={{ xs: 1, sm: 4, md: 12 }}
+            >
+              <Grid item xs={1} sm={2} md={3}>
+                <TextField
+                  required
+                  margin="dense"
+                  id="medicineID"
+                  name="medicineID"
+                  label="Mã thuốc"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  value={row.medicineID}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={1} sm={2} md={6}>
+                <TextField
+                  required
+                  margin="dense"
+                  id="name"
+                  name="name"
+                  label="Tên thuốc"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  value={row.name}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={1} sm={2} md={3}>
+                <TextField
+                  required
+                  margin="dense"
+                  id="origin"
+                  name="origin"
+                  label="Xuất xứ"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  value={row.origin}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={0.5} sm={1} md={4}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
+                  // adapterLocale="en-gb"
+                >
+                  <FormControl
+                    sx={{ minWidth: 120, marginTop: "17px" }}
+                    size="small"
+                  >
+                    <DatePicker
+                      readOnly
+                      value={dayjs(row.HSD, "DD/MM/YYYY")}
+                      required
+                      size="small"
+                      id="HSD"
+                      name="HSD"
+                      label="HSD"
+                      // sx={{ padding: 0 }}
+                      format="DD/MM/YYYY"
+                    ></DatePicker>
+                  </FormControl>
+                </LocalizationProvider>{" "}
+              </Grid>
+
+              <Grid item xs={1} sm={2} md={2.5}>
+                <TextField
+                  required
+                  margin="dense"
+                  id="cost"
+                  name="cost"
+                  label="Giá nhập"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  value={row.cost}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={1} sm={2} md={2.5}>
+                <TextField
+                  required
+                  margin="dense"
+                  id="sellPrice"
+                  name="sellPrice"
+                  label="Giá bán"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  value={row.sellPrice}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={1} sm={2} md={3}>
+                <TextField
+                  required
+                  margin="dense"
+                  id="stock"
+                  name="stock"
+                  label="Tồn kho"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  value={row.stock}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseFormOpen}>hủy</Button>
+            <Button type="submit">Xác nhận</Button>
+          </DialogActions>
+        </Dialog>
+
+        <IconButton
+          aria-label="edit"
+          size="small"
+          onClick={() => setmodifyFormOpen(!modifyFormOpen)}
+        >
+          <EditOutlinedIcon></EditOutlinedIcon>
+        </IconButton>
+        {/* DialogModify */}
+        <Dialog
+          fullWidth
+          maxWidth="sm"
+          open={modifyFormOpen}
+          onClose={handleCloseFormOpen}
+          PaperProps={{
+            component: "form",
+            onSubmit: (event) => {
+              event.preventDefault();
+
+              const formData = new FormData(event.currentTarget);
+              const formJson = Object.fromEntries(formData.entries());
+              // cách lấy data
+              const newMedicine = createMedicine(
+                "1",
+                // "100"
+                formJson.medicineID,
+                formJson.name,
+                formJson.origin,
+                formJson.HSD,
+                formJson.cost,
+                formJson.sellPrice,
+                formJson.stock
+              );
+              console.log(newMedicine);
+              handleCloseFormOpen();
+            },
+          }}
+        >
+          <DialogTitle>Chỉnh sửa thuốc trong kho</DialogTitle>
+          <DialogContent dividers>
+            <DialogContentText></DialogContentText>
+
+            <Grid
+              container
+              spacing={{ xs: 1, md: 2 }}
+              columns={{ xs: 1, sm: 4, md: 12 }}
+            >
+              <Grid item xs={1} sm={2} md={3}>
+                <TextField
+                  required
+                  margin="dense"
+                  id="medicineID"
+                  name="medicineID"
+                  label="Mã thuốc"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  defaultValue={row.medicineID}
+                />
+              </Grid>
+              <Grid item xs={1} sm={2} md={6}>
+                <TextField
+                  required
+                  margin="dense"
+                  id="name"
+                  name="name"
+                  label="Tên thuốc"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  defaultValue={row.name}
+                />
+              </Grid>
+              <Grid item xs={1} sm={2} md={3}>
+                <TextField
+                  required
+                  margin="dense"
+                  id="origin"
+                  name="origin"
+                  label="Xuất xứ"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  defaultValue={row.origin}
+                />
+              </Grid>
+              <Grid item xs={0.5} sm={1} md={4}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <FormControl
+                    sx={{ minWidth: 120, marginTop: "17px" }}
+                    size="small"
+                  >
+                    <DatePicker
+                      required
+                      size="small"
+                      id="HSD"
+                      name="HSD"
+                      label="HSD"
+                      // sx={{ padding: 0 }}
+                      format="DD/MM/YYYY"
+                      value={dayjs(row.HSD, "DD/MM/YYYY")}
+                    ></DatePicker>
+                  </FormControl>
+                </LocalizationProvider>{" "}
+              </Grid>
+
+              <Grid item xs={1} sm={2} md={2.5}>
+                <TextField
+                  required
+                  margin="dense"
+                  id="cost"
+                  name="cost"
+                  label="Giá nhập"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  defaultValue={row.cost}
+                />
+              </Grid>
+              <Grid item xs={1} sm={2} md={2.5}>
+                <TextField
+                  required
+                  margin="dense"
+                  id="sellPrice"
+                  name="sellPrice"
+                  label="Giá bán"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  defaultValue={row.sellPrice}
+                />
+              </Grid>
+              <Grid item xs={1} sm={2} md={3}>
+                <TextField
+                  required
+                  margin="dense"
+                  id="stock"
+                  name="stock"
+                  label="Tồn kho"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  defaultValue={row.stock}
+                />
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseFormOpen}>hủy</Button>
+            <Button type="submit">Xác nhận</Button>
+          </DialogActions>
+        </Dialog>
+        <IconButton
+          aria-label="delete"
+          size="small"
+          color="error"
+          // onClick={() => setOpen(!open)}
+        >
+          <DeleteOutlineIcon></DeleteOutlineIcon>
+        </IconButton>
+      </TableCell>
+    </TableRow>
+  );
+}
 const MedicineManage = () => {
   const [renderMedicineList, setRenderMedicineList] =
     React.useState(listMedicine);
@@ -178,22 +460,24 @@ const MedicineManage = () => {
                   const formData = new FormData(event.currentTarget);
                   const formJson = Object.fromEntries(formData.entries());
                   // cách lấy data
-                  // const newPatient = createMedicine(
-                  //   "1",
-                  //   "100",
-                  //   formJson.fullName,
-                  //   formJson.gender,
-                  //   formJson.CCCD,
-                  //   formJson.BHYT,
-                  //   formJson.birthDay
-                  // );
-                  // console.log(newPatient);
+                  const newMedicine = createMedicine(
+                    "1",
+                    // "100"
+                    formJson.medicineID,
+                    formJson.name,
+                    formJson.origin,
+                    formJson.HSD,
+                    formJson.cost,
+                    formJson.sellPrice,
+                    formJson.stock
+                  );
+                  console.log(newMedicine);
                   handleCloseFormOpen();
                 },
               }}
             >
-              <DialogTitle>Thêm hồ sơ bệnh án</DialogTitle>
-              <DialogContent>
+              <DialogTitle>Thêm thuốc trong kho</DialogTitle>
+              <DialogContent dividers>
                 <DialogContentText></DialogContentText>
 
                 <Grid
@@ -201,23 +485,96 @@ const MedicineManage = () => {
                   spacing={{ xs: 1, md: 2 }}
                   columns={{ xs: 1, sm: 4, md: 12 }}
                 >
-                  <Grid item xs={1} sm={2} md={4}>
-                    <Paper>xs=2</Paper>
+                  <Grid item xs={1} sm={2} md={3}>
+                    <TextField
+                      required
+                      margin="dense"
+                      id="medicineID"
+                      name="medicineID"
+                      label="Mã thuốc"
+                      type="text"
+                      fullWidth
+                      variant="standard"
+                    />
                   </Grid>
-                  <Grid item xs={1} sm={2} md={8}>
-                    <Paper>xs=2</Paper>
-                  </Grid>
-                  <Grid item xs={1} sm={2} md={4}>
-                    <Paper>xs=2</Paper>
-                  </Grid>
-                  <Grid item xs={1} sm={2} md={2.5}>
-                    <Paper>xs=2</Paper>
-                  </Grid>
-                  <Grid item xs={1} sm={2} md={2.5}>
-                    <Paper>xs=2</Paper>
+                  <Grid item xs={1} sm={2} md={6}>
+                    <TextField
+                      required
+                      margin="dense"
+                      id="name"
+                      name="name"
+                      label="Tên thuốc"
+                      type="text"
+                      fullWidth
+                      variant="standard"
+                    />
                   </Grid>
                   <Grid item xs={1} sm={2} md={3}>
-                    <Paper>xs=2</Paper>
+                    <TextField
+                      required
+                      margin="dense"
+                      id="origin"
+                      name="origin"
+                      label="Xuất xứ"
+                      type="text"
+                      fullWidth
+                      variant="standard"
+                    />
+                  </Grid>
+                  <Grid item xs={0.5} sm={1} md={4}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <FormControl
+                        sx={{ minWidth: 120, marginTop: "17px" }}
+                        size="small"
+                      >
+                        <DatePicker
+                          required
+                          size="small"
+                          id="HSD"
+                          name="HSD"
+                          label="HSD"
+                          // sx={{ padding: 0 }}
+                          format="DD/MM/YYYY"
+                        ></DatePicker>
+                      </FormControl>
+                    </LocalizationProvider>{" "}
+                  </Grid>
+
+                  <Grid item xs={1} sm={2} md={2.5}>
+                    <TextField
+                      required
+                      margin="dense"
+                      id="cost"
+                      name="cost"
+                      label="Giá nhập"
+                      type="text"
+                      fullWidth
+                      variant="standard"
+                    />
+                  </Grid>
+                  <Grid item xs={1} sm={2} md={2.5}>
+                    <TextField
+                      required
+                      margin="dense"
+                      id="sellPrice"
+                      name="sellPrice"
+                      label="Giá bán"
+                      type="text"
+                      fullWidth
+                      variant="standard"
+                    />
+                  </Grid>
+                  <Grid item xs={1} sm={2} md={3}>
+                    <TextField
+                      required
+                      margin="dense"
+                      id="stock"
+                      name="stock"
+                      label="Tồn kho"
+                      type="text"
+                      fullWidth
+                      variant="standard"
+                    />
                   </Grid>
                 </Grid>
               </DialogContent>
@@ -273,16 +630,26 @@ const MedicineManage = () => {
       </Box>
       <Divider variant="middle" sx={{ m: 3 }} />
       <Paper elevation={0} sx={{ marginLeft: 1 }}>
-        <TableContainer sx={{ maxHeight: 480, overflowY: "scroll" }}>
+        <TableContainer
+          sx={{
+            maxHeight: 480,
+            overflowY: "scroll",
+            // maxWidth: "1000px",
+            // overflowX: "auto",
+          }}
+        >
           <Table stickyHeader>
             <colgroup>
-              <col style={{ width: "5%" }} />
-              <col style={{ width: "12%" }} />
-              <col style={{ width: "22%" }} />
-              <col style={{ width: "12%" }} />
-              <col style={{ width: "12%" }} />
-              <col style={{ width: "12%" }} />
-              <col style={{ width: "12%" }} />
+              <col style={{ width: "70px" }} />
+              <col style={{ width: "150px" }} />
+              <col style={{ width: "270px" }} />
+              <col style={{ width: "170px" }} />
+              <col style={{ width: "150px" }} />
+              <col style={{ width: "150px" }} />
+              <col style={{ width: "160px" }} />
+              <col style={{ width: "160px" }} />
+              {/* <col style={{ width: "150px" }} /> */}
+              {/* <col style={{ width: "500px" }} /> */}
             </colgroup>
             <TableHead>
               <TableRow>
@@ -290,7 +657,7 @@ const MedicineManage = () => {
                   sx={{
                     color: "#ffffff",
                     bgcolor: "#08107D",
-                    fontSize: "18px",
+                    fontSize: "17px",
                   }}
                 >
                   STT
@@ -299,7 +666,7 @@ const MedicineManage = () => {
                   sx={{
                     color: "#ffffff",
                     bgcolor: "#08107D",
-                    fontSize: "18px",
+                    fontSize: "17px",
                   }}
                 >
                   Mã thuốc
@@ -308,7 +675,7 @@ const MedicineManage = () => {
                   sx={{
                     color: "#ffffff",
                     bgcolor: "#08107D",
-                    fontSize: "18px",
+                    fontSize: "17px",
                   }}
                   align="left"
                 >
@@ -318,7 +685,7 @@ const MedicineManage = () => {
                   sx={{
                     color: "#ffffff",
                     bgcolor: "#08107D",
-                    fontSize: "18px",
+                    fontSize: "17px",
                   }}
                 >
                   Xuất xứ
@@ -327,28 +694,37 @@ const MedicineManage = () => {
                   sx={{
                     color: "#ffffff",
                     bgcolor: "#08107D",
-                    fontSize: "18px",
+                    fontSize: "17px",
                   }}
                 >
-                  Giá nhập
+                  HSD
                 </TableCell>
                 <TableCell
                   sx={{
                     color: "#ffffff",
                     bgcolor: "#08107D",
-                    fontSize: "18px",
-                  }}
-                >
-                  Giá bán
-                </TableCell>
-                <TableCell
-                  sx={{
-                    color: "#ffffff",
-                    bgcolor: "#08107D",
-                    fontSize: "18px",
+                    fontSize: "17px",
                   }}
                 >
                   Tồn kho&nbsp;(hộp)
+                </TableCell>
+                <TableCell
+                  sx={{
+                    color: "#ffffff",
+                    bgcolor: "#08107D",
+                    fontSize: "17px",
+                  }}
+                >
+                  Giá nhập&nbsp;(VND)
+                </TableCell>
+                <TableCell
+                  sx={{
+                    color: "#ffffff",
+                    bgcolor: "#08107D",
+                    fontSize: "17px",
+                  }}
+                >
+                  Giá bán&nbsp;(VND)
                 </TableCell>
 
                 <TableCell sx={{ bgcolor: "#08107D" }} />
@@ -356,51 +732,7 @@ const MedicineManage = () => {
             </TableHead>
             <TableBody>
               {renderMedicineList.map((row) => (
-                <TableRow
-                  key={row.medicineID}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell
-                  // component="th" scope="row"
-                  >
-                    {row.STT}
-                  </TableCell>
-                  <TableCell>{row.medicineID}</TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.origin}</TableCell>
-                  <TableCell>{row.cost}</TableCell>
-                  <TableCell>{row.sellPrice}</TableCell>
-                  <TableCell>{row.stock}</TableCell>
-                  <TableCell>
-                    <IconButton
-                      aria-label="info"
-                      size="small"
-                      color="info"
-                      // onClick={() => {
-                      //   setInfoFormOpen(!infoFormOpen);
-                      // }}
-                    >
-                      <InfoOutlinedIcon></InfoOutlinedIcon>
-                    </IconButton>
-                    {/* DialogInfo */}
-                    <IconButton
-                      aria-label="edit"
-                      size="small"
-                      // onClick={() => setmodifyFormOpen(!modifyFormOpen)}
-                    >
-                      <EditOutlinedIcon></EditOutlinedIcon>
-                    </IconButton>
-                    {/* DialogModify */}
-                    <IconButton
-                      aria-label="delete"
-                      size="small"
-                      color="error"
-                      // onClick={() => setOpen(!open)}
-                    >
-                      <DeleteOutlineIcon></DeleteOutlineIcon>
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
+                <Row key={row.STT} row={row} />
               ))}
             </TableBody>
           </Table>
