@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import classNames from 'classnames/bind'
 import styles from './Schedule.module.scss'
 import React, { Component } from 'react'
@@ -6,18 +5,7 @@ import Footer from '../../Components/Footer'
 
 const cx = classNames.bind(styles)
 
-var postApi = "../../../data/Schedule.json";
-
-
 export default function Schedule() {
-  const [list, setList] = useState([]);
-  useEffect(() => {
-    fetch(postApi)
-      .then((response) => response.json())
-      .then((list) => {
-        setList(list);
-      });
-  }, []);
   return (
     <>
       <div className={cx('schedule', 'container')}>
@@ -35,7 +23,7 @@ export default function Schedule() {
           </div>
           <div className={cx('schedule-content')}>
             <div className={cx('schedule-table')}>
-              <div className={cx('row', 'line-row')}>
+              <div className={cx('row', 'line-row', 'line1')}>
                 <div className={cx('col-md-1', 'schedule-table-index')}>STT</div>
                 <div className={cx('col-md-2', 'schedule-table-ID_doctor')}>ID bác sĩ</div>
                 <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>Tên bác sĩ</div>
@@ -45,8 +33,9 @@ export default function Schedule() {
                 <div className={cx('col-md-2', 'schedule-table-Status')}>Trạng thái</div>
               </div>
               {(list.map((item, i) => {
+                let count = i%2;
                 return (
-                  <div className={cx('row', 'line-row')}>
+                  <div key={i} className={cx('row', 'line-row', `line${count}`)}>
                     <div className={cx('col-md-1', 'schedule-table-index')}>{i + 1}</div>
                     <div className={cx('col-md-2', 'schedule-table-ID_doctor')}>{item.ID_doctor}</div>
                     <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{item.Name_doctor}</div>
@@ -59,7 +48,6 @@ export default function Schedule() {
               }))}
             </div>
           </div>
-
         </div>
       </div>
       <Footer />
