@@ -2,7 +2,7 @@ import './Modal.css';
 
 import { useState } from 'react';
 
-export default function Modal({ closeModal, onSubmit, selectedTab, defaultValue }) {
+export default function Modal({ closeModal, onSubmit, defaultValue }) {
     const [equimentState, setequimentState] = useState(
         defaultValue || {
             name: '',
@@ -10,19 +10,9 @@ export default function Modal({ closeModal, onSubmit, selectedTab, defaultValue 
             id: '',
             room: '',
             description: '',
-            status: 'active',
+            status: 'Active',
         }
     );
-
-    const [productState, setProductState] = useState({
-        name: '',
-        cprice: '',
-        sprice: '',
-        stock: '',
-        lowstock: 'No',
-    })
-
-    if (selectedTab === 'equipments') {
 
         function handleChange(e) {
             setequimentState({
@@ -48,12 +38,12 @@ export default function Modal({ closeModal, onSubmit, selectedTab, defaultValue 
                 <div className="modal">
                     <form>
                         <div>
-                            <label htmlFor="name">Name</label>
+                            <label htmlFor="name">Tên</label>
                             <input type="text" name="name" onChange={handleChange} value={equimentState.name} />
                         </div>
 
                         <div>
-                            <label htmlFor="type">Type</label>
+                            <label htmlFor="type">Loại</label>
                             <input type="text" name="type"
                                 onChange={handleChange} value={equimentState.type}
                             />
@@ -67,100 +57,32 @@ export default function Modal({ closeModal, onSubmit, selectedTab, defaultValue 
                         </div>
 
                         <div>
-                            <label htmlFor="room">Room</label>
+                            <label htmlFor="room">Phòng</label>
                             <input type="text" name="room"
                                 onChange={handleChange} value={equimentState.room}
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="description">Description</label>
+                            <label htmlFor="description">Mô tả</label>
                             <input type="text" name="description"
                                 onChange={handleChange} value={equimentState.description}
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="status">Status</label>
+                            <label htmlFor="status">Trạng thái</label>
                             <select name="status"
                                 onChange={handleChange} value={equimentState.status}
                             >
-                                <option value='active'>Active</option>
-                                <option value='inactive'>Inactive</option>
-                                <option value='suspended'>Suspended</option>
+                                <option value='Hoạt động'>Hoạt động</option>
+                                <option value='Không hoạt động'>Không hoạt động</option>
+                                <option value='Sửa chữa'>Sửa chữa</option>
                             </select>
                         </div>
-                        <button type='submit' onClick={handleSubmit}>Submit</button>
+                        <button id='submit-btn' type='submit' onClick={handleSubmit}>Lưu</button>
                     </form>
                 </div>
             </div>
         );
-    }
-    else {
-        function handleChange(e) {
-            setProductState({
-                ...productState,
-                [e.target.name]: e.target.value
-            });
-        };
-
-        const handleSubmit = (e) => {
-            e.preventDefault();
-
-            onSubmit(productState);
-
-            closeModal();
-        }
-        return (
-            <div className='modal-container' onClick={(e) => {
-                if (e.target.className === 'modal-container') {
-                    closeModal();
-                }
-            }}>
-                <div className="modal">
-                    <form>
-        
-                        <div>
-                            <label htmlFor="name">Name</label>
-                            <input type="text" name="name"
-                            onChange={handleChange} value={productState.name}
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="cprice">Cost Price</label>
-                            <input type="number" name="cprice" 
-                            onChange={handleChange} value={productState.cprice}
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="sprice">Sell Price</label>
-                            <input type="number" name="sprice" 
-                            onChange={handleChange} value={productState.sprice}
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="stock">Stock</label>
-                            <input type="number" name="stock" 
-                            onChange={handleChange} value={productState.stock}
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="lowstock">Low Stock</label>
-                            <select name="lowstock" 
-                            onChange={handleChange} value={productState.lowstock}
-                            >
-                                <option value='Yes'>Yes</option>
-                                <option value='No'>No</option>
-                            </select>
-                        </div>
-                        <button type='submit' onClick={handleSubmit} >Submit</button>
-                    </form>
-                </div>
-            </div>
-        );
-    }
 }
