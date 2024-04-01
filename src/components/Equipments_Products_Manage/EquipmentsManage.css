@@ -1,0 +1,91 @@
+#container {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#txt-id {
+    color: #96999C;
+    font-size: smaller;
+}
+
+#equipment-table {
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    border-collapse:collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#equipment-table th, td{
+    border-bottom: #CFCFCF 0.5px solid;
+    padding: 10px;
+}
+
+#equipment-table th {
+    color: #3E454D;
+}
+
+#equipment-table td {
+    color: #56585A;
+}
+
+.name-col{
+    text-align: left;
+}
+
+.type-col{
+    text-align: center;
+}
+
+#addnew-btn{
+color: #1F2B6C;
+background-color: #BFD2F8;
+font-family: 'Poppins', sans-serif;
+font-weight: bold;
+border: none;
+padding: 12px;
+margin-left: 50rem;
+position: absolute;
+right: 0;
+margin-top: 1rem;
+border-radius: 12px;
+margin-bottom: 3rem;
+}
+
+#header-container{
+    display: flex;
+    justify-content:left;
+    position: relative;
+    margin-bottom: 1rem;
+    border-bottom: #CFCFCF 0.5px solid;
+    border-spacing: 1rem;
+}
+
+h1{
+    text-align: right;
+    color: #3E454D;
+    font-family:'Poppins', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+#action-btn-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+}
+
+.action-btn {
+    background-color: transparent;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+#delete-btn{
+    border: 1px solid #ff3333;  
+}
+
+#edit-btn{
+    border: 1px solid #1a9cff;
+}
