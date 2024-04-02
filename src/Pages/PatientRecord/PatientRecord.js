@@ -39,8 +39,8 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CloseIcon from "@mui/icons-material/Close";
 function createPatient(
-  STT,
-  patientID,
+  STT = patients.length + 1,
+  patientID = `BN${patients.length + 100}`,
   fullName,
   gender,
   CCCD,
@@ -58,6 +58,7 @@ function createPatient(
     BHYT,
     BirthDay,
     address,
+
     history,
   };
 }
@@ -70,7 +71,7 @@ function HistoryRow(props) {
     setMedicineListDialogOpen(false);
   };
   return (
-    <TableRow key={historyRow.date}>
+    <TableRow key={historyRow.historyID}>
       <TableCell component="th" scope="row">
         {historyRow.date}
       </TableCell>
@@ -109,6 +110,12 @@ function HistoryRow(props) {
           <DialogContent dividers>
             <TableContainer component={Paper} sx={{ minWidth: 800 }}>
               <Table sx={{ minWidth: 800 }} aria-label="simple table">
+                <colgroup>
+                  <col style={{ width: "25%" }} />
+                  <col style={{ width: "25%" }} />
+                  <col style={{ width: "25%" }} />
+                  <col style={{ width: "25%" }} />
+                </colgroup>
                 <TableHead>
                   <TableRow>
                     <TableCell>Tên thuốc</TableCell>
@@ -151,17 +158,192 @@ function Row(props) {
     setInfoFormOpen(false);
     setmodifyFormOpen(false);
     setAddHistoryFormOpen(false);
+    setAddMedicineListFormOpen(false);
   };
-  const { row } = props;
+  const {
+    row,
+    index,
+    setNewPatients,
+    setNewPatientsAndRender,
+    newPatients,
+    setRenderPatientList,
+  } = props;
+  const [historyList, setHistoryList] = React.useState(row.history);
+  const [listNewMedicine, setListNewMedicine] = React.useState([]);
   const [openSubRow, setOpenSubRow] = React.useState(false);
   const [addHistoryFormOpen, setAddHistoryFormOpen] = React.useState(false);
   const [infoFormOpen, setInfoFormOpen] = React.useState(false);
   const [modifyFormOpen, setmodifyFormOpen] = React.useState(false);
+  const [addMedicineListFormOpen, setAddMedicineListFormOpen] =
+    React.useState(false);
   const [newGender, setNewGender] = React.useState(row.gender);
-
+  React.useEffect(() => {
+    setHistoryList(row.history);
+    setNewGender(row.gender);
+  }, [row.history, row.gender]);
   const handleChangeGender = (event) => {
     setNewGender(event.target.value);
   };
+  // const indexInPatients = () => {
+  //   // console.log(row.STT);
+  //   return patients.findIndex((e) => {
+  //     return e.STT == row.STT;
+  //   });
+  // };
+  const indexInPatients = patients.findIndex((e) => {
+    return e.STT === row.STT;
+  });
+  function DialogAddMedicineList({ listNewMedicine, setListNewMedicine }) {
+    const [medicineAddList, setMedicineAddList] =
+      React.useState(listNewMedicine);
+    const nameValue = React.useRef();
+    const usageValue = React.useRef();
+    const dosageValue = React.useRef();
+    const unitValue = React.useRef();
+    return (
+      <Dialog
+        fullWidth
+        maxWidth="md"
+        open={addMedicineListFormOpen}
+        onClose={() => {
+          setAddMedicineListFormOpen(false);
+        }}
+        PaperProps={{
+          component: "form",
+        }}
+      >
+        <DialogTitle>Thêm đơn thuốc</DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText></DialogContentText>
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid
+              container
+              spacing={{ xs: 1, md: 1 }}
+              columns={{ xs: 1, sm: 4, md: 12 }}
+            >
+              <Grid item xs={1} sm={2} md={3}>
+                <TextField
+                  margin="dense"
+                  id="name"
+                  name="name"
+                  label="Tên thuốc"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  inputRef={nameValue}
+                />
+              </Grid>
+              <Grid item xs={1} sm={2} md={3}>
+                <TextField
+                  margin="dense"
+                  id="usage"
+                  name="usage"
+                  label="Cách uống"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  inputRef={usageValue}
+                />
+              </Grid>
+              <Grid item xs={1} sm={2} md={2.5}>
+                <TextField
+                  margin="dense"
+                  id="dosage"
+                  name="dosage"
+                  label="Liều lượng"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  inputRef={dosageValue}
+                />
+              </Grid>
+              <Grid item xs={1} sm={2} md={2.5}>
+                <TextField
+                  margin="dense"
+                  id="unit"
+                  name="unit"
+                  label="Số lượng"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  inputRef={unitValue}
+                />
+              </Grid>
+              <Grid item xs={1} sm={2} md={1}>
+                <IconButton
+                  aria-label="add"
+                  size="small"
+                  color="success"
+                  sx={{ marginTop: "23px" }}
+                  onClick={() => {
+                    const newMedicineElement = {
+                      medicine: nameValue.current.value,
+                      usage: usageValue.current.value,
+                      dosagePerDay: dosageValue.current.value,
+                      unit: unitValue.current.value,
+                    };
+                    console.log(newMedicineElement);
+                    setMedicineAddList((prev) => [newMedicineElement, ...prev]);
+                  }}
+                >
+                  <AddCircleIcon></AddCircleIcon>
+                </IconButton>
+              </Grid>
+              <Grid item xs={1} sm={2} md={1}>
+                {/* table */}
+                <TableContainer component={Paper} sx={{ minWidth: 800 }}>
+                  <Table sx={{ minWidth: 800 }} aria-label="simple table">
+                    {/* <TableHead>
+                      <TableRow>
+                        <TableCell>Tên thuốc</TableCell>
+                        <TableCell>Cách uống</TableCell>
+                        <TableCell>Liều lượng</TableCell>
+                        <TableCell>Số lượng</TableCell>
+                      </TableRow>
+                    </TableHead> */}
+                    <TableBody>
+                      {medicineAddList.map((row) => (
+                        <TableRow
+                          key={row.medicine}
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
+                        >
+                          <TableCell component="th" scope="row">
+                            {row.medicine}
+                          </TableCell>
+                          <TableCell>{row.usage}</TableCell>
+                          <TableCell>{row.dosagePerDay}</TableCell>
+                          <TableCell>{row.unit}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Grid>
+            </Grid>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setAddMedicineListFormOpen(false);
+            }}
+          >
+            hủy
+          </Button>
+          <Button
+            onClick={() => {
+              setListNewMedicine(medicineAddList);
+              setAddMedicineListFormOpen(false);
+            }}
+          >
+            Xác nhận
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -287,7 +469,7 @@ function Row(props) {
                   </Grid>
                   <Grid item xs={1} sm={2} md={4.5}>
                     <TextField
-                      autoFocus
+                      // autoFocus
                       margin="dense"
                       id="BHYT"
                       name="BHYT"
@@ -305,7 +487,7 @@ function Row(props) {
                   <Grid item xs={1} sm={3} md={12}>
                     {" "}
                     <TextField
-                      autoFocus
+                      // autoFocus
                       margin="dense"
                       id="address"
                       name="address"
@@ -345,18 +527,21 @@ function Row(props) {
                 event.preventDefault();
                 const formData = new FormData(event.currentTarget);
                 const formJson = Object.fromEntries(formData.entries());
-                // cách lấy data
-                const newPatient = createPatient(
-                  "1",
-                  "100",
-                  formJson.fullName,
-                  formJson.gender,
-                  formJson.CCCD,
-                  formJson.BHYT,
-                  formJson.birthDay
-                );
-                console.log(newPatient);
-
+                console.log(indexInPatients);
+                patients[indexInPatients] = {
+                  ...patients[indexInPatients],
+                  fullName: formJson.fullName,
+                  gender: formJson.gender,
+                  CCCD: formJson.CCCD,
+                  BHYT: formJson.BHYT,
+                  birthDay: formJson.birthDay,
+                  address: formJson.address,
+                };
+                // console.log(patients[index]);
+                console.log(patients);
+                setNewPatientsAndRender([...patients]);
+                // setRenderPatientList(patients[indexInPatients])
+                // console.log(patients);
                 handleCloseFormOpen();
               },
             }}
@@ -461,7 +646,7 @@ function Row(props) {
 
                   <Grid item xs={1} sm={3} md={12}>
                     <TextField
-                      autoFocus
+                      // autoFocus
                       // required
                       margin="dense"
                       id="address"
@@ -487,7 +672,11 @@ function Row(props) {
             aria-label="delete"
             size="small"
             color="error"
-            // onClick={() => setOpen(!open)}
+            onClick={() => {
+              // const temp=newPatients.filter(patien)
+              patients.splice(indexInPatients, 1);
+              setNewPatientsAndRender([...patients]);
+            }}
           >
             <DeleteOutlineIcon></DeleteOutlineIcon>
           </IconButton>
@@ -523,152 +712,180 @@ function Row(props) {
                   component: "form",
                   onSubmit: (event) => {
                     event.preventDefault();
+
                     const formData = new FormData(event.currentTarget);
                     const formJson = Object.fromEntries(formData.entries());
-                    // cách lấy data
-                    const newPatient = createPatient(
-                      "1",
-                      "100",
-                      formJson.fullName,
-                      formJson.gender,
-                      formJson.CCCD,
-                      formJson.BHYT,
-                      formJson.birthDay
-                    );
-                    console.log(newPatient);
+                    const newHistory = {
+                      historyID: historyList.length + 1,
+                      date: formJson.date,
+                      doctor: formJson.doctor,
+                      disease: formJson.disease,
+                      medicineList: listNewMedicine,
+                    };
+                    console.log(newHistory);
+                    setHistoryList([newHistory, ...historyList]);
+
+                    setListNewMedicine([]);
 
                     handleCloseFormOpen();
                   },
                 }}
                 // sx={{ width: "100%", maxWidth: "1000px" }}
               >
-                <DialogTitle>Thêm Lần Khám</DialogTitle>
+                <DialogTitle>Thêm lần khám bệnh</DialogTitle>
                 <DialogContent dividers>
                   <DialogContentText></DialogContentText>
 
-                  <Box
-                    // direction="row"
-                    // // divider={<Divider orientation="vertical" flexItem />}
-                    // spacing={2}
-                    display={"flex"}
-                    flexWrap={"wrap"}
-                    justifyContent={"space-between"}
-                    // flexDirection={}
-                  >
-                    <Box display={"inline"} sx={{ width: "60%" }}>
-                      <TextField
-                        // disabled
-                        // autoFocus
-                        margin="dense"
-                        id="fullName"
-                        name="fullName"
-                        label="Họ và tên"
-                        type="text"
-                        fullWidth
-                        defaultValue={row.fullName}
-                        variant="standard"
-                        // InputProps={{
-                        //   readOnly: true,
-                        // }}
-                      />
-                    </Box>
-                    <Box
-                      display={"inline"}
-                      sx={{ width: "30%", minWidth: "120px" }}
+                  <Box sx={{ flexGrow: 1 }}>
+                    <Grid
+                      container
+                      spacing={{ xs: 1, md: 2 }}
+                      columns={{ xs: 1, sm: 4, md: 12 }}
                     >
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          // readOnly
+                      <Grid item xs={1} sm={3} md={8}>
+                        <TextField
+                          // disabled
+                          // autoFocus
+                          margin="dense"
+                          id="fullName"
+                          name="fullname"
+                          label="Họ và tên"
+                          type="text"
+                          fullWidth
+                          variant="standard"
+                          value={row.fullName}
+                          InputProps={{
+                            readOnly: true,
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={0.5} sm={1} md={4}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <FormControl
+                            sx={{ minWidth: 120, marginTop: "17px" }}
+                            size="small"
+                          >
+                            <DatePicker
+                              size="small"
+                              label="Ngày sinh"
+                              // sx={{ padding: 0 }}
+                              format="DD/MM/YYYY"
+                              readOnly
+                              value={dayjs(row.BirthDay, "DD/MM/YYYY")}
+                            ></DatePicker>
+                          </FormControl>
+                        </LocalizationProvider>{" "}
+                      </Grid>
+                      <Grid item xs={0.5} sm={1} md={3}>
+                        <FormControl
+                          sx={{ minWidth: 120, marginTop: "17px" }}
                           size="small"
-                          label="Ngày sinh"
-                          id="birthDay"
-                          name="birthDay"
-                          // sx={{ padding: 0 }}
-                          format="DD/MM/YYYY"
-                          defaultValue={dayjs(row.BirthDay)}
-                        ></DatePicker>
-                      </LocalizationProvider>{" "}
-                    </Box>
+                        >
+                          <InputLabel id="demo-select-small-label">
+                            Giới tính
+                          </InputLabel>
+                          <Select
+                            // displayEmpty
+                            readOnly
+                            labelId="demo-select-small"
+                            id="demo-select"
+                            // defaultValue={row.gender}
+                            label="Giới tính"
+                            value={row.gender}
+                          >
+                            <MenuItem value={"Nam"}>Nam</MenuItem>
+                            <MenuItem value={"Nữ"}>Nữ</MenuItem>
+                            <MenuItem value={"Khác"}>Khác</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={1} sm={2} md={4.5}>
+                        <TextField
+                          margin="dense"
+                          id="CCCD"
+                          name="CCCD"
+                          label="Số CCCD"
+                          type="text"
+                          fullWidth
+                          value={row.CCCD}
+                          variant="standard"
+                          InputProps={{
+                            readOnly: true,
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={1} sm={2} md={4.5}>
+                        <TextField
+                          // autoFocus
+                          margin="dense"
+                          id="BHYT"
+                          name="BHYT"
+                          label="Số BHYT"
+                          type="text"
+                          fullWidth
+                          value={row.BHYT}
+                          variant="standard"
+                          InputProps={{
+                            readOnly: true,
+                          }}
+                        />
+                      </Grid>
 
-                    <Box
-                      display={"inline"}
-                      sx={{ width: "35%", minWidth: "150px" }}
-                    >
-                      <TextField
-                        // autoFocus
-                        // required
-                        // disabled
-                        margin="dense"
-                        id="CCCD"
-                        name="CCCD"
-                        label="Số CCCD"
-                        type="text"
-                        fullWidth
-                        defaultValue={row.CCCD}
-                        variant="standard"
-                        // InputProps={{
-                        //   readOnly: true,
-                        // }}
-                      />
-                    </Box>
-                    <Box
-                      display={"inline"}
-                      sx={{ width: "35%", minWidth: "150px" }}
-                    >
-                      <TextField
-                        autoFocus
-                        margin="dense"
-                        id="BHYT"
-                        name="BHYT"
-                        label="Số BHYT"
-                        type="text"
-                        fullWidth
-                        defaultValue={row.BHYT}
-                        variant="standard"
-                        // InputProps={{
-                        //   readOnly: true,
-                        // }}
-                      />
-                    </Box>
-                    <FormControl
-                      sx={{ m: 1, minWidth: 120, marginTop: "17px" }}
-                      size="small"
-                    >
-                      <InputLabel id="demo-select-small-label">
-                        Giới tính
-                      </InputLabel>
-                      <Select
-                        // displayEmpty
-                        // readOnly
-                        labelId="demo-select-small"
-                        id="gender"
-                        name="gender"
-                        // defaultValue={row.gender}
-                        label="Giới tính"
-                        value={newGender}
-                        onChange={handleChangeGender}
-                      >
-                        <MenuItem value={"Nam"}>Nam</MenuItem>
-                        <MenuItem value={"Nữ"}>Nữ</MenuItem>
-                        <MenuItem value={"Khác"}>Khác</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <Box display={"inline"} sx={{ width: "100%" }}>
-                      <TextField
-                        autoFocus
-                        margin="dense"
-                        id="address"
-                        name="address"
-                        label="Địa chỉ"
-                        type="text"
-                        fullWidth
-                        defaultValue={row.address}
-                        variant="standard"
-                        // InputProps={{
-                        //   readOnly: true,
-                        // }}
-                      />
-                    </Box>
+                      <Grid item xs={1} sm={3} md={8}>
+                        <TextField
+                          margin="dense"
+                          id="doctor"
+                          name="doctor"
+                          label="Bác sĩ phụ trách"
+                          type="text"
+                          fullWidth
+                          variant="standard"
+                        />
+                      </Grid>
+                      <Grid item xs={1} sm={3} md={4}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <FormControl
+                            sx={{ minWidth: 120, marginTop: "17px" }}
+                            size="small"
+                          >
+                            <DatePicker
+                              required
+                              size="small"
+                              label="Ngày khám"
+                              id="date"
+                              name="date"
+                              // sx={{ padding: 0 }}
+                              format="DD/MM/YYYY"
+                            ></DatePicker>
+                          </FormControl>
+                        </LocalizationProvider>{" "}
+                      </Grid>
+                      <Grid item xs={1} sm={3} md={12}>
+                        <TextField
+                          margin="dense"
+                          id="disease"
+                          name="disease"
+                          label="Chuẩn đoán"
+                          type="text"
+                          fullWidth
+                          variant="standard"
+                        />
+                      </Grid>
+                      <Grid item xs={1} sm={1} md={3}>
+                        <Button
+                          onClick={() => {
+                            setAddMedicineListFormOpen(true);
+                          }}
+                        >
+                          Thêm đơn thuốc
+                        </Button>
+                        {/* DialogMedicineList */}
+                        <DialogAddMedicineList
+                          listNewMedicine={listNewMedicine}
+                          setListNewMedicine={setListNewMedicine}
+                        ></DialogAddMedicineList>
+                      </Grid>
+                    </Grid>
                   </Box>
                 </DialogContent>
                 <DialogActions>
@@ -676,6 +893,7 @@ function Row(props) {
                   <Button type="submit">Xác nhận</Button>
                 </DialogActions>
               </Dialog>
+
               <Table size="small" aria-label="history">
                 <TableHead>
                   <TableRow>
@@ -686,7 +904,8 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => {
+                  {historyList.map((historyRow) => {
+                    // console.log(historyRow);
                     return (
                       <HistoryRow
                         key={historyRow.historyID}
@@ -716,17 +935,16 @@ Row.propTypes = {
         date: PropTypes.string.isRequired,
       })
     ).isRequired,
-    STT: PropTypes.string.isRequired,
-    symptom: PropTypes.string.isRequired,
+    STT: PropTypes.number.isRequired,
     BHYT: PropTypes.string.isRequired,
     BirthDay: PropTypes.string.isRequired,
   }).isRequired,
 };
-//danh sach patients dung state de render ?
-const patients = [
+//danh sach patients ban dau
+let patients = [
   createPatient(
-    "1",
-    "100",
+    10,
+    "BN109",
     "Nguyễn Văn A",
     "Nam",
     "0000000000",
@@ -735,7 +953,7 @@ const patients = [
     "",
     [
       {
-        historyID: "1",
+        historyID: 1,
         date: "01/02/2023",
         doctor: "AB",
         disease: "Cúm mùa",
@@ -755,7 +973,7 @@ const patients = [
         ],
       },
       {
-        historyID: "2",
+        historyID: 2,
         date: "01/02/2023",
         doctor: "AB",
         disease: "Cúm mùa",
@@ -771,17 +989,18 @@ const patients = [
     ]
   ),
   createPatient(
-    "2",
-    "101",
+    9,
+    "BN108",
     "AAAAAAAAAAAAAAA",
     "Nữ",
     "1111111111111",
     "11111111111",
-    "01/01/2004"
+    "01/01/2004",
+    ""
   ),
   createPatient(
-    "3",
-    "102",
+    8,
+    "BN107",
     "BBBBBBBBBBBBBBBBB",
     "Nam",
     "2222222222222",
@@ -789,8 +1008,8 @@ const patients = [
     "01/01/2004"
   ),
   createPatient(
-    "4",
-    "103",
+    7,
+    "BN106",
     "CCCCCCCCCCC",
     "Nam",
     "333333333333333",
@@ -798,8 +1017,8 @@ const patients = [
     "01/01/2004"
   ),
   createPatient(
-    "5",
-    "102",
+    6,
+    "BN105",
     "DDDDDDDDDDD",
     "Nam",
     "4444444444",
@@ -807,8 +1026,8 @@ const patients = [
     "01/01/2004"
   ),
   createPatient(
-    "6",
-    "102",
+    5,
+    "BN104",
     "EEEEEEEEE",
     "Nam",
     "55555555",
@@ -816,8 +1035,8 @@ const patients = [
     "01/01/2004"
   ),
   createPatient(
-    "7",
-    "102",
+    4,
+    "BN103",
     "FFFFFF",
     "Nam",
     "666666666",
@@ -825,8 +1044,8 @@ const patients = [
     "01/01/2004"
   ),
   createPatient(
-    "8",
-    "102",
+    3,
+    "BN102",
     "GGGGGGGGGG",
     "Nam",
     "77777777777",
@@ -834,8 +1053,8 @@ const patients = [
     "01/01/2004"
   ),
   createPatient(
-    "9",
-    "102",
+    2,
+    "BN101",
     "HHHHHHHHHH",
     "Nam",
     "888888888",
@@ -843,8 +1062,8 @@ const patients = [
     "01/01/2004"
   ),
   createPatient(
-    "10",
-    "102",
+    1,
+    "BN100",
     "IIIIIIIIII",
     "Nam",
     "999999999",
@@ -854,10 +1073,19 @@ const patients = [
 ];
 
 export default function PatientRecord() {
+  console.log("re-render");
   const [newFormOpen, setNewFormOpen] = React.useState(false);
   const [newGender, setNewGender] = React.useState("");
   const [renderPatientList, setRenderPatientList] = React.useState(patients);
-
+  const [newPatients, setNewPatients] = React.useState(patients);
+  React.useEffect(() => {
+    console.log("effect");
+    patients = newPatients;
+  }, [newPatients]);
+  const setNewPatientsAndRender = (newPatients) => {
+    setNewPatients([...newPatients]);
+    setRenderPatientList([...newPatients]);
+  };
   const handleChangeGender = (event) => {
     setNewGender(event.target.value);
   };
@@ -912,16 +1140,26 @@ export default function PatientRecord() {
                   const formData = new FormData(event.currentTarget);
                   const formJson = Object.fromEntries(formData.entries());
                   // cách lấy data
+
+                  // console.log(String.valueOf(patients.length + 1));
+
                   const newPatient = createPatient(
-                    "1",
-                    "100",
+                    // "100",
+                    undefined,
+                    undefined,
+
                     formJson.fullName,
                     formJson.gender,
                     formJson.CCCD,
                     formJson.BHYT,
-                    formJson.birthDay
+                    formJson.birthDay,
+                    formJson.address
                   );
                   console.log(newPatient);
+                  //xu li add database
+                  // setRenderPatientList((prev) => [newPatient, ...prev]);
+                  setNewPatientsAndRender([newPatient, ...newPatients]);
+                  // newPatient = [newPatient, ...patients];
                   handleCloseNewFormOpen();
                 },
               }}
@@ -1021,7 +1259,7 @@ export default function PatientRecord() {
 
                     <Grid item xs={1} sm={3} md={12}>
                       <TextField
-                        autoFocus
+                        // autoFocus
                         // required
                         margin="dense"
                         id="address"
@@ -1190,9 +1428,20 @@ export default function PatientRecord() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {renderPatientList.map((row) => (
-                <Row key={row.STT} row={row} />
-              ))}
+              {renderPatientList.map((row, index) => {
+                // console.log(row);
+                return (
+                  <Row
+                    key={row.id}
+                    row={row}
+                    index={index}
+                    setNewPatients={setNewPatients}
+                    setNewPatientsAndRender={setNewPatientsAndRender}
+                    newPatient={newPatients}
+                    setRenderPatientList={setRenderPatientList}
+                  />
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
