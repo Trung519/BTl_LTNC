@@ -74,7 +74,7 @@ h1{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 2px;
-}
+} 
 
 .action-btn {
     background-color: transparent;
@@ -88,4 +88,9 @@ h1{
 
 #edit-btn{
     border: 1px solid #1a9cff;
+}
+
+.search {
+    width:30%;
+    margin-bottom: 2rem;
 }
