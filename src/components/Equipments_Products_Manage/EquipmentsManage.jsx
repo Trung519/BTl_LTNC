@@ -43,22 +43,24 @@ export default function EquipmentsManage({ }) {
 
 
     function handleSubmit(newRow) {
-        rowToEdit === null ?
-            setEquipmentsRows([...equipmentsRows, newRow]) : setEquipmentsRows(equipmentsRows.map((currTow, idx) => {
-                if (idx !== rowToEdit) {
-                    return currTow;
-                }
-                return newRow;
-            })
-            );
         if (rowToEdit === null) {
             writeUserData([...equipmentsRows, newRow], "/Equipment");
+            setEquipmentsRows([...equipmentsRows,newRow]);
         }
         else {
             let newData = equipmentsRows;
             newData[rowToEdit] = newRow;
             writeUserData(newData, "/Equipment");
+            setEquipmentsRows(newData);
         }
+        // rowToEdit === null ?
+        //     setEquipmentsRows([...equipmentsRows, newRow]) : setEquipmentsRows(equipmentsRows.map((currTow, idx) => {
+        //         if (idx !== rowToEdit) {
+        //             return currTow;
+        //         }
+        //         return newRow;
+        //     })
+        //     );
 
 
     }
@@ -70,7 +72,8 @@ export default function EquipmentsManage({ }) {
     }
 
     function handleEditRow(idx) {
-        setRowToEdit(idx);
+       let index =idx + rowsPerPage*page;
+        setRowToEdit(index);
         setModalOpen(true);
     }
 
