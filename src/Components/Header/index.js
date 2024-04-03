@@ -12,11 +12,12 @@ import styles from './Header.module.scss'
 import MU from '../assets/MU.png'
 /* Import Components Navbar*/
 import Home from '../../Pages/Home';
-import Equipment_manage from '../../Pages/Equipment_manage';
+import EquipmentsManage from '../../Pages/EquipmentsManage';
 import Medicine_manage from '../../Pages/Medicine_manage';
 import Notify from '../../Pages/Notify';
 import PatientRecord from '../../Pages/PatientRecord';
 import Schedule from '../../Pages/Schedule';
+
 import { NavDropdown } from 'react-bootstrap';
 const cx = classNames.bind(styles)
 
@@ -75,7 +76,7 @@ function Header() {
                         <Route path="/announcement" element={<Notify />} />
                         <Route path="/file-patient" element={<PatientRecord />} />
                         <Route path="/appointment" element={<Schedule />} />
-                        <Route path="/equip-manage" element={<Equipment_manage />} />
+                        <Route path="/equip_manage" element={<EquipmentsManage />} />
                         <Route path="/medicine-manage" element={<Medicine_manage />} />
                     </Routes>
                 </div>

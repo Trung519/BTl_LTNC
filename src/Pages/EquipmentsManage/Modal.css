@@ -1,0 +1,79 @@
+.modal-container{
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-input {
+    border-radius: 5px;
+    padding: 2rem;
+    background-color: white;
+    width: 35rem;
+}
+.modal-input label {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    color: #3E454D;   
+    display: inline-block;
+    width: 100px;
+    margin-left: 10px;
+    text-align: left;
+}
+
+.modal-input input {
+    margin-left: 1rem;
+    width: 60%;
+    border: 0;
+    border-bottom: 2px solid lightgray;
+    outline: 0;
+    font-size:medium;
+    color: #3E454D;
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+
+
+
+}
+
+.modal-input div {
+    margin-top: 0.5rem;
+}
+
+.modal-input select {
+    margin-left: 1rem;
+    width: 60%;
+    border: 0;
+    border-bottom: 2px solid lightgray;
+    outline: 0;
+    font-size:medium;
+    color: #3E454D;
+    padding: 7px 0;
+    background: transparent;
+}
+
+#submit-btn{
+    color: #1F2B6C;
+    background-color: #BFD2F8;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#submit-btn:hover{
+    background-color: #1F2B6C;
+    color: white;
+}
