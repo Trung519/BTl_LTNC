@@ -26,13 +26,15 @@ const database = getDatabase();
 
 
 const cx = classNames.bind(styles)
+var number = 0
 
 export default function Schedule() {
   const [listdata, setListdata] = useState([]);
-  var [edit, setEdit] = useState(false)
-  var [add, setAdd] = useState(false)
-  var [number, setNumber] = useState()
-  var [page, setPage] = useState(1)
+  var [edit, setEdit] = useState(false)               // Edit mode
+  var [add, setAdd] = useState(false)                 // Add mode
+  var [page, setPage] = useState(0)                   // Current page number
+  var [searchbool, setSearchbool] = useState(true)    // (for search bar) true -> found ... false -> not found 
+  var [doctorbool, setDoctorbool] = useState(true)    // (for doctor in add mode) true -> found ... false -> not found
 
   useEffect(() => {
     const getListdata = () => {
@@ -53,16 +55,16 @@ export default function Schedule() {
     getListdata();
   }, []);
 
-
-  console.log(number)
-
   var handleEdit = useCallback(() => {
     setEdit(prev => !prev)
   }, [])
 
   var handleAdd = useCallback(() => {
-    console.log(1)
     setAdd(prev => !prev)
+  }, [])
+
+  var handleChangepage = useCallback((e) => {
+    setPage(e.target.value)
   }, [])
 
   if (!edit && !add) {
@@ -81,6 +83,7 @@ export default function Schedule() {
             <div className={cx('schedule-search')}>
               <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'></input>
               <i class={cx("fas fa-search", 'search')}></i>
+              {searchbool || <p>Không tìm thấy !</p>}
             </div>
             <div className={cx('schedule-content')}>
               <div className={cx('schedule-table')}>
@@ -93,36 +96,53 @@ export default function Schedule() {
                   <div className={cx('col-md-1', 'schedule-table-Room')}>Phòng</div>
                   <div className={cx('col-md-2', 'schedule-table-Status')}>Trạng thái</div>
                 </div>
-                {(listdata.map((item, i) => {
-                  let count = i % 2;
-                  var handleColor = (item) => {
-                    if (item.Status == 'Xong') return 'done'
-                    else if (item.Status == 'Đang khám') return 'doing'
-                    else return 'pending'
-                  }
-                  return (
-                    <div key={i} className={cx('row', 'line-row', `line${count}`)}>
-                      <div className={cx('col-md-1', 'schedule-table-index')}>{i + 1}</div>
-                      <div className={cx('col-md-2', 'schedule-table-ID_doctor')}>{item.ID_doctor}</div>
-                      <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{item.Name_doctor}</div>
-                      <div className={cx('col-md-2', 'schedule-table-Time_in')}>{item.Time_in}</div>
-                      <div className={cx('col-md-2', 'schedule-table-Patient')}>{item.Patient}</div>
-                      <div className={cx('col-md-1', 'schedule-table-Room')}>{item.Room}</div>
-                      <div className={cx('col-md-2', 'schedule-table-Status', `Status-${handleColor(item)}`)}>
-                        <i></i>
-                        <i></i>
-                        <i></i>
-                        {item.Status}
-                      </div>
-                    </div>
-                  )
-                }))}
+                {
+                  Array.from({ length: 10 }, (_, index) => {
+                    if (page * 10 + index + 1 > listdata.length) console.log('hello khay')
+                    else {
+                      let count = index % 2;
+                      var handleColor = (indexx) => {
+                        if (listdata[indexx].Status == 'Xong') return 'done'
+                        else if (listdata[indexx].Status == 'Đang khám') return 'doing'
+                        else return 'pending'
+                      }
+
+                      return (
+                        <div key={index} className={cx('row', 'line-row', `line${count}`)}>
+                          <div className={cx('col-md-1', 'schedule-table-index')}>{page * 10 + index + 1}</div>
+                          <div className={cx('col-md-2', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
+                          <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{listdata[page * 10 + index].Name_doctor}</div>
+                          <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')}>
+                            <p>{listdata[page * 10 + index].Time_in}</p>
+                            <p>{listdata[page * 10 + index].Time_in}</p>
+                          </div>
+                          <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].Patient}</div>
+                          <div className={cx('col-md-1', 'schedule-table-Room')}>{listdata[page * 10 + index].Room}</div>
+                          <div className={cx('col-md-2', 'ahuhu', 'schedule-table-Status', `Status-${handleColor(page * 10 + index)}`)}>
+                            <svg></svg>
+                            <svg></svg>
+                            <svg></svg>
+                            {listdata[page * 10 + index].Status}
+                          </div>
+                        </div>
+                      )
+                    }
+
+                  })
+                }
               </div>
             </div>
             <div className={cx('schedule-pages')}>
-              {Array.from({ length: number }, (_, index) => (
-                <button key={index}>{index + 1}</button>
-              ))}
+              {
+                Array.from({ length: Math.ceil(listdata.length / 10) }, (_, index) => (
+                  <button
+                    onClick={handleChangepage}
+                    value={index}
+                    key={index}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
             </div>
           </div>
         </div>
@@ -146,6 +166,7 @@ export default function Schedule() {
             <div className={cx('schedule-search')}>
               <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'></input>
               <i class={cx("fas fa-search", 'search')}></i>
+              {searchbool || <p>Không tìm thấy !</p>}
             </div>
             <div className={cx('schedule-content')}>
               <div className={cx('schedule-table')}>
@@ -158,25 +179,46 @@ export default function Schedule() {
                   <div className={cx('col-md-1', 'schedule-table-Room')}>Phòng</div>
                   <div className={cx('col-md-2', 'schedule-table-Status')}>Trạng thái</div>
                 </div>
-                {(listdata.map((item, i) => {
-                  let count = i % 2;
-                  return (
-                    <div key={i} className={cx('row', 'line-row', `line${count}`)}>
-                      <div className={cx('col-md-1', 'schedule-table-index')}>{i + 1}</div>
-                      <div className={cx('col-md-2', 'schedule-table-ID_doctor')}>{item.ID_doctor}</div>
-                      <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{item.Name_doctor}</div>
-                      <div className={cx('col-md-2', 'schedule-table-Time_in')}>{item.Time_in}</div>
-                      <div className={cx('col-md-2', 'schedule-table-Patient')}>{item.Patient}</div>
-                      <div className={cx('col-md-1', 'schedule-table-Room')}>{item.Room}</div>
-                      <div className={cx('col-md-2', 'schedule-table-Status', 'schedule-icons')}>
-                        <i class="far fa-check-square"></i>
-                        <i class="fas fa-times"></i>
-                        <i class="far fa-clock"></i>
-                      </div>
-                    </div>
-                  )
-                }))}
+                {
+                  Array.from({ length: 10 }, (_, index) => {
+                    if (page * 10 + index + 1 > listdata.length) console.log('hello khay')
+                    else {
+                      let count = index % 2;
+
+                      return (
+                        <div key={index} className={cx('row', 'line-row', `line${count}`)}>
+                          <div className={cx('col-md-1', 'schedule-table-index')}>{page * 10 + index + 1}</div>
+                          <div className={cx('col-md-2', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
+                          <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{listdata[page * 10 + index].Name_doctor}</div>
+                          <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')}>
+                            <p>{listdata[page * 10 + index].Time_in}</p>
+                            <p>{listdata[page * 10 + index].Time_in}</p>
+                          </div>
+                          <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].Patient}</div>
+                          <div className={cx('col-md-1', 'schedule-table-Room')}>{listdata[page * 10 + index].Room}</div>
+                          <div className={cx('col-md-2', 'schedule-table-Status', 'schedule-icons')}>
+                            <svg class="svg-inline--fa fa-check-square fa-w-14" aria-hidden="true" data-prefix="far" data-icon="check-square" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M400 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zm0 400H48V80h352v352zm-35.864-241.724L191.547 361.48c-4.705 4.667-12.303 4.637-16.97-.068l-90.781-91.516c-4.667-4.705-4.637-12.303.069-16.971l22.719-22.536c4.705-4.667 12.303-4.637 16.97.069l59.792 60.277 141.352-140.216c4.705-4.667 12.303-4.637 16.97.068l22.536 22.718c4.667 4.706 4.637 12.304-.068 16.971z"></path></svg>
+                            <svg class="svg-inline--fa fa-times fa-w-11" aria-hidden="true" data-prefix="fas" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512" data-fa-i2svg=""><path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path></svg>
+                            <svg class="svg-inline--fa fa-clock fa-w-16" aria-hidden="true" data-prefix="far" data-icon="clock" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"></path></svg>
+                          </div>
+                        </div>
+                      )
+                    }
+                  })
+                }
               </div>
+            </div>
+            <div className={cx('schedule-pages')}>
+              {
+                Array.from({ length: Math.ceil(listdata.length / 10) }, (_, index) => (
+                  <button
+                    onClick={handleChangepage}
+                    value={index}
+                    key={index}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
             </div>
           </div>
         </div>
@@ -200,6 +242,7 @@ export default function Schedule() {
             <div className={cx('schedule-search')}>
               <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'></input>
               <i class={cx("fas fa-search", 'search')}></i>
+              {searchbool || <p>Không tìm thấy !</p>}
             </div>
             <div className={cx('schedule-content')}>
               <div className={cx('schedule-table')}>
@@ -212,39 +255,49 @@ export default function Schedule() {
                   <div className={cx('col-md-1', 'schedule-table-Room')}>Phòng</div>
                   <div className={cx('col-md-2', 'schedule-table-Status')}>Trạng thái</div>
                 </div>
-                {(listdata.map((item, i) => {
-                  let count = i % 2;
-                  var handleColor = (item) => {
-                    if (item.Status == 'Xong') return 'done'
-                    else if (item.Status == 'Đang khám') return 'doing'
-                    else return 'pending'
-                  }
-                  return (
-                    <div key={i} className={cx('row', 'line-row', `line${count}`)}>
-                      <div className={cx('col-md-1', 'schedule-table-index')}>{i + 1}</div>
-                      <div className={cx('col-md-2', 'schedule-table-ID_doctor')}>{item.ID_doctor}</div>
-                      <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{item.Name_doctor}</div>
-                      <div className={cx('col-md-2', 'schedule-table-Time_in')}>{item.Time_in}</div>
-                      <div className={cx('col-md-2', 'schedule-table-Patient')}>{item.Patient}</div>
-                      <div className={cx('col-md-1', 'schedule-table-Room')}>{item.Room}</div>
-                      <div className={cx('col-md-2', 'schedule-table-Status', `Status-${handleColor(item)}`)}>
-                        <i></i>
-                        <i></i>
-                        <i></i>
-                        {item.Status}
-                      </div>
-                    </div>
-                  )
-                }))}
+                {
+                  Array.from({ length: 10 }, (_, index) => {
+                    if (page * 10 + index + 1 > listdata.length) console.log('hello khay')
+                    else {
+                      let count = index % 2;
+                      var handleColor = (indexx) => {
+                        if (listdata[indexx].Status == 'Xong') return 'done'
+                        else if (listdata[indexx].Status == 'Đang khám') return 'doing'
+                        else return 'pending'
+                      }
+
+                      return (
+                        <div key={index} className={cx('row', 'line-row', `line${count}`)}>
+                          <div className={cx('col-md-1', 'schedule-table-index')}>{page * 10 + index + 1}</div>
+                          <div className={cx('col-md-2', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
+                          <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{listdata[page * 10 + index].Name_doctor}</div>
+                          <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')}>
+                            <p>{listdata[page * 10 + index].Time_in}</p>
+                            <p>{listdata[page * 10 + index].Time_in}</p>
+                          </div>
+                          <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].Patient}</div>
+                          <div className={cx('col-md-1', 'schedule-table-Room')}>{listdata[page * 10 + index].Room}</div>
+                          <div className={cx('col-md-2', 'ahuhu', 'schedule-table-Status', `Status-${handleColor(page * 10 + index)}`)}>
+                            <svg></svg>
+                            <svg></svg>
+                            <svg></svg>
+                            {listdata[page * 10 + index].Status}
+                          </div>
+                        </div>
+                      )
+                    }
+
+                  })
+                }
               </div>
             </div>
           </div>
           <div className={cx('schedule-add')}>
-            <div className={cx('form-close')} onClick={handleAdd}>
-              <i className={cx("fas fa-times")}></i>
-            </div>
             <div className={cx('contain-form')}>
               <div className={cx('schedule-form')}>
+                <div className={cx('form-close')} onClick={handleAdd}>
+                  <i className={cx("fas fa-times")}></i>
+                </div>
                 <div className={cx('form-title')}>
                   <h3>THÊM LỊCH HẸN</h3>
                 </div>
@@ -254,16 +307,18 @@ export default function Schedule() {
                     <input type='text' placeholder='ID bác sĩ...'></input>
                     <input type='text' placeholder='Tên bác sĩ...'></input>
                   </div>
+                  {doctorbool || <p className={cx('not-found')}>Không tìm thấy bác sĩ !</p>}
                 </div>
                 <div className={cx('form-time')}>
                   <h5>Thời gian hẹn:</h5>
+                  <input type='time' placeholder='Thời gian...'></input>
                   <input type='date' placeholder='Thời gian...'></input>
                 </div>
                 <div className={cx('form-others')}>
                   <h5>Khác:</h5>
                   <div className={cx('input-others')}>
-                    <input type='text' placeholder='Phòng'></input>
-                    <input className={cx('no-change')} type='text' value='Đang chờ'></input>
+                    <input type='text' placeholder='Tên bệnh nhân...'></input>
+                    <input placeholder='Phòng...' type='text'></input>
                   </div>
                 </div>
                 <div className={cx('form-vali')}>

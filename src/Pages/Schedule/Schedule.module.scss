@@ -69,7 +69,7 @@
     position: relative;
     display: flex;
     justify-content: center;
-    margin-bottom: 5%;
+    margin-bottom: 7%;
     height: 10%;
 
     input {
@@ -91,6 +91,13 @@
         top: 8px;
         right: 36%;
         font-size: 30px
+    }
+
+    p{
+        position:absolute;
+        top:55px;
+        color:red;
+        font-weight: 500;
     }
 }
 
@@ -126,14 +133,26 @@
     display: flex;
     justify-content: space-between;
 
-    i {
+    svg{
         width: 30%;
         transition: 0.2s;
+        margin-left:20px;
+        margin-right:25px;
 
         &:hover {
-            font-size: 20px;
+            scale: 1.5;
         }
     }
+}
+
+.schedule-table-Status, .schedule-table-index, .schedule-table-ID_doctor, .schedule-table-Name_doctor, .schedule-table-Patient, .schedule-table-Room{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+    
+.edit-time{
+    padding-top:1.5%;
 }
 
 .schedule-add {
@@ -151,15 +170,9 @@
         align-items: center;
     }
 
-    .form-close {
-        position: fixed;
-        right: 20px;
-        font-size: 40px;
-    }
-
     .schedule-form {
-        width: 720px;
-        height: 480px;
+        width: 765px;
+        height: 510px;
         background-image: url('../../Components/assets/Addform.jpg');
         background-repeat: no-repeat;
         background-position: center;
@@ -167,17 +180,21 @@
         border-radius: 15px;
         padding:1.5% 2%;
         color:white;
+        position:relative;
+
+        .form-close {
+            position: absolute;
+            right:5%;
+            top:2%;
+            font-size: 40px;
+        }
 
         .form-title{
             text-align: center;
-            margin-bottom:5%;
+            margin-bottom:2%;
         }
 
-        .input-docter{
-            width: 100%;
-            display:flex;
-            justify-content: space-between;
-        }
+        
 
         input{
             height: 35px;
@@ -219,4 +236,24 @@ h5{
     display:flex;
     justify-content: center;
     margin-top:2%;
+
+    button{
+        border: none;
+        border-radius: 5px;
+        background-color: rgb(187, 227, 215);
+        padding:3px 10px;
+    }
+}
+
+.not-found{
+    margin-top:2%;
+    color:rgb(253, 76, 76);
+    font-weight: 500;
+}
+
+.ahuhu{
+    svg{
+        display:none;
+        visibility: hidden;
+    }
 }
