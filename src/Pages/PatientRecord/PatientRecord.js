@@ -38,6 +38,9 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CloseIcon from "@mui/icons-material/Close";
+import { AddData, AddHist } from "./P_R_be";
+import { Table_Body } from "./P_R_be";
+import { formToJSON } from "axios";
 function createPatient(
   STT = patients.length + 1,
   patientID = `BN${patients.length + 100}`,
@@ -63,7 +66,7 @@ function createPatient(
   };
 }
 // HistoryRowCustom
-function HistoryRow(props) {
+function HistoryRow(props) { //lịch sử khám
   const { historyRow } = props;
   const [medicineListDialogOpen, setMedicineListDialogOpen] =
     React.useState(false);
@@ -176,6 +179,7 @@ function Row(props) {
   const [modifyFormOpen, setmodifyFormOpen] = React.useState(false);
   const [addMedicineListFormOpen, setAddMedicineListFormOpen] =
     React.useState(false);
+
   const [newGender, setNewGender] = React.useState(row.gender);
   React.useEffect(() => {
     setHistoryList(row.history);
@@ -383,7 +387,7 @@ function Row(props) {
             PaperProps={{
               component: "form",
             }}
-            // sx={{ width: "100%", maxWidth: "1000px" }}
+          // sx={{ width: "100%", maxWidth: "1000px" }}
           >
             <DialogTitle>Thông tin hồ sơ bệnh án</DialogTitle>
             <DialogContent dividers>
@@ -527,7 +531,7 @@ function Row(props) {
                 event.preventDefault();
                 const formData = new FormData(event.currentTarget);
                 const formJson = Object.fromEntries(formData.entries());
-                console.log(indexInPatients);
+                console.log(indexInPatients); //
                 patients[indexInPatients] = {
                   ...patients[indexInPatients],
                   fullName: formJson.fullName,
@@ -545,7 +549,7 @@ function Row(props) {
                 handleCloseFormOpen();
               },
             }}
-            // sx={{ width: "100%", maxWidth: "1000px" }}
+          // sx={{ width: "100%", maxWidth: "1000px" }}
           >
             <DialogTitle>Chỉnh sửa hồ sơ bệnh án</DialogTitle>
             <DialogContent dividers>
@@ -715,6 +719,7 @@ function Row(props) {
 
                     const formData = new FormData(event.currentTarget);
                     const formJson = Object.fromEntries(formData.entries());
+                    AddHist(formJson.CCCD, formJson.date, formJson.doctor, formJson.disease)
                     const newHistory = {
                       historyID: historyList.length + 1,
                       date: formJson.date,
@@ -730,7 +735,7 @@ function Row(props) {
                     handleCloseFormOpen();
                   },
                 }}
-                // sx={{ width: "100%", maxWidth: "1000px" }}
+              // sx={{ width: "100%", maxWidth: "1000px" }}
               >
                 <DialogTitle>Thêm lần khám bệnh</DialogTitle>
                 <DialogContent dividers>
@@ -1073,11 +1078,33 @@ let patients = [
 ];
 
 export default function PatientRecord() {
-  console.log("re-render");
   const [newFormOpen, setNewFormOpen] = React.useState(false);
   const [newGender, setNewGender] = React.useState("");
   const [renderPatientList, setRenderPatientList] = React.useState(patients);
   const [newPatients, setNewPatients] = React.useState(patients);
+  const [fullName, setfullname] = React.useState("");
+  const [birthDay, setBirthDay] = React.useState(null);
+  const [CCCD, setCCCD] = React.useState(0);
+  const [BHYT, setBHYT] = React.useState(0);
+
+  //const [tableData, setTableData] = React.useState([]);
+
+  // React.useEffect(() => {
+  //     // Fetch data from Table_Body component
+  //     setTableData(Table_Body());
+  // }, []);
+  const handle_Name = (event) => {
+    setfullname(event.target.value);
+  };
+  const handle_Date = (event) => {
+    setBirthDay(event);
+  }
+  const handle_CCCD = (event) => {
+    setCCCD(event.target.value);
+  }
+  const handle_BHYT = (event) => {
+    setBHYT(event.target.value);
+  }
   React.useEffect(() => {
     console.log("effect");
     patients = newPatients;
@@ -1140,7 +1167,7 @@ export default function PatientRecord() {
                   const formData = new FormData(event.currentTarget);
                   const formJson = Object.fromEntries(formData.entries());
                   // cách lấy data
-
+                  AddData(formJson.fullName,formJson.birthDay, formJson.gender, formJson.CCCD, formJson.BHYT);
                   // console.log(String.valueOf(patients.length + 1));
 
                   const newPatient = createPatient(
@@ -1183,6 +1210,7 @@ export default function PatientRecord() {
                         type="text"
                         fullWidth
                         variant="standard"
+                        onChange={handle_Name}
                       />
                     </Grid>
                     <Grid item xs={0.5} sm={1} md={4}>
@@ -1197,7 +1225,8 @@ export default function PatientRecord() {
                             id="birthDay"
                             name="birthDay"
                             label="Ngày sinh"
-                            // sx={{ padding: 0 }}
+                            onChange={handle_Date}
+                            renderInput={(params) => <TextField {...params} />}
                             format="DD/MM/YYYY"
                           ></DatePicker>
                         </FormControl>
@@ -1235,6 +1264,7 @@ export default function PatientRecord() {
                         name="CCCD"
                         label="Số CCCD"
                         type="text"
+                        onChange={handle_CCCD}
                         // inputProps={{ min: 0, style: { textAlign: "left" } }}
                         fullWidth
                         // size="medium"
@@ -1250,6 +1280,7 @@ export default function PatientRecord() {
                         name="BHYT"
                         label="Số BHYT"
                         type="text"
+                        onChange={handle_BHYT}
                         // inputProps={{ min: 0, style: { textAlign: "left" } }}
                         fullWidth
                         // size="medium"
@@ -1259,7 +1290,7 @@ export default function PatientRecord() {
 
                     <Grid item xs={1} sm={3} md={12}>
                       <TextField
-                        // autoFocus
+                        autoFocus
                         // required
                         margin="dense"
                         id="address"
@@ -1277,7 +1308,7 @@ export default function PatientRecord() {
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleCloseNewFormOpen}>hủy</Button>
-                <Button type="submit">Xác nhận</Button>
+                <Button type="submit" >Xác nhận</Button>
               </DialogActions>
             </Dialog>
           </Grid>
@@ -1429,13 +1460,13 @@ export default function PatientRecord() {
             </TableHead>
             <TableBody>
               {renderPatientList.map((row, index) => {
-                // console.log(row);
+                console.log(row);
                 return (
                   <Row
                     key={row.id}
                     row={row}
                     index={index}
-                    setNewPatients={setNewPatients}
+                    setNewPatients={setNewPatients} //để cho tác vụ tìm kiếm 
                     setNewPatientsAndRender={setNewPatientsAndRender}
                     newPatient={newPatients}
                     setRenderPatientList={setRenderPatientList}
