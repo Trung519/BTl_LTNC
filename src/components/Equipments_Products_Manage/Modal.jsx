@@ -39,13 +39,14 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
                     <form>
                         <div>
                             <label htmlFor="name">Tên</label>
-                            <input type="text" name="name" onChange={handleChange} value={equimentState.name} />
+                            <input type="text" name="name" onChange={handleChange} value={equimentState.name}/>
                         </div>
 
                         <div>
                             <label htmlFor="type">Loại</label>
                             <input type="text" name="type"
                                 onChange={handleChange} value={equimentState.type}
+                            
                             />
                         </div>
 

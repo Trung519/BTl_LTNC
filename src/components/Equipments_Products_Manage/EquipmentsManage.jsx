@@ -1,5 +1,8 @@
+import { getData, writeUserData } from '../../services/firebase';
+
+
 import './EquipmentsManage.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from './Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +11,7 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 export default function EquipmentsManage({ }) {
     const [rowToEdit, setRowToEdit] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
+    const [data,setData] =useState([]);
     const [equipmentsRows, setEquipmentsRows] = useState([
         {
             name: 'X-Ray Machine 1',
@@ -36,6 +40,16 @@ export default function EquipmentsManage({ }) {
 
     ]);
 
+    useEffect(() => {
+        getData().then((post) => {
+          if (post != null) {
+            setData(post);
+            setEquipmentsRows(post["Equipment"] ?? []);
+
+          }
+        });
+      }, []);
+
 
     function handleSubmit(newRow) {
         rowToEdit === null ?
@@ -46,9 +60,21 @@ export default function EquipmentsManage({ }) {
                 return newRow;
             })
             );
+        if(rowToEdit===null){
+            writeUserData([...equipmentsRows,newRow], "/Equipment");
+        }
+        else{
+            let newData= equipmentsRows;
+            newData[rowToEdit] =newRow;
+            writeUserData(newData,"/Equipment");
+        }
+        
+        
     }
 
+
     function handleDeleteRow(targetIndex) {
+        writeUserData(equipmentsRows.filter((_, idx) => idx !== targetIndex), "/Equipment");
         setEquipmentsRows(equipmentsRows.filter((_, idx) => idx !== targetIndex));
     }
 
@@ -61,7 +87,7 @@ export default function EquipmentsManage({ }) {
     return (
         <div id='container'>
             <div id='header-container'>
-            <button id="addnew-btn" onClick={() => setModalOpen(true)}> + Thêm mới</button>
+            <button id="addnew-btn" onClick={() => {setModalOpen(true); setRowToEdit(null) }  }> + Thêm mới</button>
             <h1>Thiết bị</h1>
             </div>
             <table id='equipment-table'>
