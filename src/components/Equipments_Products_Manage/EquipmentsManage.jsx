@@ -12,33 +12,7 @@ export default function EquipmentsManage({ }) {
     const [rowToEdit, setRowToEdit] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [data,setData] =useState([]);
-    const [equipmentsRows, setEquipmentsRows] = useState([
-        {
-            name: 'X-Ray Machine 1',
-            type: 'X-Ray',
-            id: 'XR01',
-            room: 'Room 101',
-            description: 'X-Ray machine',
-            status: 'Hoạt động'
-        },
-        {
-            name: 'X-Ray Machine 2',
-            type: 'X-Ray',
-            id: 'XR02',
-            room: 'Room 102',
-            description: 'X-Ray machine',
-            status: 'Không hoạt động'
-        },
-        {
-            name: 'X-Ray Machine 3',
-            type: 'X-Ray',
-            id: 'XR03',
-            room: 'Room 103',
-            description: 'X-Ray machine',
-            status: 'Sửa chữa'
-        },
-
-    ]);
+    const [equipmentsRows, setEquipmentsRows] = useState([]);
 
     useEffect(() => {
         getData().then((post) => {
