@@ -7,6 +7,7 @@ import Footer from '../../Components/Footer'
 import { useState, useEffect, useCallback } from 'react';
 import { getDatabase, ref, onValue } from "firebase/database";
 import { initializeApp } from "firebase/app";
+import { addNewSchedule, searchIdDoctorByName, searchNameDoctorByID } from '../../Components/Firebase/FireBase';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDHfpl2Vsr7GGd8Sb6VAdNRLWKEdE9M_MI",
@@ -29,31 +30,102 @@ const cx = classNames.bind(styles)
 var number = 0
 
 export default function Schedule() {
-  const [listdata, setListdata] = useState([]);
   var [edit, setEdit] = useState(false)               // Edit mode
   var [add, setAdd] = useState(false)                 // Add mode
   var [page, setPage] = useState(0)                   // Current page number
   var [searchbool, setSearchbool] = useState(true)    // (for search bar) true -> found ... false -> not found 
   var [doctorbool, setDoctorbool] = useState(true)    // (for doctor in add mode) true -> found ... false -> not found
 
+// --------------START BACKEND <KHÔNG PHẬN SỰ MIỄN VÀO>--------------
+  const [listdata, setListdata] = useState([]);  
+  
+  const [form, setForm] = useState({
+    id_Doctor: "",
+    name_Doctor: "",
+    time: "",
+    date: "",
+    name_Patient: "",
+    room: ""
+  });
+  
+  const [suggestions, setSuggestions] = useState([]);
+  
+  const [suggestionsID, setSuggestionsID] = useState([]);
+
+  const [namePatientSearch, setNamePatientSearch] = useState("")
+  
   useEffect(() => {
-    const getListdata = () => {
-      const scheduleRef = ref(database, "Schedule");
-      onValue(scheduleRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          const dataArray = Object.keys(data).map(key => ({
-            id: key,
-            ...data[key]
-          }));
-          setListdata(dataArray);
+      const getListdata = () => {
+        const scheduleRef = ref(database, "Schedule");
+        onValue(scheduleRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            const dataArray = Object.keys(data).map(key => ({
+              id: key,
+              ...data[key]
+            }));
+            setListdata(dataArray);
+          } else {
+            setListdata([]); 
+          }
+        });
+      };
+      getListdata();
+    }, []);
+
+  useEffect(() => {
+    searchIdDoctorByName(form.name_Doctor, setSuggestions)
+  }, [form.name_Doctor])
+
+  useEffect(() => {
+    searchNameDoctorByID(form.id_Doctor, setSuggestionsID)
+  }, [form.id_Doctor])
+
+  const handleSelectSuggestion = (suggestion) => {
+    setForm({
+      ...form,
+      id_Doctor: suggestion.ID,
+      name_Doctor: `${suggestion.FirstName} ${suggestion.LastName}` 
+    });
+    setSuggestions([]);
+  }
+
+  const handleCollectData = (e) => {
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: value
+    });
+  }
+  
+  const submitForm = () => {
+    const checkValue = new Promise((resolve, reject) => {
+        if (
+            form.id_Doctor === "" ||
+            form.name_Doctor === "" ||
+            form.time === "" ||
+            form.date === "" ||
+            form.name_Patient === "" ||
+            form.room === ""
+        ) {
+            resolve(false);
         } else {
-          setListdata([]); // Nếu không có dữ liệu, set listdata thành mảng rỗng
+            resolve(true);
         }
-      });
-    };
-    getListdata();
-  }, []);
+    });
+
+    checkValue.then((isValid) => {
+        if (isValid) {
+            setAdd(false);
+            addNewSchedule(form, setForm);
+        } else {
+            alert("Vui lòng nhập đầy đủ thông tin !");
+        }
+    });
+};
+
+// ---------------END BACKEND <KHÔNG PHẬN SỰ MIỄN VÀO>---------------  
+
 
   var handleEdit = useCallback(() => {
     setEdit(prev => !prev)
@@ -113,8 +185,7 @@ export default function Schedule() {
                           <div className={cx('col-md-2', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
                           <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{listdata[page * 10 + index].Name_doctor}</div>
                           <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')}>
-                            <p>{listdata[page * 10 + index].Time_in}</p>
-                            <p>{listdata[page * 10 + index].Time_in}</p>
+                            {<p>{listdata[page * 10 + index].Time + " " + listdata[page * 10 + index].Date}</p>}
                           </div>
                           <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].Patient}</div>
                           <div className={cx('col-md-1', 'schedule-table-Room')}>{listdata[page * 10 + index].Room}</div>
@@ -304,24 +375,51 @@ export default function Schedule() {
                 <div className={cx('form-doctor')}>
                   <h5>Bác sĩ:</h5>
                   <div className={cx('input-doctor')}>
-                    <input type='text' placeholder='ID bác sĩ...'></input>
-                    <input type='text' placeholder='Tên bác sĩ...'></input>
+                    <input type='text' placeholder='ID bác sĩ...' value={form.id_Doctor} name="id_Doctor" 
+                           onChange={handleCollectData}></input>
+                    <ul>
+                      {suggestionsID.map((suggestion, index) => (
+                          <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
+                            {suggestion.ID}
+                          </li>
+                      ))}
+                    </ul>
+                    <input type='text' placeholder='Tên bác sĩ...' value={form.name_Doctor} name="name_Doctor" 
+                           onChange={handleCollectData}></input>
+                    <ul>
+                      {suggestions.map((suggestion, index) => (
+                          <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
+                              {`${suggestion.FirstName} ${suggestion.LastName}`}
+                          </li>
+                      ))}
+                    </ul>
+                  {/* <select
+                    multiple type='text' placeholder='Tên bác sĩ...' 
+                    value={form.name_Doctor} name="name_Doctor" onChange={handleCollectData}
+                  >
+                      {suggestions.map((suggestion, index) => (
+                        <option key={index} onClick={() => handleSelectSuggestion(suggestion)}>
+                          {`${suggestion.FirstName} ${suggestion.LastName}`}
+                        </option>
+                      ))}
+                  </select> */}
+
                   </div>
                   {doctorbool || <p className={cx('not-found')}>Không tìm thấy bác sĩ !</p>}
                 </div>
                 <div className={cx('form-time')}>
                   <h5>Thời gian hẹn:</h5>
-                  <input type='time' placeholder='Thời gian...'></input>
-                  <input type='date' placeholder='Thời gian...'></input>
+                  <input type='time' value={form.time} name="time" onChange={handleCollectData}></input>
+                  <input type='date' value={form.date} name="date" onChange={handleCollectData}></input>
                 </div>
                 <div className={cx('form-others')}>
                   <h5>Khác:</h5>
                   <div className={cx('input-others')}>
-                    <input type='text' placeholder='Tên bệnh nhân...'></input>
-                    <input placeholder='Phòng...' type='text'></input>
+                    <input type='text' placeholder='Tên bệnh nhân...' value={form.name_Patient} name="name_Patient" onChange={handleCollectData}></input>
+                    <input placeholder='Phòng...' type='text' value={form.room} name="room" onChange={handleCollectData}></input>
                   </div>
                 </div>
-                <div className={cx('form-vali')}>
+                <div className={cx('form-vali')} onClick={submitForm}>
                   <button>Xác nhận</button>
                 </div>
               </div>
@@ -329,7 +427,6 @@ export default function Schedule() {
 
           </div>
         </div>
-
         <Footer />
       </>
     )

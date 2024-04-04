@@ -33,7 +33,7 @@ export const addData = async (data) => {
   await set(child(ref(database, 'Notify/'), `${dataCount}`), newData); // Thêm dữ liệu mới
 };
 
-
+//--------------------------------------------------------------------
 
 export const deleteData = async (mssv) => {
   const database = getDatabase();
@@ -92,31 +92,6 @@ export const searchDataByMssv = (mssv, callback) => {
 
 // ---------------Kết thúc hàm mẫu--------------- //
 
-/*---------------------Bắt đầu các hàm tìm kiếm data---------------------*/
-export const searchIdDoctorByName = (name, callback) => {
-    const database = getDatabase();
-    const dataRef = ref(database, 'Employee/Doctor/');
-
-    onValue(dataRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const doctor = Object.values(data).find(doctor => {
-            const nameDoctor = doctor.FirstName + " " + doctor.LastName;
-            return nameDoctor.toLowerCase().includes(name.toLowerCase());
-        });
-        if (doctor) {
-          callback({
-            id: doctor.ID,
-            name: doctor.FirstName + " " + doctor.LastName
-          });
-        }
-      }
-    });
-};
-/*---------------------Kết thúc các hàm tìm kiếm data---------------------*/
-
-
-
 // export const searchNameDoctor = (name, callback) => {
 //   const database = getDatabase();
 //   const dataRef = ref(database, 'Employee/Doctor/');
@@ -140,3 +115,86 @@ export const searchIdDoctorByName = (name, callback) => {
 
 
 
+//----------------------------Hàm cho Schedule-----------------------
+export const addNewSchedule = async (data, callback) => {
+  const database = getDatabase();
+  const dataRef = ref(database, 'Schedule/');
+  
+  const newData = {
+    Date: data.date,
+    ID_doctor: data.id_Doctor,
+    Name_doctor: data.name_Doctor,
+    Patient: data.name_Patient,
+    Room: data.room,
+    Status: "Chưa khám",
+    Time: data.time
+  };
+
+  const snapshot = await get(dataRef); 
+  const dataCount = snapshot.exists() ? Object.keys(snapshot.val()).length : 0; // Đếm số lượng dữ liệu hiện có
+  await set(child(ref(database, 'Schedule/'), `${dataCount}`), newData); // Thêm dữ liệu mới
+
+  callback({
+    id_Doctor: "",
+    name_Doctor: "",
+    time: "",
+    date: "",
+    name_Patient: "",
+    room: ""
+  })
+};
+
+export const searchIdDoctorByName = (name, callback) => {
+  const database = getDatabase();
+  const dataRef = ref(database, 'Employee/Doctor/');
+
+  onValue(dataRef, (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      const filteredSuggestions = Object.values(data).filter(doctor => {
+        const nameDoctor = doctor.FirstName + " " + doctor.LastName;
+        return nameDoctor.toLowerCase().includes(name.toLowerCase());
+      });
+      callback(filteredSuggestions);
+    } else {
+      callback([]);
+    }
+  });
+};
+
+export const searchNameDoctorByID = (id, callback) => {
+  const database = getDatabase();
+  const dataRef = ref(database, 'Employee/Doctor');
+
+  onValue(dataRef, (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      const filteredSuggestions = Object.values(data).filter(doctor => {
+        return doctor.ID.includes(id);
+      });
+      callback(filteredSuggestions);
+    } else {
+      callback([]);
+    }
+  });
+};
+
+export const setListSchedule = (name, callback) => {
+  const database = getDatabase();
+  const dataRefSchedule = ref(database, 'Schdule/');
+
+  onValue(dataRefSchedule, (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      const listSchedule = Object.values(data).filter(schedule => {
+        const namePatient = schedule.Patient.FirstName + " " + schedule.Patient.LastName;
+        return namePatient.toLowerCase().includes(name.toLowerCase());
+      });
+      callback(listSchedule);
+    } else if (name == ""){
+      callback([]);
+    }
+  });
+};
+
+//------------------------Kết thúc hàm cho Schedule------------------
