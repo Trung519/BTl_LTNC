@@ -38,11 +38,17 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CloseIcon from "@mui/icons-material/Close";
-import { AddData, AddHist } from "./P_R_be";
-import { Table_Body } from "./P_R_be";
+import { AddData, AddHist, Add_Med } from "./P_R_be";
+import { Patients } from "./P_R_be";
 import { formToJSON } from "axios";
-function createPatient(
-  STT = patients.length + 1,
+import { ContactPageSharp } from "@mui/icons-material";
+
+let patients = [];
+
+function createPatient( 
+
+STT = patients.length + 1,
+
   patientID = `BN${patients.length + 100}`,
   fullName,
   gender,
@@ -66,6 +72,7 @@ function createPatient(
   };
 }
 // HistoryRowCustom
+console.log(patients);
 function HistoryRow(props) { //lịch sử khám
   const { historyRow } = props;
   const [medicineListDialogOpen, setMedicineListDialogOpen] =
@@ -157,6 +164,7 @@ function HistoryRow(props) { //lịch sử khám
 }
 // RowCustom
 function Row(props) {
+  patients=Patients;
   const handleCloseFormOpen = () => {
     setInfoFormOpen(false);
     setmodifyFormOpen(false);
@@ -197,7 +205,7 @@ function Row(props) {
   const indexInPatients = patients.findIndex((e) => {
     return e.STT === row.STT;
   });
-  function DialogAddMedicineList({ listNewMedicine, setListNewMedicine }) {
+  function DialogAddMedicineList({ listNewMedicine, setListNewMedicine, CCCD }) {
     const [medicineAddList, setMedicineAddList] =
       React.useState(listNewMedicine);
     const nameValue = React.useRef();
@@ -286,7 +294,6 @@ function Row(props) {
                       dosagePerDay: dosageValue.current.value,
                       unit: unitValue.current.value,
                     };
-                    console.log(newMedicineElement);
                     setMedicineAddList((prev) => [newMedicineElement, ...prev]);
                   }}
                 >
@@ -338,6 +345,7 @@ function Row(props) {
           </Button>
           <Button
             onClick={() => {
+              Add_Med(CCCD, nameValue.current.value, usageValue.current.value, dosageValue.current.value, unitValue.current.value)
               setListNewMedicine(medicineAddList);
               setAddMedicineListFormOpen(false);
             }}
@@ -531,7 +539,6 @@ function Row(props) {
                 event.preventDefault();
                 const formData = new FormData(event.currentTarget);
                 const formJson = Object.fromEntries(formData.entries());
-                console.log(indexInPatients); //
                 patients[indexInPatients] = {
                   ...patients[indexInPatients],
                   fullName: formJson.fullName,
@@ -542,7 +549,6 @@ function Row(props) {
                   address: formJson.address,
                 };
                 // console.log(patients[index]);
-                console.log(patients);
                 setNewPatientsAndRender([...patients]);
                 // setRenderPatientList(patients[indexInPatients])
                 // console.log(patients);
@@ -727,7 +733,6 @@ function Row(props) {
                       disease: formJson.disease,
                       medicineList: listNewMedicine,
                     };
-                    console.log(newHistory);
                     setHistoryList([newHistory, ...historyList]);
 
                     setListNewMedicine([]);
@@ -888,6 +893,7 @@ function Row(props) {
                         <DialogAddMedicineList
                           listNewMedicine={listNewMedicine}
                           setListNewMedicine={setListNewMedicine}
+                          CCCD={row.CCCD}
                         ></DialogAddMedicineList>
                       </Grid>
                     </Grid>
@@ -946,142 +952,141 @@ Row.propTypes = {
   }).isRequired,
 };
 //danh sach patients ban dau
-let patients = [
-  createPatient(
-    10,
-    "BN109",
-    "Nguyễn Văn A",
-    "Nam",
-    "0000000000",
-    "0000000000",
-    "23/01/2004",
-    "",
-    [
-      {
-        historyID: 1,
-        date: "01/02/2023",
-        doctor: "AB",
-        disease: "Cúm mùa",
-        medicineList: [
-          {
-            medicine: "Panadol",
-            usage: "uống sau khi ăn",
-            dosagePerDay: "1 ngày 2 lần",
-            unit: "20 viên/10 ngày",
-          },
-          {
-            medicine: "paracetamol",
-            usage: "uống sau khi ăn",
-            dosagePerDay: "1 ngày 2 lần",
-            unit: "20 viên/10 ngày",
-          },
-        ],
-      },
-      {
-        historyID: 2,
-        date: "01/02/2023",
-        doctor: "AB",
-        disease: "Cúm mùa",
-        medicineList: [
-          {
-            medicine: "Panadol",
-            usage: "uống sau khi ăn",
-            dosagePerDay: "1 ngày 2 lần",
-            unit: "20 viên/10 ngày",
-          },
-        ],
-      },
-    ]
-  ),
-  createPatient(
-    9,
-    "BN108",
-    "AAAAAAAAAAAAAAA",
-    "Nữ",
-    "1111111111111",
-    "11111111111",
-    "01/01/2004",
-    ""
-  ),
-  createPatient(
-    8,
-    "BN107",
-    "BBBBBBBBBBBBBBBBB",
-    "Nam",
-    "2222222222222",
-    "22222222222",
-    "01/01/2004"
-  ),
-  createPatient(
-    7,
-    "BN106",
-    "CCCCCCCCCCC",
-    "Nam",
-    "333333333333333",
-    "3333333333333",
-    "01/01/2004"
-  ),
-  createPatient(
-    6,
-    "BN105",
-    "DDDDDDDDDDD",
-    "Nam",
-    "4444444444",
-    "444444444444",
-    "01/01/2004"
-  ),
-  createPatient(
-    5,
-    "BN104",
-    "EEEEEEEEE",
-    "Nam",
-    "55555555",
-    "5555555",
-    "01/01/2004"
-  ),
-  createPatient(
-    4,
-    "BN103",
-    "FFFFFF",
-    "Nam",
-    "666666666",
-    "666666666",
-    "01/01/2004"
-  ),
-  createPatient(
-    3,
-    "BN102",
-    "GGGGGGGGGG",
-    "Nam",
-    "77777777777",
-    "7777777777777",
-    "01/01/2004"
-  ),
-  createPatient(
-    2,
-    "BN101",
-    "HHHHHHHHHH",
-    "Nam",
-    "888888888",
-    "88888888888",
-    "01/01/2004"
-  ),
-  createPatient(
-    1,
-    "BN100",
-    "IIIIIIIIII",
-    "Nam",
-    "999999999",
-    "9999999999999",
-    "01/01/2004"
-  ),
-];
+//   createPatient(
+//     10,
+//     "BN109",
+//     "Nguyễn Văn A",
+//     "Nam",
+//     "0000000000",
+//     "0000000000",
+//     "23/01/2004",
+//     "",
+//     [
+//       {
+//         historyID: 1,
+//         date: "01/02/2023",
+//         doctor: "AB",
+//         disease: "Cúm mùa",
+//         medicineList: [
+//           {
+//             medicine: "Panadol",
+//             usage: "uống sau khi ăn",
+//             dosagePerDay: "1 ngày 2 lần",
+//             unit: "20 viên/10 ngày",
+//           },
+//           {
+//             medicine: "paracetamol",
+//             usage: "uống sau khi ăn",
+//             dosagePerDay: "1 ngày 2 lần",
+//             unit: "20 viên/10 ngày",
+//           },
+//         ],
+//       },
+//       {
+//         historyID: 2,
+//         date: "01/02/2023",
+//         doctor: "AB",
+//         disease: "Cúm mùa",
+//         medicineList: [
+//           {
+//             medicine: "Panadol",
+//             usage: "uống sau khi ăn",
+//             dosagePerDay: "1 ngày 2 lần",
+//             unit: "20 viên/10 ngày",
+//           },
+//         ],
+//       },
+//     ]
+//   ),
+//   createPatient(
+//     9,
+//     "BN108",
+//     "AAAAAAAAAAAAAAA",
+//     "Nữ",
+//     "1111111111111",
+//     "11111111111",
+//     "01/01/2004",
+//     ""
+//   ),
+//   createPatient(
+//     8,
+//     "BN107",
+//     "BBBBBBBBBBBBBBBBB",
+//     "Nam",
+//     "2222222222222",
+//     "22222222222",
+//     "01/01/2004"
+//   ),
+//   createPatient(
+//     7,
+//     "BN106",
+//     "CCCCCCCCCCC",
+//     "Nam",
+//     "333333333333333",
+//     "3333333333333",
+//     "01/01/2004"
+//   ),
+//   createPatient(
+//     6,
+//     "BN105",
+//     "DDDDDDDDDDD",
+//     "Nam",
+//     "4444444444",
+//     "444444444444",
+//     "01/01/2004"
+//   ),
+//   createPatient(
+//     5,
+//     "BN104",
+//     "EEEEEEEEE",
+//     "Nam",
+//     "55555555",
+//     "5555555",
+//     "01/01/2004"
+//   ),
+//   createPatient(
+//     4,
+//     "BN103",
+//     "FFFFFF",
+//     "Nam",
+//     "666666666",
+//     "666666666",
+//     "01/01/2004"
+//   ),
+//   createPatient(
+//     3,
+//     "BN102",
+//     "GGGGGGGGGG",
+//     "Nam",
+//     "77777777777",
+//     "7777777777777",
+//     "01/01/2004"
+//   ),
+//   createPatient(
+//     2,
+//     "BN101",
+//     "HHHHHHHHHH",
+//     "Nam",
+//     "888888888",
+//     "88888888888",
+//     "01/01/2004"
+//   ),
+//   createPatient(
+//     1,
+//     "BN100",
+//     "IIIIIIIIII",
+//     "Nam",
+//     "999999999",
+//     "9999999999999",
+//     "01/01/2004"
+//   ),
+// ];
 
 export default function PatientRecord() {
   const [newFormOpen, setNewFormOpen] = React.useState(false);
   const [newGender, setNewGender] = React.useState("");
-  const [renderPatientList, setRenderPatientList] = React.useState(patients);
-  const [newPatients, setNewPatients] = React.useState(patients);
+  const [renderPatientList, setRenderPatientList] = React.useState(patients);//Render ra những thứ cần render
+  const [newPatients, setNewPatients] = React.useState(patients);//Có tác dụng giống với patients bên ngoài
   const [fullName, setfullname] = React.useState("");
   const [birthDay, setBirthDay] = React.useState(null);
   const [CCCD, setCCCD] = React.useState(0);
@@ -1106,7 +1111,6 @@ export default function PatientRecord() {
     setBHYT(event.target.value);
   }
   React.useEffect(() => {
-    console.log("effect");
     patients = newPatients;
   }, [newPatients]);
   const setNewPatientsAndRender = (newPatients) => {
@@ -1167,7 +1171,7 @@ export default function PatientRecord() {
                   const formData = new FormData(event.currentTarget);
                   const formJson = Object.fromEntries(formData.entries());
                   // cách lấy data
-                  AddData(formJson.fullName,formJson.birthDay, formJson.gender, formJson.CCCD, formJson.BHYT);
+                  AddData(formJson.fullName, formJson.birthDay, formJson.gender, formJson.CCCD, formJson.BHYT);
                   // console.log(String.valueOf(patients.length + 1));
 
                   const newPatient = createPatient(
@@ -1182,7 +1186,6 @@ export default function PatientRecord() {
                     formJson.birthDay,
                     formJson.address
                   );
-                  console.log(newPatient);
                   //xu li add database
                   // setRenderPatientList((prev) => [newPatient, ...prev]);
                   setNewPatientsAndRender([newPatient, ...newPatients]);
@@ -1460,7 +1463,6 @@ export default function PatientRecord() {
             </TableHead>
             <TableBody>
               {renderPatientList.map((row, index) => {
-                console.log(row);
                 return (
                   <Row
                     key={row.id}

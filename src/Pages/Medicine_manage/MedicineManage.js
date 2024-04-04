@@ -31,6 +31,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 import Box from "@mui/material/Box";
+import { AddData_Med } from "./P_R-be";
 
 function createMedicine(
   STT = listMedicine.length + 1,
@@ -215,7 +216,7 @@ function Row(props) {
               <Grid item xs={0.5} sm={1} md={4}>
                 <LocalizationProvider
                   dateAdapter={AdapterDayjs}
-                  // adapterLocale="en-gb"
+                // adapterLocale="en-gb"
                 >
                   <FormControl
                     sx={{ minWidth: 120, marginTop: "17px" }}
@@ -470,7 +471,7 @@ function Row(props) {
     </TableRow>
   );
 }
-const MedicineManage = () => {
+const Medicine_manage = () => {
   const [renderMedicineList, setRenderMedicineList] =
     React.useState(listMedicine);
   const [newListMedicine, setNewListMedicine] = React.useState(listMedicine);
@@ -532,6 +533,14 @@ const MedicineManage = () => {
 
                   const formData = new FormData(event.currentTarget);
                   const formJson = Object.fromEntries(formData.entries());
+                  AddData_Med(formJson.medicineID,
+                    formJson.name,
+                    formJson.origin,
+                    formJson.HSD,
+                    formJson.cost,
+                    formJson.sellPrice,
+                    formJson.stock
+                  )
                   // cách lấy data
                   const newMedicine = createMedicine(
                     undefined,
@@ -823,4 +832,4 @@ const MedicineManage = () => {
   );
 };
 
-export default MedicineManage;
+export default Medicine_manage;

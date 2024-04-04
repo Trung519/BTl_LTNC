@@ -12,10 +12,7 @@ import {
     update,
     remove
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-import { render } from "@testing-library/react";
-import PatientRecord from "./PatientRecord";
-import { useEffect, useState } from "react";
-import { Row } from "./PatientRecord";
+
 const firebaseConfig = {
     apiKey: "AIzaSyCyI2BpMknXBSaZgOlsjId38ZvheRpXZLs",
     authDomain: "btl-ltnc-9c22f.firebaseapp.com",
@@ -58,8 +55,7 @@ export function AddHist(CCCD,date, doctor, disease) {
             const newHistory = {
                 date: date,
                 doctor: doctor,
-                disease: disease,
-                medicalList: {},
+                disease: disease
             };
             if (!patientData.Hist) {
                 patientData.Hist = [newHistory];
@@ -82,25 +78,48 @@ export function AddHist(CCCD,date, doctor, disease) {
         console.error(error);
     });
 };
+export function Add_Med(CCCD,medicine,usage, dosagePerDay, unit) {
+    const patientRef = ref(db, 'PatientRecord/' + CCCD);
+    get(patientRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            const patientData = snapshot.val();
+            const newMed = {
+                medicine: medicine,
+                usage: usage,
+                dosagePerDay: dosagePerDay,
+                unit:unit,
+            };
+            if (!patientData.Med) {
+                patientData.Med = [newMed];
+            } else {
+                patientData.Med.push(newMed);
+            }
+            update(patientRef, patientData)
+                .then(() => {
+                    alert("History Added Successfully");
+                })
+                .catch((error) => {
+                    alert("Unsuccessful");
+                    console.error(error);
+                });
+        } else {
+            alert("Patient Record not found");
+        }
+    }).catch((error) => {
+        alert("Error fetching patient record");
+        console.error(error);
+    });
+};
 
-export function Table_Body() {
-    const [tableData, setTableData] = useState([]);
-
-    useEffect(() => {
-        const dbRef = ref(db, 'PatientRecord/');
-        onValue(dbRef, (snapshot) => {
-            let record = [];
-            snapshot.forEach((childsnapshoot) => {
-                let keyname = childsnapshoot.key;
-                let data = childsnapshoot.val();
-                record.push({ key: keyname, data: data });
+export const Patients = () => {
+    return new Promise((resolve, reject) => {
+        get(ref(db, 'PatientRecord/'))
+            .then(response => {
+                const posts = response.val();
+                resolve(posts);
+            })
+            .catch(error => {
+                reject(error);
             });
-            setTableData(record);
-        });
-    }, []);
-
-    return (
-        tableData.map((rowdata) => rowdata.data.CCCD)
-    );
-}
-
+    });
+};
