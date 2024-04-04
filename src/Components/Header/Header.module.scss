@@ -1,0 +1,74 @@
+//********************** Begin Header ********************
+
+.header{
+    background-color: bisque;
+    padding:1% 0;
+}
+
+.header-wrapper-left{
+    display:flex;
+}
+
+.header-logo{
+    width: 150px;
+    height: 120px;
+
+    img{
+        width: 100%;
+    }
+}
+
+.header-info{
+    margin-left:3%;
+
+    h2{
+        margin-bottom:5%;
+    }
+}
+
+.header-wrapper-right{
+    display:flex;
+    margin-top:4%;
+    height: 5%;
+
+    button{
+        padding:2% 5%;
+        border:none;
+        margin:0 2%;
+        border-radius: 10px;
+        background-color: rgb(45, 214, 214);
+        font-weight: 500;
+
+        &:hover{
+            background-color: rgb(20, 89, 89);
+        }
+    }
+}
+
+//********************* End Header ********************
+
+//********************* Begin Navbar ******************
+
+.nav-actions{
+    display:flex;
+    justify-content: center;
+    margin:0 auto;
+}
+
+.change-color{
+    background-color: rgb(244, 212, 164);
+}
+
+.nav-action{
+    transition:0.3s;
+    border-right:1px solid black;
+    &:hover{
+        background-color: rgb(202, 161, 38);
+        padding:1% 0;
+    }
+}
+
+.nav-action1{
+    border-left:1px solid black;
+}
+//********************* End Navbar *******************

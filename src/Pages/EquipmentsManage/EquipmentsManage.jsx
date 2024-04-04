@@ -1,10 +1,10 @@
 import { getData, writeUserData } from '../../services/firebase';
 
 
-import Select from 'react-select';
+// import Select from 'react-select';
 import './EquipmentsManage.css';
 import { useState, useEffect } from 'react';
-import Modal from './Modal';
+import Modal from '../../components/Modal/Modal';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
