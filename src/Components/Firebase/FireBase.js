@@ -119,7 +119,10 @@ export const searchDataByMssv = (mssv, callback) => {
 export const addNewSchedule = async (data, callback) => {
   const database = getDatabase();
   const dataRef = ref(database, 'Schedule/');
-  
+
+  // Lấy dữ liệu hiện có từ Firebase
+  const snapshot = await get(dataRef);
+  let existingData = snapshot.exists() ? snapshot.val() : {}; // Dữ liệu hiện có
   const newData = {
     Date: data.date,
     ID_doctor: data.id_Doctor,
@@ -130,9 +133,17 @@ export const addNewSchedule = async (data, callback) => {
     Time: data.time
   };
 
-  const snapshot = await get(dataRef); 
-  const dataCount = snapshot.exists() ? Object.keys(snapshot.val()).length : 0; // Đếm số lượng dữ liệu hiện có
-  await set(child(ref(database, 'Schedule/'), `${dataCount}`), newData); // Thêm dữ liệu mới
+  // Di chuyển dữ liệu hiện có xuống một cấp
+  const updatedData = {};
+  for (let key in existingData) {
+    updatedData[parseInt(key) + 1] = existingData[key];
+  }
+
+  // Thêm dữ liệu mới vào vị trí đầu tiên
+  updatedData[0] = newData;
+
+  // Ghi dữ liệu mới vào Firebase
+  await set(ref(database, 'Schedule/'), updatedData);
 
   callback({
     id_Doctor: "",

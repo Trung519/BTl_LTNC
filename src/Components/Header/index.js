@@ -9,14 +9,14 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import classNames from 'classnames/bind'
 import styles from './Header.module.scss'
-import Logo from '../assets/Logo.png' //https://www.canva.com/design/DAGBChXc8BY/Hjbavm2Gpn0DtsgtVdHK2Q/edit?locale=vi-VN&ui=eyJBIjp7IkUiOnsiQSI6dHJ1ZX19fQ
-/* Import Components Navbar*/
+import Logo from '../assets/Logo.png' 
 import Home from '../../Pages/Home';
-import Equipment_manage from '../../Pages/Equipment_manage';
+import EquipmentsManage from '../../Pages/EquipmentsManage';
 import Medicine_manage from '../../Pages/Medicine_manage';
 import Notify from '../../Pages/Notify';
 import PatientRecord from '../../Pages/PatientRecord';
 import Schedule from '../../Pages/Schedule';
+
 import { NavDropdown } from 'react-bootstrap';
 const cx = classNames.bind(styles)
 
@@ -99,7 +99,7 @@ function Header() {
                         <Route path="/announcement" element={<Notify />} />
                         <Route path="/file-patient" element={<PatientRecord />} />
                         <Route path="/appointment" element={<Schedule />} />
-                        <Route path="/equip-manage" element={<Equipment_manage />} />
+                        <Route path="/equip_manage" element={<EquipmentsManage />} />
                         <Route path="/medicine-manage" element={<Medicine_manage />} />
                     </Routes>
                 </div>
