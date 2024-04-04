@@ -50,12 +50,12 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
                             />
                         </div>
 
-                        <div>
+                        {/* <div>
                             <label htmlFor="id">ID</label>
                             <input type="text" name="id"
                                 onChange={handleChange} value={equimentState.id}
                             />
-                        </div>
+                        </div> */}
 
                         <div>
                             <label htmlFor="room">Phòng</label>
