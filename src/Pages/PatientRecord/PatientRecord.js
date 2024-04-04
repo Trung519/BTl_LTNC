@@ -45,10 +45,9 @@ import { ContactPageSharp } from "@mui/icons-material";
 
 let patients = [];
 
-function createPatient( 
+function createPatient(
 
-STT = patients.length + 1,
-
+  STT = patients.length + 1,
   patientID = `BN${patients.length + 100}`,
   fullName,
   gender,
@@ -67,12 +66,10 @@ STT = patients.length + 1,
     BHYT,
     BirthDay,
     address,
-
     history,
   };
 }
 // HistoryRowCustom
-console.log(patients);
 function HistoryRow(props) { //lịch sử khám
   const { historyRow } = props;
   const [medicineListDialogOpen, setMedicineListDialogOpen] =
@@ -164,7 +161,15 @@ function HistoryRow(props) { //lịch sử khám
 }
 // RowCustom
 function Row(props) {
-  patients=Patients;
+  React.useEffect(() => {
+    Patients().then((post) => {
+      if (post != null) {
+        console.log('Hellobabe', post);
+        patients=[post]??[];
+      }
+    });
+  }, []);
+  console.log(patients);
   const handleCloseFormOpen = () => {
     setInfoFormOpen(false);
     setmodifyFormOpen(false);
@@ -1112,6 +1117,7 @@ export default function PatientRecord() {
   }
   React.useEffect(() => {
     patients = newPatients;
+    
   }, [newPatients]);
   const setNewPatientsAndRender = (newPatients) => {
     setNewPatients([...newPatients]);

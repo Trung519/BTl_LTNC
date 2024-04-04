@@ -28,16 +28,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getDatabase(app);
-export { db };
+const dbRef = ref(db);
 export function AddData(fullName, birthDay, newGender, CCCD, BHYT) {
     set(ref(db, 'PatientRecord/' + CCCD), {
-        CCCD: {
-            fullName: fullName,
-            birthDay: birthDay.toString(),
-            gender: newGender,
-            CCCD: CCCD,
-            BHYT: BHYT,
-        },
+        fullName: fullName,
+        birthDay: birthDay.toString(),
+        gender: newGender,
+        CCCD: CCCD,
+        BHYT: BHYT,
     })
         .then(() => {
             alert("Data Added Successfully");
@@ -47,7 +45,7 @@ export function AddData(fullName, birthDay, newGender, CCCD, BHYT) {
             console.error(error);
         });
 };
-export function AddHist(CCCD,date, doctor, disease) {
+export function AddHist(CCCD, date, doctor, disease) {
     const patientRef = ref(db, 'PatientRecord/' + CCCD);
     get(patientRef).then((snapshot) => {
         if (snapshot.exists()) {
@@ -78,7 +76,7 @@ export function AddHist(CCCD,date, doctor, disease) {
         console.error(error);
     });
 };
-export function Add_Med(CCCD,medicine,usage, dosagePerDay, unit) {
+export function Add_Med(CCCD, medicine, usage, dosagePerDay, unit) {
     const patientRef = ref(db, 'PatientRecord/' + CCCD);
     get(patientRef).then((snapshot) => {
         if (snapshot.exists()) {
@@ -87,7 +85,7 @@ export function Add_Med(CCCD,medicine,usage, dosagePerDay, unit) {
                 medicine: medicine,
                 usage: usage,
                 dosagePerDay: dosagePerDay,
-                unit:unit,
+                unit: unit,
             };
             if (!patientData.Med) {
                 patientData.Med = [newMed];
@@ -111,15 +109,8 @@ export function Add_Med(CCCD,medicine,usage, dosagePerDay, unit) {
     });
 };
 
-export const Patients = () => {
-    return new Promise((resolve, reject) => {
-        get(ref(db, 'PatientRecord/'))
-            .then(response => {
-                const posts = response.val();
-                resolve(posts);
-            })
-            .catch(error => {
-                reject(error);
-            });
-    });
+export const Patients = async () => {
+    const response = await get(child(dbRef, "PatientRecord/"));
+    const posts = await response.val();
+    return posts;
 };
