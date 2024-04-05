@@ -10,7 +10,7 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
             id: '',
             room: '',
             description: '',
-            status: 'Active',
+            status: 'Hoạt động',
         }
     );
 

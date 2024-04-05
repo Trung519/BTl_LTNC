@@ -9,7 +9,8 @@ import "./App.css";
 function App() {
   return (
     <div>
-      <EquipmentsManage />
+
+      <SignUpForm/>
     </div>
   );
 }
