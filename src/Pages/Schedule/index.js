@@ -7,7 +7,7 @@ import Footer from '../../Components/Footer'
 import { useState, useEffect, useCallback } from 'react';
 import { getDatabase, ref, onValue } from "firebase/database";
 import { initializeApp } from "firebase/app";
-import { addNewSchedule, searchIdDoctorByName, searchNameDoctorByID } from '../../Components/Firebase/FireBase';
+import { addNewSchedule, searchIdDoctorByName, searchNameDoctorByID, setListSchedule } from '../../Components/Firebase/FireBase';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDHfpl2Vsr7GGd8Sb6VAdNRLWKEdE9M_MI",
@@ -52,29 +52,14 @@ export default function Schedule() {
 
   const [suggestionsID, setSuggestionsID] = useState([]);
 
-  const [namePatientSearch, setNamePatientSearch] = useState("")
+  const [namePatientSearch, setNamePatientSearch] = useState(" ")
 
   useEffect(() => {
-    const getListdata = () => {
-      const scheduleRef = ref(database, "Schedule");
-      onValue(scheduleRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          const dataArray = Object.keys(data).map(key => ({
-            id: key,
-            ...data[key]
-          }));
-          setListdata(dataArray);
-        } else {
-          setListdata([]);
-        }
-      });
-    };
-    getListdata();
-  }, []);
+    setListSchedule(namePatientSearch, setListdata);
+  }, [namePatientSearch]);
 
   useEffect(() => {
-    searchIdDoctorByName(form.name_Doctor, setSuggestions)
+    searchIdDoctorByName(form.name_Doctor, setSuggestions);
   }, [form.name_Doctor])
 
   useEffect(() => {
@@ -98,7 +83,9 @@ export default function Schedule() {
       [name]: value
     });
   }
-
+  const handleNamePatientChange = (e) => {
+    setNamePatientSearch(e.target.value);
+  }
   const submitForm = () => {
     const checkValue = new Promise((resolve, reject) => {
       if (
@@ -156,7 +143,8 @@ export default function Schedule() {
           </div>
           <div className={cx('schedule-wrapper')}>
             <div className={cx('schedule-search')}>
-              <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'></input>
+              <input maxLength={100} placeholder='Tên bệnh nhân...' type='text' 
+                     onChange={handleNamePatientChange}></input>
               <i class={cx("fas fa-search", 'search')}></i>
               {searchbool || <p>Không tìm thấy !</p>}
             </div>
@@ -173,7 +161,7 @@ export default function Schedule() {
                 </div>
                 {
                   Array.from({ length: 10 }, (_, index) => {
-                    if (page * 10 + index + 1 > listdata.length) console.log('hello khay')
+                    if (page * 10 + index + 1 > listdata.length) {}
                     else {
                       let count = index % 2;
                       var handleColor = (indexx) => {
@@ -238,7 +226,8 @@ export default function Schedule() {
           </div>
           <div className={cx('schedule-wrapper')}>
             <div className={cx('schedule-search')}>
-              <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'></input>
+            <input maxLength={100} placeholder='Tên bệnh nhân...' type='text' 
+                     onChange={handleNamePatientChange}></input>
               <i class={cx("fas fa-search", 'search')}></i>
               {searchbool || <p>Không tìm thấy !</p>}
             </div>
@@ -255,7 +244,7 @@ export default function Schedule() {
                 </div>
                 {
                   Array.from({ length: 10 }, (_, index) => {
-                    if (page * 10 + index + 1 > listdata.length) console.log('hello khay')
+                    if (page * 10 + index + 1 > listdata.length) {}
                     else {
                       let count = index % 2;
                       var handleColor = (indexx) => {
@@ -360,7 +349,8 @@ export default function Schedule() {
           </div>
           <div className={cx('schedule-wrapper')}>
             <div className={cx('schedule-search')}>
-              <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'></input>
+            <input maxLength={100} placeholder='Tên bệnh nhân...' type='text' 
+                     onChange={handleNamePatientChange}></input>
               <i class={cx("fas fa-search", 'search')}></i>
               {searchbool || <p>Không tìm thấy !</p>}
             </div>
@@ -377,7 +367,7 @@ export default function Schedule() {
                 </div>
                 {
                   Array.from({ length: 10 }, (_, index) => {
-                    if (page * 10 + index + 1 > listdata.length) console.log('hello khay')
+                    if (page * 10 + index + 1 > listdata.length) {}
                     else {
                       let count = index % 2;
                       var handleColor = (indexx) => {

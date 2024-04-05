@@ -192,17 +192,17 @@ export const searchNameDoctorByID = (id, callback) => {
 
 export const setListSchedule = (name, callback) => {
   const database = getDatabase();
-  const dataRefSchedule = ref(database, 'Schdule/');
+  const dataRefSchedule = ref(database, 'Schedule/');
 
   onValue(dataRefSchedule, (snapshot) => {
     const data = snapshot.val();
     if (data) {
       const listSchedule = Object.values(data).filter(schedule => {
-        const namePatient = schedule.Patient.FirstName + " " + schedule.Patient.LastName;
+        const namePatient = schedule.Patient;
         return namePatient.toLowerCase().includes(name.toLowerCase());
       });
       callback(listSchedule);
-    } else if (name == ""){
+    } else{
       callback([]);
     }
   });
