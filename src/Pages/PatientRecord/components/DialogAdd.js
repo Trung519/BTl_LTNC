@@ -15,12 +15,11 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import MenuItem from "@mui/material/MenuItem";
-
+import { AddData } from "../P_R_be";
 const DialogAdd = (props) => {
   const {
     newFormOpen,
     handleCloseNewFormOpen,
-    AddData,
     createPatient,
     setNewPatientsAndRender,
     newPatients,
@@ -45,20 +44,13 @@ const DialogAdd = (props) => {
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries(formData.entries());
           // cách lấy data
-          AddData(
-            formJson.fullName,
-            formJson.birthDay,
-            formJson.gender,
-            formJson.CCCD,
-            formJson.BHYT
-          );
+          AddData (formJson.fullName, formJson.birthDay, formJson.gender, formJson.CCCD, formJson.BHYT)
           // console.log(String.valueOf(patients.length + 1));
 
           const newPatient = createPatient(
             // "100",
             undefined,
             undefined,
-
             formJson.fullName,
             formJson.gender,
             formJson.CCCD,

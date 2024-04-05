@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 // import Stack from "@mui/material/Stack"
-import { AddData, AddHist, Add_Med } from "./P_R_be";
+import { AddHist, Add_Med } from "./P_R_be";
 import DialogAdd from "./components/DialogAdd";
 import MainRow from "./components/MainRow";
 
@@ -269,7 +269,6 @@ export default function PatientRecord() {
             <DialogAdd
               newFormOpen={newFormOpen}
               handleCloseNewFormOpen={handleCloseNewFormOpen}
-              AddData={AddData}
               createPatient={createPatient}
               setNewPatientsAndRender={setNewPatientsAndRender}
               newPatients={newPatients}
