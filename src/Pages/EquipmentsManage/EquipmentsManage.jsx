@@ -21,6 +21,14 @@ import FirstPageRoundedIcon from '@mui/icons-material/FirstPageRounded';
 import LastPageRoundedIcon from '@mui/icons-material/LastPageRounded';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import { Alert } from '@mui/material';
+import Fade from '@mui/material/Fade';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 
 
 export default function EquipmentsManage({ }) {
@@ -31,6 +39,8 @@ export default function EquipmentsManage({ }) {
     ]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [displayAlert, setDisplayAlert] = useState(false);
+    const [displayConfirm, setDisplayConfimr] = useState(false);
 
     useEffect(() => {
         getData().then((post) => {
@@ -42,6 +52,12 @@ export default function EquipmentsManage({ }) {
         });
     }, []);
 
+    const handleDisplayAlert= () =>{
+        setDisplayAlert(true);
+        setTimeout(() => {
+            setDisplayAlert(false);
+        }, 2000);
+    }
 
     function handleSubmit(newRow) {
         if (idToEdit === null) {
@@ -75,10 +91,10 @@ export default function EquipmentsManage({ }) {
         //         return newRow;
         //     })
         //     );
-
-
+        handleDisplayAlert()
     }
-
+    
+    
 
     function handleDeleteRow(targetID) {
         writeUserData(equipmentsRows.filter((item, idx) => item.id !== targetID), "/Equipment");
@@ -120,6 +136,34 @@ export default function EquipmentsManage({ }) {
 
     return (
         <div id='container'>
+            <div>
+                <Fade in={displayAlert}>
+                    <Alert severity="success">Thêm thiết bị thành công</Alert>
+                </Fade>
+            </div>
+            <div>
+                 <Dialog
+                     open={displayConfirm}
+                        // onClose={}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+      >
+                 <DialogTitle id="alert-dialog-title">
+                   {"Xác nhận xóa thiết bị này?"}
+                 </DialogTitle>
+                    <DialogContent>
+                     <DialogContentText id="alert-dialog-description">
+                      Thiết bị được xóa sẽ không thể khôi phục
+              </DialogContentText>
+             </DialogContent>
+        <DialogActions>
+          <Button >Cancel</Button>
+          <Button autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+            </div>
             <div id='header-container'>
                 <button id="addnew-btn" onClick={() => { setModalOpen(true); setidToEdit(null) }}> + Thêm mới</button>
                 <h1>Thiết bị</h1>
