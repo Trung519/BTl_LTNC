@@ -100,7 +100,7 @@ function Header() {
                         <Route path="/file-patient" element={<PatientRecord />} />
                         <Route path="/appointment" element={<Schedule />} />
                         <Route path="/equip_manage" element={<EquipmentsManage />} />
-                        <Route path="/medicine-manage" element={<Medicine_manage />} />
+                        <Route path="/medicine_manage" element={<Medicine_manage />} />
                     </Routes>
                 </div>
             </Router>

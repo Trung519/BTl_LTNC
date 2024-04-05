@@ -10,7 +10,7 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
             id: '',
             room: '',
             description: '',
-            status: 'Active',
+            status: 'Hoạt động',
         }
     );
 
@@ -35,7 +35,7 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
                     closeModal();
                 }
             }}>
-                <div className="modal-input">
+                <div className="modal">
                     <form>
                         <div>
                             <label htmlFor="name">Tên</label>
@@ -50,12 +50,12 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
                             />
                         </div>
 
-                        <div>
+                        {/* <div>
                             <label htmlFor="id">ID</label>
                             <input type="text" name="id"
                                 onChange={handleChange} value={equimentState.id}
                             />
-                        </div>
+                        </div> */}
 
                         <div>
                             <label htmlFor="room">Phòng</label>
