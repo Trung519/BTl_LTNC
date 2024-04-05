@@ -5,7 +5,7 @@ import { v4 as uuidv4} from 'uuid'
 // import Select from 'react-select';
 import './EquipmentsManage.css';
 import { useState, useEffect } from 'react';
-import Modal from '../../components/Modal/Modal';
+import Modal from '../../Components/Modal/Modal';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
