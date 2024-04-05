@@ -52,7 +52,7 @@ export default function Schedule() {
 
   const [suggestionsID, setSuggestionsID] = useState([]);
 
-  const [namePatientSearch, setNamePatientSearch] = useState(" ")
+  const [namePatientSearch, setNamePatientSearch] = useState("")
 
   useEffect(() => {
     setListSchedule(namePatientSearch, setListdata);
@@ -85,6 +85,7 @@ export default function Schedule() {
   }
   const handleNamePatientChange = (e) => {
     setNamePatientSearch(e.target.value);
+    setPage(0)
   }
   const submitForm = () => {
     const checkValue = new Promise((resolve, reject) => {
