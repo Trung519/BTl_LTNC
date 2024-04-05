@@ -31,10 +31,11 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 import Box from "@mui/material/Box";
+import { AddData_Med } from "./P_R-be";
 
 function createMedicine(
-  STT,
-  medicineID,
+  STT = listMedicine.length + 1,
+  medicineID = `TM${listMedicine.length + 100}`,
   name,
   origin,
   HSD,
@@ -53,22 +54,70 @@ function createMedicine(
     stock,
   };
 }
-const listMedicine = [
-  createMedicine("1", "1", "A", "Trung Quốc", "23/01/2024", "1$", "2$", "200"),
-  createMedicine("2", "2", "B", "Trung Quốc", "01/01/2024", "1$", "2$", "200"),
-  createMedicine("3", "4", "D", "Trung Quốc", "01/01/2024", "1$", "2$", "200"),
-  createMedicine("4", "5", "E", "Trung Quốc", "01/01/2024", "1$", "2$", "200"),
-  createMedicine("5", "6", "F", "Trung Quốc", "01/01/2024", "1$", "2$", "200"),
+let listMedicine = [
+  createMedicine(
+    "5",
+    "TM104",
+    "A",
+    "Trung Quốc",
+    "23/01/2024",
+    "1$",
+    "2$",
+    "200"
+  ),
+  createMedicine(
+    "4",
+    "TM103",
+    "B",
+    "Trung Quốc",
+    "01/01/2024",
+    "1$",
+    "2$",
+    "200"
+  ),
+  createMedicine(
+    "3",
+    "TM102",
+    "D",
+    "Trung Quốc",
+    "01/01/2024",
+    "1$",
+    "2$",
+    "200"
+  ),
+  createMedicine(
+    "2",
+    "TM101",
+    "E",
+    "Trung Quốc",
+    "01/01/2024",
+    "1$",
+    "2$",
+    "200"
+  ),
+  createMedicine(
+    "1",
+    "TM100",
+    "F",
+    "Trung Quốc",
+    "01/01/2024",
+    "1$",
+    "2$",
+    "200"
+  ),
 ];
 // RowCustom
 function Row(props) {
-  const { row } = props;
+  const { row, setNewListMedicineAndRender } = props;
   const [infoFormOpen, setInfoFormOpen] = React.useState(false);
   const [modifyFormOpen, setmodifyFormOpen] = React.useState(false);
   const handleCloseFormOpen = () => {
     setInfoFormOpen(false);
     setmodifyFormOpen(false);
   };
+  const indexInListMedicine = listMedicine.findIndex((e) => {
+    return e.STT === row.STT;
+  });
   return (
     <TableRow
       key={row.medicineID}
@@ -167,7 +216,7 @@ function Row(props) {
               <Grid item xs={0.5} sm={1} md={4}>
                 <LocalizationProvider
                   dateAdapter={AdapterDayjs}
-                  // adapterLocale="en-gb"
+                // adapterLocale="en-gb"
                 >
                   <FormControl
                     sx={{ minWidth: 120, marginTop: "17px" }}
@@ -265,18 +314,30 @@ function Row(props) {
               const formData = new FormData(event.currentTarget);
               const formJson = Object.fromEntries(formData.entries());
               // cách lấy data
-              const newMedicine = createMedicine(
-                "1",
-                // "100"
-                formJson.medicineID,
-                formJson.name,
-                formJson.origin,
-                formJson.HSD,
-                formJson.cost,
-                formJson.sellPrice,
-                formJson.stock
-              );
-              console.log(newMedicine);
+              // const newMedicine = createMedicine(
+              //   "1",
+              //   // "100"
+              // formJson.medicineID,
+              //   formJson.name,
+              //   formJson.origin,
+              //   formJson.HSD,
+              //   formJson.cost,
+              //   formJson.sellPrice,
+              //   formJson.stock;
+              // );
+              // console.log(newMedicine);
+              listMedicine[indexInListMedicine] = {
+                ...listMedicine[indexInListMedicine],
+                medicineID: formJson.medicineID,
+                name: formJson.name,
+                origin: formJson.origin,
+                HSD: formJson.HSD,
+                cost: formJson.cost,
+                sellPrice: formJson.sellPrice,
+                stock: formJson.stock,
+              };
+              // console.log(indexInListMedicine);
+              setNewListMedicineAndRender([...listMedicine]);
               handleCloseFormOpen();
             },
           }}
@@ -399,7 +460,10 @@ function Row(props) {
           aria-label="delete"
           size="small"
           color="error"
-          // onClick={() => setOpen(!open)}
+          onClick={() => {
+            listMedicine.splice(indexInListMedicine, 1);
+            setNewListMedicineAndRender([...listMedicine]);
+          }}
         >
           <DeleteOutlineIcon></DeleteOutlineIcon>
         </IconButton>
@@ -407,12 +471,22 @@ function Row(props) {
     </TableRow>
   );
 }
-const MedicineManage = () => {
+const Medicine_manage = () => {
   const [renderMedicineList, setRenderMedicineList] =
     React.useState(listMedicine);
+  const [newListMedicine, setNewListMedicine] = React.useState(listMedicine);
+
   const [newFormOpen, setNewFormOpen] = React.useState(false);
   const handleCloseFormOpen = () => {
     setNewFormOpen(false);
+  };
+  React.useEffect(() => {
+    console.log("effect");
+    listMedicine = newListMedicine;
+  }, [newListMedicine]);
+  const setNewListMedicineAndRender = (newListMedicine) => {
+    setNewListMedicine([...newListMedicine]);
+    setRenderMedicineList([...newListMedicine]);
   };
 
   return (
@@ -459,9 +533,17 @@ const MedicineManage = () => {
 
                   const formData = new FormData(event.currentTarget);
                   const formJson = Object.fromEntries(formData.entries());
+                  AddData_Med(formJson.medicineID,
+                    formJson.name,
+                    formJson.origin,
+                    formJson.HSD,
+                    formJson.cost,
+                    formJson.sellPrice,
+                    formJson.stock
+                  )
                   // cách lấy data
                   const newMedicine = createMedicine(
-                    "1",
+                    undefined,
                     // "100"
                     formJson.medicineID,
                     formJson.name,
@@ -472,6 +554,10 @@ const MedicineManage = () => {
                     formJson.stock
                   );
                   console.log(newMedicine);
+                  setNewListMedicineAndRender([
+                    newMedicine,
+                    ...newListMedicine,
+                  ]);
                   handleCloseFormOpen();
                 },
               }}
@@ -732,7 +818,11 @@ const MedicineManage = () => {
             </TableHead>
             <TableBody>
               {renderMedicineList.map((row) => (
-                <Row key={row.STT} row={row} />
+                <Row
+                  key={row.STT}
+                  row={row}
+                  setNewListMedicineAndRender={setNewListMedicineAndRender}
+                />
               ))}
             </TableBody>
           </Table>
@@ -742,4 +832,4 @@ const MedicineManage = () => {
   );
 };
 
-export default MedicineManage;
+export default Medicine_manage;

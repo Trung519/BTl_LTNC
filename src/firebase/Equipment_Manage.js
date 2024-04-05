@@ -9,20 +9,18 @@ import { ref, child, get, set } from "firebase/database";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDqIpDV2eF7e4j2mPz_lyX3NlQ3iuDtvF8",
-  authDomain: "assignment-advancedprogramming.firebaseapp.com",
-  databaseURL:
-    "https://assignment-advancedprogramming-default-rtdb.firebaseio.com",
-  projectId: "assignment-advancedprogramming",
-  storageBucket: "assignment-advancedprogramming.appspot.com",
-  messagingSenderId: "507756474873",
-  appId: "1:507756474873:web:3110653d9ce6013ade4d28",
-  measurementId: "G-M68T45GZCH",
+  apiKey: "AIzaSyDHfpl2Vsr7GGd8Sb6VAdNRLWKEdE9M_MI",
+  authDomain: "project1-33ba1.firebaseapp.com",
+  databaseURL: "https://project1-33ba1-default-rtdb.firebaseio.com",
+  projectId: "project1-33ba1",
+  storageBucket: "project1-33ba1.appspot.com",
+  messagingSenderId: "122408221984",
+  appId: "1:122408221984:web:8d1f8ed3c54f8cc7acab45",
+  measurementId: "G-W41PD0H5PY"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const database = getDatabase(app);
+const database = getDatabase();
 
 const dbRef = ref(database);
 

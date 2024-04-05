@@ -9,7 +9,7 @@ function Footer() {
             <div className={cx('container-fluid', 'footer')}>
                 <div className={cx('container', 'footer-info')}>
                     <div className={cx('footer-info-left')}>
-                        <h2>Bệnh viện đa khoa HCMUT</h2>
+                        <h2>BỆNH VIỆN ĐA KHOA TÂM ĐỨC</h2>
                         <div className={cx('to-flex', 'left-address')}>
                             <i class="fas fa-map-marker-alt"></i>
                             <p>Địa chỉ: KTX khu A, ĐHQP-TPHCM</p>
