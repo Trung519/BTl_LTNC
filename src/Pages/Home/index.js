@@ -1,9 +1,9 @@
-import classNames from 'classnames/bind'
-import styles from './Home.module.scss'
-import Header from '../../Components/Header'
-import Footer from '../../Components/Footer'
+import classNames from "classnames/bind";
+import styles from './Home.module.scss';
+import Header from "../../Components/Header";
+import Footer from "../../Components/Footer";
 
-const cx = classNames.bind(styles)
+const cx = classNames.bind(styles);
 
 function Home() {
     return (
@@ -40,4 +40,4 @@ function Home() {
     )
 }
 
-export default Home
+export default Home;

@@ -1,10 +1,11 @@
-import { getData, writeUserData } from '../../firebase/Equipment_Manage.js';
+import { getData, writeUserData } from '../../services/firebase';
+import { v4 as uuidv4} from 'uuid'
 
 
-
+// import Select from 'react-select';
 import './EquipmentsManage.css';
 import { useState, useEffect } from 'react';
-import Modal from './Modal';
+import Modal from '../../Components/Modal/Modal'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
@@ -22,8 +23,8 @@ import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 
 
-export default function EquipmentsManage() {
-    const [rowToEdit, setRowToEdit] = useState(null);
+export default function EquipmentsManage({ }) {
+    const [idToEdit, setidToEdit] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [data, setData] = useState([]);
     const [equipmentsRows, setEquipmentsRows] = useState([
@@ -43,34 +44,49 @@ export default function EquipmentsManage() {
 
 
     function handleSubmit(newRow) {
-        rowToEdit === null ?
-            setEquipmentsRows([...equipmentsRows, newRow]) : setEquipmentsRows(equipmentsRows.map((currTow, idx) => {
-                if (idx !== rowToEdit) {
-                    return currTow;
-                }
-                return newRow;
-            })
-            );
-        if (rowToEdit === null) {
-            writeUserData([...equipmentsRows, newRow], "/Equipment");
+        if (idToEdit === null) {
+            // add item
+            // newRow={...newRow, id: uuidv4()}
+            let ID =uuidv4()
+            let newdata= [...equipmentsRows, {...newRow, id:ID}]
+            writeUserData(newdata, "/Equipment");
+            setEquipmentsRows(newdata);
         }
         else {
+            // edit item
             let newData = equipmentsRows;
-            newData[rowToEdit] = newRow;
+            // newData[idToEdit] = newRow;
+            let find =newData.find(item => item.id===idToEdit);
+            if(find){
+                find.name=newRow.name;
+                find.room=newRow.room;
+                find.status=newRow.status;
+                find.type=newRow.type;
+                find.description=newRow.description;
+            }
             writeUserData(newData, "/Equipment");
+            setEquipmentsRows(newData);
         }
+        // idToEdit === null ?
+        //     setEquipmentsRows([...equipmentsRows, newRow]) : setEquipmentsRows(equipmentsRows.map((currTow, idx) => {
+        //         if (idx !== idToEdit) {
+        //             return currTow;
+        //         }
+        //         return newRow;
+        //     })
+        //     );
 
 
     }
 
 
-    function handleDeleteRow(targetIndex) {
-        writeUserData(equipmentsRows.filter((_, idx) => idx !== targetIndex), "/Equipment");
-        setEquipmentsRows(equipmentsRows.filter((_, idx) => idx !== targetIndex));
+    function handleDeleteRow(targetID) {
+        writeUserData(equipmentsRows.filter((item, idx) => item.id !== targetID), "/Equipment");
+        setEquipmentsRows(equipmentsRows.filter((item, idx) => item.id !== targetID));
     }
-
-    function handleEditRow(idx) {
-        setRowToEdit(idx);
+    function handleEditRow(id) {
+  
+        setidToEdit(id);
         setModalOpen(true);
     }
 
@@ -105,7 +121,7 @@ export default function EquipmentsManage() {
     return (
         <div id='container'>
             <div id='header-container'>
-                <button id="addnew-btn" onClick={() => { setModalOpen(true); setRowToEdit(null) }}> + Thêm mới</button>
+                <button id="addnew-btn" onClick={() => { setModalOpen(true); setidToEdit(null) }}> + Thêm mới</button>
                 <h1>Thiết bị</h1>
             </div>
             <div className='search'>
@@ -138,7 +154,7 @@ export default function EquipmentsManage() {
                                     <tr key={index}>
                                         <td className='name-col'>{<div>
                                             <span>{row.name}</span> <br />
-                                            <span id="txt-id">{row.id}</span>
+                                            {/* <span id="txt-id">{row.id}</span> */}
                                         </div>}</td>
                                         <td className='type-col'>{row.type}</td>
                                         <td className='name-col'>{row.room}</td>
@@ -146,8 +162,8 @@ export default function EquipmentsManage() {
                                         <td className='type-col'><span>{row.status}</span></td>
                                         <td className='type-col'>
                                             <div id='action-btn-container'>
-                                                <button className="action-btn" id="delete-btn" type="submit" onClick={() => handleDeleteRow(index)}><FontAwesomeIcon icon={faTrashCan} style={{ color: "#ff3333", }} /></button>
-                                                <button className="action-btn" id="edit-btn" type="submit" onClick={() => handleEditRow(index)} ><FontAwesomeIcon icon={faPenToSquare} style={{ color: "#1a9cff", }} /></button>
+                                                <button className="action-btn" id="delete-btn" type="submit" onClick={() => handleDeleteRow(row.id)}><FontAwesomeIcon icon={faTrashCan} style={{ color: "#ff3333", }} /></button>
+                                                <button className="action-btn" id="edit-btn" type="submit" onClick={() => handleEditRow(row.id)} ><FontAwesomeIcon icon={faPenToSquare} style={{ color: "#1a9cff", }} /></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -191,7 +207,7 @@ export default function EquipmentsManage() {
             {modalOpen && <Modal closeModal={() => {
                 setModalOpen(false);
             }} onSubmit={handleSubmit}
-                defaultValue={rowToEdit !== null && equipmentsRows[rowToEdit]} />}
+                defaultValue={idToEdit !== null && equipmentsRows.find(item=>item.id===idToEdit)} />}
         </div>
     );
 }

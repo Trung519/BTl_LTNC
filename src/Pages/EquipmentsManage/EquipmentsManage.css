@@ -1,8 +1,7 @@
 #container {
-    width: 70%;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 4rem;
 }
 
 #txt-id {
@@ -52,11 +51,6 @@ right: 0;
 margin-top: 1rem;
 border-radius: 12px;
 margin-bottom: 3rem;
-}
-
-#addnew-btn:hover{
-    background-color: #1F2B6C;
-    color: white;
 }
 
 #header-container{
