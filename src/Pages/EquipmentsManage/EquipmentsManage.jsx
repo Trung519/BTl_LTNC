@@ -4,11 +4,11 @@ import { v4 as uuidv4} from 'uuid'
 
 // import Select from 'react-select';
 import './EquipmentsManage.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Modal from '../../Components/Modal/Modal';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faColonSign, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 import TextField from "@mui/material/TextField";
@@ -23,12 +23,8 @@ import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import { Alert } from '@mui/material';
 import Fade from '@mui/material/Fade';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
+import ConfirmModal from '../../Components/ConfirmModal';
+
 
 
 export default function EquipmentsManage({ }) {
@@ -40,8 +36,8 @@ export default function EquipmentsManage({ }) {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [displayAlert, setDisplayAlert] = useState(false);
-    const [displayConfirm, setDisplayConfimr] = useState(false);
-
+    const [displayConfirm, setDisplayConfirm] =useState(false);
+ 
     useEffect(() => {
         getData().then((post) => {
             if (post != null) {
@@ -94,13 +90,22 @@ export default function EquipmentsManage({ }) {
         handleDisplayAlert()
     }
     
-    
-
-    function handleDeleteRow(targetID) {
-        writeUserData(equipmentsRows.filter((item, idx) => item.id !== targetID), "/Equipment");
-        setEquipmentsRows(equipmentsRows.filter((item, idx) => item.id !== targetID));
+    const handleOnclickDelete =(ID) =>{
+        setidToEdit(ID);
+        setDisplayConfirm(true);
+        // console.log('idtodit', idToEdit)
     }
-    function handleEditRow(id) {
+
+    const handleDeleteRow =useCallback(
+         () => {
+            // console.log('idto Edit', idToEdit)
+            writeUserData(equipmentsRows.filter((item, idx) => item.id !== idToEdit), "/Equipment");
+            setEquipmentsRows(equipmentsRows.filter((item, idx) => item.id !== idToEdit));
+            setDisplayConfirm(false);
+         }, [idToEdit]) 
+
+    
+    function handleEditRow(id) {    
   
         setidToEdit(id);
         setModalOpen(true);
@@ -141,29 +146,9 @@ export default function EquipmentsManage({ }) {
                     <Alert severity="success">Thêm thiết bị thành công</Alert>
                 </Fade>
             </div>
-            <div>
-                 <Dialog
-                     open={displayConfirm}
-                        // onClose={}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-      >
-                 <DialogTitle id="alert-dialog-title">
-                   {"Xác nhận xóa thiết bị này?"}
-                 </DialogTitle>
-                    <DialogContent>
-                     <DialogContentText id="alert-dialog-description">
-                      Thiết bị được xóa sẽ không thể khôi phục
-              </DialogContentText>
-             </DialogContent>
-        <DialogActions>
-          <Button >Cancel</Button>
-          <Button autoFocus>
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
-            </div>
+
+   
+            
             <div id='header-container'>
                 <button id="addnew-btn" onClick={() => { setModalOpen(true); setidToEdit(null) }}> + Thêm mới</button>
                 <h1>Thiết bị</h1>
@@ -206,7 +191,7 @@ export default function EquipmentsManage({ }) {
                                         <td className='type-col'><span>{row.status}</span></td>
                                         <td className='type-col'>
                                             <div id='action-btn-container'>
-                                                <button className="action-btn" id="delete-btn" type="submit" onClick={() => handleDeleteRow(row.id)}><FontAwesomeIcon icon={faTrashCan} style={{ color: "#ff3333", }} /></button>
+                                                <button className="action-btn" id="delete-btn" type="submit" onClick={() => handleOnclickDelete(row.id)}><FontAwesomeIcon icon={faTrashCan} style={{ color: "#ff3333", }} /></button>
                                                 <button className="action-btn" id="edit-btn" type="submit" onClick={() => handleEditRow(row.id)} ><FontAwesomeIcon icon={faPenToSquare} style={{ color: "#1a9cff", }} /></button>
                                             </div>
                                         </td>
@@ -252,6 +237,9 @@ export default function EquipmentsManage({ }) {
                 setModalOpen(false);
             }} onSubmit={handleSubmit}
                 defaultValue={idToEdit !== null && equipmentsRows.find(item=>item.id===idToEdit)} />}
+            
+            <ConfirmModal displayConfirm={displayConfirm} setDisplayConfirm={setDisplayConfirm} handleDeleteRow={handleDeleteRow}  ></ConfirmModal>
+
         </div>
     );
 }

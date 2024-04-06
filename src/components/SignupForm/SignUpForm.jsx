@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getData, writeUserData } from "../../services/firebase";
+import { Link } from "react-router-dom";
 import styles from './SignUpForm.module.css';
 import doctorImage from '../assets/doctor_4x.png';
 export default function SignUpForm() {
@@ -27,8 +28,28 @@ export default function SignUpForm() {
     };
 
     const handleSignUp = () => {
-        let newAcc = [...account, signUpState];
-        writeUserData(newAcc, '/Account')
+        let isEmpty =false;
+        Object.keys(signUpState).forEach(key =>{
+            if (signUpState[key] ===""){
+                isEmpty=true
+                
+            }
+        })
+        if(!isEmpty){
+
+            // let found = account.find(item =>
+            //     item.Username === loginState.Username && item.Password === loginState.Password
+            // )
+            // if (found) {
+            //     isCorrect=true;
+            // }
+            // else {
+            //     isCorrect=false;
+            // }
+            let newAcc = [...account, signUpState];
+            writeUserData(newAcc, '/Account')
+        }
+        
     }
 
 
@@ -55,7 +76,7 @@ export default function SignUpForm() {
                         </div>
                         <div className={styles.btnContainer}>
                             <button type='submit' onClick={handleSignUp}>Đăng ký</button>
-                            <button type='submit'>Đăng nhập</button>
+                            <Link className={styles.link}  to='/login' >Đăng nhập</Link>
                         </div>
                     </form>
                 </div>

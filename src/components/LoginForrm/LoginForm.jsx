@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
+import { Alert } from '@mui/material';
+import Fade from '@mui/material/Fade';
 import { getData } from '../../services/firebase';
 import styles from './LoginForm.module.css';
+import { Link } from 'react-router-dom';
 
 
 export default function LoginForm() {
@@ -9,6 +12,7 @@ export default function LoginForm() {
         Password: '',
         Username: '',
     })
+    const [displayAlert, setDisplayAlert] =useState(false);
 
     function handleChange(e) {
         setLoginState({
@@ -26,16 +30,22 @@ export default function LoginForm() {
         });
     }, []);
 
+    
     const handleLogin = () => {
         let found = account.find(item =>
             item.Username === loginState.Username && item.Password === loginState.Password
         )
         if (found) {
-            console.log('login success')
+            window.location.href= '/';
         }
         else {
-            console.log('incorrect info')
+            console.log('incorrect')
+            setDisplayAlert(true);
+            setTimeout(() => {
+                setDisplayAlert(false)
+            }, 2000);
         }
+       
 
 
     }
@@ -44,6 +54,9 @@ export default function LoginForm() {
         <div className={styles.background}>
             
             <div className={styles.wrapper}>
+            <Fade in={displayAlert}>
+                    <Alert severity="error">Tên đăng nhập hoặc mật khẩu không chính xác</Alert>
+                </Fade>
                 <form action=''>
                     <h1>Đăng nhập</h1>
                     <div className={styles.inputBox}>
@@ -61,10 +74,12 @@ export default function LoginForm() {
                         <a href="a">Quên mật khẩu? </a>
                     </div>
 
-                    <button onClick={handleLogin} >Đăng nhập</button>
+                    <div className={styles.btnLogin} onClick={handleLogin} >      
+                                    Đăng nhập
+                                </div>
 
                     <div className={styles.registerLink}>
-                        <p>Không có tài khoản? <a href="a">Đăng ký</a></p>
+                        <p>Không có tài khoản? <a href="signup">Đăng ký</a></p>
                     </div>
                 </form >
 
