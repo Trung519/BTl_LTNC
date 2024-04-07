@@ -17,12 +17,12 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { AddHist, Add_Med } from "./P_R_be";
 import DialogAdd from "./components/DialogAdd";
 import MainRow from "./components/MainRow";
+import { Patients } from "./P_R_be";
 
-export let patients = [];
-
+export let patients =[]
 function createPatient(
-  STT = patients.length + 1,
-  patientID = `BN${patients.length + 100}`,
+  STT =  1, //patients.length + 1,
+  patientID =  1,//`BN${patients.length + 100}`,
   fullName,
   gender,
   CCCD,
@@ -61,6 +61,8 @@ function createPatient(
 //     BirthDay: PropTypes.string.isRequired,
 //   }).isRequired,
 // };
+
+
 //   createPatient(
 //     10,
 //     "BN109",
@@ -192,6 +194,17 @@ function createPatient(
 // ];
 
 export default function PatientRecord() {
+  let [patients, setPatient] = React.useState([]);
+  //console.log("1", row);
+  React.useEffect(() => {
+    Patients().then((post) => {
+      if (post != null) {
+        setPatient(post);
+      }
+    });
+  }, []);
+  console.log("Hellobabefdsfdssdsf", patients);
+
   const [newFormOpen, setNewFormOpen] = React.useState(false);
   const [newGender, setNewGender] = React.useState("");
   const [renderPatientList, setRenderPatientList] = React.useState(patients); //Render ra những thứ cần render
@@ -200,13 +213,6 @@ export default function PatientRecord() {
   const [birthDay, setBirthDay] = React.useState(null);
   const [CCCD, setCCCD] = React.useState(0);
   const [BHYT, setBHYT] = React.useState(0);
-
-  //const [tableData, setTableData] = React.useState([]);
-
-  // React.useEffect(() => {
-  //     // Fetch data from Table_Body component
-  //     setTableData(Table_Body());
-  // }, []);
   const handle_Name = (event) => {
     setfullname(event.target.value);
   };
@@ -236,6 +242,8 @@ export default function PatientRecord() {
   const handleCloseNewFormOpen = () => {
     setNewFormOpen(false);
   };
+  console.log("Hellobabenewpatient", newPatients);
+
   return (
     <Paper elevation={3} sx={{ m: 1 }}>
       <Box sx={{ flexGrow: 1, marginRight: "10px" }}>

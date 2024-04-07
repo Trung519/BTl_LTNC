@@ -44,7 +44,8 @@ const DialogHistoryAdd = (props) => {
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries(formData.entries());
           AddHist(
-            formJson.CCCD,
+            row.CCCD,
+            row.STT,
             formJson.date,
             formJson.doctor,
             formJson.disease

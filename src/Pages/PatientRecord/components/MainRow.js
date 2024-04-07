@@ -34,23 +34,26 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { Patients } from "../P_R_be";
+import { Patients, getPatients } from "../P_R_be";
 import HistoryRow from "./HistoryRow";
-import { patients } from "../PatientRecord";
 import { AddData, AddHist, Add_Med } from "../P_R_be";
+import { patients } from "../PatientRecord";
 
 function MainRow(props) {
-  const { row, setNewPatientsAndRender } = props;
+  const {row, setNewPatientsAndRender } = props;
+
+  const [patient, setPatient] = React.useState([]);
   console.log("1", row);
   React.useEffect(() => {
     Patients().then((post) => {
       if (post != null) {
-        console.log("Hellobabe", post);
-        patients = [post] ?? [];
+        setPatient(post);
       }
     });
   }, []);
-  console.log(patients);
+
+
+  console.log("Hellobabeeeeeeeeeeeee", patient);
   const handleCloseFormOpen = () => {
     setInfoFormOpen(false);
     setmodifyFormOpen(false);
@@ -81,6 +84,8 @@ function MainRow(props) {
   //     return e.STT == row.STT;
   //   });
   // };
+
+  //
   const indexInPatients = patients.findIndex((e) => {
     return e.STT === row.STT;
   });
@@ -227,9 +232,11 @@ function MainRow(props) {
             hủy
           </Button>
           <Button
+          
             onClick={() => {
               Add_Med(
                 CCCD,
+                row.STT,
                 nameValue.current.value,
                 usageValue.current.value,
                 dosageValue.current.value,
@@ -237,6 +244,7 @@ function MainRow(props) {
               );
               setListNewMedicine(medicineAddList);
               setAddMedicineListFormOpen(false);
+              console.log(row.STT);
             }}
           >
             Xác nhận
@@ -418,6 +426,7 @@ function MainRow(props) {
           </IconButton>
           {/* DialogModify */}
           <Dialog
+            patients={patients}
             fullWidth
             maxWidth="sm"
             open={modifyFormOpen}
@@ -615,7 +624,8 @@ function MainRow(props) {
                     const formData = new FormData(event.currentTarget);
                     const formJson = Object.fromEntries(formData.entries());
                     AddHist(
-                      formJson.CCCD,
+                      row.CCCD,
+                      row.STT,
                       formJson.date,
                       formJson.doctor,
                       formJson.disease
