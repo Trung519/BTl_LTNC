@@ -1,81 +1,89 @@
-.footer{
-    background-color: rgb(227, 226, 226);
-}
 
-.footer-info{
-    display:flex;
-    margin-bottom:1%;
+.footer{
+    background-color:#1F2B6C;
+    color:white;
+    padding:2% 0;
 }
 
 .footer-info-left{
-    width: 70%;
-    padding:1% 0;
-    text-align: start;
 
     h2{
-        text-align: center;
-        background: linear-gradient(to right, #f4c6a0,#8f5d0d);
-        width: 50%;
-        padding:1% 0;
+        color:rgb(205, 205, 22);
         border-radius: 10px;
-        font-size: 170%;
-        margin-bottom:3%;
+        background: linear-gradient(to right,#a0c2ca,#3ea6f1);
+        text-align: center;
+        margin-bottom:5%;
+        font-weight: 600;
+    }
 
-    
+    div{
+        font-weight: 450;
+        text-align: center;
+        font-style: italic;
     }
 }
 
-.footer-info-right{
-    width: 30%;
+.center-title{
+    width: 35%;
+    padding-left:20px;
+    border-radius: 10px;
+        background: linear-gradient(to right,#a0c2ca,#3ea6f1);
+      
+    margin-bottom:4%;
 }
 
 .to-flex{
     display:flex;
     align-items: center;
-    margin-left:10%;
-    margin:-3% 0;
-    margin-left:7%;
+    margin-bottom:2%;
+    font-size: 18px;
 
-    i{
-        font-size: 120%;
+    svg{
+        margin-right:20px;
     }
 
     p{
-        font-size: 110%;
-        margin-top:2%;
-        margin-left:2%;
+        margin:auto 3%;
+    }
+}
+
+.left-address{
+    margin-left:0.5%;
+    
+    p{
+        margin-left:3.5%;
+    }
+}
+
+.left-hotline{
+    margin-left:0.5%;
+
+    p{
+        margin-left:4%;
     }
 }
 
 .footer-info-right{
-    h4{
-        margin-top:15%;
-        margin-bottom:5%;
-    }
-
-    .contact-items{
-        width: 100%;
-        display:flex;
-        justify-content: center;
-        
-       div{
-        margin:0 3%;
-        font-size: 140%;
-        transition:0.4s;
-
-        &:hover{
-            scale: 1.4;
-        }
-       }
+h4{
+        margin-bottom:40px;
+        border-radius: 10px;
+        background: linear-gradient(to right,#a0c2ca,#3ea6f1);
+        padding-left:20px;
     }
 }
 
-.footer-dev{
-    border-top: 1px solid black;
+.contact-items{
+    display:flex;
+    margin-left:15%;
 
-    p{
-        padding:1% 0;
-        font-size: 80%;
+    svg{
+        margin-right:20px;
+        font-size: 30px;
+        transition:0.3s;
+
+        &:hover{
+            scale:1.3;
+        }
     }
 }
 

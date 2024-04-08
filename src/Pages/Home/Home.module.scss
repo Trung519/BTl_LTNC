@@ -10,7 +10,7 @@
     position: relative;
     overflow: hidden;
     width: 100rem;
-    height: 70rem;
+    height: 55rem;
 }
 
 .home::before {
@@ -31,43 +31,30 @@
 .content {
     padding-top:10%;
     position: relative;
+    margin-top:350px;
     z-index: 1;
     width: 70%;
     height: 100%;
     text-align: start;
 
     p{
-        font-weight: 450;
+        font-weight: 700;
+        font-size: 20px;
+        color:#159EEC;
+        line-height: 21.11px;
+        font-family: Work Sans;
+        letter-spacing: 16%;
+    }
+
+    h1{
+        color:#1F2B6C;
+        text-align: start;
+        font-family: Yeseva One;
+        font-weight: 400;
+        font-size: 48px;
+        line-height: 55.44px;
     }
 }
-
-.characters{
-    margin-top:40%;
-    display:flex;
-    justify-content: space-between;
-    height: 20%;
-
-    .character{
-        display:flex;
-        align-items: center;
-        width: 20%;
-        background:linear-gradient(50deg, #b0bff5,#6090f7);
-        border-radius: 10px;
-        justify-content: start;
-        height: 50%;
-        font-size: 27px;
-        font-family: segoe ui;
-        
-        p{
-            margin-top:5%;
-            margin-left:7%;
-            margin-right:8%;
-        }
-
-        
-    }
-}
-
 
 
 
