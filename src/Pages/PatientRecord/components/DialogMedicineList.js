@@ -56,7 +56,7 @@ const DialogMedicineList = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {historyRow.medicineList.map((row) => (
+              {/* {historyRow.medicineList.map((row) => (
                 <TableRow
                   key={row.medicine}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -68,7 +68,7 @@ const DialogMedicineList = (props) => {
                   <TableCell>{row.dosagePerDay}</TableCell>
                   <TableCell>{row.unit}</TableCell>
                 </TableRow>
-              ))}
+              ))} */}
             </TableBody>
           </Table>
         </TableContainer>

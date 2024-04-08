@@ -44,20 +44,23 @@ const DialogAdd = (props) => {
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries(formData.entries());
           // cách lấy data
-          AddData (formJson.fullName, formJson.birthDay, formJson.gender, formJson.CCCD, formJson.BHYT)
-          // console.log(String.valueOf(patients.length + 1));
-
-          const newPatient = createPatient(
-            // "100",
-            undefined,
-            undefined,
+          AddData(
             formJson.fullName,
+            formJson.birthDay,
             formJson.gender,
             formJson.CCCD,
-            formJson.BHYT,
-            formJson.birthDay,
-            formJson.address
+            formJson.BHYT
           );
+          // console.log(String.valueOf(patients.length + 1));
+
+          const newPatient = {
+            fullName: formJson.fullName,
+            birthDay: formJson.birthDay,
+            gender: formJson.gender,
+            CCCD: formJson.CCCD,
+            BHYT: formJson.BHYT,
+          };
+          console.log("newPatient", newPatient);
           //xu li add database
           // setRenderPatientList((prev) => [newPatient, ...prev]);
           setNewPatientsAndRender([newPatient, ...newPatients]);

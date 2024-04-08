@@ -19,10 +19,10 @@ import DialogAdd from "./components/DialogAdd";
 import MainRow from "./components/MainRow";
 import { Patients } from "./P_R_be";
 
-export let patients =[]
+export let patients = [];
 function createPatient(
-  STT =  1, //patients.length + 1,
-  patientID =  1,//`BN${patients.length + 100}`,
+  STT = 1, //patients.length + 1,
+  patientID = 1, //`BN${patients.length + 100}`,
   fullName,
   gender,
   CCCD,
@@ -61,7 +61,6 @@ function createPatient(
 //     BirthDay: PropTypes.string.isRequired,
 //   }).isRequired,
 // };
-
 
 //   createPatient(
 //     10,
@@ -199,11 +198,11 @@ export default function PatientRecord() {
   React.useEffect(() => {
     Patients().then((post) => {
       if (post != null) {
-        setPatient(post);
+        setNewPatientsAndRender(Object.values(post));
       }
     });
   }, []);
-  console.log("Hellobabefdsfdssdsf", patients);
+  // console.log("Hellobabefdsfdssdsf", patients);
 
   const [newFormOpen, setNewFormOpen] = React.useState(false);
   const [newGender, setNewGender] = React.useState("");
@@ -242,212 +241,282 @@ export default function PatientRecord() {
   const handleCloseNewFormOpen = () => {
     setNewFormOpen(false);
   };
-  console.log("Hellobabenewpatient", newPatients);
+  // console.log("Hellobabenewpatient", newPatients);
 
   return (
-    <Paper elevation={3} sx={{ m: 1 }}>
-      <Box sx={{ flexGrow: 1, marginRight: "10px" }}>
-        <Grid
-          container
-          spacing={{ xs: 1, md: 2 }}
-          columns={{ xs: 1, sm: 4, md: 12 }}
+    <Box sx={{ height: "100%" }}>
+      <Paper elevation={3} sx={{ margin: "35px", borderRadius: "20px" }}>
+        <Box
+          sx={{
+            flexGrow: 1,
+            margin: "20px 15px 20px 0",
+            borderBottom: "1px solid #CFCFCF",
+          }}
         >
-          <Grid item xs={1} sm={1.5} md={2} sx={{ margin: "15px 0 0 10px" }}>
-            <Typography
-              variant="h5"
-              // gutterBottom
-              component="div"
-              sx={{
-                display: "inline-block",
-              }}
+          <Grid
+            container
+            alignItems="center"
+            spacing={{ xs: 1, md: 2 }}
+            columns={{ xs: 1, sm: 4, md: 12 }}
+          >
+            <Grid
+              item
+              xs={1}
+              sm={1.5}
+              md={2}
+              sx={{ margin: "0 0 0 10px", padding: "20px 0 0 0" }}
             >
-              HỒ SƠ BỆNH ÁN
-            </Typography>
-          </Grid>
-          <Grid item xs={1} sm={0.5} md={0.7}>
-            <Button
-              variant="contained"
-              color="success"
-              sx={{ margin: "13px 0 0 13px" }}
-              onClick={handleClickNewFormOpen}
-            >
-              Thêm
-            </Button>
+              <Typography
+                variant="h5"
+                // gutterBottom
+                component="div"
+                sx={{
+                  display: "inline-block",
+                  borderBottom: "2px solid #3497F9",
+                  padding: "25px 0 25px 0",
+                }}
+              >
+                HỒ SƠ BỆNH ÁN
+              </Typography>
+            </Grid>
+            <Grid item xs={1} sm={0.5} md={0.8} sx={{ margin: "0 0 0 10px" }}>
+              <Button
+                variant="contained"
+                // color="success"
+                sx={{
+                  // margin: "0 20px 0 10px",
+                  backgroundColor: "#3497F9",
+                  boxShadow: "none",
+                }}
+                onClick={handleClickNewFormOpen}
+              >
+                Thêm
+              </Button>
 
-            <DialogAdd
-              newFormOpen={newFormOpen}
-              handleCloseNewFormOpen={handleCloseNewFormOpen}
-              createPatient={createPatient}
-              setNewPatientsAndRender={setNewPatientsAndRender}
-              newPatients={newPatients}
-              handle_Name={handle_Name}
-              handle_Date={handle_Date}
-              newGender={newGender}
-              handleChangeGender={handleChangeGender}
-              handle_CCCD={handle_CCCD}
-              handle_BHYT={handle_BHYT}
-            ></DialogAdd>
+              <DialogAdd
+                patients={patients}
+                newFormOpen={newFormOpen}
+                handleCloseNewFormOpen={handleCloseNewFormOpen}
+                createPatient={createPatient}
+                setNewPatientsAndRender={setNewPatientsAndRender}
+                newPatients={newPatients}
+                handle_Name={handle_Name}
+                handle_Date={handle_Date}
+                newGender={newGender}
+                handleChangeGender={handleChangeGender}
+                handle_CCCD={handle_CCCD}
+                handle_BHYT={handle_BHYT}
+              ></DialogAdd>
+            </Grid>
+            <Grid item xs={1} sm={2} md={3}>
+              {/* Tìm kiếm theo họ tên */}
+              <Autocomplete
+                onChange={(event, value) => {
+                  if (value === null) setRenderPatientList(patients);
+                  else setRenderPatientList([value]);
+                }}
+                sx={{ width: 300, marginLeft: "15px" }}
+                options={patients}
+                getOptionLabel={(option) => option.fullName}
+                id="fullname_search"
+                clearOnEscape
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Tìm kiếm theo họ tên"
+                    variant="outlined"
+                    InputProps={{
+                      sx: {
+                        borderRadius: "50px",
+                        // borderWidth: "1px",
+                        // borderColor: "#3497F9 !important",
+                        padding: 0,
+
+                        // color: "#1565c0;",
+                      },
+                    }}
+                    InputLabelProps={
+                      {
+                        // sx: {
+                        //   color: "#3497F9",
+                        //   borderWidth: "1px",
+                        //   borderColor: "green !important",
+                        // },
+                      }
+                    }
+                    size="small"
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={1} sm={2} md={3}>
+              <Autocomplete
+                // disablePortal
+                onChange={(event, value) => {
+                  if (value === null) setRenderPatientList(patients);
+                  else setRenderPatientList([value]);
+                }}
+                sx={{ width: 300 }}
+                options={patients}
+                getOptionLabel={(option) => option.CCCD}
+                id="fullname_search"
+                clearOnEscape
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Tìm kiếm theo số CCCD"
+                    variant="outlined"
+                    InputProps={{ sx: { borderRadius: "50px", padding: 0 } }}
+                    size="small"
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={1} sm={2} md={3}>
+              <Autocomplete
+                onChange={(event, value) => {
+                  if (value === null) setRenderPatientList(patients);
+                  else setRenderPatientList([value]);
+                }}
+                sx={{ width: 300 }}
+                options={patients}
+                getOptionLabel={(option) => option.BHYT}
+                id="fullname_search"
+                clearOnEscape
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Tìm kiếm theo số BHYT"
+                    variant="outlined"
+                    InputProps={{ sx: { borderRadius: "50px", padding: 0 } }}
+                    size="small"
+                  />
+                )}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={1} sm={2} md={3}>
-            {/* Tìm kiếm theo họ tên */}
-            <Autocomplete
-              onChange={(event, value) => {
-                if (value === null) setRenderPatientList(patients);
-                else setRenderPatientList([value]);
-              }}
-              sx={{ width: 300, marginLeft: "15px" }}
-              options={patients}
-              getOptionLabel={(option) => option.fullName}
-              id="fullname_search"
-              clearOnEscape
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Tìm kiếm theo họ tên"
-                  variant="standard"
-                />
-              )}
-            />
-          </Grid>
-          <Grid item xs={1} sm={2} md={3}>
-            <Autocomplete
-              onChange={(event, value) => {
-                if (value === null) setRenderPatientList(patients);
-                else setRenderPatientList([value]);
-              }}
-              sx={{ width: 300 }}
-              options={patients}
-              getOptionLabel={(option) => option.CCCD}
-              id="fullname_search"
-              clearOnEscape
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Tìm kiếm theo số CCCD"
-                  variant="standard"
-                />
-              )}
-            />
-          </Grid>
-          <Grid item xs={1} sm={2} md={3}>
-            <Autocomplete
-              onChange={(event, value) => {
-                if (value === null) setRenderPatientList(patients);
-                else setRenderPatientList([value]);
-              }}
-              sx={{ width: 300 }}
-              options={patients}
-              getOptionLabel={(option) => option.BHYT}
-              id="fullname_search"
-              clearOnEscape
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Tìm kiếm theo số BHYT"
-                  variant="standard"
-                />
-              )}
-            />
-          </Grid>
-        </Grid>
-      </Box>
-      <Divider variant="middle" sx={{ m: 3 }} />
-      <Paper elevation={0} sx={{ marginLeft: 1 }}>
-        <TableContainer sx={{ maxHeight: 480, overflowY: "scroll" }}>
-          <Table stickyHeader>
-            <colgroup>
-              <col style={{ width: "5%" }} />
-              <col style={{ width: "5%" }} />
-              <col style={{ width: "15%" }} />
-              <col style={{ width: "23%" }} />
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "10%" }} />
-            </colgroup>
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ bgcolor: "#08107D" }} />
-                <TableCell
-                  sx={{
-                    color: "#ffffff",
-                    bgcolor: "#08107D",
-                    fontSize: "18px",
-                  }}
-                >
-                  ID
-                </TableCell>
-                <TableCell
-                  sx={{
-                    color: "#ffffff",
-                    bgcolor: "#08107D",
-                    fontSize: "18px",
-                  }}
-                >
-                  Mã BN
-                </TableCell>
-                <TableCell
-                  sx={{
-                    color: "#ffffff",
-                    bgcolor: "#08107D",
-                    fontSize: "18px",
-                  }}
-                  align="left"
-                >
-                  Họ và tên
-                </TableCell>
-                <TableCell
-                  sx={{
-                    color: "#ffffff",
-                    bgcolor: "#08107D",
-                    fontSize: "18px",
-                  }}
-                >
-                  Giới tính
-                </TableCell>
-                <TableCell
-                  sx={{
-                    color: "#ffffff",
-                    bgcolor: "#08107D",
-                    fontSize: "18px",
-                  }}
-                >
-                  CCCD
-                </TableCell>
-                <TableCell
-                  sx={{
-                    color: "#ffffff",
-                    bgcolor: "#08107D",
-                    fontSize: "18px",
-                  }}
-                >
-                  BHYT
-                </TableCell>
-                <TableCell
-                  sx={{
-                    color: "#ffffff",
-                    bgcolor: "#08107D",
-                    fontSize: "18px",
-                  }}
-                >
-                  Ngày sinh
-                </TableCell>
-                <TableCell sx={{ bgcolor: "#08107D" }} />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {renderPatientList.map((row, index) => {
-                return (
-                  <MainRow
-                    key={index}
-                    row={row}
-                    setNewPatientsAndRender={setNewPatientsAndRender}
-                  ></MainRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        </Box>
+        {/* <Divider
+          variant="fullWidth"
+          sx={{
+            m: "20px 0 20px 0",
+            fontWeight: "bold",
+            opacity: 1,
+            borderBottom: "1px solod red",
+          }}
+        /> */}
+        <Paper elevation={0} sx={{ marginLeft: "40px" }}>
+          <TableContainer sx={{ maxHeight: 480, overflowY: "scroll" }}>
+            <Table stickyHeader>
+              <colgroup>
+                <col style={{ width: "2%" }} />
+                <col style={{ width: "8%" }} />
+                <col style={{ width: "15%" }} />
+                <col style={{ width: "23%" }} />
+                <col style={{ width: "10%" }} />
+                <col style={{ width: "10%" }} />
+                <col style={{ width: "10%" }} />
+              </colgroup>
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    sx={
+                      {
+                        //  bgcolor: "#08107D"
+                      }
+                    }
+                  />
+                  <TableCell
+                    sx={{
+                      color: "#000000",
+                      // bgcolor: "#08107D",
+                      fontSize: "18px",
+                    }}
+                  >
+                    ID
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      color: "#000000",
+                      // bgcolor: "#08107D",
+                      fontSize: "18px",
+                    }}
+                  >
+                    Mã BN
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      color: "#000000",
+                      // bgcolor: "#08107D",
+                      fontSize: "18px",
+                    }}
+                    align="left"
+                  >
+                    Họ và tên
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      color: "#000000",
+                      // bgcolor: "#08107D",
+                      fontSize: "18px",
+                    }}
+                  >
+                    Giới tính
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      color: "#000000",
+                      // bgcolor: "#08107D",
+                      fontSize: "18px",
+                    }}
+                  >
+                    CCCD
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      color: "#000000",
+                      // bgcolor: "#08107D",
+                      fontSize: "18px",
+                    }}
+                  >
+                    BHYT
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      color: "#000000",
+                      // bgcolor: "#08107D",
+                      fontSize: "18px",
+                    }}
+                  >
+                    Ngày sinh
+                  </TableCell>
+                  <TableCell
+                    sx={
+                      {
+                        // bgcolor: "#08107D"
+                      }
+                    }
+                  />
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {
+                  // console.log("render", renderPatientList)
+                  renderPatientList.map((row, index) => {
+                    return (
+                      <MainRow
+                        key={index}
+                        row={row}
+                        setNewPatientsAndRender={setNewPatientsAndRender}
+                      ></MainRow>
+                    );
+                  })
+                }
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
       </Paper>
-    </Paper>
+    </Box>
   );
 }

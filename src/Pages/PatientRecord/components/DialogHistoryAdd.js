@@ -51,11 +51,11 @@ const DialogHistoryAdd = (props) => {
             formJson.disease
           );
           const newHistory = {
-            historyID: historyList.length + 1,
+            // historyID: historyList.length + 1,
             date: formJson.date,
             doctor: formJson.doctor,
             disease: formJson.disease,
-            medicineList: listNewMedicine,
+            // medicineList: listNewMedicine,
           };
           setHistoryList([newHistory, ...historyList]);
 
