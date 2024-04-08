@@ -93,10 +93,10 @@
         font-size: 30px
     }
 
-    p{
-        position:absolute;
-        top:55px;
-        color:red;
+    p {
+        position: absolute;
+        top: 55px;
+        color: red;
         font-weight: 500;
     }
 }
@@ -133,11 +133,11 @@
     display: flex;
     justify-content: space-between;
 
-    svg{
+    svg {
         width: 30%;
         transition: 0.2s;
-        margin-left:20px;
-        margin-right:25px;
+        margin-left: 20px;
+        margin-right: 25px;
 
         &:hover {
             scale: 1.5;
@@ -145,14 +145,40 @@
     }
 }
 
-.schedule-table-Status, .schedule-table-index, .schedule-table-ID_doctor, .schedule-table-Name_doctor, .schedule-table-Patient, .schedule-table-Room{
-    display:flex;
+.schedule-icons-done{
+    .icon1{
+        scale:2;
+        color:green;
+    }
+}
+
+.schedule-icons-doing{
+    .icon3{
+        scale:2;
+        color:purple;
+    }
+}
+
+.schedule-icons-pending{
+    .icon2{
+        scale:2;
+        color:red;
+    }
+}
+
+.schedule-table-Status,
+.schedule-table-index,
+.schedule-table-ID_doctor,
+.schedule-table-Name_doctor,
+.schedule-table-Patient,
+.schedule-table-Room {
+    display: flex;
     align-items: center;
     justify-content: center;
 }
-    
-.edit-time{
-    padding-top:1.5%;
+
+.edit-time {
+    padding-top: 1.5%;
 }
 
 .schedule-add {
@@ -178,82 +204,205 @@
         background-position: center;
         background-size: cover;
         border-radius: 15px;
-        padding:1.5% 2%;
-        color:white;
-        position:relative;
-
-        .form-close {
-            position: absolute;
-            right:5%;
-            top:2%;
-            font-size: 40px;
-        }
-
-        .form-title{
-            text-align: center;
-            margin-bottom:2%;
-        }
-
-        
-
-        input{
-            height: 35px;
-            margin-right:4%;
-            padding:3% 3%;
-            width: 40%;
-            border-style: none;
-            border-radius: 10px;
-            font-weight: 500;
-        }
-
+        padding: 25px 2%;
+        color: white;
+        position: relative;
     }
 }
 
-h5{
-    text-align: start;
-    margin:3% 0;
+.form-close {
+    position: absolute;
+    right: 5%;
+    top: 2%;
+    font-size: 40px;
 }
 
-.no-change{
-    pointer-events: none;
+//         .form-title{
+//             text-align: center;
+//             margin-bottom:2%;
+//         }
+
+.form-title {
+    text-align: center;
+    margin: bottom 2%;
+}
+
+h5 {
+    text-align: start;
+    margin: 3% 1%;
+    font-size: 25px;
+}
+
+.form-doctor {
+    display: flex;
+    justify-content: space-between;
+
+    .doctor-id {
+        width: 50%;
+        position: relative;
+
+        input {
+            border-radius: 10px;
+            border: none;
+            padding: 2% 5%;
+        }
+
+        .ul-id {
+            position: absolute;
+            list-style: none;
+            background-color: white;
+            color: black;
+            width: 62%;
+            margin: 0 auto;
+            border-radius: 10px;
+            left: 19%;
+
+            li {
+                margin-right: 30px;
+            }
+        }
+    }
+
+    .doctor-name {
+        width: 50%;
+        position: relative;
+
+        input {
+            border-radius: 10px;
+            border: none;
+            padding: 2% 5%;
+        }
+
+        .ul-name {
+            position: absolute;
+            list-style: none;
+            background-color: white;
+            color: black;
+            width: 62%;
+            margin: 0 auto;
+            border-radius: 10px;
+            left: 19%;
+
+            li {
+                margin-right: 30px;
+            }
+        }
+    }
+}
+
+.form-time {
+
+    .form-time-input {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 10%;
+    }
+
+    input {
+        width: 38%;
+        border: none;
+        border-radius: 10px;
+        padding: 1.5% 5%;
+    }
+}
+
+.form-others {
+    .form-others-input {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        input {
+            width: 30%;
+            border: none;
+            border-radius: 10px;
+            padding: 1.5% 5%;
+        }
+    }
 }
 
 .form-vali{
     margin-top:5%;
 
     button{
-        border-style:none;
-        padding:1% 2%;
-        width: 30%;
+        border:none;
         border-radius: 10px;
-        background-color:rgb(174, 237, 193);
-        font-weight: 500;
+        padding:1.5% 10%;
+        background-color:rgb(176, 223, 247);
+        transition:0.4s;
+
+        &:hover{
+            background-color:rgb(157, 200, 221);
+
+        }
     }
 }
 
-.schedule-pages{
-    width: 100%;
-    display:flex;
-    justify-content: center;
-    margin-top:2%;
+//         input{
+//             height: 35px;
+//             margin-right:4%;
+//             padding:3% 3%;
+//             width: 40%;
+//             border-style: none;
+//             border-radius: 10px;
+//             font-weight: 500;
+//         }
 
-    button{
+//     }
+// }
+
+// h5{
+//     text-align: start;
+//     margin:3% 0;
+// }
+
+.no-change {
+    pointer-events: none;
+}
+
+// .form-vali{
+//     margin-top:5%;
+
+//     button{
+//         border-style:none;
+//         padding:1% 2%;
+//         width: 30%;
+//         border-radius: 10px;
+//         background-color:rgb(174, 237, 193);
+//         font-weight: 500;
+//     }
+// }
+
+.schedule-pages {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2%;
+
+    button {
         border: none;
         border-radius: 5px;
         background-color: rgb(187, 227, 215);
-        padding:3px 10px;
+        padding: 3px 10px;
     }
 }
 
-.not-found{
-    margin-top:2%;
-    color:rgb(253, 76, 76);
+.not-found {
+    margin-top: 2%;
+    color: rgb(253, 76, 76);
     font-weight: 500;
 }
 
-.ahuhu{
-    svg{
-        display:none;
+.ahuhu {
+    svg {
+        display: none;
         visibility: hidden;
     }
 }
+
+// .ul-id{
+//     position:fixed;
+//     list-style: none;
+//     left:35%;
+//     width: 285px;
+// }

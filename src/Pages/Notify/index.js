@@ -12,16 +12,15 @@ import { initializeApp } from "firebase/app";
 import { addData } from "../../Components/Firebase/FireBase.js"
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDHfpl2Vsr7GGd8Sb6VAdNRLWKEdE9M_MI",
-  authDomain: "project1-33ba1.firebaseapp.com",
-  databaseURL: "https://project1-33ba1-default-rtdb.firebaseio.com",
-  projectId: "project1-33ba1",
-  storageBucket: "project1-33ba1.appspot.com",
-  messagingSenderId: "122408221984",
-  appId: "1:122408221984:web:8d1f8ed3c54f8cc7acab45",
-  measurementId: "G-W41PD0H5PY"
+  apiKey: "AIzaSyCyI2BpMknXBSaZgOlsjId38ZvheRpXZLs",
+  authDomain: "btl-ltnc-9c22f.firebaseapp.com",
+  databaseURL: "https://btl-ltnc-9c22f-default-rtdb.firebaseio.com",
+  projectId: "btl-ltnc-9c22f",
+  storageBucket: "btl-ltnc-9c22f.appspot.com",
+  messagingSenderId: "157627430613",
+  appId: "1:157627430613:web:5248f93026848e6848945c",
+  measurementId: "G-WYRWK424BJ"
 };
-
 const app = initializeApp(firebaseConfig);
 const database = getDatabase();
 

@@ -1,9 +1,11 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
-import Header from './Components/Header';
+
+import Header from './Components/Header'
+import "./App.css";
+// import { Home } from "@mui/icons-material";
+
 function App() {
   return (
-    <div className="App">
+    <div>
       <Header/>
     </div>
   );

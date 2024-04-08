@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getStorage} from "firebase/storage";
-import { getFirestore} from "firebase/firestore"
+import { getDatabase } from "firebase/database";
+import { ref, child, get, set } from "firebase/database";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,3 +21,29 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const database = getDatabase();
+
+const dbRef = ref(database);
+
+export const getData = async () => {
+  const response = await get(child(dbRef, "/"));
+  const posts = await response.val();
+  return posts;
+};
+
+// get(child(dbRef, "/"))
+//   .then((snapshot) => {
+//     if (snapshot.exists()) {
+//       console.log(snapshot.val());
+//     } else {
+//       console.log("No data available");
+//     }
+//   })
+//   .catch((error) => {
+//     console.error(error);
+//   });
+
+export function writeUserData(data, path) {
+  set(child(dbRef, path), {
+    ...data,
+  });
+}

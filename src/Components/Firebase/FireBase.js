@@ -33,7 +33,7 @@ export const addData = async (data) => {
   await set(child(ref(database, 'Notify/'), `${dataCount}`), newData); // Thêm dữ liệu mới
 };
 
-
+//--------------------------------------------------------------------
 
 export const deleteData = async (mssv) => {
   const database = getDatabase();
@@ -92,31 +92,6 @@ export const searchDataByMssv = (mssv, callback) => {
 
 // ---------------Kết thúc hàm mẫu--------------- //
 
-/*---------------------Bắt đầu các hàm tìm kiếm data---------------------*/
-export const searchIdDoctorByName = (name, callback) => {
-    const database = getDatabase();
-    const dataRef = ref(database, 'Employee/Doctor/');
-
-    onValue(dataRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const doctor = Object.values(data).find(doctor => {
-            const nameDoctor = doctor.FirstName + " " + doctor.LastName;
-            return nameDoctor.toLowerCase().includes(name.toLowerCase());
-        });
-        if (doctor) {
-          callback({
-            id: doctor.ID,
-            name: doctor.FirstName + " " + doctor.LastName
-          });
-        }
-      }
-    });
-};
-/*---------------------Kết thúc các hàm tìm kiếm data---------------------*/
-
-
-
 // export const searchNameDoctor = (name, callback) => {
 //   const database = getDatabase();
 //   const dataRef = ref(database, 'Employee/Doctor/');
@@ -140,3 +115,97 @@ export const searchIdDoctorByName = (name, callback) => {
 
 
 
+//----------------------------Hàm cho Schedule-----------------------
+export const addNewSchedule = async (data, callback) => {
+  const database = getDatabase();
+  const dataRef = ref(database, 'Schedule/');
+
+  // Lấy dữ liệu hiện có từ Firebase
+  const snapshot = await get(dataRef);
+  let existingData = snapshot.exists() ? snapshot.val() : {}; // Dữ liệu hiện có
+  const newData = {
+    Date: data.date,
+    ID_doctor: data.id_Doctor,
+    Name_doctor: data.name_Doctor,
+    Patient: data.name_Patient,
+    Room: data.room,
+    Status: "Chưa khám",
+    Time: data.time
+  };
+
+  // Di chuyển dữ liệu hiện có xuống một cấp
+  const updatedData = {};
+  for (let key in existingData) {
+    updatedData[parseInt(key) + 1] = existingData[key];
+  }
+
+  // Thêm dữ liệu mới vào vị trí đầu tiên
+  updatedData[0] = newData;
+
+  // Ghi dữ liệu mới vào Firebase
+  await set(ref(database, 'Schedule/'), updatedData);
+
+  callback({
+    id_Doctor: "",
+    name_Doctor: "",
+    time: "",
+    date: "",
+    name_Patient: "",
+    room: ""
+  })
+};
+
+export const searchIdDoctorByName = (name, callback) => {
+  const database = getDatabase();
+  const dataRef = ref(database, 'Employee/Doctor/');
+
+  onValue(dataRef, (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      const filteredSuggestions = Object.values(data).filter(doctor => {
+        const nameDoctor = doctor.FirstName + " " + doctor.LastName;
+        return nameDoctor.toLowerCase().includes(name.toLowerCase());
+      });
+      callback(filteredSuggestions);
+    } else {
+      callback([]);
+    }
+  });
+};
+
+export const searchNameDoctorByID = (id, callback) => {
+  const database = getDatabase();
+  const dataRef = ref(database, 'Employee/Doctor');
+
+  onValue(dataRef, (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      const filteredSuggestions = Object.values(data).filter(doctor => {
+        return doctor.ID.includes(id);
+      });
+      callback(filteredSuggestions);
+    } else {
+      callback([]);
+    }
+  });
+};
+
+export const setListSchedule = (name, callback) => {
+  const database = getDatabase();
+  const dataRefSchedule = ref(database, 'Schedule/');
+
+  onValue(dataRefSchedule, (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      const listSchedule = Object.values(data).filter(schedule => {
+        const namePatient = schedule.Patient;
+        return namePatient.toLowerCase().includes(name.toLowerCase());
+      });
+      callback(listSchedule);
+    } else{
+      callback([]);
+    }
+  });
+};
+
+//------------------------Kết thúc hàm cho Schedule------------------
