@@ -2,9 +2,9 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
 const columns = [
-  { field: 'sender', width: 130 },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
+  { field: 'Người gửi', width: 150 },
+  { field: 'firstName', headerName: 'Họ', width: 130 },
+  { field: 'lastName', headerName: 'Tên', width: 130 },
   {
     field: 'age',
     headerName: 'Age',
