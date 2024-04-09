@@ -1,0 +1,43 @@
+.wrapper {
+    width: 30%;
+    height: 50vh;
+    background-color: red;
+
+    .top {
+        display: flex;
+        width: 100%;
+        height: auto;
+    }
+
+    .main-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+    }
+
+    .main {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+    }
+
+    .bottom {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.main {
+    .mail_title,
+    .mail_receiver,
+    .mail_content {
+        width: 100%;
+    }
+
+    .mail_title {
+        margin-bottom: 8px;
+    }
+}
+
