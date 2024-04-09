@@ -15,17 +15,18 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { Patients, getPatients } from "../P_R_be";
+import { DeleteData, Patients, getPatients } from "../P_R_be";
 import HistoryRow from "./HistoryRow";
 import { AddData, AddHist, Add_Med } from "../P_R_be";
-import { patients } from "../PatientRecord";
+// import { patients } from "../PatientRecord";
 import DialogMedicineListAdd from "./DialogMedicineListAdd";
 import DialogHistoryAdd from "./DialogHistoryAdd";
 import DialogModify from "./DialogModify";
 import DialogInfo from "./DialogInfo";
 
 function MainRow(props) {
-  const { row, setNewPatientsAndRender } = props;
+  const { row, setNewPatientsAndRender, newPatients } = props;
+  // console.log("row", row);
 
   // const [patient, setPatient] = React.useState([]);
   // // console.log("1", row);
@@ -45,8 +46,7 @@ function MainRow(props) {
     setAddMedicineListFormOpen(false);
   };
 
-  const [historyList, setHistoryList] = React.useState(row.Hist || []);
-  const [listNewMedicine, setListNewMedicine] = React.useState([]);
+  const [historyList, setHistoryList] = React.useState(row.history || []);
   const [openSubRow, setOpenSubRow] = React.useState(false);
   const [addHistoryFormOpen, setAddHistoryFormOpen] = React.useState(false);
   const [infoFormOpen, setInfoFormOpen] = React.useState(false);
@@ -56,9 +56,8 @@ function MainRow(props) {
 
   const [newGender, setNewGender] = React.useState(row.gender);
   React.useEffect(() => {
-    setHistoryList(row.Hist || []);
-    setNewGender(row.gender);
-  }, [row.Hist, row.gender]);
+    setHistoryList(row.history || []);
+  }, [row.history]);
   const handleChangeGender = (event) => {
     setNewGender(event.target.value);
   };
@@ -70,8 +69,10 @@ function MainRow(props) {
   // };
 
   //
-  const indexInPatients = patients.findIndex((e) => {
-    return e.STT === row.STT;
+  // console.log(patients);
+
+  const indexInPatients = newPatients.findIndex((e) => {
+    return e.CCCD === row.CCCD;
   });
 
   return (
@@ -120,7 +121,8 @@ function MainRow(props) {
           {/* DialogModify */}
           <DialogModify
             modifyFormOpen={modifyFormOpen}
-            patients={patients}
+            // patients={patients}
+            newPatients={newPatients}
             indexInPatients={indexInPatients}
             setNewPatientsAndRender={setNewPatientsAndRender}
             row={row}
@@ -132,10 +134,14 @@ function MainRow(props) {
             aria-label="delete"
             size="small"
             color="error"
-            onClick={() => {
-              // const temp=newPatients.filter(patien)
-              patients.splice(indexInPatients, 1);
-              setNewPatientsAndRender([...patients]);
+            onClick={(event) => {
+              // console.log(indexInPatients);
+              // console.log(e.CCCD);
+              // console.log(row.CCCD);
+              event.preventDefault();
+              newPatients.splice(indexInPatients, 1);
+              setNewPatientsAndRender([...newPatients]);
+              DeleteData(row.CCCD);
             }}
           >
             <DeleteOutlineIcon></DeleteOutlineIcon>
@@ -168,12 +174,13 @@ function MainRow(props) {
                 setAddHistoryFormOpen={setAddHistoryFormOpen}
                 AddHist={AddHist}
                 historyList={historyList}
-                listNewMedicine={listNewMedicine}
+                // listNewMedicine={listNewMedicine}
                 setHistoryList={setHistoryList}
-                setListNewMedicine={setListNewMedicine}
+                // setListNewMedicine={setListNewMedicine}
                 row={row}
                 DialogMedicineListAdd={DialogMedicineListAdd}
                 setAddMedicineListFormOpen={setAddMedicineListFormOpen}
+                addMedicineListFormOpen={addMedicineListFormOpen}
               ></DialogHistoryAdd>
 
               <Table size="small" aria-label="history">
@@ -186,18 +193,20 @@ function MainRow(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {console.log(historyList)}
-                  {historyList != []
-                    ? historyList.map((historyRow) => {
-                        // console.log(historyRow);
-                        return (
-                          <HistoryRow
-                            key={historyRow.historyID}
-                            historyRow={historyRow}
-                          />
-                        );
-                      })
-                    : {}}
+                  {/* {console.log("historyList", historyList)} */}
+                  {historyList.length !== 0 ? (
+                    historyList.map((historyRow, index) => (
+                      <HistoryRow
+                        key={index}
+                        historyRow={historyRow}
+                        index={index}
+                      />
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={4}>Không có lịch sử khám</TableCell>
+                    </TableRow>
+                  )}
                 </TableBody>
               </Table>
             </Box>

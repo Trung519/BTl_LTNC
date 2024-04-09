@@ -16,11 +16,13 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
+import { UpdateData } from "../P_R_be";
 
 const DialogModify = (props) => {
   const {
     modifyFormOpen,
-    patients,
+    newPatients,
+    // patients,
     indexInPatients,
     setNewPatientsAndRender,
     row,
@@ -42,8 +44,11 @@ const DialogModify = (props) => {
           event.preventDefault();
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries(formData.entries());
-          patients[indexInPatients] = {
-            ...patients[indexInPatients],
+          console.log(indexInPatients);
+          console.log(newPatients);
+
+          newPatients[indexInPatients] = {
+            ...newPatients[indexInPatients],
             fullName: formJson.fullName,
             gender: formJson.gender,
             CCCD: formJson.CCCD,
@@ -51,8 +56,15 @@ const DialogModify = (props) => {
             birthDay: formJson.birthDay,
             address: formJson.address,
           };
+          UpdateData(
+            formJson.fullName,
+            formJson.birthDay,
+            formJson.gender,
+            formJson.CCCD,
+            formJson.BHYT
+          );
           // console.log(patients[index]);
-          setNewPatientsAndRender([...patients]);
+          setNewPatientsAndRender([...newPatients]);
           // setRenderPatientList(patients[indexInPatients])
           // console.log(patients);
           setmodifyFormOpen(false);

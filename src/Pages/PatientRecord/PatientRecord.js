@@ -19,7 +19,7 @@ import DialogAdd from "./components/DialogAdd";
 import MainRow from "./components/MainRow";
 import { Patients } from "./P_R_be";
 
-export let patients = [];
+// export let patients = [];
 function createPatient(
   STT = 1, //patients.length + 1,
   patientID = 1, //`BN${patients.length + 100}`,
@@ -193,12 +193,14 @@ function createPatient(
 // ];
 
 export default function PatientRecord() {
-  let [patients, setPatient] = React.useState([]);
+  // let [patients, setPatient] = React.useState([]);
   //console.log("1", row);
   React.useEffect(() => {
     Patients().then((post) => {
       if (post != null) {
         setNewPatientsAndRender(Object.values(post));
+        console.log("render", Object.values(post));
+        // console.log("render", renderPatientList);
       }
     });
   }, []);
@@ -206,8 +208,8 @@ export default function PatientRecord() {
 
   const [newFormOpen, setNewFormOpen] = React.useState(false);
   const [newGender, setNewGender] = React.useState("");
-  const [renderPatientList, setRenderPatientList] = React.useState(patients); //Render ra những thứ cần render
-  const [newPatients, setNewPatients] = React.useState(patients); //Có tác dụng giống với patients bên ngoài
+  const [renderPatientList, setRenderPatientList] = React.useState([]); //Render ra những thứ cần render
+  const [newPatients, setNewPatients] = React.useState([]); //Có tác dụng giống với patients bên ngoài
   const [fullName, setfullname] = React.useState("");
   const [birthDay, setBirthDay] = React.useState(null);
   const [CCCD, setCCCD] = React.useState(0);
@@ -225,7 +227,7 @@ export default function PatientRecord() {
     setBHYT(event.target.value);
   };
   React.useEffect(() => {
-    patients = newPatients;
+    // patients = newPatients;
   }, [newPatients]);
   const setNewPatientsAndRender = (newPatients) => {
     setNewPatients([...newPatients]);
@@ -294,7 +296,7 @@ export default function PatientRecord() {
               </Button>
 
               <DialogAdd
-                patients={patients}
+                // patients={patients}
                 newFormOpen={newFormOpen}
                 handleCloseNewFormOpen={handleCloseNewFormOpen}
                 createPatient={createPatient}
@@ -308,8 +310,7 @@ export default function PatientRecord() {
                 handle_BHYT={handle_BHYT}
               ></DialogAdd>
             </Grid>
-            <Grid item xs={1} sm={2} md={3}>
-              {/* Tìm kiếm theo họ tên */}
+            {/* <Grid item xs={1} sm={2} md={3}>
               <Autocomplete
                 onChange={(event, value) => {
                   if (value === null) setRenderPatientList(patients);
@@ -328,11 +329,8 @@ export default function PatientRecord() {
                     InputProps={{
                       sx: {
                         borderRadius: "50px",
-                        // borderWidth: "1px",
-                        // borderColor: "#3497F9 !important",
                         padding: 0,
 
-                        // color: "#1565c0;",
                       },
                     }}
                     InputLabelProps={
@@ -353,11 +351,11 @@ export default function PatientRecord() {
               <Autocomplete
                 // disablePortal
                 onChange={(event, value) => {
-                  if (value === null) setRenderPatientList(patients);
+                  // if (value === null) setRenderPatientList(patients);
                   else setRenderPatientList([value]);
                 }}
                 sx={{ width: 300 }}
-                options={patients}
+                // options={patients}
                 getOptionLabel={(option) => option.CCCD}
                 id="fullname_search"
                 clearOnEscape
@@ -375,11 +373,11 @@ export default function PatientRecord() {
             <Grid item xs={1} sm={2} md={3}>
               <Autocomplete
                 onChange={(event, value) => {
-                  if (value === null) setRenderPatientList(patients);
+                  // if (value === null) setRenderPatientList(patients);
                   else setRenderPatientList([value]);
                 }}
                 sx={{ width: 300 }}
-                options={patients}
+                // options={patients}
                 getOptionLabel={(option) => option.BHYT}
                 id="fullname_search"
                 clearOnEscape
@@ -393,7 +391,7 @@ export default function PatientRecord() {
                   />
                 )}
               />
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
         {/* <Divider
@@ -505,6 +503,7 @@ export default function PatientRecord() {
                   renderPatientList.map((row, index) => {
                     return (
                       <MainRow
+                        newPatients={newPatients}
                         key={index}
                         row={row}
                         setNewPatientsAndRender={setNewPatientsAndRender}

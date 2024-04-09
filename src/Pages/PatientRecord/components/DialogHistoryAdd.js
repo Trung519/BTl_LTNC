@@ -19,17 +19,20 @@ import dayjs from "dayjs";
 
 const DialogHistoryAdd = (props) => {
   const {
+    addMedicineListFormOpen,
     addHistoryFormOpen,
     setAddHistoryFormOpen,
     AddHist,
     historyList,
-    listNewMedicine,
     setHistoryList,
-    setListNewMedicine,
+    // listNewMedicine,
+    // setListNewMedicine,
     row,
     DialogMedicineListAdd,
     setAddMedicineListFormOpen,
   } = props;
+  const [listNewMedicine, setListNewMedicine] = React.useState([]);
+
   return (
     <Dialog
       fullWidth
@@ -43,24 +46,22 @@ const DialogHistoryAdd = (props) => {
 
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries(formData.entries());
-          AddHist(
-            row.CCCD,
-            row.STT,
-            formJson.date,
-            formJson.doctor,
-            formJson.disease
-          );
+          // AddHist(
+          //   row.CCCD,
+          //   row.STT,
+          //   formJson.date,
+          //   formJson.doctor,
+          //   formJson.disease,
+          //   listNewMedicine
+          // );
           const newHistory = {
-            // historyID: historyList.length + 1,
             date: formJson.date,
             doctor: formJson.doctor,
             disease: formJson.disease,
-            // medicineList: listNewMedicine,
+            medicineList: listNewMedicine,
           };
+          AddHist(row.CCCD, [newHistory, ...historyList]);
           setHistoryList([newHistory, ...historyList]);
-
-          setListNewMedicine([]);
-
           setAddHistoryFormOpen(false);
         },
       }}
@@ -213,9 +214,12 @@ const DialogHistoryAdd = (props) => {
               </Button>
               {/* DialogMedicineList */}
               <DialogMedicineListAdd
+                setAddMedicineListFormOpen={setAddMedicineListFormOpen}
+                // Add_Med={Add_Med}
                 listNewMedicine={listNewMedicine}
                 setListNewMedicine={setListNewMedicine}
                 CCCD={row.CCCD}
+                addMedicineListFormOpen={addMedicineListFormOpen}
               ></DialogMedicineListAdd>
             </Grid>
           </Grid>

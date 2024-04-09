@@ -44,12 +44,14 @@ const DialogAdd = (props) => {
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries(formData.entries());
           // cách lấy data
+          console.log("birthDay", formJson.birthDay);
           AddData(
             formJson.fullName,
             formJson.birthDay,
             formJson.gender,
             formJson.CCCD,
-            formJson.BHYT
+            formJson.BHYT,
+            formJson.address
           );
           // console.log(String.valueOf(patients.length + 1));
 
@@ -59,6 +61,7 @@ const DialogAdd = (props) => {
             gender: formJson.gender,
             CCCD: formJson.CCCD,
             BHYT: formJson.BHYT,
+            address: formJson.address,
           };
           console.log("newPatient", newPatient);
           //xu li add database

@@ -5,12 +5,13 @@ import Button from "@mui/material/Button";
 import DialogMedicineList from "./DialogMedicineList";
 
 const HistoryRow = (props) => {
-  const { historyRow } = props;
+  const { historyRow, index } = props;
+  // console.log("historyRow", historyRow);
   const [medicineListDialogOpen, setMedicineListDialogOpen] =
     React.useState(false);
 
   return (
-    <TableRow key={historyRow.historyID}>
+    <TableRow key={index}>
       <TableCell component="th" scope="row">
         {historyRow.date}
       </TableCell>
