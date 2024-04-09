@@ -310,14 +310,17 @@ export default function PatientRecord() {
                 handle_BHYT={handle_BHYT}
               ></DialogAdd>
             </Grid>
-            {/* <Grid item xs={1} sm={2} md={3}>
+            <Grid item xs={1} sm={2} md={3}>
+              {/* {console.log("search", newPatients)} */}
               <Autocomplete
+                disablePortal
                 onChange={(event, value) => {
-                  if (value === null) setRenderPatientList(patients);
+                  console.log("1", newPatients);
+                  if (value === null) setRenderPatientList(newPatients);
                   else setRenderPatientList([value]);
                 }}
                 sx={{ width: 300, marginLeft: "15px" }}
-                options={patients}
+                options={newPatients}
                 getOptionLabel={(option) => option.fullName}
                 id="fullname_search"
                 clearOnEscape
@@ -330,7 +333,6 @@ export default function PatientRecord() {
                       sx: {
                         borderRadius: "50px",
                         padding: 0,
-
                       },
                     }}
                     InputLabelProps={
@@ -349,15 +351,15 @@ export default function PatientRecord() {
             </Grid>
             <Grid item xs={1} sm={2} md={3}>
               <Autocomplete
-                // disablePortal
+                disablePortal
                 onChange={(event, value) => {
-                  // if (value === null) setRenderPatientList(patients);
+                  if (value === null) setRenderPatientList(newPatients);
                   else setRenderPatientList([value]);
                 }}
                 sx={{ width: 300 }}
-                // options={patients}
+                options={newPatients}
                 getOptionLabel={(option) => option.CCCD}
-                id="fullname_search"
+                id="CCCD_search"
                 clearOnEscape
                 renderInput={(params) => (
                   <TextField
@@ -372,14 +374,15 @@ export default function PatientRecord() {
             </Grid>
             <Grid item xs={1} sm={2} md={3}>
               <Autocomplete
+                disablePortal
                 onChange={(event, value) => {
-                  // if (value === null) setRenderPatientList(patients);
+                  if (value === null) setRenderPatientList(newPatients);
                   else setRenderPatientList([value]);
                 }}
                 sx={{ width: 300 }}
-                // options={patients}
+                options={newPatients}
                 getOptionLabel={(option) => option.BHYT}
-                id="fullname_search"
+                id="BHYT_search"
                 clearOnEscape
                 renderInput={(params) => (
                   <TextField
@@ -391,7 +394,7 @@ export default function PatientRecord() {
                   />
                 )}
               />
-            </Grid> */}
+            </Grid>
           </Grid>
         </Box>
         {/* <Divider
@@ -498,19 +501,16 @@ export default function PatientRecord() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {
-                  // console.log("render", renderPatientList)
-                  renderPatientList.map((row, index) => {
-                    return (
-                      <MainRow
-                        newPatients={newPatients}
-                        key={index}
-                        row={row}
-                        setNewPatientsAndRender={setNewPatientsAndRender}
-                      ></MainRow>
-                    );
-                  })
-                }
+                {renderPatientList.map((row, index) => {
+                  return (
+                    <MainRow
+                      newPatients={newPatients}
+                      key={row.CCCD}
+                      row={row}
+                      setNewPatientsAndRender={setNewPatientsAndRender}
+                    ></MainRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </TableContainer>
