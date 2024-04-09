@@ -1,19 +1,25 @@
+
 .schedule {
-    background-color: rgb(202, 218, 248);
+    background-color: #EBF5FF;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     padding-bottom: 3%;
+    width: 90rem;
+    margin: 0 auto;
 }
+
+
 
 .schedule-title {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #adadad;
     padding: 2% 0;
 
     p {
+
         font-size: 30px;
         font-weight: 500;
         margin-left: 3%;
@@ -23,17 +29,20 @@
         display: flex;
 
         button {
-            background-color: rgb(250, 153, 42);
-            margin-right: 5%;
+            background-color: #55a6f8;
             border: none;
             border-radius: 10px;
-            padding: 0 5%;
-            width: 230px;
+            padding: 0 2%;
+            width: 200px;
             transition: 0.4s;
             font-weight: 500;
+            color: white;
+            height: 40px;
+            margin: auto 0;
+            margin-right: 5%;
 
             &:hover {
-                background-color: rgb(252, 199, 147);
+                background-color: #1d68b2;
             }
         }
     }
@@ -60,8 +69,10 @@
 
 .line-row {
     border-bottom: 1px solid lightgray;
-    padding-top: 1%;
-    padding-bottom: 1%;
+}
+
+.special-line{
+    padding-bottom:1%;
 }
 
 .schedule-search {
@@ -75,11 +86,12 @@
     input {
         position: absolute;
         border: none;
-        background-color: rgb(199, 218, 252);
-        border-radius: 10px;
-        padding: 0.9% 2%;
-        width: 30%;
-        padding-right: 50px;
+        background-color: #EBF5FF;
+        border-radius: 20px;
+        padding: 0.9% 4%;
+        width: 25%;
+        left: 0;
+        margin-left: 3%;
 
         &:focus {
             background-color: rgb(182, 204, 244, 0.4);
@@ -88,8 +100,8 @@
 
     .search {
         position: absolute;
-        top: 8px;
-        right: 36%;
+        top: 9px;
+        left: 4%;
         font-size: 30px
     }
 
@@ -102,28 +114,33 @@
 }
 
 .line-key {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
     font-weight: 500;
+    line-height: 18px;
+    text-align: left;
+
 }
 
 .line1 {
-    background-color: #eae9e9;
+    // background-color: #eae9e9;
 }
 
 .Status-done {
-    background-color: rgb(24, 190, 24);
+    color: rgb(24, 190, 24);
     border-radius: 5px;
     font-weight: 500;
 }
 
 .Status-pending {
-    background-color: rgb(250, 152, 250);
+    color: rgb(250, 152, 250);
     border-radius: 5px;
     font-weight: 500;
 
 }
 
 .Status-doing {
-    background-color: rgb(249, 182, 58);
+    color: rgb(249, 182, 58);
     border-radius: 5px;
     font-weight: 500;
 
@@ -145,24 +162,24 @@
     }
 }
 
-.schedule-icons-done{
-    .icon1{
-        scale:2;
-        color:green;
+.schedule-icons-done {
+    .icon1 {
+        scale: 2;
+        color: green;
     }
 }
 
-.schedule-icons-doing{
-    .icon3{
-        scale:2;
-        color:purple;
+.schedule-icons-doing {
+    .icon3 {
+        scale: 2;
+        color: purple;
     }
 }
 
-.schedule-icons-pending{
-    .icon2{
-        scale:2;
-        color:red;
+.schedule-icons-pending {
+    .icon2 {
+        scale: 2;
+        color: red;
     }
 }
 
@@ -174,7 +191,7 @@
 .schedule-table-Room {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
 }
 
 .edit-time {
@@ -217,21 +234,18 @@
     font-size: 40px;
 }
 
-//         .form-title{
-//             text-align: center;
-//             margin-bottom:2%;
-//         }
+h5 {
+    text-align: start;
+    margin: 3% 1%;
+    font-size: 25px;
+}
 
 .form-title {
     text-align: center;
     margin: bottom 2%;
 }
 
-h5 {
-    text-align: start;
-    margin: 3% 1%;
-    font-size: 25px;
-}
+
 
 .form-doctor {
     display: flex;
@@ -240,11 +254,13 @@ h5 {
     .doctor-id {
         width: 50%;
         position: relative;
+        margin-left:13%;
 
         input {
+            width: 70%;
             border-radius: 10px;
             border: none;
-            padding: 2% 5%;
+            padding: 3% 5%;
         }
 
         .ul-id {
@@ -268,9 +284,10 @@ h5 {
         position: relative;
 
         input {
+            width: 70%;
             border-radius: 10px;
             border: none;
-            padding: 2% 5%;
+            padding: 3% 5%;
         }
 
         .ul-name {
@@ -296,10 +313,11 @@ h5 {
         display: flex;
         justify-content: space-between;
         padding: 0 10%;
+        margin:0 3%;
     }
 
     input {
-        width: 38%;
+        width: 41%;
         border: none;
         border-radius: 10px;
         padding: 1.5% 5%;
@@ -321,69 +339,48 @@ h5 {
     }
 }
 
-.form-vali{
-    margin-top:5%;
+.form-vali {
+    margin-top: 5%;
+    display:flex;
+    justify-content: center;
 
-    button{
-        border:none;
+    button {
+        border: none;
         border-radius: 10px;
-        padding:1.5% 10%;
-        background-color:rgb(176, 223, 247);
-        transition:0.4s;
+        padding: 1.5% 10%;
+        background-color: rgb(176, 223, 247);
+        transition: 0.4s;
 
-        &:hover{
-            background-color:rgb(157, 200, 221);
+        &:hover {
+            background-color: rgb(157, 200, 221);
 
         }
     }
 }
 
-//         input{
-//             height: 35px;
-//             margin-right:4%;
-//             padding:3% 3%;
-//             width: 40%;
-//             border-style: none;
-//             border-radius: 10px;
-//             font-weight: 500;
-//         }
-
-//     }
-// }
-
-// h5{
-//     text-align: start;
-//     margin:3% 0;
-// }
 
 .no-change {
     pointer-events: none;
 }
 
-// .form-vali{
-//     margin-top:5%;
-
-//     button{
-//         border-style:none;
-//         padding:1% 2%;
-//         width: 30%;
-//         border-radius: 10px;
-//         background-color:rgb(174, 237, 193);
-//         font-weight: 500;
-//     }
-// }
-
 .schedule-pages {
-    width: 100%;
+    width: 80%;
     display: flex;
-    justify-content: center;
+    justify-content: end;
     margin-top: 2%;
 
     button {
         border: none;
-        border-radius: 5px;
-        background-color: rgb(187, 227, 215);
+        border-radius: 7px;
+        background-color: white;
+        color:#3497F9;
         padding: 3px 10px;
+        margin-right:2%;
+    }
+
+    .page-current{
+        background-color: #3497F9;
+        color:white;
     }
 }
 
@@ -400,9 +397,25 @@ h5 {
     }
 }
 
-// .ul-id{
-//     position:fixed;
-//     list-style: none;
-//     left:35%;
-//     width: 285px;
-// }
+select{
+    width: 90%;
+    border-radius: 10px;
+    padding:1% 5%;
+}
+
+
+.option2{
+    color:rgb(24, 190, 24);
+}
+
+.option3{
+    color:rgb(249,182,58);
+}
+
+.option4{
+    color:rgb(250, 152, 250);
+}
+
+.select-done{
+    color:green;
+}

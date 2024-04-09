@@ -1,90 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
-.footer{
-    background-color:#1F2B6C;
-    color:white;
-    padding:2% 0;
+.footer {
+    background-color: #1F2B6C;
+    color: white;
+    padding: 2% 0;
 }
 
-.footer-info-left{
+.footer-info-left {
 
-    h2{
-        color:rgb(205, 205, 22);
+    .left-title {
+        font-family: Yeseva One;
+        font-size: 36px;
+        font-weight: 400;
+        line-height: 41.58px;
+        text-align: left;
+        margin-bottom: 5%;
+
+        .left-title-left {
+            color: #BFD2F8;
+        }
+
+        .left-title-right {
+            color: #3ea6f1;
+        }
+    }
+
+    h2 {
+        color: rgb(205, 205, 22);
         border-radius: 10px;
-        background: linear-gradient(to right,#a0c2ca,#3ea6f1);
+        background: linear-gradient(to right, #a0c2ca, #3ea6f1);
         text-align: center;
-        margin-bottom:5%;
+        margin-bottom: 5%;
         font-weight: 600;
     }
 
-    div{
-        font-weight: 450;
-        text-align: center;
-        font-style: italic;
+    .footer-slogan {
+        font-family: Work Sans;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 25.2px;
+        text-align: left;
+
     }
 }
 
-.center-title{
-    width: 35%;
-    padding-left:20px;
-    border-radius: 10px;
-        background: linear-gradient(to right,#a0c2ca,#3ea6f1);
-      
-    margin-bottom:4%;
-}
-
-.to-flex{
-    display:flex;
-    align-items: center;
-    margin-bottom:2%;
+.center-title {
+    margin-top: 1%;
+    font-family: Work Sans;
     font-size: 18px;
+    font-weight: 600;
+    line-height: 21.11px;
+    text-align: left;
+    margin-bottom: 9.5%;
 
-    svg{
-        margin-right:20px;
+}
+
+.to-flex {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2%;
+    font-size: 16px;
+    font-family: Work Sans;
+    font-size: 400;
+    line-height: 22.4px;
+
+    svg {
+        margin-right: 20px;
     }
 
-    p{
-        margin:auto 3%;
+    p {
+        margin: auto 3%;
     }
 }
 
-.left-address{
-    margin-left:0.5%;
-    
-    p{
-        margin-left:3.5%;
+.left-address {
+    margin-left: 0.5%;
+
+    p {
+        margin-left: 3.5%;
     }
 }
 
-.left-hotline{
-    margin-left:0.5%;
+.left-hotline {
+    margin-left: 0.5%;
 
-    p{
-        margin-left:4%;
+    p {
+        margin-left: 4%;
     }
 }
 
-.footer-info-right{
-h4{
-        margin-bottom:40px;
-        border-radius: 10px;
-        background: linear-gradient(to right,#a0c2ca,#3ea6f1);
-        padding-left:20px;
+.footer-info-right {
+    margin-top: 0.3%;
+
+    p {
+        font-family: Work Sans;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 21.11px;
+        text-align: left;
+        margin-bottom: 21%;
+
     }
 }
 
-.contact-items{
-    display:flex;
-    margin-left:15%;
+.contact-items {
+    display: flex;
+    margin-left: 11%;
 
-    svg{
-        margin-right:20px;
+    svg {
+        margin-right: 20px;
         font-size: 30px;
-        transition:0.3s;
+        transition: 0.3s;
 
-        &:hover{
-            scale:1.3;
+        &:hover {
+            scale: 1.3;
         }
     }
 }
 
+.footer-info-last {
+    margin-top: 0.3%;
 
+    p {
+        font-family: Work Sans;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 21.11px;
+        text-align: left;
+        margin-bottom: 21%;
+
+    }
+
+    .last-email{
+        position:relative;
+        width: 100%;
+        height: 70%;
+    }
+ input {
+        background-color: #BFD2F8;
+        z-index: 1;
+        width: 90%;
+        height: 50px;
+        padding:2% 5%;
+        border-radius: 5px 5px 5px 5px;
+    }
+
+}
