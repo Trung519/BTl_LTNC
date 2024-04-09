@@ -84,7 +84,7 @@ function Header() {
                                     <Nav.Link className={cx('nav-action')} as={Link} to='/announcement'>Thông báo</Nav.Link>
                                     <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient'>Hồ sơ bệnh án</Nav.Link>
                                     <Nav.Link className={cx('nav-action')} as={Link} to='/appointment'>Lịch làm việc</Nav.Link>
-                                    <NavDropdown className={cx('nav-action')} title='Quản lí'>
+                                    <NavDropdown className={cx('nav-action','nav-action-last')} title='Quản lí'>
                                         <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/equip_manage'>Quản lý thiết bị</NavDropdown.Item>
                                         <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/medicine_manage'>Quản lý thuốc</NavDropdown.Item>
                                     </NavDropdown>

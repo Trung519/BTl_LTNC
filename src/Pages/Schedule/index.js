@@ -133,36 +133,37 @@ export default function Schedule() {
   if (!edit && !add) {
     return (
       <>
-        <div className={cx('schedule', 'container')}>
-          <div className={cx('schedule-title')}>
-            <p>Lịch làm việc</p>
-            <div className={cx('schedule-title-right')}>
-              <button onClick={handleAdd}>Thêm cuộc hẹn</button>
-              <button onClick={handleEdit}>Chỉnh sửa</button>
-              <button className={cx('no-click')}>Hoàn tất</button>
-            </div>
-          </div>
+        <div className={cx('schedule')}>
           <div className={cx('schedule-wrapper')}>
+            <div className={cx('schedule-title')}>
+              <p>Lịch làm việc</p>
+              <div className={cx('schedule-title-right')}>
+                <button onClick={handleAdd}>Thêm cuộc hẹn</button>
+                <button onClick={handleEdit}>Chỉnh sửa</button>
+                <button className={cx('no-click')}>Hoàn tất</button>
+              </div>
+            </div>
             <div className={cx('schedule-search')}>
-              <input maxLength={100} placeholder='Tên bệnh nhân...' type='text' 
-                     onChange={handleNamePatientChange}></input>
+              <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'
+                onChange={handleNamePatientChange}></input>
               <i class={cx("fas fa-search", 'search')}></i>
               {searchbool || <p>Không tìm thấy !</p>}
             </div>
             <div className={cx('schedule-content')}>
               <div className={cx('schedule-table')}>
-                <div className={cx('row', 'line-row', 'line1', 'line-key')}>
+                <div className={cx('row', 'line-row', 'line1', 'line-key', 'special-line')}>
                   <div className={cx('col-md-1', 'schedule-table-index')}>STT</div>
-                  <div className={cx('col-md-2', 'schedule-table-ID_doctor')}>ID bác sĩ</div>
-                  <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>Tên bác sĩ</div>
-                  <div className={cx('col-md-2', 'schedule-table-Time_in')}>Thời gian hẹn</div>
-                  <div className={cx('col-md-2', 'schedule-table-Patient')}>Tên bệnh nhân</div>
+                  <div className={cx('col-md-1', 'schedule-table-ID_doctor')}>ID Bác Sĩ</div>
+                  <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>Tên Bác Sĩ</div>
+                  <div className={cx('col-md-2', 'schedule-table-Time_in')}>Thời Gian Hẹn</div>
+                  <div className={cx('col-md-2', 'schedule-table-Patient')}>Tên Bệnh Nhân</div>
+                  <div className={cx('col-md-2', 'schedule-table-Patient')}>Số CCCD</div>
                   <div className={cx('col-md-1', 'schedule-table-Room')}>Phòng</div>
-                  <div className={cx('col-md-2', 'schedule-table-Status')}>Trạng thái</div>
+                  <div className={cx('col-md-1', 'schedule-table-Status')}>Trạng Thái</div>
                 </div>
                 {
                   Array.from({ length: 10 }, (_, index) => {
-                    if (page * 10 + index + 1 > listdata.length) {}
+                    if (page * 10 + index + 1 > listdata.length) { }
                     else {
                       let count = index % 2;
                       var handleColor = (indexx) => {
@@ -174,18 +175,21 @@ export default function Schedule() {
                       return (
                         <div key={index} className={cx('row', 'line-row', `line${count}`)}>
                           <div className={cx('col-md-1', 'schedule-table-index')}>{page * 10 + index + 1}</div>
-                          <div className={cx('col-md-2', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
+                          <div className={cx('col-md-1', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
                           <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{listdata[page * 10 + index].Name_doctor}</div>
                           <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')}>
-                            {<p>{listdata[page * 10 + index].Time + " " + listdata[page * 10 + index].Date}</p>}
+                            {<p>{listdata[page * 10 + index].Hour_in + ", " + listdata[page * 10 + index].Date_in}</p>}
                           </div>
                           <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].Patient}</div>
+                          <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].CCCD}</div>
                           <div className={cx('col-md-1', 'schedule-table-Room')}>{listdata[page * 10 + index].Room}</div>
-                          <div className={cx('col-md-2', 'ahuhu', 'schedule-table-Status', `Status-${handleColor(page * 10 + index)}`)}>
-                            <svg></svg>
-                            <svg></svg>
-                            <svg></svg>
-                            {listdata[page * 10 + index].Status}
+                          <div className={cx('col-md-1', 'ahuhu', 'schedule-table-Status', `Status-${handleColor(page * 10 + index)}`)}>
+                            <select name="select-in-normal" disabled>
+                              <option className={cx('option1')} value={listdata[page * 10 + index].Status}>{listdata[page * 10 + index].Status}</option>
+                              <option className={cx('option2')} value="Xong">Xong</option>
+                              <option className={cx('option3')} value="Đang khám">Đang khám</option>
+                              <option className={cx('option4')} value="Đang chờ">Đang chờ</option>
+                            </select>
                           </div>
                         </div>
                       )
@@ -202,6 +206,7 @@ export default function Schedule() {
                     onClick={handleChangepage}
                     value={index}
                     key={index}
+                    className={cx(`page-${page == index ? 'current' : ''}`)}
                   >
                     {index + 1}
                   </button>
@@ -216,100 +221,79 @@ export default function Schedule() {
   else if (edit) {
     return (
       <>
-        <div className={cx('schedule', 'container')}>
-          <div className={cx('schedule-title')}>
-            <p>Lịch làm việc</p>
-            <div className={cx('schedule-title-right')}>
-              <button className={cx('no-click')}>Thêm cuộc hẹn</button>
-              <button className={cx('no-click')}>Chỉnh sửa</button>
-              <button onClick={handleEdit}>Hoàn tất</button>
-            </div>
-          </div>
+        <div className={cx('schedule')}>
           <div className={cx('schedule-wrapper')}>
+            <div className={cx('schedule-title')}>
+              <p>Lịch làm việc</p>
+              <div className={cx('schedule-title-right')}>
+                <button className={cx('no-click')}>Thêm cuộc hẹn</button>
+                <button className={cx('no-click')}>Chỉnh sửa</button>
+                <button onClick={handleEdit}>Hoàn tất</button>
+              </div>
+            </div>
             <div className={cx('schedule-search')}>
-            <input maxLength={100} placeholder='Tên bệnh nhân...' type='text' 
-                     onChange={handleNamePatientChange}></input>
+              <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'
+                onChange={handleNamePatientChange}></input>
               <i class={cx("fas fa-search", 'search')}></i>
               {searchbool || <p>Không tìm thấy !</p>}
             </div>
             <div className={cx('schedule-content')}>
               <div className={cx('schedule-table')}>
-                <div className={cx('row', 'line-row', 'line1', 'line-key')}>
-                  <div className={cx('col-md-1', 'schedule-table-index')}>STT</div>
-                  <div className={cx('col-md-2', 'schedule-table-ID_doctor')}>ID bác sĩ</div>
-                  <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>Tên bác sĩ</div>
-                  <div className={cx('col-md-2', 'schedule-table-Time_in')}>Thời gian hẹn</div>
-                  <div className={cx('col-md-2', 'schedule-table-Patient')}>Tên bệnh nhân</div>
+                <div className={cx('row', 'line-row', 'line1', 'line-key', 'special-line')}>
+                  <div style={{ display: 'none' }} className={cx('col-md-1', 'schedule-table-index')}>STT</div>
+                  <div className={cx('col-md-1', 'schedule-table-ID_doctor')}>ID Bác sĩ</div>
+                  <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>Tên Bác Sĩ</div>
+                  <div className={cx('col-md-2', 'schedule-table-Time_in')}>Thời Gian Hẹn</div>
+                  <div className={cx('col-md-2', 'schedule-table-Patient')}>Tên Bệnh Nhân</div>
+                  <div className={cx('col-md-2', 'schedule-table-Patient')}>Số CCCD Bệnh Nhân</div>
                   <div className={cx('col-md-1', 'schedule-table-Room')}>Phòng</div>
-                  <div className={cx('col-md-2', 'schedule-table-Status')}>Trạng thái</div>
+                  <div className={cx('col-md-2', 'schedule-table-Status')}>Trạng Thái</div>
                 </div>
                 {
                   Array.from({ length: 10 }, (_, index) => {
-                    if (page * 10 + index + 1 > listdata.length) {}
+                    if (page * 10 + index + 1 > listdata.length) { }
                     else {
                       let count = index % 2;
                       var handleColor = (indexx) => {
                         if (listdata[indexx].Status == 'Xong') return 'done'
-                        else if (listdata[indexx].Status == 'Đang xử lý') return 'doing'
+                        else if (listdata[indexx].Status == 'Đang khám') return 'doing'
                         else return 'pending'
-                      }
-
-                      var handleChangeStatus = () => {
-                        document.querySelector('icon1').styles = 'none'
-                        console.log(1)
                       }
 
                       return (
                         <div key={index} className={cx('row', 'line-row', `line${count}`)}>
-                          <div className={cx('col-md-1', 'schedule-table-index')}>{page * 10 + index + 1}</div>
-                          <div className={cx('col-md-2', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
+                          <div style={{ display: 'none' }} className={cx('col-md-1', 'schedule-table-index')}>{page * 10 + index + 1}</div>
+                          <div className={cx('col-md-1', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
                           <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{listdata[page * 10 + index].Name_doctor}</div>
                           <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')}>
-                            <p>{listdata[page * 10 + index].Time_in}</p>
-                            <p>{listdata[page * 10 + index].Time_in}</p>
+                            {<p>{listdata[page * 10 + index].Hour_in + ", " + listdata[page * 10 + index].Date_in}</p>}
                           </div>
                           <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].Patient}</div>
+                          <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].CCCD}</div>
                           <div className={cx('col-md-1', 'schedule-table-Room')}>{listdata[page * 10 + index].Room}</div>
                           <div className={cx('col-md-2', `schedule-icons-${handleColor(page * 10 + index)}`, 'schedule-table-Status', 'schedule-icons')}>
-                            <svg
-                              name='done'
-                              className={cx('icon1', "svg-inline--fa fa-check-square fa-w-14")}
-                              aria-hidden="true"
-                              data-prefix="far"
-                              data-icon="check-square"
-                              role="img"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 448 512"
-                              data-fa-i2svg=""
-                            >
-                              <path fill="currentColor" d="M400 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zm0 400H48V80h352v352zm-35.864-241.724L191.547 361.48c-4.705 4.667-12.303 4.637-16.97-.068l-90.781-91.516c-4.667-4.705-4.637-12.303.069-16.971l22.719-22.536c4.705-4.667 12.303-4.637 16.97.069l59.792 60.277 141.352-140.216c4.705-4.667 12.303-4.637 16.97.068l22.536 22.718c4.667 4.706 4.637 12.304-.068 16.971z"></path>
-                            </svg>
-                            <svg
-                              name='pending'
-                              className={cx('icon2', "svg-inline--fa fa-times fa-w-11")}
-                              aria-hidden="true"
-                              data-prefix="fas"
-                              data-icon="times"
-                              role="img"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 352 512"
-                              data-fa-i2svg=""
-                            >
-                              <path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"></path>
-                            </svg>
-                            <svg
-                              name='doing'
-                              className={cx('icon3', "svg-inline--fa fa-clock fa-w-16")}
-                              aria-hidden="true"
-                              data-prefix="far"
-                              data-icon="clock"
-                              role="img"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 512 512"
-                              data-fa-i2svg=""
-                            >
-                              <path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"></path>
-                            </svg>
+                            {handleColor(page * 10 + index) === 'done' && (
+                              <select name="select-in-edit">
+                                <option value="Xong" selected>Xong</option>
+                                <option value="Đang khám">Đang khám</option>
+                                <option value="Đang chờ">Đang chờ</option>
+                              </select>
+                            )}
+                            {handleColor(page * 10 + index) === 'doing' && (
+                              <select name="select-in-edit">
+                                <option value="Xong">Xong</option>
+                                <option value="Đang khám" selected>Đang khám</option>
+                                <option value="Đang chờ">Đang chờ</option>
+                              </select>
+                            )}
+                            {handleColor(page * 10 + index) === 'pending' && (
+                              <select name="select-in-edit">
+                                <option value="Xong">Xong</option>
+                                <option value="Đang khám">Đang khám</option>
+                                <option selected value="Đang chờ">Đang chờ</option>
+                              </select>
+                            )}
+                            <svg class="svg-inline--fa fa-trash-alt fa-w-14" aria-hidden="true" data-prefix="far" data-icon="trash-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M192 188v216c0 6.627-5.373 12-12 12h-24c-6.627 0-12-5.373-12-12V188c0-6.627 5.373-12 12-12h24c6.627 0 12 5.373 12 12zm100-12h-24c-6.627 0-12 5.373-12 12v216c0 6.627 5.373 12 12 12h24c6.627 0 12-5.373 12-12V188c0-6.627-5.373-12-12-12zm132-96c13.255 0 24 10.745 24 24v12c0 6.627-5.373 12-12 12h-20v336c0 26.51-21.49 48-48 48H80c-26.51 0-48-21.49-48-48V128H12c-6.627 0-12-5.373-12-12v-12c0-13.255 10.745-24 24-24h74.411l34.018-56.696A48 48 0 0 1 173.589 0h100.823a48 48 0 0 1 41.16 23.304L349.589 80H424zm-269.611 0h139.223L276.16 50.913A6 6 0 0 0 271.015 48h-94.028a6 6 0 0 0-5.145 2.913L154.389 80zM368 128H80v330a6 6 0 0 0 6 6h276a6 6 0 0 0 6-6V128z"></path></svg>
                           </div>
                         </div>
                       )
@@ -325,6 +309,7 @@ export default function Schedule() {
                     onClick={handleChangepage}
                     value={index}
                     key={index}
+                    className={cx(`page-${page == index ? 'current' : ''}`)}
                   >
                     {index + 1}
                   </button>
@@ -339,36 +324,37 @@ export default function Schedule() {
   else {
     return (
       <>
-        <div className={cx('schedule', 'container')}>
-          <div className={cx('schedule-title')}>
-            <p>Lịch làm việc</p>
-            <div className={cx('schedule-title-right')}>
-              <button className={cx('no-click')}>Thêm cuộc hẹn</button>
-              <button className={cx('no-click')}>Chỉnh sửa</button>
-              <button className={cx('no-click')}>Hoàn tất</button>
-            </div>
-          </div>
+        <div className={cx('schedule')}>
           <div className={cx('schedule-wrapper')}>
+            <div className={cx('schedule-title')}>
+              <p>Lịch làm việc</p>
+              <div className={cx('schedule-title-right')}>
+                <button onClick={handleAdd}>Thêm cuộc hẹn</button>
+                <button onClick={handleEdit}>Chỉnh sửa</button>
+                <button className={cx('no-click')}>Hoàn tất</button>
+              </div>
+            </div>
             <div className={cx('schedule-search')}>
-            <input maxLength={100} placeholder='Tên bệnh nhân...' type='text' 
-                     onChange={handleNamePatientChange}></input>
+              <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'
+                onChange={handleNamePatientChange}></input>
               <i class={cx("fas fa-search", 'search')}></i>
               {searchbool || <p>Không tìm thấy !</p>}
             </div>
             <div className={cx('schedule-content')}>
               <div className={cx('schedule-table')}>
-                <div className={cx('row', 'line-row', 'line1', 'line-key')}>
+                <div className={cx('row', 'line-row', 'line1', 'line-key', 'special-line')}>
                   <div className={cx('col-md-1', 'schedule-table-index')}>STT</div>
-                  <div className={cx('col-md-2', 'schedule-table-ID_doctor')}>ID bác sĩ</div>
-                  <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>Tên bác sĩ</div>
-                  <div className={cx('col-md-2', 'schedule-table-Time_in')}>Thời gian hẹn</div>
-                  <div className={cx('col-md-2', 'schedule-table-Patient')}>Tên bệnh nhân</div>
+                  <div className={cx('col-md-1', 'schedule-table-ID_doctor')}>ID Bác Sĩ</div>
+                  <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>Tên Bác Sĩ</div>
+                  <div className={cx('col-md-2', 'schedule-table-Time_in')}>Thời Gian Hẹn</div>
+                  <div className={cx('col-md-2', 'schedule-table-Patient')}>Tên Bệnh Nhân</div>
+                  <div className={cx('col-md-2', 'schedule-table-Patient')}>Số CCCD</div>
                   <div className={cx('col-md-1', 'schedule-table-Room')}>Phòng</div>
-                  <div className={cx('col-md-2', 'schedule-table-Status')}>Trạng thái</div>
+                  <div className={cx('col-md-1', 'schedule-table-Status')}>Trạng Thái</div>
                 </div>
                 {
                   Array.from({ length: 10 }, (_, index) => {
-                    if (page * 10 + index + 1 > listdata.length) {}
+                    if (page * 10 + index + 1 > listdata.length) { }
                     else {
                       let count = index % 2;
                       var handleColor = (indexx) => {
@@ -380,19 +366,21 @@ export default function Schedule() {
                       return (
                         <div key={index} className={cx('row', 'line-row', `line${count}`)}>
                           <div className={cx('col-md-1', 'schedule-table-index')}>{page * 10 + index + 1}</div>
-                          <div className={cx('col-md-2', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
+                          <div className={cx('col-md-1', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
                           <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{listdata[page * 10 + index].Name_doctor}</div>
                           <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')}>
-                            <p>{listdata[page * 10 + index].Time_in}</p>
-                            <p>{listdata[page * 10 + index].Time_in}</p>
+                            {<p>{listdata[page * 10 + index].Hour_in + ", " + listdata[page * 10 + index].Date_in}</p>}
                           </div>
                           <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].Patient}</div>
+                          <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].CCCD}</div>
                           <div className={cx('col-md-1', 'schedule-table-Room')}>{listdata[page * 10 + index].Room}</div>
-                          <div className={cx('col-md-2', 'ahuhu', 'schedule-table-Status', `Status-${handleColor(page * 10 + index)}`)}>
-                            <svg></svg>
-                            <svg></svg>
-                            <svg></svg>
-                            {listdata[page * 10 + index].Status}
+                          <div className={cx('col-md-1', 'ahuhu', 'schedule-table-Status', `Status-${handleColor(page * 10 + index)}`)}>
+                            <select name="select-in-normal" disabled>
+                              <option className={cx('option1')} value={listdata[page * 10 + index].Status}>{listdata[page * 10 + index].Status}</option>
+                              <option className={cx('option2')} value="Xong">Xong</option>
+                              <option className={cx('option3')} value="Đang khám">Đang khám</option>
+                              <option className={cx('option4')} value="Đang chờ">Đang chờ</option>
+                            </select>
                           </div>
                         </div>
                       )
@@ -401,6 +389,19 @@ export default function Schedule() {
                   })
                 }
               </div>
+            </div>
+            <div className={cx('schedule-pages')}>
+              {
+                Array.from({ length: Math.ceil(listdata.length / 10) }, (_, index) => (
+                  <button
+                    onClick={handleChangepage}
+                    value={index}
+                    key={index}
+                    className={cx(`page-${page == index ? 'current' : ''}`)}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
             </div>
           </div>
           <div className={cx('schedule-add')}>
@@ -412,7 +413,7 @@ export default function Schedule() {
                 <div className={cx('form-title')}>
                   <h3>THÊM LỊCH HẸN</h3>
                 </div>
-                <h5>Bác sĩ:</h5>
+                <h5>Bác Sĩ:</h5>
                 <div className={cx('form-doctor')}>
                   <div className={cx('doctor-id')}>
                     <input type='text' placeholder='ID bác sĩ...' value={form.id_Doctor} name="id_Doctor"
@@ -459,7 +460,7 @@ export default function Schedule() {
                 </div>
                 <div className={cx('form-time')}>
                   <div className={cx('form-time-title')}>
-                    <h5>Thời gian hẹn:</h5>
+                    <h5>Thời Gian Hẹn:</h5>
                   </div>
                   <div className={cx('form-time-input')}>
                     <input type='time' value={form.time} name="time" onChange={handleCollectData}></input>
@@ -468,7 +469,7 @@ export default function Schedule() {
                 </div>
                 <div className={cx('form-others')}>
                   <div className={cx('form-others-title')}>
-                    <h5>Ghi chú:</h5>
+                    <h5>Ghi Chú:</h5>
                   </div>
                   <div className={cx('form-others-input')}>
                     <input type='text' placeholder='Tên bệnh nhân...' value={form.name_Patient} name="name_Patient" onChange={handleCollectData}></input>
@@ -477,50 +478,8 @@ export default function Schedule() {
                   </div>
                 </div>
                 <div className={cx('form-vali')} onClick={submitForm}>
-                  <button>Xác nhận</button>
+                  <button>Xác Nhận</button>
                 </div>
-                {/*<div className={cx('form-title')}>
-                  <h3>THÊM LỊCH HẸN</h3>
-                </div>
-                <div className={cx('form-doctor')}>
-                  <h5>Bác sĩ:</h5>
-                  <div className={cx('input-doctor')}>
-                    <input type='text' placeholder='ID bác sĩ...' value={form.id_Doctor} name="id_Doctor" 
-                           onChange={handleCollectData}></input>
-                    <ul className={cx('ul-id')}>
-                      {suggestionsID.map((suggestion, index) => (
-                          <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
-                            {suggestion.ID}
-                          </li>
-                      ))}
-                    </ul>
-                    <input type='text' placeholder='Tên bác sĩ...' value={form.name_Doctor} name="name_Doctor" 
-                           onChange={handleCollectData}></input>
-                    <ul>
-                      {suggestions.map((suggestion, index) => (
-                          <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
-                              {`${suggestion.FirstName} ${suggestion.LastName}`}
-                          </li>
-                      ))}
-                    </ul>
-                  </div>
-                  {doctorbool || <p className={cx('not-found')}>Không tìm thấy bác sĩ !</p>}
-                </div>
-                <div className={cx('form-time')}>
-                  <h5>Thời gian hẹn:</h5>
-                  <input type='time' value={form.time} name="time" onChange={handleCollectData}></input>
-                  <input type='date' value={form.date} name="date" onChange={handleCollectData}></input>
-                </div>
-                <div className={cx('form-others')}>
-                  <h5>Khác:</h5>
-                  <div className={cx('input-others')}>
-                    <input type='text' placeholder='Tên bệnh nhân...' value={form.name_Patient} name="name_Patient" onChange={handleCollectData}></input>
-                    <input placeholder='Phòng...' type='text' value={form.room} name="room" onChange={handleCollectData}></input>
-                  </div>
-                </div>
-                <div className={cx('form-vali')} onClick={submitForm}>
-                  <button>Xác nhận</button>
-                </div> */}
               </div>
             </div>
 
