@@ -19,7 +19,7 @@ export const updateData = async (data) => {
 export const addData = async (data) => {
   const database = getDatabase();
   const dataRef = ref(database, 'Notify/');
-  
+
   const newData = {
     Title: data.title,
     Receiver: data.receiver,
@@ -64,7 +64,7 @@ export const deleteData = async (mssv) => {
 
 // export default YourComponent;
 
-    // ---------------Hàm mẫu--------------- //
+// ---------------Hàm mẫu--------------- //
 export const searchDataByMssv = (mssv, callback) => {
   const database = getDatabase();
   const dataRef = ref(database, 'yourCollectionName/');
@@ -202,7 +202,7 @@ export const setListSchedule = (name, callback) => {
         return namePatient.toLowerCase().includes(name.toLowerCase());
       });
       callback(listSchedule);
-    } else{
+    } else {
       callback([]);
     }
   });
