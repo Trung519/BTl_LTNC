@@ -166,7 +166,7 @@ function MainRow(props) {
               <IconButton
                 aria-label="add"
                 size="small"
-                color="success"
+                color="info"
                 onClick={() => setAddHistoryFormOpen(!addHistoryFormOpen)}
               >
                 <AddCircleIcon></AddCircleIcon>

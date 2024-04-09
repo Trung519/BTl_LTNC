@@ -18,7 +18,14 @@ import { AddHist, Add_Med } from "./P_R_be";
 import DialogAdd from "./components/DialogAdd";
 import MainRow from "./components/MainRow";
 import { Patients } from "./P_R_be";
-
+const top100Films = [
+  { label: "The Shawshank Redemption", year: 1994 },
+  { label: "The Godfather", year: 1972 },
+  { label: "The Godfather: Part II", year: 1974 },
+  { label: "The Dark Knight", year: 2008 },
+  { label: "12 Angry Men", year: 1957 },
+  { label: "Schindler's List", year: 1993 },
+];
 // export let patients = [];
 function createPatient(
   STT = 1, //patients.length + 1,
@@ -200,7 +207,6 @@ export default function PatientRecord() {
       if (post != null) {
         setNewPatientsAndRender(Object.values(post));
         console.log("render", Object.values(post));
-        // console.log("render", renderPatientList);
       }
     });
   }, []);
@@ -226,9 +232,8 @@ export default function PatientRecord() {
   const handle_BHYT = (event) => {
     setBHYT(event.target.value);
   };
-  React.useEffect(() => {
-    // patients = newPatients;
-  }, [newPatients]);
+  // React.useEffect(() => {
+  // }, [newPatients]);
   const setNewPatientsAndRender = (newPatients) => {
     setNewPatients([...newPatients]);
     setRenderPatientList([...newPatients]);
@@ -321,7 +326,9 @@ export default function PatientRecord() {
                 }}
                 sx={{ width: 300, marginLeft: "15px" }}
                 options={newPatients}
-                getOptionLabel={(option) => option.fullName}
+                getOptionLabel={(option) => {
+                  return option.fullName;
+                }}
                 id="fullname_search"
                 clearOnEscape
                 renderInput={(params) => (
@@ -329,21 +336,34 @@ export default function PatientRecord() {
                     {...params}
                     label="Tìm kiếm theo họ tên"
                     variant="outlined"
-                    InputProps={{
-                      sx: {
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
                         borderRadius: "50px",
-                        padding: 0,
+                      },
+                      "& .MuiInputBase-root": {
+                        backgroundColor: "#EBF5FF",
+                      },
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#EBF5FF",
                       },
                     }}
-                    InputLabelProps={
-                      {
-                        // sx: {
-                        //   color: "#3497F9",
-                        //   borderWidth: "1px",
-                        //   borderColor: "green !important",
-                        // },
-                      }
-                    }
+                    // InputProps={
+                    //   {
+                    //     sx: {
+                    //       borderRadius: "50px",
+                    //       padding: 0,
+                    //     },
+                    //   }
+                    // }
+                    // InputLabelProps={
+                    //   {
+                    //     sx: {
+                    //       color: "#3497F9",
+                    //       borderWidth: "1px",
+                    //       borderColor: "green !important",
+                    //     },
+                    //   }
+                    // }
                     size="small"
                   />
                 )}
@@ -351,7 +371,7 @@ export default function PatientRecord() {
             </Grid>
             <Grid item xs={1} sm={2} md={3}>
               <Autocomplete
-                disablePortal
+                // disablePortal
                 onChange={(event, value) => {
                   if (value === null) setRenderPatientList(newPatients);
                   else setRenderPatientList([value]);
@@ -366,7 +386,18 @@ export default function PatientRecord() {
                     {...params}
                     label="Tìm kiếm theo số CCCD"
                     variant="outlined"
-                    InputProps={{ sx: { borderRadius: "50px", padding: 0 } }}
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "50px",
+                      },
+                      "& .MuiInputBase-root": {
+                        backgroundColor: "#EBF5FF",
+                      },
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#EBF5FF",
+                      },
+                    }}
+                    // InputProps={{ sx: { borderRadius: "0", padding: 0 } }}
                     size="small"
                   />
                 )}
@@ -389,7 +420,19 @@ export default function PatientRecord() {
                     {...params}
                     label="Tìm kiếm theo số BHYT"
                     variant="outlined"
-                    InputProps={{ sx: { borderRadius: "50px", padding: 0 } }}
+                    // InputProps={{ sx: { borderRadius: "50px", padding: 0 } }}
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "50px",
+                        borderColor: "#EBF5FF",
+                      },
+                      "& .MuiInputBase-root": {
+                        backgroundColor: "#EBF5FF",
+                      },
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#EBF5FF",
+                      },
+                    }}
                     size="small"
                   />
                 )}
