@@ -83,16 +83,6 @@ export default function Tags() {
                         />
                     )}
                 />
-                 <TextField
-                    id="standard-basic"
-                    label="Tiêu đề"
-                    variant="standard"
-                    className={cx('mail_title')}
-                    value={mail.title} // Sử dụng giá trị từ state `mail`
-                    onChange={(e) => {
-                        setMail({ ...mail, title: e.target.value }); // Cập nhật state `mail` khi có thay đổi
-                    }}
-                />
                 <TextField
                     id="standard-basic"
                     label="Tiêu đề..."
@@ -105,15 +95,6 @@ export default function Tags() {
                 />
                 <div className={cx('under_main')}>
                     <div className={cx('mail_content')}>
-                        {/* <TextField
-                    id="standard-basic"
-                    variant="standard"
-                    className={cx('mail_content')}
-                    value={mail.content}
-                    onChange={(e) => {
-                        setMail({ ...mail, content: e.target.value }); // Cập nhật state `mail` khi có thay đổi
-                    }}
-                /> */}
                         <textarea rows="4" cols="50" placeholder='Nội dung...'>
                         </textarea>
                     </div>

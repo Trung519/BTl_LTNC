@@ -85,6 +85,8 @@ export default function Schedule() {
     }
     const handleNamePatientChange = (e) => {
         setNamePatientSearch(e.target.value);
+        if(listdata.length == 0) setSearchbool(false)
+        else setSearchbool(true)
         setPage(0)
     }
     const submitForm = () => {
@@ -367,7 +369,7 @@ export default function Schedule() {
                             <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'
                                 onChange={handleNamePatientChange}></input>
                             <i class={cx("fas fa-search", 'search')}></i>
-                            {searchbool || <p>Không tìm thấy !</p>}
+                            {listdata.length != 0 && <p>Không tìm thấy !</p>}
                         </div>
                         <div className={cx('schedule-content')}>
                             <div className={cx('schedule-table')}>

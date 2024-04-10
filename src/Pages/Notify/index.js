@@ -10,7 +10,7 @@ import { WidthFull } from '@mui/icons-material';
 const cx = classNames.bind(styles)
 
 function Notify() {
-  const [status, setStatus] = useState('coming')
+  const [status, setStatus] = useState('received_mail')
   const [inputmail, setInputmail] = useState(false);
 
 
@@ -34,7 +34,7 @@ function Notify() {
             />
           </div>
           <div className={cx('table-mail')}>
-            <Tablemail />
+            <Tablemail status={status}/>
           </div>
         </div>
         <div className={cx('input-mail')}>
