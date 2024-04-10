@@ -1,0 +1,104 @@
+.sidebar-wrapper {
+    width: 100%;
+    padding-left: 30px;
+}
+
+.write {
+    margin-top: 15%;
+    width: 60%;
+    display: flex;
+    position: relative;
+    background-color: #c2e7ff;
+    border-radius: 16px;
+    align-items: center;
+    padding: 10px 15px;
+    padding-bottom: 16px;
+    border: none;
+
+    svg {
+        position: absolute;
+        font-size: 20px;
+        margin: auto 0;
+        padding-top: 2%;
+    }
+
+    p {
+        display: flex;
+        margin: auto 0;
+        margin-left: 25%;
+        font-size: 23px;
+        font-weight: 500;
+    }
+
+    &:hover {
+        background-color: #b1d1e7;
+    }
+}
+
+.receive {
+    width: 90%;
+    margin-top: 8%;
+    display: flex;
+    background-color: #c6c7fc;
+    border-radius: 16px;
+    border: none;
+    position: relative;
+    padding:7px 15px;
+
+    svg{
+        margin:auto 0;
+        font-size: 16px;
+    }
+
+    p{
+        margin:auto 0;
+        margin-left:9%;
+        font-weight: 500;
+        font-size: 16px;
+    }
+}
+
+.send{
+    width: 90%;
+    margin-top: 4%;
+    display: flex;
+    border-radius: 16px;
+    border: none;
+    position: relative;
+    padding:7px 15px;
+    background-color: unset;
+    transition:0.3s;
+
+    svg{
+        margin:auto 0;
+        font-size: 16px;
+    }
+
+    p{
+        margin:auto 0;
+        margin-left:9%;
+        font-weight: 500;
+        font-size: 16px;
+    }
+
+    &:hover{
+        background-color:#e1e0e0;
+    }
+}
+
+.editsend{
+    background-color: #c6c7fc;
+
+    &:hover{
+        background-color: #c6c7fc;
+    }
+}
+
+.editreceive{
+    background-color: unset;
+    transition:0.3s;
+
+    &:hover{
+        background-color:#e1e0e0;
+    }
+}
