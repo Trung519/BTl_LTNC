@@ -3,7 +3,7 @@ import styles from './Notify.module.scss';
 import classNames from 'classnames/bind';
 import Footer from '../../Components/Footer'
 import SideBar from './SideBar';
-import TableMail from './TableMail/TableMail';
+import Tablemail from './TableMail';
 import InputMail from './InputMail/InputMail';
 import { WidthFull } from '@mui/icons-material';
 
@@ -20,7 +20,6 @@ function Notify() {
 
   var handleInputmail = () => {
     setInputmail(prev => !prev)
-    console.log(1)
   }
 
   return (
@@ -28,14 +27,14 @@ function Notify() {
       <div className={cx('wrap-notify')}>
         <div className={cx('notify-content')}>
           <div className={cx('sidebar')}>
-            <SideBar 
-            status={status} 
-            handleClick={handleClickStatus}
-            handleMail={handleInputmail}
+            <SideBar
+              status={status}
+              handleClick={handleClickStatus}
+              handleMail={handleInputmail}
             />
           </div>
           <div className={cx('table-mail')}>
-            <TableMail />
+            <Tablemail />
           </div>
         </div>
         <div className={cx('input-mail')}>
