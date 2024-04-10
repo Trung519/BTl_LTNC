@@ -37,25 +37,47 @@ export const AddSentMails = async (mailID, senderID) => {
     await set(ref(database, 'Notify/SentMails/'), updatedData);
 };
 
-export const GetSentMails = async (userID, callback) => {
+export const GetSentMails = (userID, callback) => {
     const database = getDatabase();
     const dataRef = ref(database, 'Notify/SentMails/');
-  
-    // Lấy dữ liệu hiện có từ Firebase
-    const snapshot = await get(dataRef);
-    let dataSentMail = snapshot.exists() ? snapshot.val() : []; // Dữ liệu hiện có
-    
-    const listSentMails = [];
 
-    for (let key in dataSentMail) {
-        const sentMail = dataSentMail[key];
-        if (sentMail.sender_id == userID) {
-            listSentMails.push(sentMail);
-        }
-    }
+    try {
+        get(dataRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const dataID = snapshot.val();
 
-    if (callback && typeof callback === 'function') {
-        callback(listSentMails);
+                const dataRefMails = ref(database, 'Notify/Mails/');
+                const listMails = [];
+
+                get(dataRefMails).then((snapshotMails) => {
+                    if (snapshotMails.exists()) {
+                        const mails = snapshotMails.val();
+
+                        for (let i in mails) {
+                            for (let key in dataID) {
+                                if (dataID[key].sender_id == userID && dataID[key].mail_id == mails[i].mail_id) {
+                                    listMails.push(mails[i])
+                                }
+                            }
+                        }
+
+                        if (callback && typeof callback === 'function') {
+                            callback(listMails);
+                        }
+                    } else {
+                        console.log("No mails found.");
+                    }
+                }).catch((error) => {
+                    console.error("Error fetching mails:", error);
+                });
+            } else {
+                console.log("No received mails found.");
+            }
+        }).catch((error) => {
+            console.error("Error fetching received mails:", error);
+        });
+    } catch (error) {
+        console.error("Error:", error);
     }
 };
 

@@ -11,23 +11,54 @@ const firebaseConfig = {
     measurementId: "G-WYRWK424BJ"
 };
 
-export const GetReceivedMails = async (userID) => {
+export const GetReceivedMails = (userID, callback) => {
     const database = getDatabase();
     const dataRef = ref(database, 'Notify/ReceivedMails/');
 
-    // Lấy dữ liệu hiện có từ Firebase
-    const snapshot = await get(dataRef);
-    let dataReceivedMails = snapshot.exists() ? snapshot.val() : []; // Dữ liệu hiện có
+    try {
+        get(dataRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const dataID = snapshot.val();
 
-    const listReceivedMails = [];
+                console.log(dataID);
 
-    for (let key in dataReceivedMails) {
-        const mail = dataReceivedMails[key];
-        if (mail.receiver_id == userID) {
-            listReceivedMails.push(mail);
-        }
+                const dataRefMails = ref(database, 'Notify/Mails/');
+                const listMails = [];
+
+                get(dataRefMails).then((snapshotMails) => {
+                    if (snapshotMails.exists()) {
+                        const mails = snapshotMails.val();
+
+                        console.log(mails);
+                        
+                        for (let i in mails) {
+                            for (let key in dataID) {
+                                if (dataID[key].receiver_id == userID && dataID[key].mail_id == mails[i].mail_id) {
+                                    listMails.push(mails[i])
+                                }
+                            }
+                        }
+
+                        if (callback && typeof callback === 'function') {
+                            callback(listMails);
+                        }
+                    } else {
+                        console.log("No mails found.");
+                    }
+                }).catch((error) => {
+                    console.error("Error fetching mails:", error);
+                });
+            } else {
+                console.log("No received mails found.");
+            }
+        }).catch((error) => {
+            console.error("Error fetching received mails:", error);
+        });
+    } catch (error) {
+        console.error("Error:", error);
     }
 };
+
 
 export const AddReceivedMails = async (mailID, listID) => {
     const database = getDatabase();

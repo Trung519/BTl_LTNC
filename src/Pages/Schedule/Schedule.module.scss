@@ -122,10 +122,6 @@
 
 }
 
-.line1 {
-    // background-color: #eae9e9;
-}
-
 .Status-done {
     color: rgb(24, 190, 24);
     border-radius: 5px;
@@ -256,7 +252,7 @@ h5 {
         position: relative;
         margin-left:13%;
 
-        input {
+        .input-search {
             width: 70%;
             border-radius: 10px;
             border: none;
@@ -283,7 +279,7 @@ h5 {
         width: 50%;
         position: relative;
 
-        input {
+        .input-search {
             width: 70%;
             border-radius: 10px;
             border: none;

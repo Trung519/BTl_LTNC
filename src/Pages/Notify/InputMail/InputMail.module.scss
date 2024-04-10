@@ -2,12 +2,18 @@
     width: 30%;
     height: 50vh;
     background-color: red;
+    border-radius: 10px;
 
     .top {
         display: flex;
+        justify-content: space-between;
         width: 100%;
         height: auto;
-    }
+        padding:1% 3%;
+        background-color: antiquewhite;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+    }   
 
     .main-container {
         display: flex;

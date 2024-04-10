@@ -64,16 +64,6 @@ export default function Tags() {
                 </div>
             </div>
             <div className={cx('main')}>
-                <TextField
-                    id="standard-basic"
-                    label="Tiêu đề"
-                    variant="standard"
-                    className={cx('mail_title')}
-                    value={mail.title} // Sử dụng giá trị từ state `mail`
-                    onChange={(e) => {
-                        setMail({ ...mail, title: e.target.value }); // Cập nhật state `mail` khi có thay đổi
-                    }}
-                />
                 <Autocomplete className={cx('mail_receiver')}
                     multiple
                     id="tags-standard"
@@ -91,6 +81,16 @@ export default function Tags() {
                             placeholder="Người nhận"
                         />
                     )}
+                />
+                 <TextField
+                    id="standard-basic"
+                    label="Tiêu đề"
+                    variant="standard"
+                    className={cx('mail_title')}
+                    value={mail.title} // Sử dụng giá trị từ state `mail`
+                    onChange={(e) => {
+                        setMail({ ...mail, title: e.target.value }); // Cập nhật state `mail` khi có thay đổi
+                    }}
                 />
                 <TextField
                     id="standard-basic"
