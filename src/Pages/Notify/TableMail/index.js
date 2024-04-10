@@ -187,7 +187,7 @@ export default function Tablemail() {
                 </div>
             </div>
             <div className={cx('content-container')}>
-            {
+            {/* {
                   Array.from({ length: 10 }, (_, index) => {
                     if (page * 10 + index + 1 > listdata.length) {}
                     else {
@@ -207,7 +207,7 @@ export default function Tablemail() {
                     }
 
                   })
-                }
+                } */}
             </div>
         </div>
     )
