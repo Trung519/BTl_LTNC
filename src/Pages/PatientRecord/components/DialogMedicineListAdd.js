@@ -164,13 +164,13 @@ const DialogMedicineListAdd = (props) => {
         </Button>
         <Button
           onClick={() => {
-            // Add_Med(
-            //   CCCD,
-            //   nameValue.current.value,
-            //   usageValue.current.value,
-            //   dosageValue.current.value,
-            //   unitValue.current.value
-            // );
+            Add_Med(
+              CCCD,
+              nameValue.current.value,
+              usageValue.current.value,
+              dosageValue.current.value,
+              unitValue.current.value
+            );
             setListNewMedicine(medicineAddList);
             setAddMedicineListFormOpen(false);
           }}
