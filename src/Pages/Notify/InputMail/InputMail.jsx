@@ -65,6 +65,7 @@ export default function Tags() {
             </div>
             <div className={cx('main')}>
                 <Autocomplete className={cx('mail_receiver')}
+                    sx={{ height: 40 }}
                     multiple
                     id="tags-standard"
                     options={listUser}
@@ -77,14 +78,14 @@ export default function Tags() {
                         <TextField
                             {...params}
                             variant="standard"
-                            label="Đến"
+                            label="Đến..."
                             placeholder="Người nhận"
                         />
                     )}
                 />
-                 <TextField
+                <TextField
                     id="standard-basic"
-                    label="Tiêu đề"
+                    label="Tiêu đề..."
                     variant="standard"
                     className={cx('mail_title')}
                     value={mail.title} // Sử dụng giá trị từ state `mail`
@@ -92,22 +93,22 @@ export default function Tags() {
                         setMail({ ...mail, title: e.target.value }); // Cập nhật state `mail` khi có thay đổi
                     }}
                 />
-                <TextField
-                    id="standard-basic"
-                    variant="standard"
-                    className={cx('mail_content')}
-                    value={mail.content}
-                    onChange={(e) => {
-                        setMail({ ...mail, content: e.target.value }); // Cập nhật state `mail` khi có thay đổi
-                    }}
-                />
+                <div className={cx('under_main')}>
+                    <div className={cx('mail_content')}>
+                        <textarea rows="4" cols="50" placeholder='Nội dung...'>
+                        </textarea>
+                    </div>
+                    <div className={cx('bottom')}>
+                        <Button
+                            variant="contained" endIcon={<SendIcon />}
+                            onClick={handleSendMail}
+                        >
+                            Gửi thư
+                        </Button>
+                    </div>
+                </div>
             </div>
-            <div className={cx('bottom')}>
-                <Button
-                    variant="contained" endIcon={<SendIcon />}
-                    onClick={handleSendMail}
-                >Gửi thư</Button>
-            </div>
+
         </div>
     );
 }

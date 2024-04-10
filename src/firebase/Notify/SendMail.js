@@ -39,10 +39,12 @@ const firebaseConfig = {
         const newData = {
             mail_id: idNewMail,
             sender_id: senderID,
+            name_sender: "truc.taquang",
             receiver_id: listIDs,
             content: newMail.content,
             subject: newMail.title,
-            time: "12:29 12/12/2024"
+            hour: newMail.time.split(' ')[0],
+            day: newMail.time.split(' ')[1]
         };
 
         const updatedData = [...mailsData, newData];

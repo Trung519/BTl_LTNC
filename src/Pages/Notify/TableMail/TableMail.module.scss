@@ -1,24 +1,77 @@
-.tablemail-wrapper{
+.tablemail-wrapper {
     width: 100%;
 }
 
-.primary-row{
-    padding:1% 0;
+.primary-row {
+    padding: 1% 0;
     width: 100%;
     border-bottom: 1px solid gray;
 }
 
-.primary-checkbox, 
-.primary-sender, 
+.primary-checkbox,
+.primary-sender,
 .primary-content,
-.primary-time{
-    display:flex;
+.primary-time {
+    display: flex;
     justify-content: start;
     align-items: center;
     font-weight: 500;
 
-    p{
+    p {
         text-align: center;
-        margin:auto 0;       
+        margin: auto 0;
     }
+}
+
+.content-container {
+    width: 100%;
+}
+
+.line-row {
+    padding: 1% 0;
+    width: 100%;
+    border-bottom: 1px solid gray;
+}
+
+.sender-col {
+    display: flex;
+    justify-content: start;
+    white-space: nowrap;
+    overflow: hidden;
+    font-weight: 500;
+    margin:auto 0;
+}
+
+.content-col {
+    display: flex;
+    justify-content: start;
+    margin:auto 0;
+
+    .content-title {
+        font-weight: 450;
+        font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .content-content{
+        font-weight: 400;
+        font-size: 12px;
+        color:#adadad;
+        margin:auto 0;
+    }
+}
+
+.time-col {
+    font-size: 12px;
+  
+
+    p{
+        text-align:center;
+        margin:auto 0;
+    }
+}
+
+.barrie{
+    margin:0 1%;
 }
