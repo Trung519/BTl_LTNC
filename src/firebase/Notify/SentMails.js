@@ -37,27 +37,43 @@ export const AddSentMails = async (mailID, senderID) => {
     await set(ref(database, 'Notify/SentMails/'), updatedData);
 };
 
-export const GetSentMails = async (userID, callback) => {
+export const GetSentMails = (userID, callback) => {
     const database = getDatabase();
     const dataRef = ref(database, 'Notify/SentMails/');
   
     // Lấy dữ liệu hiện có từ Firebase
-    const snapshot = await get(dataRef);
-    let dataSentMail = snapshot.exists() ? snapshot.val() : []; // Dữ liệu hiện có
+    get(dataRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            const dataSentMail = snapshot.val(); // Dữ liệu hiện có
     
-    const listSentMails = [];
+            const listSentMails = [];
 
-    for (let key in dataSentMail) {
-        const sentMail = dataSentMail[key];
-        if (sentMail.sender_id == userID) {
-            listSentMails.push(sentMail);
+            for (let key in dataSentMail) {
+                const sentMail = dataSentMail[key];
+                if (sentMail.sender_id == userID) {
+                    listSentMails.push(sentMail);
+                }
+            }
+
+            if (callback && typeof callback === 'function') {
+                callback(listSentMails);
+            }
+        } else {
+            // Handle case where data doesn't exist
+            console.log("No data available");
+            if (callback && typeof callback === 'function') {
+                callback([]);
+            }
         }
-    }
-
-    if (callback && typeof callback === 'function') {
-        callback(listSentMails);
-    }
+    }).catch((error) => {
+        // Handle errors
+        console.error("Error getting sent mails:", error);
+        if (callback && typeof callback === 'function') {
+            callback([]);
+        }
+    });
 };
+
 
 export const RemoveSentMails = async (userID, listMailIDs, callback) => {
     const database = getDatabase();
