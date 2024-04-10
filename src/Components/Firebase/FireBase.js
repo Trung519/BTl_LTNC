@@ -1,7 +1,7 @@
 //Nơi lưu trữ các hàm để thao tác dữ liệu của FireBase
 
 import { getDatabase, ref, set, remove, push, get, child, onValue } from "firebase/database";
-import { useState } from "react";
+import RandomKey from "../../firebase/RandomKey.js";
 
 
 // Hàm cập nhật dữ liệu
@@ -124,13 +124,16 @@ export const addNewSchedule = async (data, callback) => {
   const snapshot = await get(dataRef);
   let existingData = snapshot.exists() ? snapshot.val() : {}; // Dữ liệu hiện có
   const newData = {
+    id_schedule: RandomKey(),
     Date: data.date,
     ID_doctor: data.id_Doctor,
     Name_doctor: data.name_Doctor,
     Patient: data.name_Patient,
+    CCCD: data.name_CCCD,
     Room: data.room,
     Status: "Chưa khám",
     Time: data.time
+    
   };
 
   // Di chuyển dữ liệu hiện có xuống một cấp
