@@ -81,6 +81,7 @@ export const GetSentMails = (userID, callback) => {
     }
 };
 
+
 export const RemoveSentMails = async (userID, listMailIDs, callback) => {
     const database = getDatabase();
     const dataRef = ref(database, 'Notify/SentMails/');
