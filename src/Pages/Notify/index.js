@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import Footer from '../../Components/Footer'
 import SideBar from './SideBar';
 import Tablemail from './TableMail';
-import InputMail from './InputMail/InputMail';
+import InputMail from './InputMail/InputMail.jsx'
 import { WidthFull } from '@mui/icons-material';
 
 const cx = classNames.bind(styles)

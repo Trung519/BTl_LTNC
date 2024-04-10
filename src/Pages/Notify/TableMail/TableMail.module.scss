@@ -26,3 +26,33 @@
 .content-container{
     width: 100%;
 }
+
+.line-row{
+    padding:1% 0;
+    width: 100%;
+    border-bottom: 1px solid gray;
+}
+
+.sender-col{
+    display:flex;
+    justify-content: start;
+    overflow: hidden;
+}
+
+.content-col{
+    display:flex;
+    justify-content:start;
+    
+    .content-title{
+        font-weight: 600;
+        font-size: 18px;
+        overflow: hidden;
+    }
+}
+
+.time-col{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+}

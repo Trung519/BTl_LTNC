@@ -7,7 +7,7 @@ const cx = classNames.bind(styles)
 
 export default function Tablemail() {
     const [page, setPage] = useState(0)             // Phan trang provip
-    const [listEmail, setListEmail] = useState([
+    const [listemail, setListemail] = useState([
         {
             Type: 1,
             Sender: "PHÒNG CÔNG TÁC CHÍNH TRI SINH VIÊN",
@@ -187,27 +187,34 @@ export default function Tablemail() {
                 </div>
             </div>
             <div className={cx('content-container')}>
-            {/* {
-                  Array.from({ length: 10 }, (_, index) => {
-                    if (page * 10 + index + 1 > listdata.length) {}
-                    else {
-                      let count = index % 2;
-                      var handleColor = (indexx) => {
-                        if (listdata[indexx].Status == 'Xong') return 'done'
-                        else if (listdata[indexx].Status == 'Đang khám') return 'doing'
-                        else return 'pending'
-                      }
+                {
+                    Array.from({ length: 10 }, (_, index) => {
+                        if (page * 10 + index + 1 > listemail.length) { }
+                        else {
+                            let count = index % 2;
+                            var handleColor = (indexx) => {
+                                if (listemail[indexx].Status == 'Xong') return 'done'
+                                else if (listemail[indexx].Status == 'Đang khám') return 'doing'
+                                else return 'pending'
+                            }
 
-                      return (
-                        <div key={page*10 + index + 1} className={cx('row', 'line-row', `line${count}`)}>
-                          <div className={cx('col-md-1')}></div>
-                          <div className={cx('col-md-1')}></div>
-                        </div>
-                      )
-                    }
+                            return (
+                                <div key={page * 10 + index + 1} className={cx('row', 'line-row', `line${count}`)}>
+                                    <div className={cx('col-md-1')}>
+                                        <input type='checkbox'></input>
+                                    </div>
+                                    <div className={cx('col-md-2', 'sender-col')}>{listemail[page * 10 + index].Sender}</div>
+                                    <div className={cx('col-md-8', 'content-col')}>
+                                        <span className={cx('content-title')}>{listemail[page * 10 + index].Title}</span>
+                                        <span className={cx('content-content')}> - {listemail[page * 10 + index].Content}</span>
+                                    </div>
+                                    <div className={cx('col-md-1', 'time-col')}>{listemail[page * 10 + index].Time}</div>
+                                </div>
+                            )
+                        }
 
-                  })
-                } */}
+                    })
+                }
             </div>
         </div>
     )
