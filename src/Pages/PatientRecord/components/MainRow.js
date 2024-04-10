@@ -55,9 +55,9 @@ function MainRow(props) {
     React.useState(false);
 
   const [newGender, setNewGender] = React.useState(row.gender);
-  React.useEffect(() => {
-    setHistoryList(row.history || []);
-  }, [row.history]);
+  // React.useEffect(() => {
+  //   setHistoryList(row.history || []);
+  // }, [newPatients]);
   const handleChangeGender = (event) => {
     setNewGender(event.target.value);
   };
@@ -138,9 +138,12 @@ function MainRow(props) {
               // console.log(indexInPatients);
               // console.log(e.CCCD);
               // console.log(row.CCCD);
+              // console.log("bf", row.history);
               event.preventDefault();
               newPatients.splice(indexInPatients, 1);
               setNewPatientsAndRender([...newPatients]);
+              // console.log("af", row.history);
+
               DeleteData(row.CCCD);
             }}
           >
@@ -163,7 +166,7 @@ function MainRow(props) {
               <IconButton
                 aria-label="add"
                 size="small"
-                color="success"
+                color="info"
                 onClick={() => setAddHistoryFormOpen(!addHistoryFormOpen)}
               >
                 <AddCircleIcon></AddCircleIcon>

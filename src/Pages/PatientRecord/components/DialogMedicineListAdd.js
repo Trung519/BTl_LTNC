@@ -104,7 +104,7 @@ const DialogMedicineListAdd = (props) => {
               <IconButton
                 aria-label="add"
                 size="small"
-                color="success"
+                color="info"
                 sx={{ marginTop: "23px" }}
                 onClick={() => {
                   const newMedicineElement = {

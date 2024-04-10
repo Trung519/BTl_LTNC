@@ -18,7 +18,14 @@ import { AddHist, Add_Med } from "./P_R_be";
 import DialogAdd from "./components/DialogAdd";
 import MainRow from "./components/MainRow";
 import { Patients } from "./P_R_be";
-
+const top100Films = [
+  { label: "The Shawshank Redemption", year: 1994 },
+  { label: "The Godfather", year: 1972 },
+  { label: "The Godfather: Part II", year: 1974 },
+  { label: "The Dark Knight", year: 2008 },
+  { label: "12 Angry Men", year: 1957 },
+  { label: "Schindler's List", year: 1993 },
+];
 // export let patients = [];
 function createPatient(
   STT = 1, //patients.length + 1,
@@ -200,7 +207,6 @@ export default function PatientRecord() {
       if (post != null) {
         setNewPatientsAndRender(Object.values(post));
         console.log("render", Object.values(post));
-        // console.log("render", renderPatientList);
       }
     });
   }, []);
@@ -226,9 +232,8 @@ export default function PatientRecord() {
   const handle_BHYT = (event) => {
     setBHYT(event.target.value);
   };
-  React.useEffect(() => {
-    // patients = newPatients;
-  }, [newPatients]);
+  // React.useEffect(() => {
+  // }, [newPatients]);
   const setNewPatientsAndRender = (newPatients) => {
     setNewPatients([...newPatients]);
     setRenderPatientList([...newPatients]);
@@ -310,15 +315,20 @@ export default function PatientRecord() {
                 handle_BHYT={handle_BHYT}
               ></DialogAdd>
             </Grid>
-            {/* <Grid item xs={1} sm={2} md={3}>
+            <Grid item xs={1} sm={2} md={3}>
+              {/* {console.log("search", newPatients)} */}
               <Autocomplete
+                disablePortal
                 onChange={(event, value) => {
-                  if (value === null) setRenderPatientList(patients);
+                  console.log("1", newPatients);
+                  if (value === null) setRenderPatientList(newPatients);
                   else setRenderPatientList([value]);
                 }}
                 sx={{ width: 300, marginLeft: "15px" }}
-                options={patients}
-                getOptionLabel={(option) => option.fullName}
+                options={newPatients}
+                getOptionLabel={(option) => {
+                  return option.fullName;
+                }}
                 id="fullname_search"
                 clearOnEscape
                 renderInput={(params) => (
@@ -326,22 +336,34 @@ export default function PatientRecord() {
                     {...params}
                     label="Tìm kiếm theo họ tên"
                     variant="outlined"
-                    InputProps={{
-                      sx: {
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
                         borderRadius: "50px",
-                        padding: 0,
-
+                      },
+                      "& .MuiInputBase-root": {
+                        backgroundColor: "#EBF5FF",
+                      },
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#EBF5FF",
                       },
                     }}
-                    InputLabelProps={
-                      {
-                        // sx: {
-                        //   color: "#3497F9",
-                        //   borderWidth: "1px",
-                        //   borderColor: "green !important",
-                        // },
-                      }
-                    }
+                    // InputProps={
+                    //   {
+                    //     sx: {
+                    //       borderRadius: "50px",
+                    //       padding: 0,
+                    //     },
+                    //   }
+                    // }
+                    // InputLabelProps={
+                    //   {
+                    //     sx: {
+                    //       color: "#3497F9",
+                    //       borderWidth: "1px",
+                    //       borderColor: "green !important",
+                    //     },
+                    //   }
+                    // }
                     size="small"
                   />
                 )}
@@ -351,20 +373,31 @@ export default function PatientRecord() {
               <Autocomplete
                 // disablePortal
                 onChange={(event, value) => {
-                  // if (value === null) setRenderPatientList(patients);
+                  if (value === null) setRenderPatientList(newPatients);
                   else setRenderPatientList([value]);
                 }}
                 sx={{ width: 300 }}
-                // options={patients}
+                options={newPatients}
                 getOptionLabel={(option) => option.CCCD}
-                id="fullname_search"
+                id="CCCD_search"
                 clearOnEscape
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     label="Tìm kiếm theo số CCCD"
                     variant="outlined"
-                    InputProps={{ sx: { borderRadius: "50px", padding: 0 } }}
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "50px",
+                      },
+                      "& .MuiInputBase-root": {
+                        backgroundColor: "#EBF5FF",
+                      },
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#EBF5FF",
+                      },
+                    }}
+                    // InputProps={{ sx: { borderRadius: "0", padding: 0 } }}
                     size="small"
                   />
                 )}
@@ -372,26 +405,39 @@ export default function PatientRecord() {
             </Grid>
             <Grid item xs={1} sm={2} md={3}>
               <Autocomplete
+                disablePortal
                 onChange={(event, value) => {
-                  // if (value === null) setRenderPatientList(patients);
+                  if (value === null) setRenderPatientList(newPatients);
                   else setRenderPatientList([value]);
                 }}
                 sx={{ width: 300 }}
-                // options={patients}
+                options={newPatients}
                 getOptionLabel={(option) => option.BHYT}
-                id="fullname_search"
+                id="BHYT_search"
                 clearOnEscape
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     label="Tìm kiếm theo số BHYT"
                     variant="outlined"
-                    InputProps={{ sx: { borderRadius: "50px", padding: 0 } }}
+                    // InputProps={{ sx: { borderRadius: "50px", padding: 0 } }}
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "50px",
+                        borderColor: "#EBF5FF",
+                      },
+                      "& .MuiInputBase-root": {
+                        backgroundColor: "#EBF5FF",
+                      },
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#EBF5FF",
+                      },
+                    }}
                     size="small"
                   />
                 )}
               />
-            </Grid> */}
+            </Grid>
           </Grid>
         </Box>
         {/* <Divider
@@ -498,19 +544,16 @@ export default function PatientRecord() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {
-                  // console.log("render", renderPatientList)
-                  renderPatientList.map((row, index) => {
-                    return (
-                      <MainRow
-                        newPatients={newPatients}
-                        key={index}
-                        row={row}
-                        setNewPatientsAndRender={setNewPatientsAndRender}
-                      ></MainRow>
-                    );
-                  })
-                }
+                {renderPatientList.map((row, index) => {
+                  return (
+                    <MainRow
+                      newPatients={newPatients}
+                      key={row.CCCD}
+                      row={row}
+                      setNewPatientsAndRender={setNewPatientsAndRender}
+                    ></MainRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </TableContainer>
