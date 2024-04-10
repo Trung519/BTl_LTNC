@@ -1,5 +1,5 @@
 import { getData, writeUserData } from '../../services/firebase';
-import { v4 as uuidv4} from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 
 
 // import Select from 'react-select';
@@ -36,8 +36,8 @@ export default function EquipmentsManage({ }) {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [displayAlert, setDisplayAlert] = useState(false);
-    const [displayConfirm, setDisplayConfirm] =useState(false);
- 
+    const [displayConfirm, setDisplayConfirm] = useState(false);
+
     useEffect(() => {
         getData().then((post) => {
             if (post != null) {
@@ -48,7 +48,7 @@ export default function EquipmentsManage({ }) {
         });
     }, []);
 
-    const handleDisplayAlert= () =>{
+    const handleDisplayAlert = () => {
         setDisplayAlert(true);
         setTimeout(() => {
             setDisplayAlert(false);
@@ -59,8 +59,8 @@ export default function EquipmentsManage({ }) {
         if (idToEdit === null) {
             // add item
             // newRow={...newRow, id: uuidv4()}
-            let ID =uuidv4()
-            let newdata= [...equipmentsRows, {...newRow, id:ID}]
+            let ID = uuidv4()
+            let newdata = [...equipmentsRows, { ...newRow, id: ID }]
             writeUserData(newdata, "/Equipment");
             setEquipmentsRows(newdata);
         }
@@ -68,13 +68,13 @@ export default function EquipmentsManage({ }) {
             // edit item
             let newData = equipmentsRows;
             // newData[idToEdit] = newRow;
-            let find =newData.find(item => item.id===idToEdit);
-            if(find){
-                find.name=newRow.name;
-                find.room=newRow.room;
-                find.status=newRow.status;
-                find.type=newRow.type;
-                find.description=newRow.description;
+            let find = newData.find(item => item.id === idToEdit);
+            if (find) {
+                find.name = newRow.name;
+                find.room = newRow.room;
+                find.status = newRow.status;
+                find.type = newRow.type;
+                find.description = newRow.description;
             }
             writeUserData(newData, "/Equipment");
             setEquipmentsRows(newData);
@@ -89,24 +89,24 @@ export default function EquipmentsManage({ }) {
         //     );
         handleDisplayAlert()
     }
-    
-    const handleOnclickDelete =(ID) =>{
+
+    const handleOnclickDelete = (ID) => {
         setidToEdit(ID);
         setDisplayConfirm(true);
         // console.log('idtodit', idToEdit)
     }
 
-    const handleDeleteRow =useCallback(
-         () => {
+    const handleDeleteRow = useCallback(
+        () => {
             // console.log('idto Edit', idToEdit)
             writeUserData(equipmentsRows.filter((item, idx) => item.id !== idToEdit), "/Equipment");
             setEquipmentsRows(equipmentsRows.filter((item, idx) => item.id !== idToEdit));
             setDisplayConfirm(false);
-         }, [idToEdit]) 
+        }, [idToEdit])
 
-    
-    function handleEditRow(id) {    
-  
+
+    function handleEditRow(id) {
+
         setidToEdit(id);
         setModalOpen(true);
     }
@@ -140,106 +140,116 @@ export default function EquipmentsManage({ }) {
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - equipmentsRows.length) : 0;
 
     return (
-        <div id='container'>
-            <div>
-                <Fade in={displayAlert}>
-                    <Alert severity="success">Thêm thiết bị thành công</Alert>
-                </Fade>
-            </div>
+        <div id='backgroundE'>
+            <div id='container'>
+                <div>
+                    <Fade in={displayAlert}>
+                        <Alert severity="success">Thêm thiết bị thành công</Alert>
+                    </Fade>
+                </div>
 
-   
-            
-            <div id='header-container'>
-                <button id="addnew-btn" onClick={() => { setModalOpen(true); setidToEdit(null) }}> + Thêm mới</button>
-                <h1>Thiết bị</h1>
-            </div>
-            <div className='search'>
-                <TextField
-                    id="outlined-basic"
-                    variant="outlined"
-                    fullWidth
-                    onChange={inputHandler}
-                    label="Tìm kiếm"
-                />
-            </div>
 
-            <table id='equipment-table' >
-                <thead>
-                    <th className='name-col'>Tên </th>
-                    <th className='type-col'>Loại</th>
-                    <th className='name-col'>Phòng</th>
-                    <th className='name-col'>Mô tả</th>
-                    <th className='type-col'>Trạng thái</th>
-                    <th className='type-col'>Thao tác</th>
-                </thead>
-                <tbody>
-                    {
-                        (rowsPerPage > 0
-                            ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            : filteredData
-                        )
-                            .map((row, index) => {
-                                return (
-                                    <tr key={index}>
-                                        <td className='name-col'>{<div>
-                                            <span>{row.name}</span> <br />
-                                            {/* <span id="txt-id">{row.id}</span> */}
-                                        </div>}</td>
-                                        <td className='type-col'>{row.type}</td>
-                                        <td className='name-col'>{row.room}</td>
-                                        <td className='name-col' >{row.description}</td>
-                                        <td className='type-col'><span>{row.status}</span></td>
-                                        <td className='type-col'>
-                                            <div id='action-btn-container'>
-                                                <button className="action-btn" id="delete-btn" type="submit" onClick={() => handleOnclickDelete(row.id)}><FontAwesomeIcon icon={faTrashCan} style={{ color: "#ff3333", }} /></button>
-                                                <button className="action-btn" id="edit-btn" type="submit" onClick={() => handleEditRow(row.id)} ><FontAwesomeIcon icon={faPenToSquare} style={{ color: "#1a9cff", }} /></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                )
-                            })
-                    }
-                    {emptyRows > 0 && (
-                        <tr style={{ height: 41 * emptyRows }}>
-                            <td colSpan={6} aria-hidden />
-                        </tr>)}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <CustomTablePagination
-                            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                            colSpan={6}
-                            count={equipmentsRows.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            slotProps={{
-                                select: {
-                                    'aria-label': 'rows per page',
-                                },
-                                actions: {
-                                    showFirstButton: true,
-                                    showLastButton: true,
-                                    slots: {
-                                        firstPageIcon: FirstPageRoundedIcon,
-                                        lastPageIcon: LastPageRoundedIcon,
-                                        nextPageIcon: ChevronRightRoundedIcon,
-                                        backPageIcon: ChevronLeftRoundedIcon,
+                <div id='header-container'>
+                    <button id="addnew-btn" onClick={() => { setModalOpen(true); setidToEdit(null) }}> + Thêm mới</button>
+                    <h1>Quản lý Thiết bị</h1>
+                </div>
+                <div className='search'>
+                    <TextField
+                        id="outlined-basic"
+                        variant="outlined"
+                        sx={{
+                            "& fieldset": { border: 'none' },
+                        }}
+                        fullWidth
+                        size='small'
+                        onChange={inputHandler}
+                        label="Tìm kiếm"
+                        InputProps={{
+                            style: {
+                                borderRadius: "40px",
+                                background: '#F4F6F6',
+                            }
+                        }}
+                    />
+                </div>
+
+                <table id='equipment-table' >
+                    <thead>
+                        <th className='name-col'>Tên </th>
+                        <th className='type-col'>Loại</th>
+                        <th className='name-col'>Phòng</th>
+                        <th className='name-col'>Mô tả</th>
+                        <th className='type-col'>Trạng thái</th>
+                        <th className='type-col'>Thao tác</th>
+                    </thead>
+                    <tbody>
+                        {
+                            (rowsPerPage > 0
+                                ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                : filteredData
+                            )
+                                .map((row, index) => {
+                                    return (
+                                        <tr key={index}>
+                                            <td className='name-col'>{<div>
+                                                <span>{row.name}</span> <br />
+                                                {/* <span id="txt-id">{row.id}</span> */}
+                                            </div>}</td>
+                                            <td className='type-col'>{row.type}</td>
+                                            <td className='name-col'>{row.room}</td>
+                                            <td className='name-col' >{row.description}</td>
+                                            <td className='type-col'><span>{row.status}</span></td>
+                                            <td className='type-col'>
+                                                <div id='action-btn-container'>
+                                                    <button className="action-btn" id="delete-btn" type="submit" onClick={() => handleOnclickDelete(row.id)}><FontAwesomeIcon icon={faTrashCan} style={{ color: "#ff3333", }} /></button>
+                                                    <button className="action-btn" id="edit-btn" type="submit" onClick={() => handleEditRow(row.id)} ><FontAwesomeIcon icon={faPenToSquare} style={{ color: "#1a9cff", }} /></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )
+                                })
+                        }
+                        {emptyRows > 0 && (
+                            <tr style={{ height: 41 * emptyRows }}>
+                                <td colSpan={6} aria-hidden />
+                            </tr>)}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <CustomTablePagination
+                                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                                colSpan={6}
+                                count={equipmentsRows.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                labelRowsPerPage={"Số hàng hiển thị:"}
+                                slotProps={{
+                                    select: {
+                                        'aria-label': 'rows per page',
                                     },
-                                },
-                            }}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                        />
-                    </tr>
-                </tfoot>
-            </table>
-            {modalOpen && <Modal closeModal={() => {
-                setModalOpen(false);
-            }} onSubmit={handleSubmit}
-                defaultValue={idToEdit !== null && equipmentsRows.find(item=>item.id===idToEdit)} />}
-            
-            <ConfirmModal displayConfirm={displayConfirm} setDisplayConfirm={setDisplayConfirm} handleDeleteRow={handleDeleteRow}  ></ConfirmModal>
-
+                                    actions: {
+                                        showFirstButton: true,
+                                        showLastButton: true,
+                                        slots: {
+                                            firstPageIcon: FirstPageRoundedIcon,
+                                            lastPageIcon: LastPageRoundedIcon,
+                                            nextPageIcon: ChevronRightRoundedIcon,
+                                            backPageIcon: ChevronLeftRoundedIcon,
+                                        },
+                                    },
+                                }}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                        </tr>
+                    </tfoot>
+                </table>
+                {modalOpen && <Modal closeModal={() => {
+                    setModalOpen(false);
+                }} onSubmit={handleSubmit}
+                    defaultValue={idToEdit !== null && equipmentsRows.find(item => item.id === idToEdit)} />}
+                <ConfirmModal displayConfirm={displayConfirm} setDisplayConfirm={setDisplayConfirm} handleDeleteRow={handleDeleteRow}  ></ConfirmModal>
+            </div>
         </div>
     );
 }
@@ -357,3 +367,4 @@ const CustomTablePagination = styled(TablePagination)(
     }
     `,
 );
+
