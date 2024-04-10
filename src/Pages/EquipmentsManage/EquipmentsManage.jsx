@@ -1,5 +1,5 @@
 import { getData, writeUserData } from '../../services/firebase';
-import { v4 as uuidv4} from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 
 
 // import Select from 'react-select';
@@ -47,8 +47,8 @@ export default function EquipmentsManage({ }) {
         if (idToEdit === null) {
             // add item
             // newRow={...newRow, id: uuidv4()}
-            let ID =uuidv4()
-            let newdata= [...equipmentsRows, {...newRow, id:ID}]
+            let ID = uuidv4()
+            let newdata = [...equipmentsRows, { ...newRow, id: ID }]
             writeUserData(newdata, "/Equipment");
             setEquipmentsRows(newdata);
         }
@@ -56,13 +56,13 @@ export default function EquipmentsManage({ }) {
             // edit item
             let newData = equipmentsRows;
             // newData[idToEdit] = newRow;
-            let find =newData.find(item => item.id===idToEdit);
-            if(find){
-                find.name=newRow.name;
-                find.room=newRow.room;
-                find.status=newRow.status;
-                find.type=newRow.type;
-                find.description=newRow.description;
+            let find = newData.find(item => item.id === idToEdit);
+            if (find) {
+                find.name = newRow.name;
+                find.room = newRow.room;
+                find.status = newRow.status;
+                find.type = newRow.type;
+                find.description = newRow.description;
             }
             writeUserData(newData, "/Equipment");
             setEquipmentsRows(newData);
@@ -85,7 +85,7 @@ export default function EquipmentsManage({ }) {
         setEquipmentsRows(equipmentsRows.filter((item, idx) => item.id !== targetID));
     }
     function handleEditRow(id) {
-  
+
         setidToEdit(id);
         setModalOpen(true);
     }
@@ -119,18 +119,29 @@ export default function EquipmentsManage({ }) {
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - equipmentsRows.length) : 0;
 
     return (
+        <div id='backgroundE'>
         <div id='container'>
             <div id='header-container'>
                 <button id="addnew-btn" onClick={() => { setModalOpen(true); setidToEdit(null) }}> + Thêm mới</button>
-                <h1>Thiết bị</h1>
+                <h1>Quản lý Thiết bị</h1>
             </div>
             <div className='search'>
                 <TextField
                     id="outlined-basic"
                     variant="outlined"
+                    sx={{
+                        "& fieldset": { border: 'none' },
+                    }}
                     fullWidth
+                    size='small'
                     onChange={inputHandler}
                     label="Tìm kiếm"
+                    InputProps={{
+                        style: {
+                            borderRadius: "40px",
+                            background: '#F4F6F6',
+                        }
+                    }}
                 />
             </div>
 
@@ -183,7 +194,8 @@ export default function EquipmentsManage({ }) {
                             count={equipmentsRows.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
-                            slotProps={{
+                            labelRowsPerPage={"Số hàng hiển thị:"}
+                            slotProps={{              
                                 select: {
                                     'aria-label': 'rows per page',
                                 },
@@ -207,7 +219,8 @@ export default function EquipmentsManage({ }) {
             {modalOpen && <Modal closeModal={() => {
                 setModalOpen(false);
             }} onSubmit={handleSubmit}
-                defaultValue={idToEdit !== null && equipmentsRows.find(item=>item.id===idToEdit)} />}
+                defaultValue={idToEdit !== null && equipmentsRows.find(item => item.id === idToEdit)} />}
+        </div>
         </div>
     );
 }

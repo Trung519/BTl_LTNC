@@ -1,7 +1,21 @@
+#backgroundE {
+    background: #F1F8FF;
+    position:relative; 
+    justify-content: center;
+    align-content: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
 #container {
-    width: 90%;
+    background-color: white;
+    z-index: 1;
     margin-left: auto;
     margin-right: auto;
+    padding: 2rem;
+    width:90%;
+    border-radius: 12px;  
+
 }
 
 #txt-id {
@@ -39,8 +53,8 @@
 }
 
 #addnew-btn{
-color: #1F2B6C;
-background-color: #BFD2F8;
+color: white;
+background-color: #3497F9;
 font-family: 'Poppins', sans-serif;
 font-weight: bold;
 border: none;
@@ -68,18 +82,24 @@ h1{
     font-family:'Poppins', sans-serif;
     font-weight: 500;
     text-transform: uppercase;
+    font-size:x-large;
 }
 
 #action-btn-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2px;
+    grid-template-columns: repeat(2, minmax(0, max-content)); /* adjust the width of the columns */
+    gap: 10px;
+    justify-items: center;
+    align-items: center;
+    justify-content: center; /* aligns the grid horizontally in the center */
+    align-items: center;
 } 
 
 .action-btn {
     background-color: transparent;
     padding: 5px;
     border-radius: 8px;
+    width: 30px;
 }
 
 #delete-btn{
@@ -91,6 +111,7 @@ h1{
 }
 
 .search {
-    width:30%;
+    width:25%;
     margin-bottom: 2rem;
+    height: 1rem;
 }
