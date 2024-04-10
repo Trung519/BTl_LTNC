@@ -1,0 +1,94 @@
+//********************** Begin Header ********************
+
+.header{
+    padding:1% 0;
+}
+
+.header-wrapper-left{
+    display:flex;
+}
+
+.header-logo{
+    width: 150px;
+    height: 150px;
+
+    img{
+        width: 100%;
+    }
+}
+
+.header-wrapper-info{
+    display:flex;
+    margin-top:3%;
+
+    .info-item{
+        font-size: 30px;
+        margin-right:15px;
+    }
+
+    .info{
+        color:#1F2B6C;
+        text-align: start;
+    }
+}
+
+.header-wrapper-right{
+    display:flex;
+    margin-top:4%;
+    height: 5%;
+
+    button{
+        padding:2% 5%;
+        border:none;
+        margin:0 2%;
+        border-radius: 10px;
+        background-color: rgb(182, 204, 244);
+        font-weight: 500;
+        color:#1F2B6C;
+
+        &:hover{
+            background-color: rgb(119, 162, 243);
+        }
+    }
+}
+
+//********************* End Header ********************
+
+//********************* Begin Navbar ******************
+
+.nav-actions{
+    display:flex;
+    justify-content: center;
+    margin:0 auto;
+}
+
+.change-color{
+    background-color: #1F2B6C;
+}
+
+
+.nav-action{
+    transition:0.3s;
+    color:white;
+
+    a{
+        color:white;
+
+        &:hover{
+            color:rgb(197, 230, 250);
+        }
+    }
+
+    .nav-action1{
+        background-color: #1F2B6C;
+    }
+
+    &:hover{
+        color:rgb(197, 230, 250);
+    }
+}
+
+
+
+
+//********************* End Navbar *******************

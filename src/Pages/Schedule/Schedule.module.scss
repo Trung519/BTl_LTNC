@@ -1,0 +1,408 @@
+.schedule {
+    background-color: rgb(202, 218, 248);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-bottom: 3%;
+}
+
+.schedule-title {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+    padding: 2% 0;
+
+    p {
+        font-size: 30px;
+        font-weight: 500;
+        margin-left: 3%;
+    }
+
+    .schedule-title-right {
+        display: flex;
+
+        button {
+            background-color: rgb(250, 153, 42);
+            margin-right: 5%;
+            border: none;
+            border-radius: 10px;
+            padding: 0 5%;
+            width: 230px;
+            transition: 0.4s;
+            font-weight: 500;
+
+            &:hover {
+                background-color: rgb(252, 199, 147);
+            }
+        }
+    }
+}
+
+.no-click {
+    pointer-events: none;
+}
+
+.schedule-content {
+    width: 95%;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.schedule-wrapper {
+    width: 95%;
+    background-color: rgb(254, 254, 254);
+    border-radius: 15px;
+    margin-top: 3%;
+    padding-bottom: 2%;
+    height: 95%;
+}
+
+.line-row {
+    border-bottom: 1px solid lightgray;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.schedule-search {
+    margin-top: 2%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 7%;
+    height: 10%;
+
+    input {
+        position: absolute;
+        border: none;
+        background-color: rgb(199, 218, 252);
+        border-radius: 10px;
+        padding: 0.9% 2%;
+        width: 30%;
+        padding-right: 50px;
+
+        &:focus {
+            background-color: rgb(182, 204, 244, 0.4);
+        }
+    }
+
+    .search {
+        position: absolute;
+        top: 8px;
+        right: 36%;
+        font-size: 30px
+    }
+
+    p {
+        position: absolute;
+        top: 55px;
+        color: red;
+        font-weight: 500;
+    }
+}
+
+.line-key {
+    font-weight: 500;
+}
+
+.line1 {
+    background-color: #eae9e9;
+}
+
+.Status-done {
+    background-color: rgb(24, 190, 24);
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.Status-pending {
+    background-color: rgb(250, 152, 250);
+    border-radius: 5px;
+    font-weight: 500;
+
+}
+
+.Status-doing {
+    background-color: rgb(249, 182, 58);
+    border-radius: 5px;
+    font-weight: 500;
+
+}
+
+.schedule-icons {
+    display: flex;
+    justify-content: space-between;
+
+    svg {
+        width: 30%;
+        transition: 0.2s;
+        margin-left: 20px;
+        margin-right: 25px;
+
+        &:hover {
+            scale: 1.5;
+        }
+    }
+}
+
+.schedule-icons-done{
+    .icon1{
+        scale:2;
+        color:green;
+    }
+}
+
+.schedule-icons-doing{
+    .icon3{
+        scale:2;
+        color:purple;
+    }
+}
+
+.schedule-icons-pending{
+    .icon2{
+        scale:2;
+        color:red;
+    }
+}
+
+.schedule-table-Status,
+.schedule-table-index,
+.schedule-table-ID_doctor,
+.schedule-table-Name_doctor,
+.schedule-table-Patient,
+.schedule-table-Room {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-time {
+    padding-top: 1.5%;
+}
+
+.schedule-add {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(0, 0, 0, 0.3);
+    position: fixed;
+    top: 0;
+
+    .contain-form {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .schedule-form {
+        width: 765px;
+        height: 510px;
+        background-image: url('../../Components/assets/Addform.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        border-radius: 15px;
+        padding: 25px 2%;
+        color: white;
+        position: relative;
+    }
+}
+
+.form-close {
+    position: absolute;
+    right: 5%;
+    top: 2%;
+    font-size: 40px;
+}
+
+//         .form-title{
+//             text-align: center;
+//             margin-bottom:2%;
+//         }
+
+.form-title {
+    text-align: center;
+    margin: bottom 2%;
+}
+
+h5 {
+    text-align: start;
+    margin: 3% 1%;
+    font-size: 25px;
+}
+
+.form-doctor {
+    display: flex;
+    justify-content: space-between;
+
+    .doctor-id {
+        width: 50%;
+        position: relative;
+
+        input {
+            border-radius: 10px;
+            border: none;
+            padding: 2% 5%;
+        }
+
+        .ul-id {
+            position: absolute;
+            list-style: none;
+            background-color: white;
+            color: black;
+            width: 62%;
+            margin: 0 auto;
+            border-radius: 10px;
+            left: 19%;
+
+            li {
+                margin-right: 30px;
+            }
+        }
+    }
+
+    .doctor-name {
+        width: 50%;
+        position: relative;
+
+        input {
+            border-radius: 10px;
+            border: none;
+            padding: 2% 5%;
+        }
+
+        .ul-name {
+            position: absolute;
+            list-style: none;
+            background-color: white;
+            color: black;
+            width: 62%;
+            margin: 0 auto;
+            border-radius: 10px;
+            left: 19%;
+
+            li {
+                margin-right: 30px;
+            }
+        }
+    }
+}
+
+.form-time {
+
+    .form-time-input {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 10%;
+    }
+
+    input {
+        width: 38%;
+        border: none;
+        border-radius: 10px;
+        padding: 1.5% 5%;
+    }
+}
+
+.form-others {
+    .form-others-input {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        input {
+            width: 30%;
+            border: none;
+            border-radius: 10px;
+            padding: 1.5% 5%;
+        }
+    }
+}
+
+.form-vali{
+    margin-top:5%;
+
+    button{
+        border:none;
+        border-radius: 10px;
+        padding:1.5% 10%;
+        background-color:rgb(176, 223, 247);
+        transition:0.4s;
+
+        &:hover{
+            background-color:rgb(157, 200, 221);
+
+        }
+    }
+}
+
+//         input{
+//             height: 35px;
+//             margin-right:4%;
+//             padding:3% 3%;
+//             width: 40%;
+//             border-style: none;
+//             border-radius: 10px;
+//             font-weight: 500;
+//         }
+
+//     }
+// }
+
+// h5{
+//     text-align: start;
+//     margin:3% 0;
+// }
+
+.no-change {
+    pointer-events: none;
+}
+
+// .form-vali{
+//     margin-top:5%;
+
+//     button{
+//         border-style:none;
+//         padding:1% 2%;
+//         width: 30%;
+//         border-radius: 10px;
+//         background-color:rgb(174, 237, 193);
+//         font-weight: 500;
+//     }
+// }
+
+.schedule-pages {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2%;
+
+    button {
+        border: none;
+        border-radius: 5px;
+        background-color: rgb(187, 227, 215);
+        padding: 3px 10px;
+    }
+}
+
+.not-found {
+    margin-top: 2%;
+    color: rgb(253, 76, 76);
+    font-weight: 500;
+}
+
+.ahuhu {
+    svg {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+// .ul-id{
+//     position:fixed;
+//     list-style: none;
+//     left:35%;
+//     width: 285px;
+// }
