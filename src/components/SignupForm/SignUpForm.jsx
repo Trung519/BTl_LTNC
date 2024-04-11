@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getData, writeUserData } from "../../services/firebase";
-import styles from './SignUpForm.module.css';
-import doctorImage from '../assets/doctor_4x.png';
+
+
 export default function SignUpForm() {
     const [account, setAccount] = useState([])
     const [signUpState, setSignUpState] = useState({
@@ -33,11 +33,11 @@ export default function SignUpForm() {
 
 
     return (
-        <div className={styles.background}>
-            <div className={styles.bigWrapper}>
-                <div className={styles.left}>
-                    <h1>Bệnh viện HCMUT </h1>
-                    <img src={doctorImage} />
+        <div className='wrapper'>
+            <form action=''>
+                <h1>Sign Up</h1>
+                <div className='input-box'>
+                    <input type='text' placeholder='Username' name="Username" onChange={handleChange} required />
                 </div>
                 <div className={styles.wrapper}>
                     <form action=''>
@@ -46,20 +46,20 @@ export default function SignUpForm() {
                             <input type='text' placeholder='Tên đăng nhập' name="Username" onChange={handleChange} required />
                         </div>
 
-                        <div className={styles.inputBox}>
+                        <div className='input-box'>
                             <input type='email' placeholder='Email' name="Email" onChange={handleChange} required />
                         </div>
 
-                        <div className={styles.inputBox}>
-                            <input type='password' placeholder='Mật khẩu' name="Password" onChange={handleChange} required />
+                        <div className='input-box'>
+                            <input type='password' placeholder='Password' name="Password" onChange={handleChange} required />
                         </div>
-                        <div className={styles.btnContainer}>
-                            <button type='submit' onClick={handleSignUp}>Đăng ký</button>
-                            <button type='submit'>Đăng nhập</button>
-                        </div>
+
+                        <button type='submit' onClick={handleSignUp}>Sigh Up</button>
+
+                        <button type='submit'>Login</button>
                     </form>
                 </div>
-            </div>
+            </form>
         </div>
     );
 }
