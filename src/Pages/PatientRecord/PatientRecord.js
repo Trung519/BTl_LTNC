@@ -549,6 +549,7 @@ export default function PatientRecord() {
                     <MainRow
                       newPatients={newPatients}
                       key={row.CCCD}
+                      // index={index}
                       row={row}
                       setNewPatientsAndRender={setNewPatientsAndRender}
                     ></MainRow>

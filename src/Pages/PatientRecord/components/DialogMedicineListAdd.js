@@ -54,6 +54,7 @@ const DialogMedicineListAdd = (props) => {
           >
             <Grid item xs={1} sm={2} md={3}>
               <TextField
+                // required
                 margin="dense"
                 id="name"
                 name="name"
@@ -66,6 +67,7 @@ const DialogMedicineListAdd = (props) => {
             </Grid>
             <Grid item xs={1} sm={2} md={3}>
               <TextField
+                // required
                 margin="dense"
                 id="usage"
                 name="usage"
@@ -78,6 +80,7 @@ const DialogMedicineListAdd = (props) => {
             </Grid>
             <Grid item xs={1} sm={2} md={2.5}>
               <TextField
+                // required
                 margin="dense"
                 id="dosage"
                 name="dosage"
@@ -90,6 +93,7 @@ const DialogMedicineListAdd = (props) => {
             </Grid>
             <Grid item xs={1} sm={2} md={2.5}>
               <TextField
+                // required
                 margin="dense"
                 id="unit"
                 name="unit"
@@ -102,35 +106,46 @@ const DialogMedicineListAdd = (props) => {
             </Grid>
             <Grid item xs={1} sm={2} md={1}>
               <IconButton
+                // type="submit"
                 aria-label="add"
                 size="small"
                 color="info"
                 sx={{ marginTop: "23px" }}
                 onClick={() => {
-                  const newMedicineElement = {
-                    medicine: nameValue.current.value,
-                    usage: usageValue.current.value,
-                    dosagePerDay: dosageValue.current.value,
-                    unit: unitValue.current.value,
-                  };
-                  setMedicineAddList((prev) => [newMedicineElement, ...prev]);
+                  if (
+                    nameValue.current.value &&
+                    usageValue.current.value &&
+                    dosageValue.current.value &&
+                    unitValue.current.value
+                  ) {
+                    const newMedicineElement = {
+                      medicine: nameValue.current.value,
+                      usage: usageValue.current.value,
+                      dosagePerDay: dosageValue.current.value,
+                      unit: unitValue.current.value,
+                    };
+                    nameValue.current.value = "";
+                    usageValue.current.value = "";
+                    dosageValue.current.value = "";
+                    unitValue.current.value = "";
+                    setMedicineAddList((prev) => [newMedicineElement, ...prev]);
+                  }
                 }}
               >
                 <AddCircleIcon></AddCircleIcon>
               </IconButton>
             </Grid>
-            <Grid item xs={1} sm={2} md={1}>
+            <Grid item xs={1} sm={4} md={12}>
               {/* table */}
-              <TableContainer component={Paper} sx={{ minWidth: 800 }}>
-                <Table sx={{ minWidth: 800 }} aria-label="simple table">
-                  {/* <TableHead>
-                    <TableRow>
-                      <TableCell>Tên thuốc</TableCell>
-                      <TableCell>Cách uống</TableCell>
-                      <TableCell>Liều lượng</TableCell>
-                      <TableCell>Số lượng</TableCell>
-                    </TableRow>
-                  </TableHead> */}
+              <TableContainer component={Paper} sx={{ minWidth: 770 }}>
+                <Table sx={{ minWidth: 770 }} aria-label="simple table">
+                  <colgroup>
+                    <col style={{ width: "24.5%" }} />
+                    <col style={{ width: "24.5%" }} />
+                    <col style={{ width: "23%" }} />
+                    <col style={{ width: "23%" }} />
+                    <col style={{ width: "2%" }} />
+                  </colgroup>
                   <TableBody>
                     {medicineAddList.map((row) => (
                       <TableRow
@@ -145,6 +160,15 @@ const DialogMedicineListAdd = (props) => {
                         <TableCell>{row.usage}</TableCell>
                         <TableCell>{row.dosagePerDay}</TableCell>
                         <TableCell>{row.unit}</TableCell>
+                        {/* <TableCell>
+                          <IconButton
+                            aria-label="add"
+                            size="small"
+                            color="info"
+                          >
+                            <AddCircleIcon></AddCircleIcon>
+                          </IconButton>
+                        </TableCell> */}
                       </TableRow>
                     ))}
                   </TableBody>
@@ -158,19 +182,13 @@ const DialogMedicineListAdd = (props) => {
         <Button
           onClick={() => {
             setAddMedicineListFormOpen(false);
+            setMedicineAddList([]);
           }}
         >
-          hủy
+          Xóa hết
         </Button>
         <Button
           onClick={() => {
-            // Add_Med(
-            //   CCCD,
-            //   nameValue.current.value,
-            //   usageValue.current.value,
-            //   dosageValue.current.value,
-            //   unitValue.current.value
-            // );
             setListNewMedicine(medicineAddList);
             setAddMedicineListFormOpen(false);
           }}

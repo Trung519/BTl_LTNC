@@ -46,14 +46,6 @@ const DialogHistoryAdd = (props) => {
 
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries(formData.entries());
-          // AddHist(
-          //   row.CCCD,
-          //   row.STT,
-          //   formJson.date,
-          //   formJson.doctor,
-          //   formJson.disease,
-          //   listNewMedicine
-          // );
           const newHistory = {
             date: formJson.date,
             doctor: formJson.doctor,
@@ -63,6 +55,7 @@ const DialogHistoryAdd = (props) => {
           AddHist(row.CCCD, [newHistory, ...historyList]);
           setHistoryList([newHistory, ...historyList]);
           setAddHistoryFormOpen(false);
+          setListNewMedicine([]);
         },
       }}
       // sx={{ width: "100%", maxWidth: "1000px" }}
