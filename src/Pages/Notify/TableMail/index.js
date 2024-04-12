@@ -1,21 +1,34 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import styles from './TableMail.module.scss'
 import classNames from 'classnames/bind'
 import GetMail from '../../../firebase/Notify/GetMail'
+import Mailcontent from './Mailcontent'
 
 const cx = classNames.bind(styles)
 
-export default function Tablemail({status}) {
+export default function Tablemail({ status }) {
     const [page, setPage] = useState(0)             // Phan trang provip
     const [listEmail, setListEmail] = useState([]);
+    const [showcontent, setShowcontent] = useState(false)
+    const [numemail, setNumemail] = useState(0)
 
     useEffect(() => {
         GetMail(2, status, setListEmail)
     }, [status])
 
+    var handleChangepage = useCallback((e) => {
+        setPage(e.target.value)
+    }, [])
+
+    var handleShowcontent = useCallback((e) => {
+        setShowcontent(true);
+        console.log(e.target.key)
+        setNumemail(e.target.key)
+    },[])
+
     return (
         <div className={cx('tablemail-wrapper')}>
-            <div className={cx('row', 'primary-row')}>
+            {!showcontent && <><div className={cx('row', 'primary-row')}>
                 <div className={cx('col-md-1', 'primary-checkbox')}>
                     <input type='checkbox'></input>
                 </div>
@@ -28,21 +41,13 @@ export default function Tablemail({status}) {
                 <div className={cx('col-md-1', 'primary-time')}>
                     <p>Thời gian</p>
                 </div>
-            </div>
-            <div className={cx('content-container')}>
-                {
-                    Array.from({ length: 10 }, (_, index) => {
+            </div><div className={cx('content-container')}>
+                    {Array.from({ length: 10 }, (_, index) => {
                         if (page * 10 + index + 1 > listEmail.length) { }
                         else {
-                            let count = index % 2;
-                            var handleColor = (indexx) => {
-                                if (listEmail[indexx].Status == 'Xong') return 'done'
-                                else if (listEmail[indexx].Status == 'Đang khám') return 'doing'
-                                else return 'pending'
-                            }
-
+                            let count = index % 2
                             return (
-                                <div key={page * 10 + index + 1} className={cx('row', 'line-row', `line${count}`)}>
+                                <div onClick={(e) => handleShowcontent(e)} key={page * 10 + index + 1} className={cx('row', 'line-row', `line${count}`)}>
                                     <div className={cx('col-md-1')}>
                                         <input type='checkbox'></input>
                                     </div>
@@ -59,9 +64,20 @@ export default function Tablemail({status}) {
                             )
                         }
 
-                    })
-                }
-            </div>
+                    })}
+                </div><div className={cx('tablemail-pages')}>
+                    {Array.from({ length: Math.ceil(listEmail.length / 10) }, (_, index) => (
+                        <button
+                            onClick={handleChangepage}
+                            value={index}
+                            key={index}
+                            className={cx(`page-${page == index ? 'current' : ''}`)}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+                </div></>}
+                    {showcontent && <Mailcontent listemail={listEmail} num={numemail}/>}
         </div>
     )
 }
