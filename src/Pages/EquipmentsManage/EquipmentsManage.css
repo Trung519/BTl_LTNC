@@ -116,3 +116,13 @@ h1{
     height: 1rem;
 }
 
+.collapse-row {
+    border:none;
+    /* background-color: #F1F8FF; */
+    
+}
+
+.collapse-table{
+    width: 100%;
+   
+}
