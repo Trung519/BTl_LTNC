@@ -21,8 +21,6 @@ export const GetReceivedMails = (userID, callback) => {
             if (snapshot.exists()) {
                 const dataID = snapshot.val();
 
-                console.log(dataID);
-
                 const dataRefMails = ref(database, 'Notify/Mails/');
                 const listMails = [];
 
@@ -30,8 +28,6 @@ export const GetReceivedMails = (userID, callback) => {
                     if (snapshotMails.exists()) {
                         const mails = snapshotMails.val();
 
-                        console.log(mails);
-                        
                         for (let i in mails) {
                             for (let key in dataID) {
                                 if (dataID[key].receiver_id == userID && dataID[key].mail_id == mails[i].mail_id) {

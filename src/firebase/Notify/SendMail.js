@@ -3,7 +3,7 @@ import { AddSentMails } from "./SentMails";
 import { AddReceivedMails } from "./ReceivedMails"
 import { useEffect, useState } from "react";
 import { TransferUserNameIntoID } from "./TransferUserNameIntoID";
-import RandomKey from "./RandomKey";
+import RandomKey from "../RandomKey";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCyI2BpMknXBSaZgOlsjId38ZvheRpXZLs",

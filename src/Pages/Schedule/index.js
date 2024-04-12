@@ -5,26 +5,11 @@ import Footer from '../../Components/Footer'
 
 // --------------Firebase--------------
 import { useState, useEffect, useCallback } from 'react';
-import { getDatabase, ref, onValue } from "firebase/database";
-import { initializeApp } from "firebase/app";
 import { addNewSchedule, searchIdDoctorByName, searchNameDoctorByID, setListSchedule } from '../../Components/Firebase/FireBase';
 
-const firebaseConfig = {
-    apiKey: "AIzaSyCyI2BpMknXBSaZgOlsjId38ZvheRpXZLs",
-    authDomain: "btl-ltnc-9c22f.firebaseapp.com",
-    databaseURL: "https://btl-ltnc-9c22f-default-rtdb.firebaseio.com",
-    projectId: "btl-ltnc-9c22f",
-    storageBucket: "btl-ltnc-9c22f.appspot.com",
-    messagingSenderId: "157627430613",
-    appId: "1:157627430613:web:5248f93026848e6848945c",
-    measurementId: "G-WYRWK424BJ"
-};
-
-const app = initializeApp(firebaseConfig);
-const database = getDatabase();
-
+import Updatewhenedit from '../../firebase/Schedule/updateWhenEdit.js'
+import updateWhenRemove from '../../firebase/Schedule/updateWhenRemove.js';
 // --------------End Firebase--------------
-
 
 const cx = classNames.bind(styles)
 var number = 0
@@ -97,6 +82,7 @@ export default function Schedule() {
                 form.time === "" ||
                 form.date === "" ||
                 form.name_Patient === "" ||
+                form.name_CCCD === "" ||
                 form.room === ""
             ) {
                 resolve(false);
@@ -116,36 +102,61 @@ export default function Schedule() {
     };
 
     const [listEdit, setListEdit] = useState([]);
+    const [listRemove, setListRemove] = useState([]);
 
-    const isEdited = (index, status) => {
+    const isEdited = (key, status) => {
         for (let i = 0; i < listEdit.length; i++) {
-            if (listEdit[i].index === index) {
-                listEdit[i].status = status;
+            if (listEdit[i].id_schedule === key) {
+                const list = [...listEdit]
+                list[i].status = status;
+                setListEdit(list);
                 return true;
             }
         }
         return false;
     }
 
-    const isSelectedToEdit = (index, status) => {
-        if (isEdited(index, status)) return;
+    const isSelectedToEdit = (key, status) => {
+        console.log(key);
+        if (isEdited(key, status)) return;
         else {
             const newData = {
-                index: index,
+                id_schedule: key,
                 status: status
             }
             setListEdit(prev => [...prev, newData])
         }
     }
 
+    var handleEdit = (() => {
+        setEdit(prev => !prev)
+        if (listEdit.length > 0) {
+            Updatewhenedit(listEdit);
+            setListEdit([]);
+        }
+        if (listRemove.length > 0) {
+            updateWhenRemove(listRemove)
+            setListRemove([]);
+        }
+    })
+
+    const isSelectedToRemove = (key) => {
+        const isFound = listRemove.find(item => item.id_schedule === key);
+
+        if (isFound) {
+            const newList = listRemove.filter(item => item.id_schedule !== key);
+        }
+        else {
+            const newData = {
+                id_schedule: key
+            }
+            setListRemove(prev => [...prev, newData])
+        }
+    }
+
     // ---------------END BACKEND <KHÔNG PHẬN SỰ MIỄN VÀO>---------------  
 
     var [ulshow, setUlshow] = useState(true)
-
-
-    var handleEdit = useCallback(() => {
-        setEdit(prev => !prev)
-    }, [])
 
     var handleAdd = useCallback(() => {
         setAdd(prev => !prev)
@@ -164,7 +175,7 @@ export default function Schedule() {
                             <p>Lịch làm việc</p>
                             <div className={cx('schedule-title-right')}>
                                 <button onClick={handleAdd}>Thêm cuộc hẹn</button>
-                                <button onClick={handleEdit}>Chỉnh sửa</button>
+                                <button onClick={() => setEdit(true)}>Chỉnh sửa</button>
                                 <button className={cx('no-click')}>Hoàn tất</button>
                             </div>
                         </div>
@@ -286,7 +297,7 @@ export default function Schedule() {
                                             }
 
                                             return (
-                                                <div key={index} className={cx('row', 'line-row', `line${count}`)}>
+                                                <div key={listdata[index].id_schedule} className={cx('row', 'line-row', `line${count}`)}>
                                                     <div style={{ display: 'none' }} className={cx('col-md-1', 'schedule-table-index')}>{page * 10 + index + 1}</div>
                                                     <div className={cx('col-md-1', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{listdata[page * 10 + index].Name_doctor}</div>
@@ -299,16 +310,16 @@ export default function Schedule() {
                                                     <div className={cx('col-md-2', `schedule-icons-${handleColor(page * 10 + index)}`, 'schedule-table-Status', 'schedule-icons')}>
                                                         {handleColor(page * 10 + index) === 'done' && (
                                                             <select name="select-in-edit"
-                                                                onChange={(e) => isSelectedToEdit(page * 10 + index, e.target.value)}
+                                                                onChange={(e) => isSelectedToEdit(listdata[page * 10 + index].id_schedule, e.target.value)}
                                                             >
-                                                                <option value="Xong" selected>Xong</option>
+                                                                <option value="Xong">Xong</option>
                                                                 <option value="Đang khám">Đang khám</option>
                                                                 <option value="Đang chờ">Đang chờ</option>
                                                             </select>
                                                         )}
                                                         {handleColor(page * 10 + index) === 'doing' && (
                                                             <select name="select-in-edit"
-                                                                onChange={(e) => isSelectedToEdit(page * 10 + index, e.target.value)}
+                                                                onChange={(e) => isSelectedToEdit(listdata[page * 10 + index].id_schedule, e.target.value)}
                                                             >
                                                                 <option value="Xong">Xong</option>
                                                                 <option value="Đang khám" selected>Đang khám</option>
@@ -317,14 +328,17 @@ export default function Schedule() {
                                                         )}
                                                         {handleColor(page * 10 + index) === 'pending' && (
                                                             <select name="select-in-edit"
-                                                                onChange={(e) => isSelectedToEdit(page * 10 + index, e.target.value)}
+                                                                onChange={(e) => isSelectedToEdit(listdata[page * 10 + index].id_schedule, e.target.value)}
                                                             >
                                                                 <option value="Xong">Xong</option>
                                                                 <option value="Đang khám">Đang khám</option>
                                                                 <option selected value="Đang chờ">Đang chờ</option>
                                                             </select>
                                                         )}
-                                                        <svg class="svg-inline--fa fa-trash-alt fa-w-14" aria-hidden="true" data-prefix="far" data-icon="trash-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M192 188v216c0 6.627-5.373 12-12 12h-24c-6.627 0-12-5.373-12-12V188c0-6.627 5.373-12 12-12h24c6.627 0 12 5.373 12 12zm100-12h-24c-6.627 0-12 5.373-12 12v216c0 6.627 5.373 12 12 12h24c6.627 0 12-5.373 12-12V188c0-6.627-5.373-12-12-12zm132-96c13.255 0 24 10.745 24 24v12c0 6.627-5.373 12-12 12h-20v336c0 26.51-21.49 48-48 48H80c-26.51 0-48-21.49-48-48V128H12c-6.627 0-12-5.373-12-12v-12c0-13.255 10.745-24 24-24h74.411l34.018-56.696A48 48 0 0 1 173.589 0h100.823a48 48 0 0 1 41.16 23.304L349.589 80H424zm-269.611 0h139.223L276.16 50.913A6 6 0 0 0 271.015 48h-94.028a6 6 0 0 0-5.145 2.913L154.389 80zM368 128H80v330a6 6 0 0 0 6 6h276a6 6 0 0 0 6-6V128z"></path></svg>
+                                                        <svg class="svg-inline--fa fa-trash-alt fa-w-14" aria-hidden="true" data-prefix="far" data-icon="trash-alt"
+                                                            role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
+                                                            onClick={() => isSelectedToRemove(listdata[page * 10 + index].id_schedule)}
+                                                        ><path fill="currentColor" d="M192 188v216c0 6.627-5.373 12-12 12h-24c-6.627 0-12-5.373-12-12V188c0-6.627 5.373-12 12-12h24c6.627 0 12 5.373 12 12zm100-12h-24c-6.627 0-12 5.373-12 12v216c0 6.627 5.373 12 12 12h24c6.627 0 12-5.373 12-12V188c0-6.627-5.373-12-12-12zm132-96c13.255 0 24 10.745 24 24v12c0 6.627-5.373 12-12 12h-20v336c0 26.51-21.49 48-48 48H80c-26.51 0-48-21.49-48-48V128H12c-6.627 0-12-5.373-12-12v-12c0-13.255 10.745-24 24-24h74.411l34.018-56.696A48 48 0 0 1 173.589 0h100.823a48 48 0 0 1 41.16 23.304L349.589 80H424zm-269.611 0h139.223L276.16 50.913A6 6 0 0 0 271.015 48h-94.028a6 6 0 0 0-5.145 2.913L154.389 80zM368 128H80v330a6 6 0 0 0 6 6h276a6 6 0 0 0 6-6V128z"></path></svg>
                                                     </div>
                                                 </div>
                                             )
@@ -451,9 +465,9 @@ export default function Schedule() {
                                             onChange={handleCollectData}
                                             onClick={() => {
                                                 setUlshow(true)
-                                                setSuggestions([])
-                                            }
-                                            }></input>
+                                                //setSuggestions([])
+                                            }}>
+                                        </input>
                                         {ulshow && <ul className={cx('ul-id')}>
                                             {suggestionsID.map((suggestion, index) => {
                                                 if (index > 4 || form.id_Doctor == '') { }
@@ -504,7 +518,7 @@ export default function Schedule() {
                                     </div>
                                     <div className={cx('form-others-input')}>
                                         <input type='text' placeholder='Tên bệnh nhân...' value={form.name_Patient} name="name_Patient" onChange={handleCollectData}></input>
-                                        <input type='number' placeholder='CCCD bệnh nhân...'></input>
+                                        <input type='number' placeholder='CCCD bệnh nhân...' value={form.name_CCCD} name="name_CCCD" onChange={handleCollectData}></input>
                                         <input placeholder='Phòng...' type='text' value={form.room} name="room" onChange={handleCollectData}></input>
                                     </div>
                                 </div>
