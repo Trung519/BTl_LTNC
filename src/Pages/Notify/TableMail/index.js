@@ -5,13 +5,9 @@ import GetMail from '../../../firebase/Notify/GetMail'
 
 const cx = classNames.bind(styles)
 
-export default function Tablemail({status}) {
+export default function Tablemail({listdata}) {
     const [page, setPage] = useState(0)             // Phan trang provip
-    const [listEmail, setListEmail] = useState([]);
-
-    useEffect(() => {
-        GetMail(2, status, setListEmail)
-    }, [status])
+    const listEmail = listdata;
 
     return (
         <div className={cx('tablemail-wrapper')}>

@@ -53,7 +53,7 @@ export const GetSentMails = (userID, callback) => {
                     if (snapshotMails.exists()) {
                         const mails = snapshotMails.val();
 
-                        for (let i in mails) {
+                        for (let i = mails.length - 1; i >= 0; i--) {
                             for (let key in dataID) {
                                 if (dataID[key].sender_id == userID && dataID[key].mail_id == mails[i].mail_id) {
                                     listMails.push(mails[i])

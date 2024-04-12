@@ -44,6 +44,8 @@ export default function Tags() {
 
         const newMail = { ...mail, time };
 
+        console.log(newMail);
+
         SendMail(1, newMail, setMail)
     }
     //-------------------------------------Backend-------------------------------------
@@ -95,7 +97,11 @@ export default function Tags() {
                 />
                 <div className={cx('under_main')}>
                     <div className={cx('mail_content')}>
-                        <textarea rows="4" cols="50" placeholder='Nội dung...'>
+                        <textarea rows="4" cols="50" placeholder='Nội dung...'
+                            value={mail.content} onChange={(e) => {
+                                setMail({ ...mail, content: e.target.value }); // Cập nhật state `mail` khi có thay đổi
+                            }}
+                        >
                         </textarea>
                     </div>
                     <div className={cx('bottom')}>

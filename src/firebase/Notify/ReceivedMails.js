@@ -16,46 +16,29 @@ export const GetReceivedMails = (userID, callback) => {
     const database = getDatabase();
     const dataRef = ref(database, 'Notify/ReceivedMails/');
 
-    try {
-        get(dataRef).then((snapshot) => {
-            if (snapshot.exists()) {
-                const dataID = snapshot.val();
+    onValue(dataRef, (snapshot) => {
+        const dataID = snapshot.val();
 
-                const dataRefMails = ref(database, 'Notify/Mails/');
-                const listMails = [];
+        const dataRefMails = ref(database, 'Notify/Mails/');
+        const listMails = [];
 
-                get(dataRefMails).then((snapshotMails) => {
-                    if (snapshotMails.exists()) {
-                        const mails = snapshotMails.val();
+        onValue(dataRefMails, (snapshotMails) => {
+            const mails = snapshotMails.val();
 
-                        for (let i in mails) {
-                            for (let key in dataID) {
-                                if (dataID[key].receiver_id == userID && dataID[key].mail_id == mails[i].mail_id) {
-                                    listMails.push(mails[i])
-                                }
-                            }
-                        }
-
-                        if (callback && typeof callback === 'function') {
-                            callback(listMails);
-                        }
-                    } else {
-                        console.log("No mails found.");
+            for (let i = mails.length - 1; i >= 0; i--) {
+                for (let key in dataID) {
+                    if (dataID[key].receiver_id == userID && dataID[key].mail_id == mails[i].mail_id) {
+                        listMails.push(mails[i])
                     }
-                }).catch((error) => {
-                    console.error("Error fetching mails:", error);
-                });
-            } else {
-                console.log("No received mails found.");
+                }
             }
-        }).catch((error) => {
-            console.error("Error fetching received mails:", error);
-        });
-    } catch (error) {
-        console.error("Error:", error);
-    }
-};
 
+            if (callback && typeof callback === 'function') {
+                callback(listMails);
+            }
+        })
+    })
+};
 
 export const AddReceivedMails = async (mailID, listID) => {
     const database = getDatabase();
