@@ -44,7 +44,14 @@ export default function Tags() {
 
         const newMail = { ...mail, time };
 
-        SendMail(1, newMail, setMail)
+        console.log(newMail);
+
+        const sender = {
+            id: 1,
+            userName: "truc.taquang"
+        }
+
+        SendMail(sender, newMail, setMail)
     }
     //-------------------------------------Backend-------------------------------------
     const [show, setShow] = useState(true);
@@ -90,12 +97,16 @@ export default function Tags() {
                     className={cx('mail_title')}
                     value={mail.title} // Sử dụng giá trị từ state `mail`
                     onChange={(e) => {
-                        setMail({ ...mail, title: e.target.value }); // Cập nhật state `mail` khi có thay đổi
+                        setMail({ ...mail, title: e.target.value }); 
                     }}
                 />
                 <div className={cx('under_main')}>
                     <div className={cx('mail_content')}>
-                        <textarea rows="4" cols="50" placeholder='Nội dung...'>
+                        <textarea rows="4" cols="50" placeholder='Nội dung...'
+                            value={mail.content} onChange={(e) => {
+                                setMail({ ...mail, content: e.target.value }); // Cập nhật state `mail` khi có thay đổi
+                            }}
+                        >
                         </textarea>
                     </div>
                     <div className={cx('bottom')}>

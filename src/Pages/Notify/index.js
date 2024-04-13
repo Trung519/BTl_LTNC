@@ -1,18 +1,26 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Notify.module.scss';
 import classNames from 'classnames/bind';
 import Footer from '../../Components/Footer'
 import SideBar from './SideBar';
 import Tablemail from './TableMail';
 import InputMail from './InputMail/InputMail.jsx'
-import { WidthFull } from '@mui/icons-material';
+
+import GetMail from '../../firebase/Notify/GetMail.js';
 
 const cx = classNames.bind(styles)
 
 function Notify() {
+//----------------------------BACKEND----------------------------
   const [status, setStatus] = useState('received_mail')
   const [inputmail, setInputmail] = useState(false);
 
+  const [listData, setListData] = useState([]);
+
+  useEffect(() => {
+    GetMail(1, status, setListData);
+  },[status,inputmail])
+  //--------------------------BACKEND----------------------------
 
   var handleClickStatus = (temp) => {
     setStatus(temp)
@@ -34,7 +42,7 @@ function Notify() {
             />
           </div>
           <div className={cx('table-mail')}>
-            <Tablemail status={status}/>
+            <Tablemail listdata={listData}/>
           </div>
         </div>
         <div className={cx('input-mail')}>

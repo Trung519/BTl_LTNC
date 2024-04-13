@@ -6,15 +6,11 @@ import Mailcontent from './Mailcontent'
 
 const cx = classNames.bind(styles)
 
-export default function Tablemail({ status }) {
+export default function Tablemail({listdata}) {
     const [page, setPage] = useState(0)             // Phan trang provip
-    const [listEmail, setListEmail] = useState([]);
+    const listEmail = listdata;
     const [showcontent, setShowcontent] = useState(false)
     const [numemail, setNumemail] = useState(0)
-
-    useEffect(() => {
-        GetMail(2, status, setListEmail)
-    }, [status])
 
     var handleChangepage = useCallback((e) => {
         setPage(e.target.value)
