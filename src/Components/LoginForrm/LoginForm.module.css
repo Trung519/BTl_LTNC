@@ -54,12 +54,36 @@
     color: #5d6063;
 }
 
+.inputBox{
+    position: relative;
+}
+
+
+.errorUsername{
+    color: red;
+    position: absolute;
+    top: 69%;
+    margin-left: 22px;
+    font-size: 12px;
+}
+
+.errorPassword{
+    color: red;
+    position: absolute;
+    margin-left: 22px;
+    top: 69%;
+
+    font-size: 12px;
+}
+
+
+
 
 .wrapper .rememberForgot{
     display:flex;
     justify-content: space-between;
     font-size: 14.5px;
-    margin: -15px 0 15px;
+    margin: 15px 0 15px;
 }
 
 .rememberForgot label input {
