@@ -55,7 +55,7 @@ export function AddData(fullName, birthDay, newGender, CCCD, BHYT, address) {
       console.error(error);
     });
 }
-//K. sửa hàm AddHist
+//K. sửa hàm AddHist //Update để truy cập tham chiếu mảng khác
 // histIndex để truy xuất?
 export function AddHist(CCCD, newHistory) {
   const patientRef = ref(db, "PatientRecord/" + CCCD);
@@ -71,13 +71,41 @@ export function AddHist(CCCD, newHistory) {
           history: newHistory,
         };
 
+        // Lấy danh sách thuốc từ lịch sử mới thêm
+        const drugs = newHistory.drugs;
+        
+        // Lặp qua từng loại thuốc
+        drugs.forEach((drug) => {
+          const drugName = drug.name;
+          const quantity = drug.quantity;
+          
+          // Truy cập vào thông tin thuốc từ bảng Medicine
+          const medicineRef = ref(db, "Medicine_manage/" + drugName);
+          get(medicineRef)
+            .then((medicineSnapshot) => {
+              if (medicineSnapshot.exists()) {
+                let medicineData = medicineSnapshot.val();
+                // Giảm số lượng tồn kho
+                medicineData.stock -= quantity;
+                // Cập nhật lại thông tin thuốc trong bảng Medicine
+                update(medicineRef, medicineData);
+              } else {
+                alert("Medicine not found: " + drugName);
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching medicine data:", error);
+            });
+        });
+
+        // Cập nhật lại thông tin bệnh nhân trong bảng PatientRecord
         update(patientRef, patientData)
           .then(() => {
             alert("History Added Successfully");
           })
           .catch((error) => {
             alert("Unsuccessful");
-            console.error(error);
+            console.error("Error updating patient record:", error);
           });
       } else {
         alert("Patient Record not found");
@@ -85,7 +113,7 @@ export function AddHist(CCCD, newHistory) {
     })
     .catch((error) => {
       alert("Error fetching patient record");
-      console.error(error);
+      console.error("Error fetching patient record:", error);
     });
 }
 

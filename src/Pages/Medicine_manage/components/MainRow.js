@@ -11,6 +11,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 import DialogInfo from "./DialogInfo";
 import DialogModify from "./DialogModify";
+import { DeleteData } from "../P_R-be";
 const MainRow = (props) => {
   const { row, setNewListMedicineAndRender, listMedicine } = props;
   const [infoFormOpen, setInfoFormOpen] = React.useState(false);
@@ -75,6 +76,7 @@ const MainRow = (props) => {
           size="small"
           color="error"
           onClick={() => {
+            DeleteData(row.name);
             listMedicine.splice(indexInListMedicine, 1);
             setNewListMedicineAndRender([...listMedicine]);
           }}
