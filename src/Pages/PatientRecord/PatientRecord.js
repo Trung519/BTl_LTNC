@@ -8,200 +8,17 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-// import Stack from "@mui/material/Stack"
-import { AddHist, Add_Med } from "./P_R_be";
 import DialogAdd from "./components/DialogAdd";
 import MainRow from "./components/MainRow";
 import { Patients } from "./P_R_be";
-const top100Films = [
-  { label: "The Shawshank Redemption", year: 1994 },
-  { label: "The Godfather", year: 1972 },
-  { label: "The Godfather: Part II", year: 1974 },
-  { label: "The Dark Knight", year: 2008 },
-  { label: "12 Angry Men", year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-];
-// export let patients = [];
-function createPatient(
-  STT = 1, //patients.length + 1,
-  patientID = 1, //`BN${patients.length + 100}`,
-  fullName,
-  gender,
-  CCCD,
-  BHYT,
-  BirthDay,
-  address = "",
-  history = []
-) {
-  return {
-    STT,
-    patientID,
-    fullName,
-    gender,
-    CCCD,
-    BHYT,
-    BirthDay,
-    address,
-    history,
-  };
-}
-
-// Row.propTypes = {
-//   row: PropTypes.shape({
-//     patientID: PropTypes.string.isRequired,
-//     CCCD: PropTypes.string.isRequired,
-//     fullName: PropTypes.string.isRequired,
-//     history: PropTypes.arrayOf(
-//       PropTypes.shape({
-//         amount: PropTypes.string.isRequired,
-//         customerId: PropTypes.string.isRequired,
-//         date: PropTypes.string.isRequired,
-//       })
-//     ).isRequired,
-//     STT: PropTypes.number.isRequired,
-//     BHYT: PropTypes.string.isRequired,
-//     BirthDay: PropTypes.string.isRequired,
-//   }).isRequired,
-// };
-
-//   createPatient(
-//     10,
-//     "BN109",
-//     "Nguyễn Văn A",
-//     "Nam",
-//     "0000000000",
-//     "0000000000",
-//     "23/01/2004",
-//     "",
-//     [
-//       {
-//         historyID: 1,
-//         date: "01/02/2023",
-//         doctor: "AB",
-//         disease: "Cúm mùa",
-//         medicineList: [
-//           {
-//             medicine: "Panadol",
-//             usage: "uống sau khi ăn",
-//             dosagePerDay: "1 ngày 2 lần",
-//             unit: "20 viên/10 ngày",
-//           },
-//           {
-//             medicine: "paracetamol",
-//             usage: "uống sau khi ăn",
-//             dosagePerDay: "1 ngày 2 lần",
-//             unit: "20 viên/10 ngày",
-//           },
-//         ],
-//       },
-//       {
-//         historyID: 2,
-//         date: "01/02/2023",
-//         doctor: "AB",
-//         disease: "Cúm mùa",
-//         medicineList: [
-//           {
-//             medicine: "Panadol",
-//             usage: "uống sau khi ăn",
-//             dosagePerDay: "1 ngày 2 lần",
-//             unit: "20 viên/10 ngày",
-//           },
-//         ],
-//       },
-//     ]
-//   ),
-//   createPatient(
-//     9,
-//     "BN108",
-//     "AAAAAAAAAAAAAAA",
-//     "Nữ",
-//     "1111111111111",
-//     "11111111111",
-//     "01/01/2004",
-//     ""
-//   ),
-//   createPatient(
-//     8,
-//     "BN107",
-//     "BBBBBBBBBBBBBBBBB",
-//     "Nam",
-//     "2222222222222",
-//     "22222222222",
-//     "01/01/2004"
-//   ),
-//   createPatient(
-//     7,
-//     "BN106",
-//     "CCCCCCCCCCC",
-//     "Nam",
-//     "333333333333333",
-//     "3333333333333",
-//     "01/01/2004"
-//   ),
-//   createPatient(
-//     6,
-//     "BN105",
-//     "DDDDDDDDDDD",
-//     "Nam",
-//     "4444444444",
-//     "444444444444",
-//     "01/01/2004"
-//   ),
-//   createPatient(
-//     5,
-//     "BN104",
-//     "EEEEEEEEE",
-//     "Nam",
-//     "55555555",
-//     "5555555",
-//     "01/01/2004"
-//   ),
-//   createPatient(
-//     4,
-//     "BN103",
-//     "FFFFFF",
-//     "Nam",
-//     "666666666",
-//     "666666666",
-//     "01/01/2004"
-//   ),
-//   createPatient(
-//     3,
-//     "BN102",
-//     "GGGGGGGGGG",
-//     "Nam",
-//     "77777777777",
-//     "7777777777777",
-//     "01/01/2004"
-//   ),
-//   createPatient(
-//     2,
-//     "BN101",
-//     "HHHHHHHHHH",
-//     "Nam",
-//     "888888888",
-//     "88888888888",
-//     "01/01/2004"
-//   ),
-//   createPatient(
-//     1,
-//     "BN100",
-//     "IIIIIIIIII",
-//     "Nam",
-//     "999999999",
-//     "9999999999999",
-//     "01/01/2004"
-//   ),
-// ];
-
 export default function PatientRecord() {
   // let [patients, setPatient] = React.useState([]);
   //console.log("1", row);
+
   React.useEffect(() => {
     Patients().then((post) => {
       if (post != null) {
@@ -304,7 +121,7 @@ export default function PatientRecord() {
                 // patients={patients}
                 newFormOpen={newFormOpen}
                 handleCloseNewFormOpen={handleCloseNewFormOpen}
-                createPatient={createPatient}
+                // createPatient={createPatient}
                 setNewPatientsAndRender={setNewPatientsAndRender}
                 newPatients={newPatients}
                 handle_Name={handle_Name}

@@ -17,7 +17,7 @@ const DialogModify = (props) => {
   const {
     modifyFormOpen,
     setModifyFormOpen,
-    listMedicine,
+    newListMedicine,
     indexInListMedicine,
     setNewListMedicineAndRender,
     row,
@@ -37,22 +37,18 @@ const DialogModify = (props) => {
 
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries(formData.entries());
-          UpdateData (formJson.medicineID,formJson.name, formJson.origin, formJson.HSD, formJson.cost, formJson.sellPrice,formJson.stock )
-          // cách lấy data
-          // const newMedicine = createMedicine(
-          //   "1",
-          //   // "100"
-          // formJson.medicineID,
-          //   formJson.name,
-          //   formJson.origin,
-          //   formJson.HSD,
-          //   formJson.cost,
-          //   formJson.sellPrice,
-          //   formJson.stock;
-          // );
-          // console.log(newMedicine);
-          listMedicine[indexInListMedicine] = {
-            ...listMedicine[indexInListMedicine],
+          UpdateData(
+            formJson.medicineID,
+            formJson.name,
+            formJson.origin,
+            formJson.HSD,
+            formJson.cost,
+            formJson.sellPrice,
+            formJson.stock
+          );
+          const temp = newListMedicine;
+          temp[indexInListMedicine] = {
+            ...temp[indexInListMedicine],
             medicineID: formJson.medicineID,
             name: formJson.name,
             origin: formJson.origin,
@@ -62,7 +58,7 @@ const DialogModify = (props) => {
             stock: formJson.stock,
           };
           // console.log(indexInListMedicine);
-          setNewListMedicineAndRender([...listMedicine]);
+          setNewListMedicineAndRender([...temp]);
           setModifyFormOpen(false);
         },
       }}

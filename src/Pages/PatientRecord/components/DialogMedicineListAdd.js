@@ -17,6 +17,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { Medicine } from "../../Medicine_manage/P_R-be";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const DialogMedicineListAdd = (props) => {
   const {
@@ -27,11 +29,22 @@ const DialogMedicineListAdd = (props) => {
     setAddMedicineListFormOpen,
     Add_Med,
   } = props;
+
+  const [listMedicine, setListMedicine] = React.useState([]);
   const [medicineAddList, setMedicineAddList] = React.useState(listNewMedicine);
   const nameValue = React.useRef();
   const usageValue = React.useRef();
   const dosageValue = React.useRef();
   const unitValue = React.useRef();
+  // let listMedicine = [];
+  React.useEffect(() => {
+    Medicine().then((post) => {
+      if (post != null) {
+        setListMedicine(Object.values(post));
+        // console.log("listMedicine", listMedicine);
+      }
+    });
+  }, []);
   return (
     <Dialog
       fullWidth
@@ -52,9 +65,11 @@ const DialogMedicineListAdd = (props) => {
             container
             spacing={{ xs: 1, md: 1 }}
             columns={{ xs: 1, sm: 4, md: 12 }}
+            // alignItems="center"
+            // justifyContent="center"
           >
             <Grid item xs={1} sm={2} md={3}>
-              <TextField
+              {/* <TextField
                 // required
                 margin="dense"
                 id="name"
@@ -64,6 +79,26 @@ const DialogMedicineListAdd = (props) => {
                 fullWidth
                 variant="standard"
                 inputRef={nameValue}
+              /> */}
+              <Autocomplete
+                // sx={{ width: 300, marginLeft: "15px" }}
+                sx={{ marginTop: "8px" }}
+                id="name"
+                // name="name"
+                options={listMedicine}
+                getOptionLabel={(option) => {
+                  return option.name;
+                }}
+                clearOnEscape
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Tên thuốc"
+                    variant="standard"
+                    size="small"
+                    inputRef={nameValue}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={1} sm={2} md={3}>

@@ -18,7 +18,7 @@ const DialogAdd = (props) => {
     setNewFormOpen,
     setNewListMedicineAndRender,
     newListMedicine,
-    createMedicine,
+    // createMedicine,
   } = props;
   return (
     <Dialog
@@ -45,17 +45,15 @@ const DialogAdd = (props) => {
             formJson.stock
           );
           // cách lấy data
-          const newMedicine = createMedicine(
-            undefined,
-            // "100"
-            formJson.medicineID,
-            formJson.name,
-            formJson.origin,
-            formJson.HSD,
-            formJson.cost,
-            formJson.sellPrice,
-            formJson.stock
-          );
+          const newMedicine = {
+            medicineID: formJson.medicineID,
+            name: formJson.name,
+            origin: formJson.origin,
+            HSD: formJson.HSD,
+            cost: formJson.cost,
+            sellPrice: formJson.sellPrice,
+            stock: formJson.stock,
+          };
           console.log(newMedicine);
           setNewListMedicineAndRender([newMedicine, ...newListMedicine]);
           setNewFormOpen(false);

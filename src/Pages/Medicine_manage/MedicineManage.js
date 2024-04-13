@@ -8,7 +8,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -18,94 +17,25 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import DialogAdd from "./components/DialogAdd";
 import MainRow from "./components/MainRow";
-
-function createMedicine(
-  STT = listMedicine.length + 1,
-  medicineID = `TM${listMedicine.length + 100}`,
-  name,
-  origin,
-  HSD,
-  cost,
-  sellPrice,
-  stock
-) {
-  return {
-    STT,
-    medicineID,
-    name,
-    origin,
-    HSD,
-    cost,
-    sellPrice,
-    stock,
-  };
-}
-let listMedicine = [
-  createMedicine(
-    "5",
-    "TM104",
-    "A",
-    "Trung Quốc",
-    "23/01/2024",
-    "1$",
-    "2$",
-    "200"
-  ),
-  createMedicine(
-    "4",
-    "TM103",
-    "B",
-    "Trung Quốc",
-    "01/01/2024",
-    "1$",
-    "2$",
-    "200"
-  ),
-  createMedicine(
-    "3",
-    "TM102",
-    "D",
-    "Trung Quốc",
-    "01/01/2024",
-    "1$",
-    "2$",
-    "200"
-  ),
-  createMedicine(
-    "2",
-    "TM101",
-    "E",
-    "Trung Quốc",
-    "01/01/2024",
-    "1$",
-    "2$",
-    "200"
-  ),
-  createMedicine(
-    "1",
-    "TM100",
-    "F",
-    "Trung Quốc",
-    "01/01/2024",
-    "1$",
-    "2$",
-    "200"
-  ),
-];
+import { Medicine } from "./P_R-be";
 
 const Medicine_manage = () => {
-  const [renderMedicineList, setRenderMedicineList] =
-    React.useState(listMedicine);
-  const [newListMedicine, setNewListMedicine] = React.useState(listMedicine);
+  React.useEffect(() => {
+    Medicine().then((post) => {
+      if (post != null) {
+        setNewListMedicineAndRender(Object.values(post));
+        console.log("render", Object.values(post));
+      }
+    });
+  }, []);
+  const [renderMedicineList, setRenderMedicineList] = React.useState([]);
+  const [newListMedicine, setNewListMedicine] = React.useState([]);
 
   const [newFormOpen, setNewFormOpen] = React.useState(false);
-  const handleCloseFormOpen = () => {
-    setNewFormOpen(false);
-  };
-  React.useEffect(() => {
-    console.log("effect");
-    listMedicine = newListMedicine;
-  }, [newListMedicine]);
+  // React.useEffect(() => {
+  //   console.log("effect");
+  //   listMedicine = newListMedicine;
+  // }, [newListMedicine]);
   const setNewListMedicineAndRender = (newListMedicine) => {
     setNewListMedicine([...newListMedicine]);
     setRenderMedicineList([...newListMedicine]);
@@ -162,18 +92,18 @@ const Medicine_manage = () => {
                 setNewFormOpen={setNewFormOpen}
                 setNewListMedicineAndRender={setNewListMedicineAndRender}
                 newListMedicine={newListMedicine}
-                createMedicine={createMedicine}
+                // createMedicine={createMedicine}
               ></DialogAdd>
             </Grid>
             <Grid item xs={1} sm={2} md={3}>
               {/* Tìm kiếm theo ID */}
               <Autocomplete
                 onChange={(event, value) => {
-                  if (value === null) setRenderMedicineList(listMedicine);
+                  if (value === null) setRenderMedicineList(newListMedicine);
                   else setRenderMedicineList([value]);
                 }}
                 sx={{ width: 300, marginLeft: "15px" }}
-                options={listMedicine}
+                options={newListMedicine}
                 getOptionLabel={(option) => option.medicineID}
                 id="id_search"
                 clearOnEscape
@@ -201,12 +131,12 @@ const Medicine_manage = () => {
             <Grid item xs={1} sm={2} md={3}>
               <Autocomplete
                 onChange={(event, value) => {
-                  if (value === null) setRenderMedicineList(listMedicine);
+                  if (value === null) setRenderMedicineList(newListMedicine);
                   else setRenderMedicineList([value]);
                   // console.log(value);
                 }}
                 sx={{ width: 300, marginLeft: "15px" }}
-                options={listMedicine}
+                options={newListMedicine}
                 getOptionLabel={(option) => option.name}
                 id="name_search"
                 clearOnEscape
@@ -346,7 +276,8 @@ const Medicine_manage = () => {
                   <MainRow
                     row={row}
                     setNewListMedicineAndRender={setNewListMedicineAndRender}
-                    listMedicine={listMedicine}
+                    newListMedicine={newListMedicine}
+                    // listMedicine={listMedicine}
                   ></MainRow>
                 ))}
               </TableBody>

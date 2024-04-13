@@ -68,17 +68,19 @@ export function AddHist(CCCD, newHistory) {
         }
         patientData = {
           ...patientData,
-          history: newHistory,
+          history: [newHistory, ...patientData.history],
         };
 
         // Lấy danh sách thuốc từ lịch sử mới thêm
-        const drugs = newHistory.drugs;
-        
+        const drugs = newHistory.medicineList;
+
         // Lặp qua từng loại thuốc
         drugs.forEach((drug) => {
-          const drugName = drug.name;
-          const quantity = drug.quantity;
-          
+          const drugName = drug.medicine;
+          console.log("drugName", drugName);
+          const quantity = drug.unit;
+          console.log("quantity", quantity);
+
           // Truy cập vào thông tin thuốc từ bảng Medicine
           const medicineRef = ref(db, "Medicine_manage/" + drugName);
           get(medicineRef)

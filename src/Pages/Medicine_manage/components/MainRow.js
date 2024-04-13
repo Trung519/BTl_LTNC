@@ -13,10 +13,10 @@ import DialogInfo from "./DialogInfo";
 import DialogModify from "./DialogModify";
 import { DeleteData } from "../P_R-be";
 const MainRow = (props) => {
-  const { row, setNewListMedicineAndRender, listMedicine } = props;
+  const { row, setNewListMedicineAndRender, newListMedicine } = props;
   const [infoFormOpen, setInfoFormOpen] = React.useState(false);
   const [modifyFormOpen, setModifyFormOpen] = React.useState(false);
-  const indexInListMedicine = listMedicine.findIndex((e) => {
+  const indexInListMedicine = newListMedicine.findIndex((e) => {
     return e.STT === row.STT;
   });
   return (
@@ -66,7 +66,8 @@ const MainRow = (props) => {
         <DialogModify
           modifyFormOpen={modifyFormOpen}
           setModifyFormOpen={setModifyFormOpen}
-          listMedicine={listMedicine}
+          // listMedicine={listMedicine}
+          newListMedicine={newListMedicine}
           indexInListMedicine={indexInListMedicine}
           setNewListMedicineAndRender={setNewListMedicineAndRender}
           row={row}
@@ -77,8 +78,9 @@ const MainRow = (props) => {
           color="error"
           onClick={() => {
             DeleteData(row.name);
-            listMedicine.splice(indexInListMedicine, 1);
-            setNewListMedicineAndRender([...listMedicine]);
+            const temp = newListMedicine;
+            temp.splice(indexInListMedicine, 1);
+            setNewListMedicineAndRender([...temp]);
           }}
         >
           <DeleteOutlineIcon></DeleteOutlineIcon>

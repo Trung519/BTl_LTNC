@@ -52,7 +52,7 @@ const DialogHistoryAdd = (props) => {
             disease: formJson.disease,
             medicineList: listNewMedicine,
           };
-          AddHist(row.CCCD, [newHistory, ...historyList]);
+          AddHist(row.CCCD, newHistory);
           setHistoryList([newHistory, ...historyList]);
           setAddHistoryFormOpen(false);
           setListNewMedicine([]);

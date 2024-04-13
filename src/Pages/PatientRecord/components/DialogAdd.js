@@ -20,7 +20,7 @@ const DialogAdd = (props) => {
   const {
     newFormOpen,
     handleCloseNewFormOpen,
-    createPatient,
+    // createPatient,
     setNewPatientsAndRender,
     newPatients,
     handle_Name,
