@@ -34,6 +34,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Button } from 'bootstrap';
 
 
 export default function EquipmentsManage({ }) {
@@ -244,13 +245,13 @@ export default function EquipmentsManage({ }) {
 
                 <table id='equipment-table' >
                     <thead>
-                        <th></th>
-                        <th className='name-col'>Tên </th>
-                        <th className='type-col'>Loại</th>
-                        <th className='name-col'>Phòng</th>
-                        <th className='name-col'>Mô tả</th>
-                        <th className='type-col'>Trạng thái</th>
-                        <th className='type-col'>Thao tác</th>
+                        <th className='table-head-item' ></th>
+                        <th className='table-head-item'>Tên </th>
+                        <th className='table-head-item'>Loại</th>
+                        <th className='table-head-item'>Phòng cất trữ</th>
+                        <th className='table-head-item'>Mô tả</th>
+                        <th className='table-head-item'>Trạng thái</th>
+                        <th className='table-head-item'>Thao tác</th>
                     </thead>
                     <tbody>
                         {
@@ -262,7 +263,7 @@ export default function EquipmentsManage({ }) {
                                     return (
                                         <>
                                             <tr key={index}>
-                                                <td>
+                                                <td className='table-data-item'>
                                                     <IconButton
                                                         aria-label="expand row"
                                                         size="small"
@@ -272,16 +273,16 @@ export default function EquipmentsManage({ }) {
                                                         {expandState[index]  ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                                                     </IconButton>
                                                 </td>
-                                                <td className='name-col'>{<div>
+                                                <td className='table-data-item'>{<div>
                                                     <span>{row.name}</span> <br />
                                                     {/* <span id="txt-id">{row.id}</span> */}
                                                 </div>}
                                                 </td>
-                                                <td className='type-col'>{row.type}</td>
-                                                <td className='name-col'>{row.room}</td>
-                                                <td className='name-col' >{row.description}</td>
-                                                <td className='type-col'><span>{row.status}</span></td>
-                                                <td className='type-col'>
+                                                <td className='table-data-item'>{row.type}</td>
+                                                <td className='table-data-item'>{row.room}</td>
+                                                <td className='table-data-item' >{row.description}</td>
+                                                <td className='table-data-item'><span>{row.status}</span></td>
+                                                <td className='table-data-item'>
                                                     <div id='action-btn-container'>
                                                         <button className="action-btn" id="delete-btn" type="submit" onClick={() => handleOnclickDelete(row.id)}><FontAwesomeIcon icon={faTrashCan} style={{ color: "#ff3333", }} /></button>
                                                         <button className="action-btn" id="edit-btn" type="submit" onClick={() => handleEditRow(row.id)} ><FontAwesomeIcon icon={faPenToSquare} style={{ color: "#1a9cff", }} /></button>
@@ -298,19 +299,44 @@ export default function EquipmentsManage({ }) {
                                                             <table className="collapse-table">
                                                                 <thead>
                                                                     <th>Thời gian</th>
+                                                                    <th>Thời gian hoàn thành</th>
                                                                     <th>Nội dung</th>
+                                                                    <th></th>
                                                                 </thead>
                                                                 <tbody>
-                                                                    {historyRows.map((historyRow) => (
+                                                                    {/* {historyRows.map((historyRow) => (
                                                                         <tr key={historyRow.date}>
                                                                             <td >
                                                                                 {historyRow.date}
+                                                                                
+                                                                                
                                                                             </td>
                                                                             <td>{historyRow.description}</td>
-
+                                                                            <td>14/03/2024</td>
+                                                                            <td>Thiết bị đo không chính xác do thời gian dài sử dụng</td>
+                                                                            <td>
+                                                                            <button type="button">Bảo trì xong</button>
+                                                                            </td>
 
                                                                         </tr>
-                                                                    ))}
+                                                                    ))} */}
+                                                                    <tr>
+                                                                        <td>13/04/2024</td>
+                                                                        <td>---</td>
+                                                                        <td>Thiết bị đo không chính xác sau thời gian dài sử dụng</td>
+                                                                        <td>
+                                                                            <button>Xác nhận bảo trì xong</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>13/04/2024</td>
+                                                                        <td>14/04/2024</td>
+                                                                        <td>Thiết bị đo không chính xác sau thời gian dài sử dụng</td>
+                                                                        <td>
+                                                                            Đã bảo trì
+                                                                        </td>
+                                                                    </tr>
+
                                                                 </tbody>
                                                             </table>
                                                         </Box>
@@ -321,19 +347,38 @@ export default function EquipmentsManage({ }) {
                                                             <table className="collapse-table">
                                                                 <thead>
                                                                     <th>Thời gian</th>
+                                                                    <th>Thời gian trả</th>
                                                                     <th>Người sử dụng</th>
+                                                                    <th></th>
                                                                 </thead>
                                                                 <tbody>
-                                                                    {historyRows.map((historyRow) => (
+                                                                    {/* {historyRows.map((historyRow) => (
                                                                         <tr key={historyRow.date}>
                                                                             <td >
                                                                                 {historyRow.date}
                                                                             </td>
                                                                             <td>{historyRow.description}</td>
-
+                                                                            
 
                                                                         </tr>
-                                                                    ))}
+                                                                    ))} */}
+
+                                                                   <tr>
+                                                                        <td>13/04/2024</td>
+                                                                        <td>---</td>
+                                                                        <td>BS-1203</td>
+                                                                        <td>
+                                                                            <button>Xác nhận trả</button>
+                                                                        </td>
+                                                                   </tr>
+                                                                   <tr>
+                                                                        <td>13/04/2024</td>
+                                                                        <td>14/04/2024</td>
+                                                                        <td>BS-1203</td>
+                                                                        <td>
+                                                                           Đã trả thiết bị
+                                                                        </td>
+                                                                   </tr>
                                                                 </tbody>
                                                             </table>
                                                         </Box>

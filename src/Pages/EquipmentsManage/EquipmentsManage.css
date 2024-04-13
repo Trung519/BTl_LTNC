@@ -44,13 +44,70 @@
     color: #56585A;
 }
 
-.name-col{
+/* .name-col{
     text-align: left;
 }
 
 .type-col{
     text-align: center;
+} */
+.table-head-item:nth-child(1){
+    /* EMPTY */
+    text-align: center;
+    width: 60px;
 }
+.table-head-item:nth-child(2){
+    /* TEN THIET BI */
+    text-align: left;
+    width: 160px;
+}
+.table-head-item:nth-child(3){
+    /* LOAI*/
+    text-align: center;
+    width: 160px;
+}
+.table-head-item:nth-child(4){
+    /* PHONG CAT TRU */
+    text-align: center;
+    width: 160px;
+}
+.table-head-item:nth-child(5){
+    text-align: left;
+   
+}
+.table-head-item:nth-child(6){
+    /*  TRANG THAI */
+    text-align: center;
+    width: 180px;
+}
+.table-head-item:nth-child(7){
+    text-align: center;
+    width: 160px;
+}
+
+.table-data-item:nth-child(1){
+    /* COLLAPSE */
+    text-align: center;
+}
+.table-data-item:nth-child(2){
+    /* TEN THIET BI */
+    text-align: left;
+}
+.table-data-item:nth-child(3){
+    /* LOAI */
+    text-align: center;
+}
+.table-data-item:nth-child(4){
+    /* PHONG CAT TRU */
+    text-align: center;
+}
+.table-data-item:nth-child(5){
+    text-align: left;
+}
+.table-data-item:nth-child(6){
+    text-align: center;
+}
+
 
 #addnew-btn{
 color: white;
