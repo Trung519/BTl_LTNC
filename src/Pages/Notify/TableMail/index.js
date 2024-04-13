@@ -20,10 +20,13 @@ export default function Tablemail({ status }) {
         setPage(e.target.value)
     }, [])
 
-    var handleShowcontent = useCallback((e) => {
+    var handleShowcontent = useCallback((page,index) => {
         setShowcontent(true);
-        console.log(e.target.key)
-        setNumemail(e.target.key)
+        setNumemail(page*10 + index)
+    },[])
+
+    var handleUnshowcontent = useCallback(() => {
+        setShowcontent(false);
     },[])
 
     return (
@@ -47,7 +50,7 @@ export default function Tablemail({ status }) {
                         else {
                             let count = index % 2
                             return (
-                                <div onClick={(e) => handleShowcontent(e)} key={page * 10 + index + 1} className={cx('row', 'line-row', `line${count}`)}>
+                                <div onClick={() => handleShowcontent(page, index)} key={page * 10 + index + 1} className={cx('row', 'line-row', `line${count}`)}>
                                     <div className={cx('col-md-1')}>
                                         <input type='checkbox'></input>
                                     </div>
@@ -77,7 +80,11 @@ export default function Tablemail({ status }) {
                         </button>
                     ))}
                 </div></>}
-                    {showcontent && <Mailcontent listemail={listEmail} num={numemail}/>}
+                    {showcontent && <Mailcontent 
+                    listemail={listEmail} 
+                    num={numemail}
+                    unShow={handleUnshowcontent}
+                    />}
         </div>
     )
 }

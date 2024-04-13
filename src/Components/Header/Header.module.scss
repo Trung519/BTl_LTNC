@@ -53,10 +53,18 @@
     }
 }
 
+
+
 //********************* End Header ********************
 
 //********************* Begin Navbar ******************
-
+.nav-actions{
+    a{
+        &:hover{
+            color:rgb(197, 230, 250);
+        }
+    }
+}
 .nav-actions{
     display:flex;
     justify-content: center;
@@ -66,7 +74,6 @@
 .change-color{
     background-color: #1F2B6C;
 }
-
 
 .nav-action{
     transition:0.3s;
