@@ -46,7 +46,12 @@ export default function Tags() {
 
         console.log(newMail);
 
-        SendMail(1, newMail, setMail)
+        const sender = {
+            id: 1,
+            userName: "truc.taquang"
+        }
+
+        SendMail(sender, newMail, setMail)
     }
     //-------------------------------------Backend-------------------------------------
     const [show, setShow] = useState(true);
@@ -92,7 +97,7 @@ export default function Tags() {
                     className={cx('mail_title')}
                     value={mail.title} // Sử dụng giá trị từ state `mail`
                     onChange={(e) => {
-                        setMail({ ...mail, title: e.target.value }); // Cập nhật state `mail` khi có thay đổi
+                        setMail({ ...mail, title: e.target.value }); 
                     }}
                 />
                 <div className={cx('under_main')}>

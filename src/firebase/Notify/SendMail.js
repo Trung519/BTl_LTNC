@@ -16,7 +16,7 @@ const firebaseConfig = {
     measurementId: "G-WYRWK424BJ"
   };
 
-  export const SendMail = async (senderID, newMail, callback) => {
+  export const SendMail = async (sender, newMail, callback) => {
     try {
         if (callback && typeof callback === 'function') {
             callback({
@@ -38,13 +38,13 @@ const firebaseConfig = {
         
         const newData = {
             mail_id: idNewMail,
-            sender_id: senderID,
-            name_sender: "truc.taquang",
+            sender_id: sender.id,
+            sender: sender.userName,
             receiver_id: listIDs,
             content: newMail.content,
             subject: newMail.title,
             hour: newMail.time.split(' ')[0],
-            day: newMail.time.split(' ')[1]
+            date: newMail.time.split(' ')[1]
         };
 
         const updatedData = [...mailsData, newData];
