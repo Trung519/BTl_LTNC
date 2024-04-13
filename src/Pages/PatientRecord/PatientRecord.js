@@ -318,7 +318,7 @@ export default function PatientRecord() {
             <Grid item xs={1} sm={2} md={3}>
               {/* {console.log("search", newPatients)} */}
               <Autocomplete
-                disablePortal
+                // disablePortal
                 onChange={(event, value) => {
                   console.log("1", newPatients);
                   if (value === null) setRenderPatientList(newPatients);
@@ -347,23 +347,6 @@ export default function PatientRecord() {
                         borderColor: "#EBF5FF",
                       },
                     }}
-                    // InputProps={
-                    //   {
-                    //     sx: {
-                    //       borderRadius: "50px",
-                    //       padding: 0,
-                    //     },
-                    //   }
-                    // }
-                    // InputLabelProps={
-                    //   {
-                    //     sx: {
-                    //       color: "#3497F9",
-                    //       borderWidth: "1px",
-                    //       borderColor: "green !important",
-                    //     },
-                    //   }
-                    // }
                     size="small"
                   />
                 )}
@@ -440,16 +423,8 @@ export default function PatientRecord() {
             </Grid>
           </Grid>
         </Box>
-        {/* <Divider
-          variant="fullWidth"
-          sx={{
-            m: "20px 0 20px 0",
-            fontWeight: "bold",
-            opacity: 1,
-            borderBottom: "1px solod red",
-          }}
-        /> */}
-        <Paper elevation={0} sx={{ marginLeft: "40px" }}>
+
+        <Paper elevation={0} sx={{ marginLeft: 1 }}>
           <TableContainer sx={{ maxHeight: 480, overflowY: "scroll" }}>
             <Table stickyHeader>
               <colgroup>

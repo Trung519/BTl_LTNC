@@ -16,6 +16,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 const DialogMedicineListAdd = (props) => {
   const {
@@ -137,8 +138,8 @@ const DialogMedicineListAdd = (props) => {
             </Grid>
             <Grid item xs={1} sm={4} md={12}>
               {/* table */}
-              <TableContainer component={Paper} sx={{ minWidth: 770 }}>
-                <Table sx={{ minWidth: 770 }} aria-label="simple table">
+              <TableContainer component={Paper} sx={{ minWidth: 600 }}>
+                <Table sx={{ minWidth: 600 }} aria-label="simple table">
                   <colgroup>
                     <col style={{ width: "24.5%" }} />
                     <col style={{ width: "24.5%" }} />
@@ -147,7 +148,7 @@ const DialogMedicineListAdd = (props) => {
                     <col style={{ width: "2%" }} />
                   </colgroup>
                   <TableBody>
-                    {medicineAddList.map((row) => (
+                    {medicineAddList.map((row, index) => (
                       <TableRow
                         key={row.medicine}
                         sx={{
@@ -160,15 +161,21 @@ const DialogMedicineListAdd = (props) => {
                         <TableCell>{row.usage}</TableCell>
                         <TableCell>{row.dosagePerDay}</TableCell>
                         <TableCell>{row.unit}</TableCell>
-                        {/* <TableCell>
+                        <TableCell>
                           <IconButton
                             aria-label="add"
                             size="small"
                             color="info"
+                            onClick={() => {
+                              // console.log(index);
+                              const temp = medicineAddList;
+                              temp.splice(index, 1);
+                              setMedicineAddList([...temp]);
+                            }}
                           >
-                            <AddCircleIcon></AddCircleIcon>
+                            <DeleteOutlineIcon></DeleteOutlineIcon>
                           </IconButton>
-                        </TableCell> */}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -181,7 +188,7 @@ const DialogMedicineListAdd = (props) => {
       <DialogActions>
         <Button
           onClick={() => {
-            setAddMedicineListFormOpen(false);
+            // setAddMedicineListFormOpen(false);
             setMedicineAddList([]);
           }}
         >
