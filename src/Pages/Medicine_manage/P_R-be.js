@@ -26,7 +26,7 @@ const analytics = getAnalytics(app);
 const db = getDatabase(app);
 export { db };
 export function AddData_Med(Id_Med, name, origin, HSD, cost, sellPrice, stock) {
-    set(ref(db, 'Medicine_manage/' + Id_Med), {
+    set(ref(db, 'Medicine_manage/' + name), {
         ID: Id_Med,
         name: name,
         origin: origin,
@@ -36,10 +36,40 @@ export function AddData_Med(Id_Med, name, origin, HSD, cost, sellPrice, stock) {
         stock: stock,
     })
         .then(() => {
-            alert("Data Added Successfully");
+            alert("Medicine Added Successfully");
         })
         .catch((error) => {
             alert("Unsuccessful");
             console.error(error);
         });
 };
+export function UpdateData(Id_Med, name, origin, HSD, cost, sellPrice, stock) {
+    update(ref(db, 'Medicine_manage/' + name), {
+        ID: Id_Med,
+        name: name,
+        origin: origin,
+        HSD: HSD,
+        cost: cost,
+        sellPrice: sellPrice,
+        stock: stock,
+    })
+      .then(() => {
+        alert("Data Updated Successfully");
+      })
+      .catch((error) => {
+        alert("Data Updated Unsuccessful");
+        console.log(error);
+      });
+  }
+  export function DeleteData(name) {
+    remove(ref(db, "Medicine_manage/" + name))
+      .then(() => {
+        // window.location.reload();
+        alert("Data Deleted Successfully");
+      })
+      .catch((error) => {
+        alert("Unsuccessful");
+        console.log(error);
+      });
+  }
+  

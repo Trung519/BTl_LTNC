@@ -12,6 +12,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import FormControl from "@mui/material/FormControl";
+import { UpdateData } from "../P_R-be";
 const DialogModify = (props) => {
   const {
     modifyFormOpen,
@@ -36,6 +37,7 @@ const DialogModify = (props) => {
 
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries(formData.entries());
+          UpdateData (formJson.medicineID,formJson.name, formJson.origin, formJson.HSD, formJson.cost, formJson.sellPrice,formJson.stock )
           // cách lấy data
           // const newMedicine = createMedicine(
           //   "1",
