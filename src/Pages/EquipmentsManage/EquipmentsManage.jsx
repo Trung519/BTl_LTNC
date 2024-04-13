@@ -298,10 +298,10 @@ export default function EquipmentsManage({ }) {
                                                             </Typography>
                                                             <table className="collapse-table">
                                                                 <thead>
-                                                                    <th>Thời gian</th>
-                                                                    <th>Thời gian hoàn thành</th>
-                                                                    <th>Nội dung</th>
-                                                                    <th></th>
+                                                                    <th className='maintain-header'>Thời gian</th>
+                                                                    <th className='maintain-header'>Thời gian hoàn thành</th>
+                                                                    <th className='maintain-header'>Nội dung</th>
+                                                                    <th className='maintain-header'></th>
                                                                 </thead>
                                                                 <tbody>
                                                                     {/* {historyRows.map((historyRow) => (
@@ -321,10 +321,10 @@ export default function EquipmentsManage({ }) {
                                                                         </tr>
                                                                     ))} */}
                                                                     <tr>
-                                                                        <td>13/04/2024</td>
-                                                                        <td>---</td>
-                                                                        <td>Thiết bị đo không chính xác sau thời gian dài sử dụng</td>
-                                                                        <td>
+                                                                        <td className='maintain-data'>13/04/2024</td>
+                                                                        <td className='maintain-data' >---</td>
+                                                                        <td className='maintain-data'>Thiết bị đo không chính xác sau thời gian dài sử dụng</td>
+                                                                        <td className='maintain-data'>
                                                                             <button>Xác nhận bảo trì xong</button>
                                                                         </td>
                                                                     </tr>

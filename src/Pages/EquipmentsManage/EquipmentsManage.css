@@ -108,6 +108,16 @@
     text-align: center;
 }
 
+.maintain-header:nth-child(3){
+    text-align: left;
+}
+.maintain-data{
+    text-align: center;
+}
+.maintain-data:nth-child(3){
+    text-align: left;
+}
+
 
 #addnew-btn{
 color: white;
