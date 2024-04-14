@@ -19,7 +19,6 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Medicine } from "../../Medicine_manage/P_R-be";
 import Autocomplete from "@mui/material/Autocomplete";
-
 const DialogMedicineListAdd = (props) => {
   const {
     listNewMedicine,
