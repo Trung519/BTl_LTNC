@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import styles from './TableMail.module.scss'
 import classNames from 'classnames/bind'
-import GetMail from '../../../firebase/Notify/GetMail'
 import Mailcontent from './Mailcontent'
 import getUserNameByID from '../../../firebase/Notify/getUserNameByID'
 

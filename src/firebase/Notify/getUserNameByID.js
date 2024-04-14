@@ -13,10 +13,9 @@ function getUserNameByID(userID, callback = function (err) {
                 for (let i in listUser) {
                     if (listUser[i].ID === userID) {
                         callback(listUser[i].Username);
-                        return; // exit the loop once username is found
+                        return;
                     }
                 }
-                // If userID not found, invoke callback with appropriate value
                 callback("Not found");
             } else {
                 console.log("No data found at 'Account'.");
@@ -27,4 +26,3 @@ function getUserNameByID(userID, callback = function (err) {
     }
 }
 
-export default getUserNameByID;

@@ -7,6 +7,8 @@ import { StatusContext } from '../..';
 const cx = classNames.bind(styles)
 
 export default function Mailcontent({ listemail, num, unShow }) {
+    const[nameSender, setNameSender] = useState("");
+
     var mail = listemail[num];
     const status = useContext(StatusContext)
     console.log(1)
@@ -18,7 +20,7 @@ export default function Mailcontent({ listemail, num, unShow }) {
 
     useEffect(() => {
         getUserNameByID(mail.sender_id, setNameSender);
-    }, [])
+    }, [num])
 
 
     return (
@@ -30,7 +32,7 @@ export default function Mailcontent({ listemail, num, unShow }) {
                 </div>
                 <div className={cx('content-belowheader')}>
                     <div className={cx('belowheader-name')}>
-                        <span className={cx('sender')}>{nameSender }</span>
+                        <span className={cx('sender')}>{ nameSender }</span>
                         <span className={cx('receiver')}>đến {mail.receive}</span>
                     </div>
                     <div className={cx('time')}></div>

@@ -1,20 +1,10 @@
 import { getDatabase, ref, get, set } from "firebase/database";
 import { AddSentMails } from "./SentMails";
 import { AddReceivedMails } from "./ReceivedMails"
-import { useEffect, useState } from "react";
 import { TransferUserNameIntoID } from "./TransferUserNameIntoID";
 import RandomKey from "../RandomKey";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyCyI2BpMknXBSaZgOlsjId38ZvheRpXZLs",
-    authDomain: "btl-ltnc-9c22f.firebaseapp.com",
-    databaseURL: "https://btl-ltnc-9c22f-default-rtdb.firebaseio.com",
-    projectId: "btl-ltnc-9c22f",
-    storageBucket: "btl-ltnc-9c22f.appspot.com",
-    messagingSenderId: "157627430613",
-    appId: "1:157627430613:web:5248f93026848e6848945c",
-    measurementId: "G-WYRWK424BJ"
-  };
+
 
   export const SendMail = async (sender, newMail, callback) => {
     try {

@@ -44,11 +44,9 @@ export default function Tags() {
 
         const newMail = { ...mail, time };
 
-        console.log(newMail);
-
         const sender = {
             id: 1,
-            userName: "truc.taquang"
+            userName: "nguyenphap242"
         }
 
         SendMail(sender, newMail, setMail)
