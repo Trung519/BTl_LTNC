@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 import FormControl from "@mui/material/FormControl";
 import { UpdateData } from "../P_R-be";
 const DialogModify = (props) => {
+  console.log("render");
   const {
     modifyFormOpen,
     setModifyFormOpen,
@@ -22,6 +23,11 @@ const DialogModify = (props) => {
     setNewListMedicineAndRender,
     row,
   } = props;
+  const handleErrorDate = (date) => {
+    var initial = date.split(/\//);
+    return [initial[1], initial[0], initial[2]].join("/"); //=> 'mm/dd/yyyy'
+  };
+  // handleErrorDate("12/31/2004");
   return (
     <Dialog
       fullWidth
@@ -57,6 +63,8 @@ const DialogModify = (props) => {
             sellPrice: formJson.sellPrice,
             stock: formJson.stock,
           };
+          console.log("HSD", formJson.HSD);
+
           // console.log(indexInListMedicine);
           setNewListMedicineAndRender([...temp]);
           setModifyFormOpen(false);
@@ -125,7 +133,7 @@ const DialogModify = (props) => {
                   label="HSD"
                   // sx={{ padding: 0 }}
                   format="DD/MM/YYYY"
-                  value={dayjs(row.HSD, "DD/MM/YYYY")}
+                  value={dayjs(handleErrorDate(row.HSD))}
                 ></DatePicker>
               </FormControl>
             </LocalizationProvider>{" "}

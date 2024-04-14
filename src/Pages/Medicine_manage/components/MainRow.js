@@ -13,7 +13,7 @@ import DialogInfo from "./DialogInfo";
 import DialogModify from "./DialogModify";
 import { DeleteData } from "../P_R-be";
 const MainRow = (props) => {
-  const { row, setNewListMedicineAndRender, newListMedicine } = props;
+  const { row, setNewListMedicineAndRender, newListMedicine, index } = props;
   const [infoFormOpen, setInfoFormOpen] = React.useState(false);
   const [modifyFormOpen, setModifyFormOpen] = React.useState(false);
   const indexInListMedicine = newListMedicine.findIndex((e) => {
@@ -27,7 +27,7 @@ const MainRow = (props) => {
       <TableCell
       // component="th" scope="row"
       >
-        {row.STT}
+        {index + 1}
       </TableCell>
       <TableCell>{row.medicineID}</TableCell>
       <TableCell>{row.name}</TableCell>
@@ -58,7 +58,10 @@ const MainRow = (props) => {
         <IconButton
           aria-label="edit"
           size="small"
-          onClick={() => setModifyFormOpen(true)}
+          onClick={() => {
+            setModifyFormOpen(true);
+            console.log("date", row.HSD);
+          }}
         >
           <EditOutlinedIcon></EditOutlinedIcon>
         </IconButton>

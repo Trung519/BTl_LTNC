@@ -25,7 +25,7 @@ import DialogModify from "./DialogModify";
 import DialogInfo from "./DialogInfo";
 
 function MainRow(props) {
-  const { row, setNewPatientsAndRender, newPatients } = props;
+  const { row, setNewPatientsAndRender, newPatients, index } = props;
   // console.log("row", row);
 
   // const [patient, setPatient] = React.useState([]);
@@ -87,13 +87,13 @@ function MainRow(props) {
             {openSubRow ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell>{row.STT}</TableCell>
-        <TableCell>{row.patientID}</TableCell>
+        <TableCell>{index + 1}</TableCell>
+        <TableCell>{"BN" + row.CCCD.slice(-6)}</TableCell>
         <TableCell align="left">{row.fullName}</TableCell>
         <TableCell>{row.gender}</TableCell>
         <TableCell>{row.CCCD}</TableCell>
         <TableCell>{row.BHYT}</TableCell>
-        <TableCell>{row.BirthDay}</TableCell>
+        <TableCell>{row.birthDay}</TableCell>
         <TableCell>
           <IconButton
             aria-label="info"

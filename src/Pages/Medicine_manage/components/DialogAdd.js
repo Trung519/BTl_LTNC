@@ -1,4 +1,6 @@
 import * as React from "react";
+import dayjs from "dayjs";
+import "dayjs/locale/en-gb";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -35,6 +37,7 @@ const DialogAdd = (props) => {
 
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries(formData.entries());
+          // console.log("test dayjs", dayjs(formJson.HSD, "MM/DD/YYYY"));
           AddData_Med(
             formJson.medicineID,
             formJson.name,
@@ -106,19 +109,23 @@ const DialogAdd = (props) => {
             />
           </Grid>
           <Grid item xs={0.5} sm={1} md={4}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider
+              dateAdapter={AdapterDayjs}
+              adapterLocale="en-gb"
+            >
               <FormControl
                 sx={{ minWidth: 120, marginTop: "17px" }}
                 size="small"
               >
                 <DatePicker
+                  // value="en-gb"
                   required
                   size="small"
                   id="HSD"
                   name="HSD"
                   label="HSD"
                   // sx={{ padding: 0 }}
-                  format="DD/MM/YYYY"
+                  // format="DD/MM/YYYY"
                 ></DatePicker>
               </FormControl>
             </LocalizationProvider>{" "}

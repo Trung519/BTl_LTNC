@@ -10,13 +10,20 @@ import Grid from "@mui/material/Grid";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DateField } from "@mui/x-date-pickers/DateField";
+
 import dayjs from "dayjs";
+// import "dayjs/locale/en-gb";
 import FormControl from "@mui/material/FormControl";
 
 // import Paper from "@mui/material/Paper";
 
 const DialogInfo = (props) => {
   const { row, infoFormOpen, setInfoFormOpen } = props;
+  const handleErrorDate = (date) => {
+    var initial = date.split(/\//);
+    return [initial[1], initial[0], initial[2]].join("/"); //=> 'mm/dd/yyyy'
+  };
   return (
     <Dialog
       fullWidth
@@ -96,16 +103,21 @@ const DialogInfo = (props) => {
                 size="small"
               >
                 <DatePicker
+                  format="DD/MM/YYYY"
                   readOnly
-                  value={dayjs(row.HSD, "DD/MM/YYYY")}
+                  value={dayjs(handleErrorDate(row.HSD))}
+                  // dayjs(row.HSD).format("DD/MM/YYYY")
+                  // row.HSD
+                  // dayjs("03/17/2024", "MM/DD/YYYY").format("DD/MM/YYYY")
+
                   required
                   size="small"
                   id="HSD"
                   name="HSD"
                   label="HSD"
                   // sx={{ padding: 0 }}
-                  format="DD/MM/YYYY"
                 ></DatePicker>
+                {/* <DateField label="HSD" defaultValue={dayjs(row.HSD)} /> */}
               </FormControl>
             </LocalizationProvider>{" "}
           </Grid>

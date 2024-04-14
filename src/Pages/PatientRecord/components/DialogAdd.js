@@ -23,13 +23,30 @@ const DialogAdd = (props) => {
     // createPatient,
     setNewPatientsAndRender,
     newPatients,
-    handle_Name,
-    handle_Date,
-    newGender,
-    handleChangeGender,
-    handle_CCCD,
-    handle_BHYT,
   } = props;
+  const [newGender, setNewGender] = React.useState("");
+  // const [fullName, setfullname] = React.useState("");
+  // const [birthDay, setBirthDay] = React.useState(null);
+  const [CCCD, setCCCD] = React.useState("");
+  // const [BHYT, setBHYT] = React.useState(0);
+  const handleChangeGender = (event) => {
+    setNewGender(event.target.value);
+  };
+  // const handle_Name = (event) => {
+  //   setfullname(event.target.value);
+  // };
+  // const handle_Date = (event) => {
+  //   setBirthDay(event);
+  // };
+  const handle_CCCD = (e) => {
+    if (/^0\d*$/.test(e.target.value) && e.target.value.length <= 12) {
+      setCCCD(e.target.value);
+    }
+  };
+  // const handle_BHYT = (event) => {
+  //   setBHYT(event.target.value);
+  // };
+  console.log("re-render, DialogAdd");
   return (
     <Dialog
       fullWidth
@@ -91,7 +108,7 @@ const DialogAdd = (props) => {
                 type="text"
                 fullWidth
                 variant="standard"
-                onChange={handle_Name}
+                // onChange={handle_Name}
               />
             </Grid>
             <Grid item xs={0.5} sm={1} md={4}>
@@ -106,8 +123,13 @@ const DialogAdd = (props) => {
                     id="birthDay"
                     name="birthDay"
                     label="Ngày sinh"
-                    onChange={handle_Date}
-                    renderInput={(params) => <TextField {...params} />}
+                    // onChange={handle_Date}
+                    // {...props}
+                    // slots={{
+                    //   textField: (textFieldProps) => (
+                    //     <CustomTextField {...textFieldProps} />
+                    //   ),
+                    // }}
                     format="DD/MM/YYYY"
                   ></DatePicker>
                 </FormControl>
@@ -128,6 +150,7 @@ const DialogAdd = (props) => {
                   name="gender"
                   label="Giới tính"
                   value={newGender}
+                  // defaultValue={""}
                   onChange={handleChangeGender}
                 >
                   <MenuItem value={"Nam"}>Nam</MenuItem>
@@ -145,6 +168,8 @@ const DialogAdd = (props) => {
                 name="CCCD"
                 label="Số CCCD"
                 type="text"
+                // inputProps={{ inputMode: "numeric" }}
+                value={CCCD}
                 onChange={handle_CCCD}
                 // inputProps={{ min: 0, style: { textAlign: "left" } }}
                 fullWidth
@@ -161,7 +186,7 @@ const DialogAdd = (props) => {
                 name="BHYT"
                 label="Số BHYT"
                 type="text"
-                onChange={handle_BHYT}
+                // onChange={handle_BHYT}
                 // inputProps={{ min: 0, style: { textAlign: "left" } }}
                 fullWidth
                 // size="medium"

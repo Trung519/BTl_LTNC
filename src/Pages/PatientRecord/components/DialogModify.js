@@ -30,6 +30,10 @@ const DialogModify = (props) => {
     handleChangeGender,
     setmodifyFormOpen,
   } = props;
+  const handleErrorDate = (date) => {
+    var initial = date.split(/\//);
+    return [initial[1], initial[0], initial[2]].join("/"); //=> 'mm/dd/yyyy'
+  };
   return (
     <Dialog
       fullWidth
@@ -108,7 +112,7 @@ const DialogModify = (props) => {
                     label="Ngày sinh"
                     // sx={{ padding: 0 }}
                     format="DD/MM/YYYY"
-                    value={dayjs(row.BirthDay, "DD/MM/YYYY")}
+                    value={dayjs(handleErrorDate(row.birthDay))}
                   ></DatePicker>
                 </FormControl>
               </LocalizationProvider>{" "}

@@ -17,7 +17,7 @@ import MainRow from "./components/MainRow";
 import { Patients } from "./P_R_be";
 export default function PatientRecord() {
   // let [patients, setPatient] = React.useState([]);
-  //console.log("1", row);
+  console.log("re-render patient-record");
 
   React.useEffect(() => {
     Patients().then((post) => {
@@ -30,34 +30,16 @@ export default function PatientRecord() {
   // console.log("Hellobabefdsfdssdsf", patients);
 
   const [newFormOpen, setNewFormOpen] = React.useState(false);
-  const [newGender, setNewGender] = React.useState("");
   const [renderPatientList, setRenderPatientList] = React.useState([]); //Render ra những thứ cần render
   const [newPatients, setNewPatients] = React.useState([]); //Có tác dụng giống với patients bên ngoài
-  const [fullName, setfullname] = React.useState("");
-  const [birthDay, setBirthDay] = React.useState(null);
-  const [CCCD, setCCCD] = React.useState(0);
-  const [BHYT, setBHYT] = React.useState(0);
-  const handle_Name = (event) => {
-    setfullname(event.target.value);
-  };
-  const handle_Date = (event) => {
-    setBirthDay(event);
-  };
-  const handle_CCCD = (event) => {
-    setCCCD(event.target.value);
-  };
-  const handle_BHYT = (event) => {
-    setBHYT(event.target.value);
-  };
+
   // React.useEffect(() => {
   // }, [newPatients]);
   const setNewPatientsAndRender = (newPatients) => {
     setNewPatients([...newPatients]);
     setRenderPatientList([...newPatients]);
   };
-  const handleChangeGender = (event) => {
-    setNewGender(event.target.value);
-  };
+
   const handleClickNewFormOpen = () => {
     setNewFormOpen(true);
   };
@@ -124,12 +106,6 @@ export default function PatientRecord() {
                 // createPatient={createPatient}
                 setNewPatientsAndRender={setNewPatientsAndRender}
                 newPatients={newPatients}
-                handle_Name={handle_Name}
-                handle_Date={handle_Date}
-                newGender={newGender}
-                handleChangeGender={handleChangeGender}
-                handle_CCCD={handle_CCCD}
-                handle_BHYT={handle_BHYT}
               ></DialogAdd>
             </Grid>
             <Grid item xs={1} sm={2} md={3}>
@@ -269,7 +245,7 @@ export default function PatientRecord() {
                       fontSize: "18px",
                     }}
                   >
-                    ID
+                    STT
                   </TableCell>
                   <TableCell
                     sx={{
@@ -341,7 +317,7 @@ export default function PatientRecord() {
                     <MainRow
                       newPatients={newPatients}
                       key={row.CCCD}
-                      // index={index}
+                      index={index}
                       row={row}
                       setNewPatientsAndRender={setNewPatientsAndRender}
                     ></MainRow>

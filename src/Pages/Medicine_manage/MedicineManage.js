@@ -272,8 +272,9 @@ const Medicine_manage = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {renderMedicineList.map((row) => (
+                {renderMedicineList.map((row, index) => (
                   <MainRow
+                    index={index}
                     row={row}
                     setNewListMedicineAndRender={setNewListMedicineAndRender}
                     newListMedicine={newListMedicine}
