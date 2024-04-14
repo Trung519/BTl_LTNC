@@ -16,7 +16,6 @@ export default function Mailcontent({ listemail, num, unShow }) {
         unShow();
     }, [])
 
-    const[nameSender, setNameSender] = useState("");
 
     useEffect(() => {
         getUserNameByID(mail.sender_id, setNameSender);
