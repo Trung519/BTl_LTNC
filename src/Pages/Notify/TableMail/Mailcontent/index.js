@@ -1,15 +1,31 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styles from './Mailcontent.module.scss'
 import classNames from 'classnames/bind'
+import getUserNameByID from '../../../../firebase/Notify/getUserNameByID';
 
 const cx = classNames.bind(styles)
 
 export default function Mailcontent({ listemail, num, unShow }) {
     var mail = listemail[num];
-
+    // var receivername = getUserNameByID(mail.)
     var handleClick = useCallback(() => {
         unShow();
-    },[])
+    }, [])
+
+    // const [nameSender, setNameSender] = useState("");
+    // console.log(mail.sender_id)
+    // console.log(typeof getUserNameByID(3));
+
+    // useEffect(() => {
+    //     getUserNameByID(mail.setNameSender);
+    // })
+
+    const[nameSender, setNameSender] = useState("");
+
+    useEffect(() => {
+        getUserNameByID(mail.sender_id, setNameSender);
+    }, [])
+
 
     return (
         <div className={cx('email-content')}>
@@ -17,6 +33,13 @@ export default function Mailcontent({ listemail, num, unShow }) {
             <div className={cx('content-wrapper')}>
                 <div className={cx('content-header')}>
                     <h2>{mail.subject}</h2>
+                </div>
+                <div className={cx('content-belowheader')}>
+                    <div className={cx('belowheader-name')}>
+                        <span className={cx('sender')}>{nameSender }</span>
+                        <span className={cx('receiver')}>đến {mail.receive}</span>
+                    </div>
+                    <div className={cx('time')}></div>
                 </div>
                 <div className={cx('content-body')}></div>
             </div>

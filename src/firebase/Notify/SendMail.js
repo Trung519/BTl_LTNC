@@ -50,7 +50,7 @@ const firebaseConfig = {
         const updatedData = [...mailsData, newData];
         await set(ref(database, 'Notify/Mails/'), updatedData);
 
-        await AddSentMails(idNewMail, senderID);
+        await AddSentMails(idNewMail, sender.id);
         await AddReceivedMails(idNewMail, listIDs);
     } catch (error) {
         console.error("Error in SendMail:", error);

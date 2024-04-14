@@ -3,10 +3,11 @@ import styles from './TableMail.module.scss'
 import classNames from 'classnames/bind'
 import GetMail from '../../../firebase/Notify/GetMail'
 import Mailcontent from './Mailcontent'
+import getUserNameByID from '../../../firebase/Notify/getUserNameByID'
 
 const cx = classNames.bind(styles)
 
-export default function Tablemail({listdata}) {
+export default function Tablemail({listdata,status}) {
     const [page, setPage] = useState(0)             // Phan trang provip
     const listEmail = listdata;
     const [showcontent, setShowcontent] = useState(false)
@@ -32,7 +33,7 @@ export default function Tablemail({listdata}) {
                     <input type='checkbox'></input>
                 </div>
                 <div className={cx('col-md-2', 'primary-sender')}>
-                    <p>Người gửi</p>
+                    <p>{status === 'received_mail' ? 'Người gửi' : 'Người nhận'}</p>
                 </div>
                 <div className={cx('col-md-8', 'primary-content')}>
                     <p>Nội dung</p>
@@ -50,7 +51,13 @@ export default function Tablemail({listdata}) {
                                     <div className={cx('col-md-1')}>
                                         <input type='checkbox'></input>
                                     </div>
-                                    <div className={cx('col-md-2', 'sender-col')}>{listEmail[page * 10 + index].sender}</div>
+                                    <div className={cx('col-md-2', 'sender-col')}>
+                                        {status === 'received_mail' ? 
+                                        getUserNameByID(listEmail[page*10 + index].sender_id) :
+                                        'aaa'
+                                        // listEmail[page*10 + index].reveiver_id.map((person) => (getUserNameByID(person)))
+                                        }
+                                    </div>
                                     <div className={cx('col-md-8', 'content-col')}>
                                         <span className={cx('content-title')}>{listEmail[page * 10 + index].subject}</span>
                                         <span className={cx('barrie')}>-</span>

@@ -1,7 +1,6 @@
 .content-wrapper{
     width: 100%;
-    padding-left:3%;
-    padding-top:3%;
+    padding:3% 3%;
 }
 
 .content-header{
@@ -12,5 +11,32 @@
         font-variant-ligatures: no-contextual;
         color: #1f1f1f;
         font-weight: 400;
+    }
+}
+
+.content-belowheader{
+    width: 100%;
+    display:flex;
+
+    .belowheader-name{
+        .sender{
+            -webkit-font-smoothing: antialiased;
+            font-family: "Google Sans", Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+            font-size: .875rem;
+            letter-spacing: normal;
+            color: #1f1f1f;
+            line-height: 20px;
+        }
+
+        .receiver{
+            width: 20%;
+            overflow: hidden;
+            -webkit-font-smoothing: auto;
+            font-family: "Google Sans", Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+            font-size: .75rem;
+            letter-spacing: normal;
+            color: #5e5e5e;
+            line-height: 20px;
+        }
     }
 }

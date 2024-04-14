@@ -42,7 +42,10 @@ function Notify() {
             />
           </div>
           <div className={cx('table-mail')}>
-            <Tablemail listdata={listData}/>
+            <Tablemail 
+            listdata={listData}
+            status={status}
+            />
           </div>
         </div>
         <div className={cx('input-mail')}>
