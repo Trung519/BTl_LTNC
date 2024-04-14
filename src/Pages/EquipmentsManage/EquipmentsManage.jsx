@@ -5,9 +5,10 @@ import { v4 as uuidv4 } from 'uuid'
 
 
 // import Select from 'react-select';
-import './EquipmentsManage.css';
+import './EquipmentsManage.scss';
 import { useState, useEffect, useCallback } from 'react';
 import Modal from '../../Components/Modal/Modal';
+import ConfirmDeleteMaintain from '../../Components/ConfirmDeleteMaintain';
 
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -35,16 +36,18 @@ import Typography from '@mui/material/Typography';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Button } from 'bootstrap';
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { Troubleshoot } from '@mui/icons-material';
+import { sassTrue } from 'sass';
+import { faCreativeCommonsNcJp } from '@fortawesome/free-brands-svg-icons';
 
 
 export default function EquipmentsManage({ }) {
     const [idToEdit, setidToEdit] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [data, setData] = useState([]);
-    const [equipmentsRows, setEquipmentsRows] = useState([
-
-
-    ]);
+    const [equipmentsRows, setEquipmentsRows] = useState([]);
+    const [maintain,setMaintain] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [displayAlert, setDisplayAlert] = useState(false);
@@ -75,18 +78,18 @@ export default function EquipmentsManage({ }) {
     setExpandedRows(newExpandedRows);
   }
 
-    const [historyRows, setHistoryRows] = useState([
-        {
-            date: '2021-06-01',
-            description: 'Mua 1 cái mới',
-        },
-        {
-            date: '2021-06-02',
-            description: 'Sửa chữa',
-        }
+    // const [historyRows, setHistoryRows] = useState([
+    //     {
+    //         date: '2021-06-01',
+    //         description: 'Mua 1 cái mới',
+    //     },
+    //     {
+    //         date: '2021-06-02',
+    //         description: 'Sửa chữa',
+    //     }
 
+    // ]);
 
-    ]);
 
 
 
@@ -96,11 +99,12 @@ export default function EquipmentsManage({ }) {
             if (post != null) {
                 setData(post);
                 setEquipmentsRows(post["Equipment"] ?? []);
-
+                setMaintain(post["Maintain"] ?? [])
 
             }
         });
     }, []);
+
 
 
     const handleDisplayAlert = () => {
@@ -179,7 +183,7 @@ export default function EquipmentsManage({ }) {
         var lowerCase = e.target.value.toLowerCase();
         setInputText(lowerCase);
     };
-
+    
 
     const filteredData = equipmentsRows.filter((el) => {
         if (inputText === "") {
@@ -204,6 +208,112 @@ export default function EquipmentsManage({ }) {
 
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - equipmentsRows.length) : 0;
+
+    // maintain
+    const [alertDeleteMaintain, setAlertDeteteMaintain] = useState(false);
+    const [formsState, setFormsState] = useState([]);  // luu danh sach maintain có mở form điền thông tin
+    const [alertIsMaintaining, setAlertIsMaintaining] = useState(false);
+    const clickAdd =(id) =>{
+        if(isMaintaining(id)){
+            setAlertIsMaintaining(true);
+            setTimeout(() => {
+                setAlertIsMaintaining(false);
+            }, 3000);
+        }
+        else{
+
+            let newFormsState = formsState;
+            if(formsState.includes(id)){
+                // co thi xoa
+                newFormsState=formsState.filter(item=> item!==id);
+            }
+            else{
+                // k co thi them
+                newFormsState= [...formsState, id];
+            }
+            setFormsState(newFormsState);
+        }
+    }
+    const cancelAddMaintain =(id) =>{
+        // setDisplayFormMaintain(false);
+        let newFormsState = formsState;
+        newFormsState=formsState.filter(item=>item!==id);
+        setFormsState(newFormsState);
+        
+    }
+
+    function isMaintaining (id){
+        //KIỂM TRA THIẾT BỊ CÓ ĐANG BẢO TRÌ KHÔNG NẾU ĐANG BẢO TRÌ THÌ K ĐC PHÉP THÊM MỚI 
+        let log_maintain = maintain.filter(item => item.id===id);
+        let find = log_maintain.find(item => item.state===false);
+        if(find) return true;
+        return false;
+    }
+    
+    const addMaintain =(id) =>{
+        // xử lý lưu lích sử maintain mới thêm vào database
+        let input_content = document.getElementsByClassName("input-content")
+        let id_maintain = uuidv4();
+        let newMaintain = {
+            content: input_content[0].value,
+            id: id,
+            state: false,
+            time: getFormattedDate(),
+            time_finish: '---',
+            id_maintain: id_maintain,
+        }
+        let newDataMaintain = maintain;
+        newDataMaintain= [newMaintain, ...maintain]
+        writeUserData(newDataMaintain, "/Maintain");
+        cancelAddMaintain(id);
+        setMaintain(newDataMaintain);
+    }
+    
+    const onClickDeleteMaintain =() =>{
+        // alert confirm xóa lịch sử bảo trì
+        setAlertDeteteMaintain(true);
+    }
+    const handleDeleteMaintain =(id_maintain) =>{
+        // xử lý xóa lịch sử maintain
+        let newDataMaintain = maintain;
+        newDataMaintain= maintain.filter(item=> item.id_maintain!==id_maintain);
+        writeUserData(newDataMaintain,"/Maintain");
+        setMaintain(newDataMaintain);
+        setAlertDeteteMaintain(false);
+    }
+    
+    function getFormattedDate() {
+        // Lấy ngày hôm nay
+        const today = new Date();
+        
+        // Lấy ngày, tháng, năm từ đối tượng Date
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Lưu ý: Tháng bắt đầu từ 0
+        const year = today.getFullYear();
+    
+        // Trả về ngày đã định dạng
+        return `${day}/${month}/${year}`;
+    }
+
+    const setStateMaintain = (id_maintain) =>{
+        setMaintain(prev =>{
+            let today = getFormattedDate();
+
+            let newDataMaintain= prev.map((item,index) =>{
+                if(item.id_maintain===id_maintain){
+                    return {...item, time_finish: today , state: true}
+                }
+                else{
+                    return item;
+                }
+            })
+            
+            writeUserData(newDataMaintain,'/Maintain');
+            return newDataMaintain;
+        })
+        
+
+    }
 
 
     return (
@@ -294,7 +404,23 @@ export default function EquipmentsManage({ }) {
                                                     <Collapse in={ expandedRows.includes(index)} timeout="auto" unmountOnExit>
                                                         <Box sx={{ margin: 1, bgcolor: '#F1F8FF', padding: '10px' }}>
                                                             <Typography variant="h6" gutterBottom component="div">
-                                                                Lịch sử bảo dưỡng
+                                                                <div className='swaper-title'>
+                                                                    <span>Lịch sử bảo dưỡng</span>
+                                                                    
+                                                                    <IconButton
+                                                                        aria-label="add"
+                                                                        size="small"
+                                                                        color="info"
+                                                                        onClick={()=>clickAdd(row.id)}
+                                                                    >
+                                                                        <AddCircleIcon></AddCircleIcon>
+                                                                    </IconButton>    
+                                                                    <Fade in={alertIsMaintaining}>
+                                                                    <Alert variant="outlined" severity="error" className='error-add-maintain'>
+                                                                        Thiết bị đang được bảo trì
+                                                                    </Alert>                                                            
+                                                                    </Fade>
+                                                                </div>
                                                             </Typography>
                                                             <table className="collapse-table">
                                                                 <thead>
@@ -320,29 +446,57 @@ export default function EquipmentsManage({ }) {
 
                                                                         </tr>
                                                                     ))} */}
-                                                                    <tr>
-                                                                        <td className='maintain-data'>13/04/2024</td>
-                                                                        <td className='maintain-data' >---</td>
-                                                                        <td className='maintain-data'>Thiết bị đo không chính xác sau thời gian dài sử dụng</td>
-                                                                        <td className='maintain-data'>
-                                                                            <button>Xác nhận bảo trì xong</button>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>13/04/2024</td>
-                                                                        <td>14/04/2024</td>
-                                                                        <td>Thiết bị đo không chính xác sau thời gian dài sử dụng</td>
-                                                                        <td>
-                                                                            Đã bảo trì
-                                                                        </td>
-                                                                    </tr>
+                                                                  {  formsState.includes(row.id) && <tr>
+                                                                            <td className='maintain-data'>{`${getFormattedDate()}`}</td>
+                                                                            <td className='maintain-data' >---</td>
+                                                                            <td className='maintain-data'>
+                                                                                <input className='input-content' type='text' autoFocus ></input>
+                                                                            </td>
+                                                                            <td className='maintain-data'>
+                                                                               <button onClick={()=>addMaintain(row.id)} >Add</button>
+                                                                               <button onClick={() => cancelAddMaintain(row.id)}>Cancel</button>
+                                                                            </td>
+                                                                    </tr>}
+                                                                    
+                                                                    {
+                                                                        
+                                                                        maintain.filter(item=> item.id===row.id).map((row,index)=>(
+
+                                                                        <tr>
+                                                                            <td className='maintain-data'>{row.time}</td>
+                                                                            <td className='maintain-data' >{row.time_finish}</td>
+                                                                            <td className='maintain-data'>{row.content}</td>
+                                                                            <td className='maintain-data'>
+                                                                               <div className='state-maintain'> {row.state ? <span  >Đã bảo trì</span> : <button onClick={()=>setStateMaintain(row.id_maintain)} className='btn-confirm-maintain'>Xác nhận bảo trì xong</button>} </div>
+                                                                                <button className="action-btn" id="delete-btn" type="submit" ><FontAwesomeIcon icon={faTrashCan} style={{ color: "#ff3333", }} onClick={onClickDeleteMaintain} /></button>
+                                                                                <ConfirmDeleteMaintain 
+                                                                                alertDeleteMaintain={alertDeleteMaintain} 
+                                                                                setAlertDeteteMaintain={setAlertDeteteMaintain}
+                                                                                handleDeleteMaintain={handleDeleteMaintain}
+                                                                                id_maintain={row.id_maintain}
+                                                                                />
+                                                                            </td>
+                                                                        </tr>
+                                                                        ))
+                                                                    }
+                                                                    
 
                                                                 </tbody>
                                                             </table>
                                                         </Box>
                                                         <Box sx={{ margin: 1, bgcolor: '#F1F8FF', padding: '10px' }}>
                                                             <Typography variant="h6" gutterBottom component="div">
-                                                                Lịch sử sử dụng
+                                                                <div className='swaper-title'>
+                                                                    <span>Lịch sử sử dụng</span>
+                                                                    <IconButton
+                                                                            aria-label="add"
+                                                                            size="small"
+                                                                            color="info"
+                                                                            
+                                                                        >
+                                                                            <AddCircleIcon></AddCircleIcon>
+                                                                        </IconButton> 
+                                                                </div>
                                                             </Typography>
                                                             <table className="collapse-table">
                                                                 <thead>

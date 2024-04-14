@@ -107,9 +107,27 @@
 .table-data-item:nth-child(6){
     text-align: center;
 }
+.swaper-title{
+    display: flex;
+    align-items: center;
+}
+
+.error-add-maintain{
+    margin: 0 0 0 auto;
+}
+.icon-add{
+    margin: auto 0;
+}
+
+.input-content{
+    width: 80%;
+}
 
 .maintain-header:nth-child(3){
     text-align: left;
+}
+.maintain-header:nth-child(4){
+    width: 240px;   
 }
 .maintain-data{
     text-align: center;
@@ -117,6 +135,29 @@
 .maintain-data:nth-child(3){
     text-align: left;
 }
+.maintain-data:nth-child(4){
+    display: flex;
+    align-items: center ;
+}
+
+.state-maintain{
+    margin-right: 10px;
+    width: 150px;
+    text-align: center;
+}
+
+.btn-confirm-maintain{
+    border-radius: 4px;
+    background-color: white;
+    border: #3E454D 2px solid;
+    padding: 4px;
+    &:hover{
+        background-color: #3497F9;
+        cursor: pointer;
+    }
+}
+
+
 
 
 #addnew-btn{
