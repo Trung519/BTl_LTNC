@@ -50,9 +50,6 @@ export const AddReceivedMails = async (mailID, listID) => {
 
     const updatedData = [...receivedMails];
 
-    console.log(updatedData);
-    console.log(listID);
-
     for (let i = 0; i < listID.length; i++) {
         const newData = {
             mail_id: mailID,
@@ -60,8 +57,6 @@ export const AddReceivedMails = async (mailID, listID) => {
         };
         updatedData.push(newData);
     }
-
-    console.log(updatedData);
 
     await set(ref(database, 'Notify/ReceivedMails/'), updatedData);
 };
