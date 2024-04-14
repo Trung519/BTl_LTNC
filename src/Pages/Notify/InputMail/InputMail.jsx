@@ -97,17 +97,17 @@ export default function Tags() {
                     className={cx('mail_title')}
                     value={mail.title} // Sử dụng giá trị từ state `mail`
                     onChange={(e) => {
-                        setMail({ ...mail, title: e.target.value }); 
+                        setMail({ ...mail, title: e.target.value });
                     }}
                 />
                 <div className={cx('under_main')}>
                     <div className={cx('mail_content')}>
-                        <textarea rows="4" cols="50" placeholder='Nội dung...'
-                            value={mail.content} onChange={(e) => {
-                                setMail({ ...mail, content: e.target.value }); // Cập nhật state `mail` khi có thay đổi
-                            }}
+                        <div 
+                        contenteditable="true"
+                        onChange={(e) => setMail({...mail,content: e.target.value})}
                         >
-                        </textarea>
+                            
+                        </div>
                     </div>
                     <div className={cx('bottom')}>
                         <Button

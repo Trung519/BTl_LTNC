@@ -1,6 +1,8 @@
 import { getDatabase, ref, get } from "firebase/database";
 
-function getUserNameByID(userID, callback) {
+function getUserNameByID(userID, callback = function (err) {
+    console.log(err);
+}) {
     const database = getDatabase();
     const dataRef = ref(database, 'Account');
 

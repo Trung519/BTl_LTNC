@@ -7,7 +7,7 @@ import getUserNameByID from '../../../firebase/Notify/getUserNameByID'
 
 const cx = classNames.bind(styles)
 
-export default function Tablemail({listdata,status}) {
+export default function Tablemail({ listdata, status }) {
     const [page, setPage] = useState(0)             // Phan trang provip
     const listEmail = listdata;
     const [showcontent, setShowcontent] = useState(false)
@@ -17,14 +17,14 @@ export default function Tablemail({listdata,status}) {
         setPage(e.target.value)
     }, [])
 
-    var handleShowcontent = useCallback((page,index) => {
+    var handleShowcontent = useCallback((page, index) => {
         setShowcontent(true);
-        setNumemail(page*10 + index)
-    },[])
+        setNumemail(page * 10 + index)
+    }, [])
 
     var handleUnshowcontent = useCallback(() => {
         setShowcontent(false);
-    },[])
+    }, [])
 
     return (
         <div className={cx('tablemail-wrapper')}>
@@ -52,11 +52,10 @@ export default function Tablemail({listdata,status}) {
                                         <input type='checkbox'></input>
                                     </div>
                                     <div className={cx('col-md-2', 'sender-col')}>
-                                        {status === 'received_mail' ? 
-                                        getUserNameByID(listEmail[page*10 + index].sender_id) :
-                                        'aaa'
-                                        // listEmail[page*10 + index].reveiver_id.map((person) => (getUserNameByID(person)))
-                                        }
+                                        {status == 'received_mail' ?
+                                            listEmail[page * 10 + index].sender.username
+                                            : listEmail[page * 10 + index].receiver.map((email) => email.username
+                    )}
                                     </div>
                                     <div className={cx('col-md-8', 'content-col')}>
                                         <span className={cx('content-title')}>{listEmail[page * 10 + index].subject}</span>
@@ -64,6 +63,7 @@ export default function Tablemail({listdata,status}) {
                                         <span className={cx('content-content')}>{` ${listEmail[page * 10 + index].content}`}</span>
                                     </div>
                                     <div className={cx('col-md-1', 'time-col')}>
+                                        <p> {listEmail[page * 10 + index].hour}</p>
                                         <p> {listEmail[page * 10 + index].date}</p>
                                     </div>
                                 </div>
@@ -83,11 +83,11 @@ export default function Tablemail({listdata,status}) {
                         </button>
                     ))}
                 </div></>}
-                    {showcontent && <Mailcontent 
-                    listemail={listEmail} 
-                    num={numemail}
-                    unShow={handleUnshowcontent}
-                    />}
+            {showcontent && <Mailcontent
+                listemail={listEmail}
+                num={numemail}
+                unShow={handleUnshowcontent}
+            />}
         </div>
     )
 }
