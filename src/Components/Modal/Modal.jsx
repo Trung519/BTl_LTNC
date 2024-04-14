@@ -10,7 +10,7 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
             id: '',
             room: '',
             description: '',
-            status: 'Hoạt động',
+            status: 'Sẵn có',
         }
     );
 
@@ -76,9 +76,9 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
                         <select name="status"
                             onChange={handleChange} value={equimentState.status}
                         >
-                            <option value='Hoạt động'>Hoạt động</option>
-                            <option value='Không hoạt động'>Không hoạt động</option>
-                            <option value='Sửa chữa'>Sửa chữa</option>
+                            <option value='Sẵn có'>Sẵn có</option>
+                            <option value='Đang bảo trì'>Đang bảo trì</option>
+                            <option value='Đang sử dụng'>Đang sử dụng</option>
                         </select>
                     </div>
                     <div id="btn-container">
