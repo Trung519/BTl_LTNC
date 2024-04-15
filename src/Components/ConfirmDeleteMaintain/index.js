@@ -1,0 +1,46 @@
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
+import { memo } from "react";
+
+function ConfirmModal({
+  alertDeleteMaintain,
+  setAlertDeteteMaintain,
+  handleDeleteMaintain,
+  id_maintain,
+}) {
+  const handlClose = () => {
+    setAlertDeteteMaintain(false);
+  };
+  // console.log(handleDeleteRow);
+  return (
+    <div>
+      <Dialog
+        open={alertDeleteMaintain}
+        onClose={handlClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Xóa lịch sử bảo trì này?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Bạn chỉ nên xóa lịch sử bảo trì đã có từ lâu
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handlClose}>Không</Button>
+          <Button onClick={() => handleDeleteMaintain(id_maintain)} autoFocus>
+            Đồng ý
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
+
+export default memo(ConfirmModal);

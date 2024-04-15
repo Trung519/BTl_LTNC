@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState, useContext } from 'react';
 import styles from './Mailcontent.module.scss'
 import classNames from 'classnames/bind'
 import getUserNameByID from '../../../../firebase/Notify/getUserNameByID';
+import { StatusContext } from '../..';
 
 const cx = classNames.bind(styles)
 
@@ -9,10 +10,16 @@ export default function Mailcontent({ listemail, num, unShow }) {
     const[nameSender, setNameSender] = useState("");
 
     var mail = listemail[num];
-
+    const status = useContext(StatusContext)
+    console.log(1)
     var handleClick = useCallback(() => {
         unShow();
     }, [])
+
+
+    useEffect(() => {
+        getUserNameByID(mail.sender_id, setNameSender);
+    }, [num])
 
 
     return (
