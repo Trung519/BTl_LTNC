@@ -14,10 +14,6 @@ export default function Mailcontent({ listemail, num, unShow }) {
         unShow();
     }, [])
 
-    useEffect(() => {
-        getUserNameByID(mail.sender_id, setNameSender);
-    }, [num])
-
 
     return (
         <div className={cx('email-content')}>

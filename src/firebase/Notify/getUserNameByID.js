@@ -1,11 +1,6 @@
 import { getDatabase, ref, get } from "firebase/database"
 
-export default function getUserNameByID(userID, callback = function (err, user) {
-    console.log(err
-        + "\n"
-        + user
-    );
-}) {
+export default function getUserNameByID(userID) {
     const database = getDatabase();
     const dataRef = ref(database, 'Account');
 
@@ -15,11 +10,10 @@ export default function getUserNameByID(userID, callback = function (err, user) 
                 const listUser = snapshot.val();
                 for (let i in listUser) {
                     if (listUser[i].ID === userID) {
-                        callback(listUser[i].Username);
-                        return;
+                        console.log(listUser[i].Username);
                     }
                 }
-                callback("Not found");
+                return("Not found");
             } else {
                 console.log("No data found at 'Account'.");
             }

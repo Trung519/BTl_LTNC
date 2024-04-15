@@ -51,10 +51,8 @@ export default function Tablemail({listdata,status}) {
                                         <input type='checkbox'></input>
                                     </div>
                                     <div className={cx('col-md-2', 'sender-col')}>
-                                        {status === 'received_mail' ? 
-                                        getUserNameByID(listEmail[page*10 + index].sender_id) :
-                                        'aaa'
-                                        // listEmail[page*10 + index].reveiver_id.map((person) => (getUserNameByID(person)))
+                                        { 
+                                        listEmail[page * 10 + index].sender.username
                                         }
                                     </div>
                                     <div className={cx('col-md-8', 'content-col')}>
