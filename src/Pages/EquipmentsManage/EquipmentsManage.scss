@@ -123,8 +123,15 @@
     width: 80%;
 }
 
+.maintain-header:nth-child(1){
+    text-align: center;
+}
+.maintain-header:nth-child(2){
+    text-align: center;
+}
 .maintain-header:nth-child(3){
     text-align: left;
+    width: 590px;
 }
 .maintain-header:nth-child(4){
     width: 240px;   
@@ -138,6 +145,7 @@
 .maintain-data:nth-child(4){
     display: flex;
     align-items: center ;
+    justify-content: flex-end;
 }
 
 .state-maintain{
@@ -145,18 +153,58 @@
     width: 150px;
     text-align: center;
 }
+.state-use{
+    margin-right: 10px;
+    width: 110px;
+    text-align: center;
+    
+}
 
 .btn-confirm-maintain{
     border-radius: 4px;
     background-color: white;
     border: #3E454D 2px solid;
     padding: 4px;
+
     &:hover{
         background-color: #3497F9;
         cursor: pointer;
     }
 }
 
+.header-use{
+    text-align: center;
+}
+.header-use:last-child{
+    width: 240px;
+    
+}
+.data-use{
+    text-align: center;
+}
+.data-use:last-child{
+    display: flex;
+    align-items: center ;
+    justify-content: flex-end;
+}
+
+.btn-confirm-return{
+    background-color: white;
+    border: 2px #56585A solid;
+    border-radius: 4px;
+    padding: 4px;
+    
+    &:hover{
+        background-color: #3497F9;
+        cursor: pointer;
+    }
+
+}
+
+.input-user{
+    text-align: center;
+    width: 100px;
+}
 
 
 
