@@ -15,11 +15,11 @@
     border-radius: 5px;
     padding: 2rem;
     background-color: white;
-    width: 50%;
+    width: 46%;
     height: auto;
 }
 .modal-content label {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Arial', sans-serif;
     font-weight: 700;
     color: #3E454D;   
     display: inline-block;
@@ -36,9 +36,6 @@
     padding: 7px 0;
     background: transparent;
     transition: border-color 0.2s;
-
-
-
 }
 
 .modal-content div {
@@ -49,7 +46,6 @@
 }
 
 .modal-content select {
-    width: 100%;
     border: 0;
     border-bottom: 2px solid lightgray;
     outline: 0;
@@ -59,20 +55,35 @@
     background: transparent;
 }
 
+.modalE-header h1 {
+    text-align: left;
+    color: #3E454D;
+    font-family:'Arial', sans-serif;
+    font-weight: 500;
+    font-size:x-large;
+    
+}
+
+.modalE-header{
+    border-bottom: #888888 0.5px solid;
+    margin-bottom: 1rem;
+}
+
 #submit-btn{
-    color: #1F2B6C;
-    background-color: #BFD2F8;
-    font-family: 'Poppins', sans-serif;
+    color: white;
+    background-color: #3497F9;
+    font-family: 'Arial', sans-serif;
     font-weight: bold;
     border: none;
     padding: 12px;
     border-radius: 12px;
     margin-top: 1rem;
+    &:hover{
+        background-color: #58aafc;
+        cursor: pointer;
+    }
 }
 
-#status-box {
-    width: 92%;    
-}
 
 #btn-container {
     display:flex;
@@ -85,3 +96,6 @@
     margin: 0 auto;
 }
 
+#description{
+    width: 63%;
+}

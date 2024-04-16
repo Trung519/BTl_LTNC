@@ -1,8 +1,4 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+
 
 .bigWrapper{
 width: 90%;
@@ -12,17 +8,18 @@ width: 90%;
     font-family: Arial, sans-serif;
     font-weight: 1000;
     font-size: 40px;
+    text-transform: uppercase;
 }
 .left {
     width: 50%;
     float: left;
-    padding: 50px;  
+    padding-right: 50px;  
+    height: 100%;
 }
 
 .left img {
     display: block;
-    width: 100%;
-    margin-top: 30px;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
@@ -43,7 +40,7 @@ width: 90%;
 
 .wrapper {
     width: 50%;
-    float: left;
+    float: right;
     background: transparent;
     border: 2px solid rgba(255,255,255,0.2);
     backdrop-filter: blur(50px);
@@ -51,6 +48,7 @@ width: 90%;
     color: #3E454D;
     border-radius: 10px;
     padding: 30px 40px;
+    height: 100%;
 }
 
 .wrapper h1{

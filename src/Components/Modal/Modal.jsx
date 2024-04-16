@@ -56,24 +56,29 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
         {displayError && (
           <span className="alert-error">Vui lòng không để trống thông tin</span>
         )}
+        <div className="modalE-header">
+          <h1>Thêm thông tin thiết bị</h1>  
+        </div>
         <form className="form-data">
           <div>
-            <label htmlFor="name">Tên</label>
+            {/* <label htmlFor="name">Tên</label> */}
             <input
               type="text"
               name="name"
               onChange={handleChange}
               value={equimentState.name}
+              placeholder="Tên"
             />
           </div>
 
           <div>
-            <label htmlFor="type">Loại</label>
+            {/* <label htmlFor="type">Loại</label> */}
             <input
               type="text"
               name="type"
               onChange={handleChange}
               value={equimentState.type}
+              placeholder="Loại"
             />
           </div>
 
@@ -85,27 +90,29 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
                         </div> */}
 
           <div>
-            <label htmlFor="room">Phòng</label>
+            {/* <label htmlFor="room">Phòng</label> */}
             <input
               type="text"
               name="room"
               onChange={handleChange}
               value={equimentState.room}
+              placeholder="Phòng"
             />
           </div>
 
-          <div>
-            <label htmlFor="description">Mô tả</label>
+          <div id="description">
+            {/* <label htmlFor="description">Mô tả</label> */}
             <input
               type="text"
               name="description"
               onChange={handleChange}
               value={equimentState.description}
+              placeholder="Mô tả"
             />
           </div>
 
           <div id="status-box">
-            <label htmlFor="status">Trạng thái</label>
+            {/* <label htmlFor="status">Trạng thái</label> */}
             <select
               name="status"
               onChange={handleChange}
