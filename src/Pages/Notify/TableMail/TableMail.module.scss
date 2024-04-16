@@ -1,0 +1,99 @@
+.tablemail-wrapper {
+    width: 100%;
+    height: 37rem;
+}
+
+.primary-row {
+    padding: 1% 0;
+    width: 100%;
+    border-bottom: 1px solid gray;
+}
+
+.primary-checkbox,
+.primary-sender,
+.primary-content,
+.primary-time {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-weight: 500;
+
+    p {
+        text-align: center;
+        margin: auto 0;
+    }
+}
+
+.content-container {
+    width: 100%;
+}
+
+.line-row {
+    padding: 1% 0;
+    width: 100%;
+    border-bottom: 1px solid gray;
+}
+
+.sender-col {
+    display: flex;
+    justify-content: start;
+    white-space: nowrap;
+    overflow: hidden;
+    font-weight: 480;
+    margin:auto 0;
+}
+
+.content-col {
+    display: flex;
+    justify-content: start;
+    margin:auto 0;
+
+    .content-title {
+        font-weight: 480;
+        font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .content-content{
+        font-weight: 400;
+        font-size: 12px;
+        color:#adadad;
+        margin:auto 0;
+    }
+}
+
+.time-col {
+    font-size: 12px;
+  
+
+    p{
+        text-align:center;
+        margin:auto 0;
+    }
+}
+
+.barrie{
+    margin:0 1%;
+}
+
+.tablemail-pages {
+    width: 80%;
+    display: flex;
+    justify-content: end;
+    margin-top: 2%;
+
+    button {
+        border: none;
+        border-radius: 7px;
+        background-color: white;
+        color:#3497F9;
+        padding: 3px 10px;
+        margin-right:2%;
+    }
+
+    .page-current{
+        background-color: #3497F9;
+        color:white;
+    }
+}

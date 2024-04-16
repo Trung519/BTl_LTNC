@@ -13,7 +13,7 @@ import PatientRecord from "../../Pages/PatientRecord";
 import Schedule from "../../Pages/Schedule";
 import LoginForm from "../LoginForrm/LoginForm";
 import SignUpForm from "../SignupForm/SignUpForm";
-
+import Employee from "../../Pages/Employee";
 import { NavDropdown } from "react-bootstrap";
 const cx = classNames.bind(styles);
 
@@ -109,7 +109,17 @@ function Header() {
                   >
                     Lịch làm việc
                   </Nav.Link>
-                  <NavDropdown className={cx("nav-action")} title="Quản lí">
+                  <NavDropdown
+                    className={cx("nav-action", "nav-action-last")}
+                    title="Quản lí"
+                  >
+                    <NavDropdown.Item
+                      className={cx("nav-action1")}
+                      as={Link}
+                      to="/employee"
+                    >
+                      Quản lý nhân viên
+                    </NavDropdown.Item>
                     <NavDropdown.Item
                       className={cx("nav-action1")}
                       as={Link}
@@ -140,6 +150,7 @@ function Header() {
             <Route path="/medicine_manage" element={<Medicine_manage />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignUpForm />} />
+            <Route path="/employee" element={<Employee />} />
           </Routes>
         </div>
       </Router>

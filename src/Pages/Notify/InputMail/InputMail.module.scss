@@ -1,0 +1,74 @@
+.wrapper {
+    position:fixed;
+    right: 10%;
+    bottom:0;
+    width: 530px;
+    height: 530px;
+    background-color: #fff;
+    z-index:100;
+    border-radius: 10px;
+    border-style:groove;
+
+    .top {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        justify-content: space-between;
+        padding:2.5% 3%;
+        background-color:#f2f6fc;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+        font-weight: 500;
+        height: 9%;
+        font-size: 0.875rem;
+
+        
+    }
+
+    .main {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        font-size: 0.875rem;
+    }
+
+    .bottom {
+        width: 100%;
+    }
+}
+
+.main {
+    .mail_receiver,
+    .mail_content {
+        width: 100%;
+     padding:0 3%;
+     font-size: 0.875rem;
+    }
+
+    .mail_title{
+        margin:2% 3%;
+    }
+}
+
+.under_main{
+   .mail_content{
+    height: 310px;
+    width: 100%;
+
+    textarea{
+        border:none;
+        height: 95%;
+        width: 100%;
+        text-align: start;
+        overflow-wrap:normal;
+
+    }
+   }
+
+   .bottom{
+    width: 95%;
+    display:flex;
+    justify-content: end;
+   }
+}
+
