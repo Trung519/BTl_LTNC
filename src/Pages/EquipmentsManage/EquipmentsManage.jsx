@@ -800,7 +800,7 @@ export default function EquipmentsManage({}) {
             })}
             {emptyRows > 0 && (
               <tr style={{ height: 41 * emptyRows }}>
-                <td colSpan={6} aria-hidden />
+                <td colSpan={7} aria-hidden />
               </tr>
             )}
           </tbody>
@@ -808,7 +808,7 @@ export default function EquipmentsManage({}) {
             <tr>
               <CustomTablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                colSpan={6}
+                colSpan={7}
                 count={equipmentsRows.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
