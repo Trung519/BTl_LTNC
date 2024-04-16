@@ -21,7 +21,7 @@ import FirstPageRoundedIcon from "@mui/icons-material/FirstPageRounded";
 import LastPageRoundedIcon from "@mui/icons-material/LastPageRounded";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
-import { Alert } from "@mui/material";
+import { Alert, useStepContext } from "@mui/material";
 import Fade from "@mui/material/Fade";
 import ConfirmModal from "../../Components/ConfirmModal";
 import Box from "@mui/material/Box";
@@ -32,10 +32,12 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Button } from "bootstrap";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { Troubleshoot } from "@mui/icons-material";
+import { FlareSharp, Troubleshoot } from "@mui/icons-material";
 import { sassTrue } from "sass";
 import { faCreativeCommonsNcJp } from "@fortawesome/free-brands-svg-icons";
 import ConfirmDeleteUse from "../../Components/ConfirmDeleteUse";
+import Footer from "../../Components/Footer";
+import InputBorrower from "./Components/InputBorrower";
 
 export default function EquipmentsManage({}) {
   const [idToEdit, setidToEdit] = useState(null);
@@ -345,6 +347,7 @@ export default function EquipmentsManage({}) {
       }
       setFormsUseState(newFormsUseState);
     } else {
+      setMsgErrorUse("Thiết bị đang được bảo trì hoặc sử dụng !");
       setAlertIsUsing(true);
       setTimeout(() => {
         setAlertIsUsing(false);
@@ -357,6 +360,8 @@ export default function EquipmentsManage({}) {
     newFormsUseState = formsUseState.filter((item) => item !== id);
     setFormsUseState(newFormsUseState);
   };
+
+  const [inputborrower, setInputBorrower] = useState("");
   const handleAddUse = (id) => {
     // XỬ LÝ LƯU LỊCH SỬ SỬ DỤNG MỚI THÊM VÀO DB VÀ SET TRẠNG THÁI ĐANG SỬ DỤNG CHO THIẾT BỊ;
     setEquipmentsRows((prev) => {
@@ -371,21 +376,28 @@ export default function EquipmentsManage({}) {
       return newDataEquip;
     });
 
-    let input = document.getElementsByClassName("input-user");
-    let id_use = uuidv4();
-    let newUse = {
-      borrower: input[0].value,
-      id: id,
-      state: false,
-      time: getFormattedDate(),
-      time_finish: "---",
-      id_use: id_use,
-    };
-    let newDataUse = use;
-    newDataUse = [newUse, ...use];
-    writeUserData(newDataUse, "/Use");
-    onClickCancelAddUse(id);
-    setUse(newDataUse);
+    if (!inputborrower === "") {
+      setMsgErrorUse("Vui lòng nhập thông tin người mượn");
+      setAlertIsUsing(true);
+      setTimeout(() => {
+        setAlertIsUsing(false);
+      }, 3000);
+    } else {
+      let id_use = uuidv4();
+      let newUse = {
+        borrower: inputborrower,
+        id: id,
+        state: false,
+        time: getFormattedDate(),
+        time_finish: "---",
+        id_use: id_use,
+      };
+      let newDataUse = use;
+      newDataUse = [newUse, ...use];
+      writeUserData(newDataUse, "/Use");
+      onClickCancelAddUse(id);
+      setUse(newDataUse);
+    }
   };
   const setStateUse = (id_use) => {
     let id = use.find((item) => item.id_use === id_use).id;
@@ -429,6 +441,7 @@ export default function EquipmentsManage({}) {
     setUse(newDataUse);
     setAlertDeleteUse(false);
   };
+  const [msgErrorUse, setMsgErrorUse] = useState("");
 
   return (
     <div id="backgroundE">
@@ -450,7 +463,7 @@ export default function EquipmentsManage({}) {
             {" "}
             + Thêm mới
           </button>
-          <h1>Quản lý Thiết bị</h1>
+          <h1 id="header-page">Quản lý Thiết bị</h1>
         </div>
         <div className="search">
           <TextField
@@ -694,7 +707,7 @@ export default function EquipmentsManage({}) {
                                   severity="error"
                                   className="error-add-maintain"
                                 >
-                                  Thiết bị đang được bảo trì hoặc sử dụng !
+                                  {msgErrorUse}
                                 </Alert>
                               </Fade>
                             </div>
@@ -712,7 +725,10 @@ export default function EquipmentsManage({}) {
                                   <td className="data-use">{`${getFormattedDate()}`}</td>
                                   <td className="data-use">---</td>
                                   <td className="data-use">
-                                    <input className="input-user"></input>
+                                    <InputBorrower
+                                      inputSearch={inputborrower}
+                                      setInputSearch={setInputBorrower}
+                                    />
                                   </td>
                                   <td className="data-use">
                                     <button
@@ -847,6 +863,7 @@ export default function EquipmentsManage({}) {
           handleDeleteUse={handleDeleteUse}
         />
       </div>
+      <Footer />
     </div>
   );
 }

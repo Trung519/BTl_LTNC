@@ -4,7 +4,7 @@
     justify-content: center;
     align-content: center;
     padding-top: 1rem;
-    padding-bottom: 1rem;
+    // padding-bottom: 1rem;
 }
 
 #container {
@@ -181,7 +181,13 @@
 }
 .data-use{
     text-align: center;
+
+    
 }
+
+
+
+
 .data-use:last-child{
     display: flex;
     align-items: center ;
@@ -201,10 +207,7 @@
 
 }
 
-.input-user{
-    text-align: center;
-    width: 100px;
-}
+
 
 
 
@@ -232,7 +235,7 @@ margin-bottom: 3rem;
     border-spacing: 1rem;
 }
 
-h1{
+#header-page{
     text-align: right;
     color: #3E454D;
     font-family:'Poppins', sans-serif;
@@ -281,6 +284,7 @@ h1{
 .collapse-table{
     width: 100%;
 }
+
 
 
 
