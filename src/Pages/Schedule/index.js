@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind'
 import styles from './Schedule.module.scss'
-import React, { Component } from 'react'
+import React, { Component, useRef } from 'react'
 import Footer from '../../Components/Footer'
 
 // --------------Firebase--------------
@@ -62,18 +62,31 @@ export default function Schedule() {
     }
 
     const handleCollectData = (e) => {
-        const { name, value } = e.target;
-        setForm({
-            ...form,
-            [name]: value
-        });
+        if (e.target.name === 'name_CCCD') {
+            if (e.target.value.length <13) {
+                const { name, value } = e.target;
+                setForm({
+                    ...form,
+                    [name]: value
+                });
+            }
+            else{}
+        }
+        else {
+            const { name, value } = e.target;
+            setForm({
+                ...form,
+                [name]: value
+            });
+        }
     }
     const handleNamePatientChange = (e) => {
         setNamePatientSearch(e.target.value);
-        if(listdata.length == 0) setSearchbool(false)
+        if (listdata.length == 0) setSearchbool(false)
         else setSearchbool(true)
         setPage(0)
     }
+   
     const submitForm = () => {
         const checkValue = new Promise((resolve, reject) => {
             if (
@@ -214,7 +227,7 @@ export default function Schedule() {
                                                     <div className={cx('col-md-1', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{listdata[page * 10 + index].Name_doctor}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')}>
-                                                        {<p>{listdata[page * 10 + index].Hour_in + ", " + listdata[page * 10 + index].Date_in}</p>}
+                                                        {<p>{listdata[page * 10 + index].Time + ", " + listdata[page * 10 + index].Date}</p>}
                                                     </div>
                                                     <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].Patient}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].CCCD}</div>
@@ -299,14 +312,14 @@ export default function Schedule() {
                                             return (
                                                 <div key={listdata[index].id_schedule} className={cx('row', 'line-row', `line${count}`)}>
                                                     <div style={{ display: 'none' }} className={cx('col-md-1', 'schedule-table-index')}>{page * 10 + index + 1}</div>
-                                                    <div className={cx('col-md-1', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
-                                                    <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{listdata[page * 10 + index].Name_doctor}</div>
+                                                    <div className={cx('col-md-1', 'schedule-table-ID_doctor')} contentEditable>{listdata[page * 10 + index].ID_doctor}</div>
+                                                    <div className={cx('col-md-2', 'schedule-table-Name_doctor')} contentEditable>{listdata[page * 10 + index].Name_doctor}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')}>
-                                                        {<p>{listdata[page * 10 + index].Hour_in + ", " + listdata[page * 10 + index].Date_in}</p>}
+                                                        {<p>{listdata[page * 10 + index].Time + ", " + listdata[page * 10 + index].Date}</p>}
                                                     </div>
-                                                    <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].Patient}</div>
-                                                    <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].CCCD}</div>
-                                                    <div className={cx('col-md-1', 'schedule-table-Room')}>{listdata[page * 10 + index].Room}</div>
+                                                    <div className={cx('col-md-2', 'schedule-table-Patient')} contentEditable>{listdata[page * 10 + index].Patient}</div>
+                                                    <div className={cx('col-md-2', 'schedule-table-Patient')} contentEditable>{listdata[page * 10 + index].CCCD}</div>
+                                                    <div className={cx('col-md-1', 'schedule-table-Room')} contentEditable>{listdata[page * 10 + index].Room}</div>
                                                     <div className={cx('col-md-2', `schedule-icons-${handleColor(page * 10 + index)}`, 'schedule-table-Status', 'schedule-icons')}>
                                                         {handleColor(page * 10 + index) === 'done' && (
                                                             <select name="select-in-edit"
@@ -414,7 +427,7 @@ export default function Schedule() {
                                                     <div className={cx('col-md-1', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{listdata[page * 10 + index].Name_doctor}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')}>
-                                                        {<p>{listdata[page * 10 + index].Hour_in + ", " + listdata[page * 10 + index].Date_in}</p>}
+                                                        {<p>{listdata[page * 10 + index].Time + ", " + listdata[page * 10 + index].Date}</p>}
                                                     </div>
                                                     <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].Patient}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].CCCD}</div>
@@ -451,12 +464,112 @@ export default function Schedule() {
                     </div>
                     <div className={cx('schedule-add')}>
                         <div className={cx('contain-form')}>
+                            <div className={cx('form-title')}>
+                                <span>Thêm lịch hẹn</span>
+                            </div>
+                            <div className={cx('form-doctor')}>
+                                <div className={cx('doctor-id')}>
+                                    <input
+                                        type='text'
+                                        placeholder='ID Bác Sĩ'
+                                        value={form.id_Doctor} name="id_Doctor"
+                                        onChange={handleCollectData}
+                                        onClick={() => {
+                                            setUlshow(true)
+                                        }}
+                                    ></input>
+                                    {ulshow && <ul className={cx('ul-id')}>
+                                        {suggestionsID.map((suggestion, index) => {
+                                            if (index > 4 || form.id_Doctor == '') { }
+                                            else {
+                                                return (
+                                                    <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
+                                                        {suggestion.ID}
+                                                    </li>
+                                                )
+                                            }
+                                        })}
+                                    </ul>}
+                                </div>
+                                <div className={cx('doctor-name')}>
+                                    <input
+                                        type='text'
+                                        placeholder='Tên Bác Sĩ'
+                                        value={form.name_Doctor} name="name_Doctor"
+                                        onChange={handleCollectData}
+                                        onClick={() => {
+                                            setUlshow(true)
+                                            setSuggestionsID([])
+                                        }}></input>
+                                    {ulshow && <ul className={cx('ul-name')}>
+                                        {suggestions.map((suggestion, index) => {
+                                            if (index > 4 || form.name_Doctor == '') { }
+                                            else {
+                                                return (
+                                                    <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
+                                                        {`${suggestion.FirstName} ${suggestion.LastName}`}
+                                                    </li>
+                                                )
+                                            }
+                                        })}
+                                    </ul>}
+                                </div>
+
+                            </div>
+                            <div className={cx('form-time')}>
+                                <div className={cx('form-time-time')}>
+                                    <input
+                                        type='time'
+                                        value={form.time}
+                                        name="time"
+                                        onChange={handleCollectData}
+                                    ></input>
+                                </div>
+                                <div className={cx('form-time-date')}>
+                                    <input
+                                        type='date'
+                                        value={form.date}
+                                        name="date"
+                                        onChange={handleCollectData}></input>
+                                </div>
+                            </div>
+                            <div className={cx('form-other')}>
+                                <input
+                                    type='text'
+                                    placeholder='Tên bệnh nhân'
+                                    value={form.name_Patient}
+                                    name="name_Patient"
+                                    onChange={handleCollectData}
+                                ></input>
+                                <input
+                                    type='number'
+                                    placeholder='CCCD'
+                                    value={form.name_CCCD}
+                                    name="name_CCCD"
+                                    onChange={handleCollectData}
+                                ></input>
+                                <input
+                                    type='text'
+                                    placeholder='Phòng'
+                                    value={form.room}
+                                    name="room"
+                                    onChange={handleCollectData}
+                                ></input>
+                            </div>
+                            <div className={cx('form-button')}>
+                                <button onClick={handleAdd}>HỦY</button>
+                                <button onClick={submitForm}>XÁC NHẬN</button>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <div className={cx('schedule-add')}>
+                        <div className={cx('contain-form')}>
                             <div className={cx('schedule-form')}>
                                 <div className={cx('form-close')} onClick={handleAdd}>
                                     <i className={cx("fas fa-times")}></i>
                                 </div>
                                 <div className={cx('form-title')}>
-                                    <h3>THÊM LỊCH HẸN</h3>
+                                    <span>Thêm lịch hẹn</span>
                                 </div>
                                 <h5>Bác Sĩ:</h5>
                                 <div className={cx('form-doctor')}>
@@ -528,7 +641,7 @@ export default function Schedule() {
                             </div>
                         </div>
 
-                    </div>
+                    </div> */}
                 </div>
                 <Footer />
             </>
