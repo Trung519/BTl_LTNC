@@ -283,7 +283,18 @@ margin-bottom: 3rem;
 
 .collapse-table{
     width: 100%;
+    button{
+        padding: 4px;
+        margin: 0 5px;
+        background-color: white;
+        outline: none;
+        border-radius: 6px;
+        &:hover{
+            background-color: #3497F9;
+        }
+    }
 }
+
 
 
 

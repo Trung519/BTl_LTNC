@@ -6,6 +6,8 @@ import ModalFormAdd from "./Components/ModalFormAdd";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { getData } from "../../services/firebase";
@@ -24,6 +26,7 @@ function Employee() {
   useEffect(() => {
     getData().then((post) => {
       setDataEmp(post["Employee"] ?? []);
+      handleLoadingDone();
     });
   }, []);
 
@@ -52,8 +55,19 @@ function Employee() {
     let lowerCase = e.target.value.toLowerCase();
     setInputSearch(lowerCase);
   };
+  const [loading, setLoading] = useState(true);
+  const handleLoadingDone = () => {
+    setLoading(false);
+  };
   return (
     <div id="backgroundE">
+      <Backdrop
+        sx={{ color: "#fff", zIndex: 1 }}
+        open={loading}
+        onClick={handleLoadingDone}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div id="container">
         <h1 className={cx("header-page")}>
           Quản lý nhân viên y tế

@@ -79,3 +79,9 @@
     justify-content: center;
     align-content: center;
 }
+
+.alert-error{
+    color:  red;
+    margin: 0 auto;
+}
+
