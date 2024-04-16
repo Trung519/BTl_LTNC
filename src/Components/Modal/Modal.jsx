@@ -1,13 +1,15 @@
 import "./Modal.css";
 
 import { useState } from "react";
+import { Alert } from "@mui/material";
+import Fade from "@mui/material/Fade";
 
 export default function Modal({ closeModal, onSubmit, defaultValue }) {
   const [equimentState, setequimentState] = useState(
     defaultValue || {
       name: "",
       type: "",
-      id: "",
+      // id: "",
       room: "",
       description: "",
       status: "Sẵn có",
@@ -20,13 +22,25 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
       [e.target.name]: e.target.value,
     });
   }
+  const [displayError, setDipslayError] = useState(false);
+  function isInValid() {
+    let values = Object.values(equimentState);
+    return values.includes("");
+  }
 
   function handleSubmit(e) {
-    e.preventDefault();
+    if (isInValid()) {
+      setDipslayError(true);
+      setTimeout(() => {
+        setDipslayError(false);
+      }, 3000);
+    } else {
+      e.preventDefault();
 
-    onSubmit(equimentState);
+      onSubmit(equimentState);
 
-    closeModal();
+      closeModal();
+    }
   }
 
   return (
@@ -39,7 +53,10 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
       }}
     >
       <div className="modal-content">
-        <form>
+        {displayError && (
+          <span className="alert-error">Vui lòng không để trống thông tin</span>
+        )}
+        <form className="form-data">
           <div>
             <label htmlFor="name">Tên</label>
             <input
@@ -93,6 +110,7 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
               name="status"
               onChange={handleChange}
               value={equimentState.status}
+              disabled
             >
               <option value="Sẵn có">Sẵn có</option>
               <option value="Đang bảo trì">Đang bảo trì</option>
@@ -100,9 +118,9 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
             </select>
           </div>
           <div id="btn-container">
-            <button id="submit-btn" type="submit" onClick={handleSubmit}>
+            <div id="submit-btn" type="submit" onClick={handleSubmit}>
               Lưu
-            </button>
+            </div>
           </div>
         </form>
       </div>
