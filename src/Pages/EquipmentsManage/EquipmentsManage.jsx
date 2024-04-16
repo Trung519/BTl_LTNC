@@ -38,6 +38,8 @@ import { faCreativeCommonsNcJp } from "@fortawesome/free-brands-svg-icons";
 import ConfirmDeleteUse from "../../Components/ConfirmDeleteUse";
 import Footer from "../../Components/Footer";
 import InputBorrower from "./Components/InputBorrower";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function EquipmentsManage({}) {
   const [idToEdit, setidToEdit] = useState(null);
@@ -94,6 +96,7 @@ export default function EquipmentsManage({}) {
         setEquipmentsRows(post["Equipment"] ?? []);
         setMaintain(post["Maintain"] ?? []);
         setUse(post["Use"] ?? []);
+        handleLoadingDone();
       }
     });
   }, []);
@@ -442,9 +445,20 @@ export default function EquipmentsManage({}) {
     setAlertDeleteUse(false);
   };
   const [msgErrorUse, setMsgErrorUse] = useState("");
+  const [loading, setLoading] = useState(true);
+  const handleLoadingDone = () => {
+    setLoading(false);
+  };
 
   return (
     <div id="backgroundE">
+      <Backdrop
+        sx={{ color: "#fff", zIndex: 1 }}
+        open={loading}
+        onClick={handleLoadingDone}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div id="container">
         <div>
           <Fade in={displayAlert}>
