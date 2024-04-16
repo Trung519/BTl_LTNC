@@ -11,14 +11,14 @@
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal {
+.modalE {
     border-radius: 5px;
     padding: 2rem;
     background-color: white;
     width: 50%;
     height: auto;
 }
-.modal label {
+.modalE label {
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
     color: #3E454D;   
@@ -26,7 +26,7 @@
     width: 100px;
 }
 
-.modal input {
+.modalE input {
     width: 100%;
     border: 0;
     border-bottom: 2px solid lightgray;
@@ -41,14 +41,14 @@
 
 }
 
-.modal div {
+.modalE div {
     margin-top: 1rem;
     margin-left: 1rem;
     display: inline-block;
     width: auto;
 }
 
-.modal select {
+.modalE select {
     width: 100%;
     border: 0;
     border-bottom: 2px solid lightgray;

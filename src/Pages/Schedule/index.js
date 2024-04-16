@@ -220,7 +220,7 @@ export default function Schedule() {
                                                     <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].CCCD}</div>
                                                     <div className={cx('col-md-1', 'schedule-table-Room')}>{listdata[page * 10 + index].Room}</div>
                                                     <div className={cx('col-md-1', 'ahuhu', 'schedule-table-Status', `Status-${handleColor(page * 10 + index)}`)}>
-                                                        <select name="select-in-normal" disabled>
+                                                        <select name="select-in-normal" disabled id="Linh">
                                                             <option className={cx('option1')} value={listdata[page * 10 + index].Status}>{listdata[page * 10 + index].Status}</option>
                                                             <option className={cx('option2')} value="Xong">Xong</option>
                                                             <option className={cx('option3')} value="Đang khám">Đang khám</option>

@@ -35,7 +35,7 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
                 closeModal();
             }
         }}>
-            <div className="modal">
+            <div className="modalE">
                 <form>
                     <div>
                         <label htmlFor="name">Tên</label>
