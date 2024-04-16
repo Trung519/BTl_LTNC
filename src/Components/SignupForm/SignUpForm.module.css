@@ -9,7 +9,7 @@ width: 90%;
 }
 .left h1{
     text-align: center;
-    font-family: Poppins, sans-serif;
+    font-family: Arial, sans-serif;
     font-weight: 1000;
     font-size: 40px;
 }
@@ -29,7 +29,7 @@ width: 90%;
 }
 
 .background{
-    font-family: Poppins, sans-serif;
+    font-family: Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     display: flex;
