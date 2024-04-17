@@ -4,7 +4,7 @@
     justify-content: center;
     align-content: center;
     padding-top: 1rem;
-    padding-bottom: 1rem;
+    // padding-bottom: 1rem;
 }
 
 #container {
@@ -25,7 +25,8 @@
 
 #equipment-table {
     width: 100%;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Arial', sans-serif;
+    font-family: 'Arial', sans-serif;
     border-collapse:collapse;
     margin-left: auto;
     margin-right: auto;
@@ -123,11 +124,19 @@
     width: 80%;
 }
 
+.maintain-header:nth-child(1){
+    text-align: center;
+}
+.maintain-header:nth-child(2){
+    text-align: center;
+}
 .maintain-header:nth-child(3){
     text-align: left;
+    width: 590px;
 }
 .maintain-header:nth-child(4){
-    width: 240px;   
+    text-align: center;
+  
 }
 .maintain-data{
     text-align: center;
@@ -136,14 +145,22 @@
     text-align: left;
 }
 .maintain-data:nth-child(4){
-    display: flex;
     align-items: center ;
 }
+
+// .maintain-data button {
+//     width: 100%;
+// }
 
 .state-maintain{
     margin-right: 10px;
     width: 150px;
     text-align: center;
+}
+.state-use{
+    margin-right: 10px;
+    text-align: center;
+    
 }
 
 .btn-confirm-maintain{
@@ -151,43 +168,80 @@
     background-color: white;
     border: #3E454D 2px solid;
     padding: 4px;
+
     &:hover{
-        background-color: #3497F9;
+        background-color: #58aafc;
         cursor: pointer;
     }
 }
+
+.header-use{
+    text-align: center;
+}
+.header-use:last-child{
+    width: 240px;
+    
+}
+.data-use{
+    text-align: center;
+}
+
+.data-use:nth-child(4){
+    text-align: center;
+}
+
+.btn-confirm-return{
+    padding: 6px;
+    font-family: 'Arial', sans-serif;
+    margin: 0 5px;
+    background-color: #3497F9;
+    outline: none;
+    border-radius: 6px;
+    border: none;
+    font-weight: bold;
+    color: white;
+    &:hover{
+        background-color: #58aafc;
+        cursor: pointer;
+    }
+
+}
+
 
 
 
 
 #addnew-btn{
-color: white;
-background-color: #3497F9;
-font-family: 'Poppins', sans-serif;
-font-weight: bold;
-border: none;
-padding: 12px;
-margin-left: 50rem;
-position: absolute;
-right: 0;
-margin-top: 1rem;
-border-radius: 12px;
-margin-bottom: 3rem;
+    color: white;
+    background-color: #3497F9;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    border: none;
+    padding: 12px;
+    position: absolute;
+    right: 0;
+    border-radius: 12px;
+    &:hover{
+        background-color: #58aafc;
+        cursor: pointer;
+    }
+    margin-bottom: 7px;
 }
 
 #header-container{
     display: flex;
-    justify-content:left;
     position: relative;
     margin-bottom: 1rem;
     border-bottom: #CFCFCF 0.5px solid;
     border-spacing: 1rem;
+    align-items: flex-end;
 }
 
-h1{
+#header-page{
     text-align: right;
     color: #3E454D;
-    font-family:'Poppins', sans-serif;
+    font-family:'Arial', sans-serif;
+    font-family:'Arial', sans-serif;
     font-weight: 500;
     text-transform: uppercase;
     font-size:x-large;
@@ -204,14 +258,16 @@ h1{
 } 
 
 .action-btn {
-    background-color: transparent;
+    background-color: white;
     padding: 5px;
     border-radius: 8px;
     width: 30px;
 }
 
+
+
 #delete-btn{
-    border: 1px solid #ff3333;  
+    border: 1px solid #ff3333;     
 }
 
 #edit-btn{
@@ -230,8 +286,43 @@ h1{
     
 }
 
+
 .collapse-table{
     width: 100%;
+    .btn-confirm-maintain, .state-maintain button{
+        width: 100%;
+        padding: 4px;
+        font-family: 'Arial', sans-serif;
+        margin: 0 5px;
+        background-color: #3497F9;
+        outline: none;
+        border-radius: 6px;
+        border: none;
+        font-weight: bold;
+        color: white;
+        &:hover{
+            background-color: #58aafc;
+            cursor: pointer;
+        }
+    }
+}
+    
+
+.btn-use{
+    width:35%;
+    padding: 4px;
+        font-family: 'Arial', sans-serif;
+        margin: 0 5px;
+        background-color: #3497F9;
+        outline: none;
+        border-radius: 6px;
+        border: none;
+        font-weight: bold;
+        color: white;
+        &:hover{
+            background-color: #58aafc;
+            cursor: pointer;
+        }
 }
 
 

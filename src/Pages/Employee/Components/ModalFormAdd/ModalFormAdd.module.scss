@@ -1,0 +1,27 @@
+.modal-content{
+  width: 50%;
+  margin: auto;
+  background-color: white;
+  padding: 24px;
+  
+}
+
+.title{
+  font-size: 20px;
+  padding: 0;
+}
+.form-input{
+  display: flex;
+  
+}
+
+.header-page{
+  display: flex;
+  align-items: center;
+  border-bottom: #CFCFCF 0.5px solid;
+
+}
+
+.error-alert{
+  margin: 0 0 4px auto;
+}

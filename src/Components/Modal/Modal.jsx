@@ -1,91 +1,138 @@
-import './Modal.css';
+import "./Modal.css";
 
-import { useState } from 'react';
+import { useState } from "react";
+import { Alert } from "@mui/material";
+import Fade from "@mui/material/Fade";
 
 export default function Modal({ closeModal, onSubmit, defaultValue }) {
-    const [equimentState, setequimentState] = useState(
-        defaultValue || {
-            name: '',
-            type: '',
-            id: '',
-            room: '',
-            description: '',
-            status: 'Sẵn có',
-        }
-    );
-
-    function handleChange(e) {
-        setequimentState({
-            ...equimentState,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    function handleSubmit(e) {
-        e.preventDefault();
-
-        onSubmit(equimentState);
-
-        closeModal();
+  const [equimentState, setequimentState] = useState(
+    defaultValue || {
+      name: "",
+      type: "",
+      // id: "",
+      room: "",
+      description: "",
+      status: "Sẵn có",
     }
+  );
 
-    return (
-        <div className='modal-container' onClick={(e) => {
-            if (e.target.className === 'modal-container') {
-                closeModal();
-            }
-        }}>
-            <div className="modal">
-                <form>
-                    <div>
-                        <label htmlFor="name">Tên</label>
-                        <input type="text" name="name" onChange={handleChange} value={equimentState.name} />
-                    </div>
+  function handleChange(e) {
+    setequimentState({
+      ...equimentState,
+      [e.target.name]: e.target.value,
+    });
+  }
+  const [displayError, setDipslayError] = useState(false);
+  function isInValid() {
+    let values = Object.values(equimentState);
+    return values.includes("");
+  }
 
-                    <div>
-                        <label htmlFor="type">Loại</label>
-                        <input type="text" name="type"
-                            onChange={handleChange} value={equimentState.type}
+  function handleSubmit(e) {
+    if (isInValid()) {
+      setDipslayError(true);
+      setTimeout(() => {
+        setDipslayError(false);
+      }, 3000);
+    } else {
+      e.preventDefault();
 
-                        />
-                    </div>
+      onSubmit(equimentState);
 
-                    {/* <div>
+      closeModal();
+    }
+  }
+
+  return (
+    <div
+      className="modal-container"
+      onClick={(e) => {
+        if (e.target.className === "modal-container") {
+          closeModal();
+        }
+      }}
+    >
+      <div className="modal-content">
+        {displayError && (
+          <span className="alert-error">Vui lòng không để trống thông tin</span>
+        )}
+        <div className="modalE-header">
+          <h1>Thêm thông tin thiết bị</h1>
+        </div>
+        <form className="form-data">
+          <div className="input-wrap">
+            <input
+              required
+              type="text"
+              name="name"
+              onChange={handleChange}
+              value={equimentState.name}
+            />
+            <label htmlFor="name">Tên</label>
+          </div>
+
+          <div className="input-wrap">
+            <input
+              required
+              type="text"
+              name="type"
+              onChange={handleChange}
+              value={equimentState.type}
+            />
+            <label htmlFor="type">Loại</label>
+          </div>
+
+          {/* <div>
                             <label htmlFor="id">ID</label>
                             <input type="text" name="id"
                                 onChange={handleChange} value={equimentState.id}
                             />
                         </div> */}
 
-                    <div>
-                        <label htmlFor="room">Phòng</label>
-                        <input type="text" name="room"
-                            onChange={handleChange} value={equimentState.room}
-                        />
-                    </div>
+          <div className="input-wrap">
 
-                    <div>
-                        <label htmlFor="description">Mô tả</label>
-                        <input type="text" name="description"
-                            onChange={handleChange} value={equimentState.description}
-                        />
-                    </div>
+            <input
+              required
+              type="text"
+              name="room"
+              onChange={handleChange}
+              value={equimentState.room}
+            />
+            <label htmlFor="room">Phòng</label>
+          </div>
 
-                    <div id="status-box">
-                        <label htmlFor="status">Trạng thái</label>
-                        <select name="status"
-                            onChange={handleChange} value={equimentState.status}
-                        >
-                            <option value='Sẵn có'>Sẵn có</option>
-                            <option value='Đang bảo trì'>Đang bảo trì</option>
-                            <option value='Đang sử dụng'>Đang sử dụng</option>
-                        </select>
-                    </div>
-                    <div id="btn-container">
-                        <button id='submit-btn' type='submit' onClick={handleSubmit}>Lưu</button>
-                    </div>
-                </form>
+          <div id="description" className="input-wrap">
+          
+            <input
+              required
+              type="text"
+              name="description"
+              onChange={handleChange}
+              value={equimentState.description}
+            />
+              <label htmlFor="description">Mô tả</label>
+          </div>
+
+          <div id="status-box">
+            {/* <label htmlFor="status">Trạng thái</label> */}
+            <select
+              name="status"
+              onChange={handleChange}
+              value={equimentState.status}
+              disabled
+            >
+              <option value="Sẵn có">Sẵn có</option>
+              <option value="Đang bảo trì">Đang bảo trì</option>
+              <option value="Đang sử dụng">Đang sử dụng</option>
+            </select>
+          </div>
+          <div id="btn-container">
+            <div id="submit-btn" type="submit" onClick={handleSubmit}>
+              Lưu
             </div>
-        </div>
-    );
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }

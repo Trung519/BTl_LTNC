@@ -6,34 +6,34 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { memo } from "react";
 
-function ConfirmModal({
-  alertDeleteMaintain,
-  setAlertDeteteMaintain,
-  handleDeleteMaintain,
+function ConfirmDeleteUse({
+  alertDeleteUse,
+  setAlertDeleteUse,
+  handleDeleteUse,
 }) {
   const handlClose = () => {
-    setAlertDeteteMaintain(false);
+    setAlertDeleteUse(false);
   };
-  // console.log(handleDeleteRow);
+
   return (
     <div>
       <Dialog
-        open={alertDeleteMaintain}
+        open={alertDeleteUse}
         onClose={handlClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Xóa lịch sử bảo trì này?"}
+          {"Xóa lịch sử sử dụng này?"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Bạn chỉ nên xóa lịch sử bảo trì đã có từ lâu
+            Bạn chỉ nên xóa lịch sử sử dụng đã có từ lâu
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handlClose}>Không</Button>
-          <Button onClick={() => handleDeleteMaintain()} autoFocus>
+          <Button onClick={handleDeleteUse} autoFocus>
             Đồng ý
           </Button>
         </DialogActions>
@@ -42,4 +42,4 @@ function ConfirmModal({
   );
 }
 
-export default memo(ConfirmModal);
+export default memo(ConfirmDeleteUse);

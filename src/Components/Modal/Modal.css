@@ -1,4 +1,4 @@
-.modal-container{
+.modal-container {
     position: fixed;
     z-index: 1;
     left: 0;
@@ -11,71 +11,126 @@
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal {
+.modal-content {
     border-radius: 5px;
     padding: 2rem;
     background-color: white;
-    width: 50%;
+    width: 46%;
     height: auto;
 }
-.modal label {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    color: #3E454D;   
-    display: inline-block;
-    width: 100px;
+
+.input-wrap {
+    position: relative;
+    display:inline-block;
+    margin-top: 20px;
+    width:33%;
 }
 
-.modal input {
-    width: 100%;
+.input-wrap label {
+    font-family: 'Arial', sans-serif;
+    font-weight: 700;
+    position: absolute;
+    color: #c6c6c6;
+    font-size: 16px;
+    font-weight: normal;
+    pointer-events: none;
+    left: 10px;
+    top: 10px;
+    transition: 300ms ease all;
+}
+
+.input-wrap input {
+    /* width: 100%;
     border: 0;
     border-bottom: 2px solid lightgray;
     outline: 0;
-    font-size:medium;
+    font-size: medium;
     color: #3E454D;
     padding: 7px 0;
     background: transparent;
     transition: border-color 0.2s;
-
-
-
+    display:block; */
+    width:90%;
+    background: none;
+    color: #3E454D;
+    font-size: 18px;
+    padding: 10px;
+    display: block;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    &:focus {
+        outline:none
+    }
 }
 
-.modal div {
+
+.input-wrap input:focus~label,
+.input-wrap input:valid~label {
+    top: -14px;
+    font-size: 12px;
+    color: #328dd2;
+}
+
+/* .modal-content div {
     margin-top: 1rem;
     margin-left: 1rem;
     display: inline-block;
     width: auto;
-}
+} */
 
-.modal select {
-    width: 100%;
+.modal-content select {
+    margin-top: 1rem;
     border: 0;
     border-bottom: 2px solid lightgray;
     outline: 0;
-    font-size:medium;
+    font-size: medium;
     color: #3E454D;
     padding: 7px 0;
     background: transparent;
 }
 
-#submit-btn{
-    color: #1F2B6C;
-    background-color: #BFD2F8;
-    font-family: 'Poppins', sans-serif;
+.modalE-header h1 {
+    text-align: left;
+    color: #3E454D;
+    font-family: 'Arial', sans-serif;
+    font-weight: 500;
+    font-size: x-large;
+
+}
+
+.modalE-header {
+    border-bottom: #888888 0.5px solid;
+    margin-bottom: 1rem;
+}
+
+#submit-btn {
+    color: white;
+    background-color: #3497F9;
+    font-family: 'Arial', sans-serif;
     font-weight: bold;
     border: none;
     padding: 12px;
     border-radius: 12px;
     margin-top: 1rem;
+
+    &:hover {
+        background-color: #58aafc;
+        cursor: pointer;
+    }
 }
 
-#status-box {
-    width: 92%;    
-}
 
 #btn-container {
-    display:flex;
+    display: flex;
     justify-content: center;
     align-content: center;
+}
+
+.alert-error {
+    color: red;
+    margin: 0 auto;
+}
+
+#description {
+    width: 100%;
 }

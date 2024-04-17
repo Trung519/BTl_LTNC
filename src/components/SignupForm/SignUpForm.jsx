@@ -140,7 +140,8 @@ export default function SignUpForm() {
         <div className={styles.background}>
             <div className={styles.bigWrapper}>
                 <div className={styles.left}>
-                    <h1>Bệnh viện HCMUT </h1>
+                    <h1>Bệnh viện Đa khoa</h1>
+                    <h1>Tâm Đức</h1>
                     <img src={doctorImage} alt="not found" />
                 </div>
                 <div className={styles.wrapper}>
