@@ -1,5 +1,5 @@
 import Container from "react-bootstrap/Container";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, Redirect } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import classNames from "classnames/bind";
@@ -94,17 +94,20 @@ function Header(props) {
                         <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Lịch làm việc</Nav.Link>
                         <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Quản lý</Nav.Link>
                       </>
-                      :
-                      <>
-                        <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>
-                        <Nav.Link className={cx('nav-action')} as={Link} to='/announcement' user={props.user}>Thông báo</Nav.Link>
-                        <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient' user={props.user}>Hồ sơ bệnh án</Nav.Link>
-                        <Nav.Link className={cx('nav-action')} as={Link} to='/appointment' user={props.user}>Lịch làm việc</Nav.Link>
-                        <NavDropdown className={cx('nav-action', 'nav-action-last')} title='Quản lý'>
-                          <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/equip_manage' user={props.user}>Quản lý thiết bị</NavDropdown.Item>
-                          <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/medicine_manage' user={props.user}>Quản lý thuốc</NavDropdown.Item>
-                        </NavDropdown>
-                      </>
+                      : (
+                        props.user.typeEmp === "Bác sỹ" ?
+                          <>
+                            <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>
+                            <Nav.Link className={cx('nav-action')} as={Link} to='/announcement'>Thông báo</Nav.Link>
+                            <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient'>Hồ sơ bệnh án</Nav.Link>
+                            <Nav.Link className={cx('nav-action')} as={Link} to='/appointment'>Lịch làm việc</Nav.Link>
+                            <NavDropdown className={cx('nav-action', 'nav-action-last')} title='Quản lý'>
+                              <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/equip_manage'>Quản lý thiết bị</NavDropdown.Item>
+                              <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/medicine_manage'>Quản lý thuốc</NavDropdown.Item>
+                            </NavDropdown>
+                          </>
+                          : ""
+                      )
                   }
                 </Nav>
               </Navbar.Collapse>
@@ -114,14 +117,24 @@ function Header(props) {
         <div>
           <Routes>
             <Route path="/home" element={<Home />} />
-            <Route path="/announcement" element={<Notify />} />
+            <Route path="/announcement" element={
+              localStorage.getItem("typeEmp") === "Bác sỹ" ? <Notify /> : <Home />
+            } />
             <Route path="/file-patient" element={<PatientRecord />} />
-            <Route path="/appointment" element={<Schedule />} />
-            <Route path="/equip_manage" element={<EquipmentsManage />} />
-            <Route path="/medicine_manage" element={<Medicine_manage />} />
+            <Route path="/appointment" element={
+              localStorage.getItem("typeEmp") === "Bác sỹ" ? <Schedule /> : <Home />
+            } />
+            <Route path="/equip_manage" element={
+              localStorage.getItem("typeEmp") === "Bác sỹ" ? <EquipmentsManage /> : <Home />
+            } />
+            <Route path="/medicine_manage" element={
+              localStorage.getItem("typeEmp") === "Bác sỹ" ? <Medicine_manage /> : <Home />
+            } />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignUpForm />} />
-            <Route path="/employee" element={<Employee />} />
+            <Route path="/employee" element={
+              localStorage.getItem("typeEmp") === "Bác sỹ" ? <Employee /> : <Home />
+            } />
           </Routes>
         </div>
       </Router>
