@@ -9,10 +9,16 @@
 .title{
   font-size: 20px;
   padding: 0;
-}
+} 
 .form-input{
   display: flex;
-  
+}
+.info-select{
+  // display: flex;
+  padding-top: 10px;
+  label{
+    margin-right: 10px;
+  }
 }
 
 .header-page{

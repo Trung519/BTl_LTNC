@@ -4,7 +4,12 @@ import { useState } from "react";
 import { Alert } from "@mui/material";
 import Fade from "@mui/material/Fade";
 
-export default function Modal({ closeModal, onSubmit, defaultValue }) {
+export default function Modal({
+  closeModal,
+  onSubmit,
+  defaultValue,
+  setAlertAddSuccess,
+}) {
   const [equimentState, setequimentState] = useState(
     defaultValue || {
       name: "",
@@ -40,6 +45,10 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
       onSubmit(equimentState);
 
       closeModal();
+      setAlertAddSuccess(true);
+      setTimeout(() => {
+        setAlertAddSuccess(false);
+      }, 3000);
     }
   }
 
@@ -57,7 +66,7 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
           <span className="alert-error">Vui lòng không để trống thông tin</span>
         )}
         <div className="modalE-header">
-          <h1>Thêm thông tin thiết bị</h1>  
+          <h1>Thêm thông tin thiết bị</h1>
         </div>
         <form className="form-data">
           <div>
@@ -68,6 +77,7 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
               onChange={handleChange}
               value={equimentState.name}
               placeholder="Tên"
+              autoComplete="off"
             />
           </div>
 
@@ -79,6 +89,7 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
               onChange={handleChange}
               value={equimentState.type}
               placeholder="Loại"
+              autoComplete="off"
             />
           </div>
 
@@ -97,6 +108,7 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
               onChange={handleChange}
               value={equimentState.room}
               placeholder="Phòng"
+              autoComplete="off"
             />
           </div>
 
@@ -108,6 +120,7 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
               onChange={handleChange}
               value={equimentState.description}
               placeholder="Mô tả"
+              autoComplete="off"
             />
           </div>
 
