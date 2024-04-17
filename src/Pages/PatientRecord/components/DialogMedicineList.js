@@ -56,19 +56,25 @@ const DialogMedicineList = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {historyRow.medicineList.map((row) => (
-                <TableRow
-                  key={row.medicine}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.medicine}
-                  </TableCell>
-                  <TableCell>{row.usage}</TableCell>
-                  <TableCell>{row.dosagePerDay}</TableCell>
-                  <TableCell>{row.unit}</TableCell>
+              {historyRow.medicineList ? (
+                historyRow.medicineList.map((row) => (
+                  <TableRow
+                    key={row.medicine}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.medicine}
+                    </TableCell>
+                    <TableCell>{row.usage}</TableCell>
+                    <TableCell>{row.dosagePerDay}</TableCell>
+                    <TableCell>{row.unit}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={4}>Không có toa thuốc</TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </TableContainer>

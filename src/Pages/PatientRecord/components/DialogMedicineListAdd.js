@@ -16,7 +16,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { Medicine } from "../../Medicine_manage/P_R-be";
+import Autocomplete from "@mui/material/Autocomplete";
 const DialogMedicineListAdd = (props) => {
   const {
     listNewMedicine,
@@ -26,11 +28,22 @@ const DialogMedicineListAdd = (props) => {
     setAddMedicineListFormOpen,
     Add_Med,
   } = props;
+
+  const [listMedicine, setListMedicine] = React.useState([]);
   const [medicineAddList, setMedicineAddList] = React.useState(listNewMedicine);
   const nameValue = React.useRef();
   const usageValue = React.useRef();
   const dosageValue = React.useRef();
   const unitValue = React.useRef();
+  // let listMedicine = [];
+  React.useEffect(() => {
+    Medicine().then((post) => {
+      if (post != null) {
+        setListMedicine(Object.values(post));
+        // console.log("listMedicine", listMedicine);
+      }
+    });
+  }, []);
   return (
     <Dialog
       fullWidth
@@ -51,9 +64,12 @@ const DialogMedicineListAdd = (props) => {
             container
             spacing={{ xs: 1, md: 1 }}
             columns={{ xs: 1, sm: 4, md: 12 }}
+            // alignItems="center"
+            // justifyContent="center"
           >
             <Grid item xs={1} sm={2} md={3}>
-              <TextField
+              {/* <TextField
+                // required
                 margin="dense"
                 id="name"
                 name="name"
@@ -62,10 +78,31 @@ const DialogMedicineListAdd = (props) => {
                 fullWidth
                 variant="standard"
                 inputRef={nameValue}
+              /> */}
+              <Autocomplete
+                // sx={{ width: 300, marginLeft: "15px" }}
+                sx={{ marginTop: "8px" }}
+                id="name"
+                // name="name"
+                options={listMedicine}
+                getOptionLabel={(option) => {
+                  return option.name;
+                }}
+                clearOnEscape
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Tên thuốc"
+                    variant="standard"
+                    size="small"
+                    inputRef={nameValue}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={1} sm={2} md={3}>
               <TextField
+                // required
                 margin="dense"
                 id="usage"
                 name="usage"
@@ -78,6 +115,7 @@ const DialogMedicineListAdd = (props) => {
             </Grid>
             <Grid item xs={1} sm={2} md={2.5}>
               <TextField
+                // required
                 margin="dense"
                 id="dosage"
                 name="dosage"
@@ -90,6 +128,7 @@ const DialogMedicineListAdd = (props) => {
             </Grid>
             <Grid item xs={1} sm={2} md={2.5}>
               <TextField
+                // required
                 margin="dense"
                 id="unit"
                 name="unit"
@@ -102,37 +141,48 @@ const DialogMedicineListAdd = (props) => {
             </Grid>
             <Grid item xs={1} sm={2} md={1}>
               <IconButton
+                // type="submit"
                 aria-label="add"
                 size="small"
-                color="success"
+                color="info"
                 sx={{ marginTop: "23px" }}
                 onClick={() => {
-                  const newMedicineElement = {
-                    medicine: nameValue.current.value,
-                    usage: usageValue.current.value,
-                    dosagePerDay: dosageValue.current.value,
-                    unit: unitValue.current.value,
-                  };
-                  setMedicineAddList((prev) => [newMedicineElement, ...prev]);
+                  if (
+                    nameValue.current.value &&
+                    usageValue.current.value &&
+                    dosageValue.current.value &&
+                    unitValue.current.value
+                  ) {
+                    const newMedicineElement = {
+                      medicine: nameValue.current.value,
+                      usage: usageValue.current.value,
+                      dosagePerDay: dosageValue.current.value,
+                      unit: unitValue.current.value,
+                    };
+                    nameValue.current.value = "";
+                    usageValue.current.value = "";
+                    dosageValue.current.value = "";
+                    unitValue.current.value = "";
+                    setMedicineAddList((prev) => [newMedicineElement, ...prev]);
+                  }
                 }}
               >
                 <AddCircleIcon></AddCircleIcon>
               </IconButton>
             </Grid>
-            <Grid item xs={1} sm={2} md={1}>
+            <Grid item xs={1} sm={4} md={12}>
               {/* table */}
-              <TableContainer component={Paper} sx={{ minWidth: 800 }}>
-                <Table sx={{ minWidth: 800 }} aria-label="simple table">
-                  {/* <TableHead>
-                    <TableRow>
-                      <TableCell>Tên thuốc</TableCell>
-                      <TableCell>Cách uống</TableCell>
-                      <TableCell>Liều lượng</TableCell>
-                      <TableCell>Số lượng</TableCell>
-                    </TableRow>
-                  </TableHead> */}
+              <TableContainer component={Paper} sx={{ minWidth: 600 }}>
+                <Table sx={{ minWidth: 600 }} aria-label="simple table">
+                  <colgroup>
+                    <col style={{ width: "24.5%" }} />
+                    <col style={{ width: "24.5%" }} />
+                    <col style={{ width: "23%" }} />
+                    <col style={{ width: "23%" }} />
+                    <col style={{ width: "2%" }} />
+                  </colgroup>
                   <TableBody>
-                    {medicineAddList.map((row) => (
+                    {medicineAddList.map((row, index) => (
                       <TableRow
                         key={row.medicine}
                         sx={{
@@ -145,6 +195,21 @@ const DialogMedicineListAdd = (props) => {
                         <TableCell>{row.usage}</TableCell>
                         <TableCell>{row.dosagePerDay}</TableCell>
                         <TableCell>{row.unit}</TableCell>
+                        <TableCell>
+                          <IconButton
+                            aria-label="add"
+                            size="small"
+                            color="info"
+                            onClick={() => {
+                              // console.log(index);
+                              const temp = medicineAddList;
+                              temp.splice(index, 1);
+                              setMedicineAddList([...temp]);
+                            }}
+                          >
+                            <DeleteOutlineIcon></DeleteOutlineIcon>
+                          </IconButton>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -157,20 +222,14 @@ const DialogMedicineListAdd = (props) => {
       <DialogActions>
         <Button
           onClick={() => {
-            setAddMedicineListFormOpen(false);
+            // setAddMedicineListFormOpen(false);
+            setMedicineAddList([]);
           }}
         >
-          hủy
+          Xóa hết
         </Button>
         <Button
           onClick={() => {
-            Add_Med(
-              CCCD,
-              nameValue.current.value,
-              usageValue.current.value,
-              dosageValue.current.value,
-              unitValue.current.value
-            );
             setListNewMedicine(medicineAddList);
             setAddMedicineListFormOpen(false);
           }}

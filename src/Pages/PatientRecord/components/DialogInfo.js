@@ -19,6 +19,10 @@ import dayjs from "dayjs";
 
 const DialogInfo = (props) => {
   const { infoFormOpen, setInfoFormOpen, row } = props;
+  const handleErrorDate = (date) => {
+    var initial = date.split(/\//);
+    return [initial[1], initial[0], initial[2]].join("/"); //=> 'mm/dd/yyyy'
+  };
   return (
     <Dialog
       fullWidth
@@ -71,7 +75,7 @@ const DialogInfo = (props) => {
                     // sx={{ padding: 0 }}
                     format="DD/MM/YYYY"
                     readOnly
-                    value={dayjs(row.BirthDay, "DD/MM/YYYY")}
+                    value={dayjs(handleErrorDate(row.birthDay))}
                   ></DatePicker>
                 </FormControl>
               </LocalizationProvider>{" "}

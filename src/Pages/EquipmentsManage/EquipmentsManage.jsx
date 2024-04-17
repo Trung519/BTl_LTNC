@@ -628,7 +628,8 @@ export default function EquipmentsManage({ }) {
                                                         <tbody>
                                                             {formsState.includes(row.id) && (
                                                                 <tr>
-                                                                    <td className="maintain-data">{`${getFormattedDate()}`}</td>
+                                                                    <td className="maintain-data">
+                                                                        {`${getFormattedDate()}`}</td>
                                                                     <td className="maintain-data">---</td>
                                                                     <td className="maintain-data">
                                                                         <input
