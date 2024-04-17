@@ -6,13 +6,15 @@ import { useState } from "react";
 // import LoginForm from "./Components/LoginForrm/LoginForm";
 
 function App() {
-  const username = localStorage.getItem("username") ? localStorage.getItem("username") : "normal";
-
-  const [typeOfUser, setTypeOfUser] = useState(username);
+  const user = {
+    id: localStorage.getItem('id') ? localStorage.getItem('id') : "normal",
+    typeEmp: localStorage.getItem('typeEmp') ? localStorage.getItem('typeEmp') : "normal",
+    name: localStorage.getItem('name') ? localStorage.getItem('name') : "normal"
+  };
 
   return (
     <div>
-      <Header setUserRole={setTypeOfUser} userRole={typeOfUser}/>
+      <Header user={user}/>
     </div>
   );
 }

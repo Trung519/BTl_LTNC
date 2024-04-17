@@ -31,7 +31,7 @@ import RandomKey from "../RandomKey";
         for (let i in listIDs) {
             receiver.push({
                 id: listIDs[i],
-                username: newMail.receivers[i].Username,
+                username: newMail.receivers[i].LastName + " " + newMail.receivers[i].FirstName,
             })
         }
 
@@ -39,7 +39,7 @@ import RandomKey from "../RandomKey";
         const newData = {
             content: newMail.content,
             date: newMail.time.split(' ')[1],
-            hour: newMail.time.split(' ')[0],
+            hour: newMail.time.split(' ')[0],   
             mail_id: idNewMail,
             sender:{
                 id: SENDER.id,
@@ -55,7 +55,7 @@ import RandomKey from "../RandomKey";
         await AddSentMails(idNewMail, SENDER.id);
         await AddReceivedMails(idNewMail, listIDs);
     } catch (error) {
-        console.error("Error in SendMail:", error);
+        console.log("Error in SendMail:", error);
     }
 };
 

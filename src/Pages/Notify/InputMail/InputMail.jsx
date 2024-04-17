@@ -74,7 +74,7 @@ export default function Tags() {
                     multiple
                     id="tags-standard"
                     options={listUser}
-                    getOptionLabel={(option) => option.Username}
+                    getOptionLabel={option => option.LastName + " " + option.FirstName}
                     onChange={(event, value) => {
                         setMail({ ...mail, receivers: value }); // Cập nhật state `mail` khi có thay đổi
                     }}

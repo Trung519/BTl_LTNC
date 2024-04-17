@@ -13,7 +13,7 @@ const firebaseConfig = {
 
 export const GetUserData = async (callback) => {
     const database = getDatabase();
-    const dataRef = ref(database, 'Account/');
+    const dataRef = ref(database, 'Employee/');
   
     // Lấy dữ liệu hiện có từ Firebase
     const snapshot = await get(dataRef);

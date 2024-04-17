@@ -4,7 +4,7 @@ import {
   Routes,
   Route,
   Link,
-  Redirect 
+  Redirect
 } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -92,19 +92,27 @@ function Header(props) {
                   style={{ maxHeight: '100px' }}
                   navbarScroll
                 >
-                  {props.userRole === "normal" ? <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Trang chủ</Nav.Link>
-                    : <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>}
-                  {props.userRole === "normal" ? <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Thông báo</Nav.Link>
-                    : <Nav.Link className={cx('nav-action')} as={Link} to='/announcement'>Thông báo</Nav.Link>}
-                  {props.userRole === "normal" ? <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Hồ sơ bệnh án</Nav.Link>
-                    : <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient'>Hồ sơ bệnh án</Nav.Link>}
-                  {props.userRole === "normal" ? <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Lịch làm việc</Nav.Link>
-                    : <Nav.Link className={cx('nav-action')} as={Link} to='/appointment'>Lịch làm việc</Nav.Link>}
-                  {props.userRole === "normal" ? <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Quản lý</Nav.Link>
-                    : <NavDropdown className={cx('nav-action', 'nav-action-last')} title='Quản lý'>
-                      <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/equip_manage'>Quản lý thiết bị</NavDropdown.Item>
-                      <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/medicine_manage'>Quản lý thuốc</NavDropdown.Item>
-                    </NavDropdown>}
+                  {
+                    props.user.typeEmp === "normal" ?
+                      <>
+                        <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>
+                        <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Thông báo</Nav.Link>
+                        <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Hồ sơ bệnh án</Nav.Link>
+                        <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Lịch làm việc</Nav.Link>
+                        <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Quản lý</Nav.Link>
+                      </>
+                      :
+                      <>
+                        <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>
+                        <Nav.Link className={cx('nav-action')} as={Link} to='/announcement' user={props.user}>Thông báo</Nav.Link>
+                        <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient' user={props.user}>Hồ sơ bệnh án</Nav.Link>
+                        <Nav.Link className={cx('nav-action')} as={Link} to='/appointment' user={props.user}>Lịch làm việc</Nav.Link>
+                        <NavDropdown className={cx('nav-action', 'nav-action-last')} title='Quản lý'>
+                          <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/equip_manage' user={props.user}>Quản lý thiết bị</NavDropdown.Item>
+                          <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/medicine_manage' user={props.user}>Quản lý thuốc</NavDropdown.Item>
+                        </NavDropdown>
+                      </>
+                  }
                 </Nav>
               </Navbar.Collapse>
             </Container>
@@ -118,7 +126,7 @@ function Header(props) {
             <Route path="/appointment" element={<Schedule />} />
             <Route path="/equip_manage" element={<EquipmentsManage />} />
             <Route path="/medicine_manage" element={<Medicine_manage />} />
-            <Route path="/login" element={<LoginForm setUserRole={props.setUserRole}/>} />
+            <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignUpForm />} />
           </Routes>
         </div>

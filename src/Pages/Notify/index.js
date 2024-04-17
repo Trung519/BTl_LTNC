@@ -19,7 +19,7 @@ function Notify() {
   const [listData, setListData] = useState([]);
 
   useEffect(() => {
-    GetMail(1, status, setListData);
+    GetMail("SP001", status, setListData);
   }, [status, inputmail])
   //--------------------------BACKEND----------------------------
 

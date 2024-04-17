@@ -57,15 +57,32 @@ export default function LoginForm(props) {
         return isEmpty;
     }
     const handleLogin = () => {
-        if (checkInput()) return
-        let found = account.find(item =>
-            item.Username === loginState.Username && item.Password === loginState.Password
-        )
+        if (checkInput()) return;
+
+        const user = {};
+
+        let found = account.find(item => {
+            user.id = item.ID;
+            return item.Username === loginState.Username && item.Password === loginState.Password
+        })
+
         if (found) {
-            props.setUserRole("admin");
-            localStorage.setItem('username', 'admin');
-            localStorage.setItem('password', 'admin@123');
-            window.location.replace('/home');
+            getData().then((post) => {
+                if (post != null) {
+                    const listEmployee = post["Employee"] ?? [];
+                    
+                    const employee = listEmployee.find(item => {
+                        return item.ID === user.id;
+                    })
+                    
+                    localStorage.setItem("id", employee.ID);
+                    localStorage.setItem("typeEmp", employee.typeEmp);
+                    localStorage.setItem("name", employee.LastName + " " + employee.FirstName);
+                    localStorage.setItem("id", employee.ID);
+
+                    window.location.assign("/home");
+                }
+            });
         }
         else {
             console.log('loginstart', loginState);
