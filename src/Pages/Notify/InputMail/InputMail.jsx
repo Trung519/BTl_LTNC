@@ -90,7 +90,7 @@ export default function Tags() {
                 />
                 <div className={cx('create-blank')}></div>
                 <TextField
-                sx={{mt:5}}
+                    sx={{ mt: 5 }}
                     id="standard-basic"
                     label="Tiêu đề..."
                     variant="standard"
@@ -101,13 +101,10 @@ export default function Tags() {
                     }}
                 />
                 <div className={cx('under_main')}>
-                    <div className={cx('mail_content')}>
-                        <div 
-                        contenteditable="true"
-                        onChange={(e) => setMail({...mail,content: e.target.value})}
-                        >
-                            
-                        </div>
+                    <div className={cx('contain-textarea')}>
+                        <textarea
+                            placeholder='Nội dung'
+                        ></textarea>
                     </div>
                     <div className={cx('bottom')}>
                         <Button
