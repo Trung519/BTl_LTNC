@@ -104,6 +104,10 @@ export default function Tags() {
                     <div className={cx('contain-textarea')}>
                         <textarea
                             placeholder='Nội dung'
+                            value={mail.content}
+                            onChange={(e) => {
+                                setMail({ ...mail, content: e.target.value });
+                            }}
                         ></textarea>
                     </div>
                     <div className={cx('bottom')}>
