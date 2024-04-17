@@ -28,7 +28,6 @@ export default function Tablemail({ listdata, status }) {
     var handleUnshowcontent = useCallback(() => {
         setShowcontent(false);
     }, [])
-console.log(listEmail)
     return (
         <div className={cx('tablemail-wrapper')}>
             {!showcontent &&

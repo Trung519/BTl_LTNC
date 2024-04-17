@@ -63,6 +63,8 @@ export default function LoginForm(props) {
         )
         if (found) {
             props.setUserRole("admin");
+            localStorage.setItem('username', 'admin');
+            localStorage.setItem('password', 'admin@123');
             window.location.replace('/home');
         }
         else {

@@ -25,6 +25,16 @@ import RandomKey from "../RandomKey";
         const idNewMail = RandomKey();
 
         const listIDs = TransferUserNameIntoID(newMail.receivers);
+
+        const receiver = [];
+
+        for (let i in listIDs) {
+            receiver.push({
+                id: listIDs[i],
+                username: newMail.receivers[i].Username,
+            })
+        }
+
         
         const newData = {
             content: newMail.content,
@@ -35,7 +45,7 @@ import RandomKey from "../RandomKey";
                 id: SENDER.id,
                 username: SENDER.userName,
             },
-            receiver_id: listIDs,
+            receiver: receiver,
             subject: newMail.title
         };
 

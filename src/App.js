@@ -6,7 +6,9 @@ import { useState } from "react";
 // import LoginForm from "./Components/LoginForrm/LoginForm";
 
 function App() {
-  const [typeOfUser, setTypeOfUser] = useState("admin");
+  const username = localStorage.getItem("username") ? localStorage.getItem("username") : "normal";
+
+  const [typeOfUser, setTypeOfUser] = useState(username);
 
   return (
     <div>
