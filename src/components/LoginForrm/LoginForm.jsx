@@ -5,7 +5,7 @@ import { getData } from '../../services/firebase';
 import styles from './LoginForm.module.css';
 import { Link, useAsyncError } from 'react-router-dom';
 
-export default function LoginForm() {
+export default function LoginForm(props) {
     const [account, setAccount] = useState([]);
     const [loginState, setLoginState] = useState({
         Password: '',
@@ -62,6 +62,8 @@ export default function LoginForm() {
             item.Username === loginState.Username && item.Password === loginState.Password
         )
         if (found) {
+            props.setUserRole("admin");
+            window.location.replace('/home');
         }
         else {
             console.log('loginstart', loginState);

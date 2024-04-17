@@ -23,7 +23,7 @@ import { useState } from 'react';
 
 const cx = classNames.bind(styles)
 
-function Header() {
+function Header(props) {
   return (
     <>
       <Router>
@@ -91,14 +91,19 @@ function Header() {
                   style={{ maxHeight: '100px' }}
                   navbarScroll
                 >
-                  <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>
-                  <Nav.Link className={cx('nav-action')} as={Link} to='/announcement'>Thông báo</Nav.Link>
-                  <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient'>Hồ sơ bệnh án</Nav.Link>
-                  <Nav.Link className={cx('nav-action')} as={Link} to='/appointment'>Lịch làm việc</Nav.Link>
-                  <NavDropdown className={cx('nav-action', 'nav-action-last')} title='Quản lý'>
+                  {props.userRole === "normal" ? <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Trang chủ</Nav.Link>
+                    : <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>}
+                  {props.userRole === "normal" ? <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Thông báo</Nav.Link>
+                    : <Nav.Link className={cx('nav-action')} as={Link} to='/announcement'>Thông báo</Nav.Link>}
+                  {props.userRole === "normal" ? <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Hồ sơ bệnh án</Nav.Link>
+                    : <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient'>Hồ sơ bệnh án</Nav.Link>}
+                  {props.userRole === "normal" ? <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Lịch làm việc</Nav.Link>
+                    : <Nav.Link className={cx('nav-action')} as={Link} to='/appointment'>Lịch làm việc</Nav.Link>}
+                  {props.userRole === "normal" ? <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Quản lý</Nav.Link>
+                    : <NavDropdown className={cx('nav-action', 'nav-action-last')} title='Quản lý'>
                       <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/equip_manage'>Quản lý thiết bị</NavDropdown.Item>
                       <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/medicine_manage'>Quản lý thuốc</NavDropdown.Item>
-                    </NavDropdown>
+                    </NavDropdown>}
                 </Nav>
               </Navbar.Collapse>
             </Container>
@@ -112,7 +117,7 @@ function Header() {
             <Route path="/appointment" element={<Schedule />} />
             <Route path="/equip_manage" element={<EquipmentsManage />} />
             <Route path="/medicine_manage" element={<Medicine_manage />} />
-            <Route path="/login" element={<LoginForm/>} />
+            <Route path="/login" element={<LoginForm setUserRole={props.setUserRole}/>} />
             <Route path="/signup" element={<SignUpForm />} />
           </Routes>
         </div>
