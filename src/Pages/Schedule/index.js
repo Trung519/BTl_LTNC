@@ -96,7 +96,8 @@ export default function Schedule() {
                 form.date === "" ||
                 form.name_Patient === "" ||
                 form.name_CCCD === "" ||
-                form.room === ""
+                form.room === "" ||
+                form.name_CCCD.length != 12
             ) {
                 resolve(false);
             } else {
@@ -130,7 +131,6 @@ export default function Schedule() {
     }
 
     const isSelectedToEdit = (key, status) => {
-        console.log(key);
         if (isEdited(key, status)) return;
         else {
             const newData = {
@@ -169,7 +169,7 @@ export default function Schedule() {
 
     // ---------------END BACKEND <KHÔNG PHẬN SỰ MIỄN VÀO>---------------  
 
-    var [ulshow, setUlshow] = useState(true)
+    var [ulshow, setUlshow] = useState(false)
 
     var handleAdd = useCallback(() => {
         setAdd(prev => !prev)
