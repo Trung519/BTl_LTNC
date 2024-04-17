@@ -61,16 +61,24 @@ export default function Schedule() {
         setUlshow(false)
     }
 
+    const checkNum = (str) => {
+        if(str.length > 12) return false;
+        for(var i = 0; i < str.length; i++){
+            if(str[i] < '0' || str[i] > '9') return false;
+        }
+        return true;
+    }
+
     const handleCollectData = (e) => {
         if (e.target.name === 'name_CCCD') {
-            if (e.target.value.length <13) {
+            if ( checkNum(e.target.value)) {
                 const { name, value } = e.target;
                 setForm({
                     ...form,
                     [name]: value
                 });
             }
-            else{}
+ 
         }
         else {
             const { name, value } = e.target;
@@ -80,13 +88,14 @@ export default function Schedule() {
             });
         }
     }
+
     const handleNamePatientChange = (e) => {
         setNamePatientSearch(e.target.value);
         if (listdata.length == 0) setSearchbool(false)
         else setSearchbool(true)
         setPage(0)
     }
-   
+
     const submitForm = () => {
         const checkValue = new Promise((resolve, reject) => {
             if (
@@ -114,6 +123,7 @@ export default function Schedule() {
             }
         });
     };
+
 
     const [listEdit, setListEdit] = useState([]);
     const [listRemove, setListRemove] = useState([]);
@@ -233,11 +243,11 @@ export default function Schedule() {
                                                     <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].CCCD}</div>
                                                     <div className={cx('col-md-1', 'schedule-table-Room')}>{listdata[page * 10 + index].Room}</div>
                                                     <div className={cx('col-md-1', 'ahuhu', 'schedule-table-Status', `Status-${handleColor(page * 10 + index)}`)}>
-                                                        <select name="select-in-normal" disabled>
+                                                        <select className={cx('select-status')} name="select-in-normal" disabled>
                                                             <option className={cx('option1')} value={listdata[page * 10 + index].Status}>{listdata[page * 10 + index].Status}</option>
                                                             <option className={cx('option2')} value="Xong">Xong</option>
                                                             <option className={cx('option3')} value="Đang khám">Đang khám</option>
-                                                            <option className={cx('option4')} value="Đang chờ">Đang chờ</option>
+                                                            <option className={cx('option4')} value="Đang chờ">Chưa khám</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -322,12 +332,14 @@ export default function Schedule() {
                                                     <div className={cx('col-md-1', 'schedule-table-Room')} contentEditable>{listdata[page * 10 + index].Room}</div>
                                                     <div className={cx('col-md-2', `schedule-icons-${handleColor(page * 10 + index)}`, 'schedule-table-Status', 'schedule-icons')}>
                                                         {handleColor(page * 10 + index) === 'done' && (
-                                                            <select name="select-in-edit"
+                                                            <select
+                                                                className={cx('select-status')}
+                                                                name="select-in-edit"
                                                                 onChange={(e) => isSelectedToEdit(listdata[page * 10 + index].id_schedule, e.target.value)}
                                                             >
                                                                 <option value="Xong">Xong</option>
                                                                 <option value="Đang khám">Đang khám</option>
-                                                                <option value="Đang chờ">Đang chờ</option>
+                                                                <option value="Chưa khám">Chưa khám</option>
                                                             </select>
                                                         )}
                                                         {handleColor(page * 10 + index) === 'doing' && (
@@ -336,16 +348,16 @@ export default function Schedule() {
                                                             >
                                                                 <option value="Xong">Xong</option>
                                                                 <option value="Đang khám" selected>Đang khám</option>
-                                                                <option value="Đang chờ">Đang chờ</option>
+                                                                <option value="Chưa khám">Chưa khám</option>
                                                             </select>
                                                         )}
                                                         {handleColor(page * 10 + index) === 'pending' && (
-                                                            <select name="select-in-edit"
+                                                            <select className={cx('select-status')} name="select-in-edit"
                                                                 onChange={(e) => isSelectedToEdit(listdata[page * 10 + index].id_schedule, e.target.value)}
                                                             >
                                                                 <option value="Xong">Xong</option>
                                                                 <option value="Đang khám">Đang khám</option>
-                                                                <option selected value="Đang chờ">Đang chờ</option>
+                                                                <option selected value="Chưa khám">Chưa khám</option>
                                                             </select>
                                                         )}
                                                         <svg class="svg-inline--fa fa-trash-alt fa-w-14" aria-hidden="true" data-prefix="far" data-icon="trash-alt"
@@ -437,7 +449,7 @@ export default function Schedule() {
                                                             <option className={cx('option1')} value={listdata[page * 10 + index].Status}>{listdata[page * 10 + index].Status}</option>
                                                             <option className={cx('option2')} value="Xong">Xong</option>
                                                             <option className={cx('option3')} value="Đang khám">Đang khám</option>
-                                                            <option className={cx('option4')} value="Đang chờ">Đang chờ</option>
+                                                            <option className={cx('option4')} value="Chưa khám">Chưa khám</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -542,7 +554,7 @@ export default function Schedule() {
                                     onChange={handleCollectData}
                                 ></input>
                                 <input
-                                    type='number'
+                                    type='text'
                                     placeholder='CCCD'
                                     value={form.name_CCCD}
                                     name="name_CCCD"
