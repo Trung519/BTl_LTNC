@@ -17,8 +17,10 @@ import Notify from '../../Pages/Notify';
 import PatientRecord from '../../Pages/PatientRecord';
 import Schedule from '../../Pages/Schedule';
 import LoginForm from "../LoginForrm/LoginForm";
-import SignUpForm from "../SignupForm/SignUpForm"; 
+import SignUpForm from "../SignupForm/SignUpForm";
 import { NavDropdown } from 'react-bootstrap';
+import { useState } from 'react';
+
 const cx = classNames.bind(styles)
 
 function Header() {
@@ -93,10 +95,10 @@ function Header() {
                   <Nav.Link className={cx('nav-action')} as={Link} to='/announcement'>Thông báo</Nav.Link>
                   <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient'>Hồ sơ bệnh án</Nav.Link>
                   <Nav.Link className={cx('nav-action')} as={Link} to='/appointment'>Lịch làm việc</Nav.Link>
-                  <NavDropdown className={cx('nav-action', 'nav-action-last')} title='Quản lí'>
-                    <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/equip_manage'>Quản lý thiết bị</NavDropdown.Item>
-                    <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/medicine_manage'>Quản lý thuốc</NavDropdown.Item>
-                  </NavDropdown>
+                  <NavDropdown className={cx('nav-action', 'nav-action-last')} title='Quản lý'>
+                      <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/equip_manage'>Quản lý thiết bị</NavDropdown.Item>
+                      <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/medicine_manage'>Quản lý thuốc</NavDropdown.Item>
+                    </NavDropdown>
                 </Nav>
               </Navbar.Collapse>
             </Container>
@@ -110,7 +112,7 @@ function Header() {
             <Route path="/appointment" element={<Schedule />} />
             <Route path="/equip_manage" element={<EquipmentsManage />} />
             <Route path="/medicine_manage" element={<Medicine_manage />} />
-            <Route path="/login" element={<LoginForm />} />
+            <Route path="/login" element={<LoginForm/>} />
             <Route path="/signup" element={<SignUpForm />} />
           </Routes>
         </div>

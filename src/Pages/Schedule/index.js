@@ -5,7 +5,7 @@ import Footer from '../../Components/Footer'
 
 // --------------Firebase--------------
 import { useState, useEffect, useCallback } from 'react';
-import { addNewSchedule, searchIdDoctorByName, searchNameDoctorByID, setListSchedule } from '../../Components/Firebase/FireBase';
+import { addNewSchedule, searchIdDoctorByName, searchNameDoctorByID, setListSchedule } from '../../firebase/Schedule/FireBase.js'
 
 import Updatewhenedit from '../../firebase/Schedule/updateWhenEdit.js'
 import updateWhenRemove from '../../firebase/Schedule/updateWhenRemove.js';
