@@ -4,7 +4,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
-import { memo, useState } from "react";
+import { memo } from "react";
 
 function ConfirmModal({ displayConfirm, setDisplayConfirm, handleDeleteRow }) {
   const handlClose = () => {

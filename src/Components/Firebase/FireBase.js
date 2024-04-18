@@ -1,6 +1,6 @@
 //Nơi lưu trữ các hàm để thao tác dữ liệu của FireBase
 
-import { getDatabase, ref, set, remove, push, get, child, onValue } from "firebase/database";
+import { getDatabase, ref, set, remove, get, child, onValue } from "firebase/database";
 import RandomKey from "../../firebase/RandomKey.js";
 
 
