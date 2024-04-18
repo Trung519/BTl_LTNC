@@ -16,6 +16,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import MenuItem from "@mui/material/MenuItem";
 import { AddData } from "../P_R_be";
+import { toast } from "react-toastify";
+
 const DialogAdd = (props) => {
   const {
     newFormOpen,
@@ -32,20 +34,24 @@ const DialogAdd = (props) => {
   const handleChangeGender = (event) => {
     setNewGender(event.target.value);
   };
-  // const handle_Name = (event) => {
-  //   setfullname(event.target.value);
-  // };
+  const handle_CCCD = (event) => {
+    setCCCD(event.target.value);
+  };
   // const handle_Date = (event) => {
   //   setBirthDay(event);
   // };
-  const handle_CCCD = (e) => {
-    if (/^0\d*$/.test(e.target.value) && e.target.value.length <= 12) {
-      setCCCD(e.target.value);
-    }
-  };
+  // const handle_CCCD = (e) => {
+  //   if (/^0\d*$/.test(e.target.value) && e.target.value.length <= 12) {
+  //     setCCCD(e.target.value);
+  //   }
+  // };
   // const handle_BHYT = (event) => {
   //   setBHYT(event.target.value);
   // };
+  const checkCCCD = (CCCD) => {
+    if (/^0\d{11}$/.test(CCCD)) return 1;
+    else return 0;
+  };
   console.log("re-render, DialogAdd");
   return (
     <Dialog
@@ -61,31 +67,52 @@ const DialogAdd = (props) => {
           const formData = new FormData(event.currentTarget);
           const formJson = Object.fromEntries(formData.entries());
           // cách lấy data
-          console.log("birthDay", formJson.birthDay);
-          AddData(
-            formJson.fullName,
-            formJson.birthDay,
-            formJson.gender,
-            formJson.CCCD,
-            formJson.BHYT,
-            formJson.address
-          );
-          // console.log(String.valueOf(patients.length + 1));
-
-          const newPatient = {
-            fullName: formJson.fullName,
-            birthDay: formJson.birthDay,
-            gender: formJson.gender,
-            CCCD: formJson.CCCD,
-            BHYT: formJson.BHYT,
-            address: formJson.address,
-          };
-          console.log("newPatient", newPatient);
-          //xu li add database
-          // setRenderPatientList((prev) => [newPatient, ...prev]);
-          setNewPatientsAndRender([newPatient, ...newPatients]);
-          // newPatient = [newPatient, ...patients];
-          handleCloseNewFormOpen();
+          // console.log("birthDay", formJson.birthDay);
+          if (checkCCCD(formJson.CCCD)) {
+            AddData(
+              formJson.fullName,
+              formJson.birthDay,
+              formJson.gender,
+              formJson.CCCD,
+              formJson.BHYT,
+              formJson.address
+            );
+            toast.success("Thêm bệnh nhân thành công !", {
+              position: "top-right",
+              autoClose: 2500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              // transition: Bounce,
+            });
+            const newPatient = {
+              fullName: formJson.fullName,
+              birthDay: formJson.birthDay,
+              gender: formJson.gender,
+              CCCD: formJson.CCCD,
+              BHYT: formJson.BHYT,
+              address: formJson.address,
+            };
+            console.log("newPatient", newPatient);
+            setNewPatientsAndRender([newPatient, ...newPatients]);
+            handleCloseNewFormOpen();
+          } else {
+            setCCCD("");
+            toast.error("CCCD không đúng định dạng !", {
+              position: "top-right",
+              autoClose: 2500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              // transition: Bounce,
+            });
+          }
         },
       }}
     >
