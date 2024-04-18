@@ -325,5 +325,11 @@
         }
 }
 
+.row-borrower{
+    display: inline-block;
+    &:hover{
+        cursor: pointer;
+    }
+}
 
 

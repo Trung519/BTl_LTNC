@@ -41,6 +41,7 @@ import InputBorrower from "./Components/InputBorrower";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import UpdateSuccess from "../../Components/UpdateSuccess";
+import ModalFormAdd from "../Employee/Components/ModalFormAdd";
 
 export default function EquipmentsManage({}) {
   const [idToEdit, setidToEdit] = useState(null);
@@ -465,6 +466,8 @@ export default function EquipmentsManage({}) {
   const handleLoadingDone = () => {
     setLoading(false);
   };
+  const [displayForm, setDisplayForm] = useState(false);
+  const [idToRead, setIdToRead] = useState(null);
 
   return (
     <div id="backgroundE">
@@ -810,7 +813,17 @@ export default function EquipmentsManage({}) {
                                     <td className="data-use">
                                       {row.time_finish}
                                     </td>
-                                    <td className="data-use">{row.borrower}</td>
+                                    <td className="data-use">
+                                      <div
+                                        className="row-borrower"
+                                        onClick={() => {
+                                          setIdToRead(row.borrower);
+                                          setDisplayForm(true);
+                                        }}
+                                      >
+                                        {row.borrower}
+                                      </div>
+                                    </td>
                                     <td className="data-use">
                                       <div className="state-use">
                                         {row.state ? (
@@ -921,6 +934,13 @@ export default function EquipmentsManage({}) {
           handleDeleteUse={handleDeleteUse}
         />
         {alertAddSuccess && <UpdateSuccess />}
+        <ModalFormAdd
+          displayForm={displayForm}
+          setDisplayForm={setDisplayForm}
+          rowToEdit={idToRead}
+          dataEmp={dataEmp}
+          read={true}
+        />
       </div>
       <Footer />
     </div>

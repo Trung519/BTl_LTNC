@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import styles from "./ModalFormAdd.module.scss";
-import { TextField } from "@mui/material";
+import { TextField, colors } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -46,6 +46,7 @@ function ModalFormAdd({
   dataEmp,
   setDataEmp,
   setAlertAddSuccess,
+  read,
 }) {
   // const [dataEmp, setDataEmp] = useState([]);
   // useEffect(() => {
@@ -53,6 +54,7 @@ function ModalFormAdd({
   //     setDataEmp(post["Employee"] ?? []);
   //   });
   // }, []);
+  console.log(read);
 
   const [formState, setFormState] = useState([]);
   const [msgError, setMsgError] = useState("");
@@ -195,9 +197,7 @@ function ModalFormAdd({
                     id="standard-basic"
                     label="Họ"
                     variant="standard"
-                    // className={cx("input-info", {
-                    //   "red-border": !formState.fullName,
-                    // })}
+                    disabled={read}
                     value={formState.LastName}
                     fullWidth
                     onChange={(e) =>
@@ -215,6 +215,7 @@ function ModalFormAdd({
                     // className={cx("input-info", {
                     //   "red-border": !formState.fullName,
                     // })}
+                    disabled={read}
                     value={formState.FirstName}
                     fullWidth
                     onChange={(e) =>
@@ -237,6 +238,7 @@ function ModalFormAdd({
                           AcademicDegree: e.target.value,
                         })
                       }
+                      disabled={read}
                     >
                       <option>Cử nhân</option>
                       <option>Thạc sỹ</option>
@@ -252,6 +254,7 @@ function ModalFormAdd({
                       onChange={(e) =>
                         setFormState({ ...formState, Gender: e.target.value })
                       }
+                      disabled={read}
                     >
                       <option>Nam</option>
                       <option>Nữ</option>
@@ -267,6 +270,7 @@ function ModalFormAdd({
                   <InputSelect
                     formState={formState}
                     setFormState={setFormState}
+                    disabled={read}
                   />
                 </div>
 
@@ -278,6 +282,7 @@ function ModalFormAdd({
                       onChange={(e) =>
                         setFormState({ ...formState, typeEmp: e.target.value })
                       }
+                      disabled={read}
                     >
                       <option>Quản trị</option>
                       <option>Trưởng khoa</option>
@@ -289,13 +294,17 @@ function ModalFormAdd({
                   </div>
                 </div>
                 <div className="col">
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    disabled={read}
+                  >
                     <DatePicker
                       sx={{ marginTop: "10px" }}
                       format="DD/MM/YYYY"
                       label="Ngày sinh"
                       value={dayjs(formState.birthDay, "DD/MM/YYYY")}
                       onChange={handleDateChange}
+                      disabled={read}
                     />
                   </LocalizationProvider>
                 </div>
@@ -304,9 +313,10 @@ function ModalFormAdd({
                 <div className="col-1">
                   <button
                     id="submit-btn"
-                    className={cx("btn-save")}
+                    className={cx("btn-save", { disable: read })}
                     type="submit"
                     onClick={handleAddEmp}
+                    disabled={read}
                   >
                     Lưu
                   </button>
