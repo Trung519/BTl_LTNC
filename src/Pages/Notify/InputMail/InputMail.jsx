@@ -42,7 +42,12 @@ export default function Tags() {
 
         const time = `${hours}:${minutes} ${day}/${month}/${year}`;
 
-        const newMail = { ...mail, time };
+
+        let newcontent = mail.content.split('\n')
+        newcontent = newcontent.join('<br>')
+
+        const newMail = { ...mail, time, content: newcontent };
+
 
         const sender = {
             id: 1,

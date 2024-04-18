@@ -2,7 +2,6 @@ import { useEffect, useState, useCallback } from 'react'
 import styles from './TableMail.module.scss'
 import classNames from 'classnames/bind'
 import Mailcontent from './Mailcontent'
-import getUserNameByID from '../../../firebase/Notify/getUserNameByID'
 
 const cx = classNames.bind(styles)
 
@@ -24,9 +23,11 @@ export default function Tablemail({ listdata, status }) {
         setShowcontent(true);
         setNumemail(page * 10 + index)
     }, [])
+ 
     var handleUnshowcontent = useCallback(() => {
         setShowcontent(false);
     }, [])
+    
     return (
         <div className={cx('tablemail-wrapper')}>
             {!showcontent &&
@@ -51,7 +52,7 @@ export default function Tablemail({ listdata, status }) {
                                 let count = index % 2
                                 return (
                                     <div onClick={() => handleShowcontent(page, index)} key={page * 10 + index + 1} className={cx('row', 'line-row', `line${count}`)}>
-                                        <div onClick={(e) => handleClickcheckbox(e)} className={cx('col-md-1')}>
+                                        <div onClick={(e) => handleClickcheckbox(e)} className={cx('col-md-1','contain-checkbox')}>
                                             <input
                                                 type='checkbox'
                                             ></input>
@@ -59,15 +60,15 @@ export default function Tablemail({ listdata, status }) {
                                         <div className={cx('col-md-2', 'sender-col')}>
                                             {status === 'received_mail' ?
                                                 listEmail[page * 10 + index].sender.username
-                                                : 'Tôi'}
+                                                : 'Tôi' 
+                                            }
                                         </div>
                                         <div className={cx('col-md-8', 'content-col')}>
                                             <span className={cx('content-title')}>{listEmail[page * 10 + index].subject}</span>
                                             <span className={cx('barrie')}>-</span>
-                                            <span className={cx('content-content')}>{` ${listEmail[page * 10 + index].content}`}</span>
+                                            <span className={cx('content-content')}>{` ${listEmail[page * 10 + index].content.split('<br>')[0]}`}</span>
                                         </div>
                                         <div className={cx('col-md-1', 'time-col')}>
-                                            <p> {listEmail[page * 10 + index].hour}</p>
                                             <p> {listEmail[page * 10 + index].date}</p>
                                         </div>
                                     </div>
