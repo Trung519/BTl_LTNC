@@ -69,28 +69,30 @@ export default function Modal({
           <h1>Thêm thông tin thiết bị</h1>
         </div>
         <form className="form-data">
-          <div>
-            {/* <label htmlFor="name">Tên</label> */}
+          <div className="input-wrap">
             <input
+              required
               type="text"
               name="name"
               onChange={handleChange}
               value={equimentState.name}
-              placeholder="Tên"
+              // placeholder="Tên"
               autoComplete="off"
             />
+            <label htmlFor="name">Tên</label>
           </div>
 
-          <div>
-            {/* <label htmlFor="type">Loại</label> */}
+          <div className="input-wrap">
             <input
+              required
               type="text"
               name="type"
               onChange={handleChange}
               value={equimentState.type}
-              placeholder="Loại"
+              // placeholder="Loại"
               autoComplete="off"
             />
+            <label htmlFor="type">Loại</label>
           </div>
 
           {/* <div>
@@ -100,28 +102,30 @@ export default function Modal({
                             />
                         </div> */}
 
-          <div>
-            {/* <label htmlFor="room">Phòng</label> */}
+          <div className="input-wrap">
             <input
+              required
               type="text"
               name="room"
               onChange={handleChange}
               value={equimentState.room}
-              placeholder="Phòng"
+              // placeholder="Phòng"
               autoComplete="off"
             />
+            <label htmlFor="room">Phòng</label>
           </div>
 
-          <div id="description">
-            {/* <label htmlFor="description">Mô tả</label> */}
+          <div id="description" className="input-wrap">
             <input
+              required
               type="text"
               name="description"
               onChange={handleChange}
               value={equimentState.description}
-              placeholder="Mô tả"
+              // placeholder="Mô tả"
               autoComplete="off"
             />
+            <label htmlFor="description">Mô tả</label>
           </div>
 
           <div id="status-box">

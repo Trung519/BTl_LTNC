@@ -1,5 +1,6 @@
 
 
+
 .bigWrapper{
 width: 90%;
 }
@@ -55,7 +56,7 @@ width: 90%;
     font-size:36px;
     text-align: center;
     color: #3E454D ;
-    font-family: Poppins, sans-serif;
+    font-family: 'Arial', sans-serif;
     font-weight: 1000;
     margin-bottom: 20px;
 }
