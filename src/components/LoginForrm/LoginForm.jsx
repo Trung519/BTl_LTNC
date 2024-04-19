@@ -71,14 +71,13 @@ export default function LoginForm(props) {
                 if (post != null) {
                     const listEmployee = post["Employee"] ?? [];
                     
-                    const employee = listEmployee.find(item => {
-                        return item.ID === user.id;
-                    })
+                    // const employee = listEmployee.find(item => {
+                    //     return item.ID === user.id;
+                    // })
                     
-                    localStorage.setItem("id", employee.ID);
-                    localStorage.setItem("typeEmp", employee.typeEmp);
-                    localStorage.setItem("name", employee.LastName + " " + employee.FirstName);
-                    localStorage.setItem("id", employee.ID);
+                    // localStorage.setItem("typeEmp", employee.typeEmp);
+                    // localStorage.setItem("name", employee.LastName + " " + employee.FirstName);
+                    // localStorage.setItem("id", employee.ID);
 
                     window.location.assign("/home");
                 }
