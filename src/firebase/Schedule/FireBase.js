@@ -1,7 +1,7 @@
 //Nơi lưu trữ các hàm để thao tác dữ liệu của FireBase
 
-import { getDatabase, ref, set, remove, get, child, onValue } from "firebase/database";
-import RandomKey from "../../firebase/RandomKey.js";
+import { getDatabase, ref, set, remove, push, get, child, onValue } from "firebase/database";
+import RandomKey from "../RandomKey.js";
 
 
 // Hàm cập nhật dữ liệu
@@ -160,7 +160,7 @@ export const addNewSchedule = async (data, callback) => {
 
 export const searchIdDoctorByName = (name, callback) => {
   const database = getDatabase();
-  const dataRef = ref(database, 'Employee/Doctor/');
+  const dataRef = ref(database, 'Employee/');
 
   onValue(dataRef, (snapshot) => {
     const data = snapshot.val();
@@ -178,7 +178,7 @@ export const searchIdDoctorByName = (name, callback) => {
 
 export const searchNameDoctorByID = (id, callback) => {
   const database = getDatabase();
-  const dataRef = ref(database, 'Employee/Doctor');
+  const dataRef = ref(database, 'Employee/');
 
   onValue(dataRef, (snapshot) => {
     const data = snapshot.val();

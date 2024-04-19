@@ -42,7 +42,12 @@ export default function Tags() {
 
         const time = `${hours}:${minutes} ${day}/${month}/${year}`;
 
-        const newMail = { ...mail, time };
+
+        let newcontent = mail.content.split('\n')
+        newcontent = newcontent.join('<br>')
+
+        const newMail = { ...mail, time, content: newcontent };
+
 
         const sender = {
             id: 1,
@@ -74,7 +79,7 @@ export default function Tags() {
                     multiple
                     id="tags-standard"
                     options={listUser}
-                    getOptionLabel={(option) => option.Username}
+                    getOptionLabel={option => option.LastName + " " + option.FirstName}
                     onChange={(event, value) => {
                         setMail({ ...mail, receivers: value }); // Cập nhật state `mail` khi có thay đổi
                     }}
@@ -88,7 +93,9 @@ export default function Tags() {
                         />
                     )}
                 />
+                <div className={cx('create-blank')}></div>
                 <TextField
+                    sx={{ mt: 5 }}
                     id="standard-basic"
                     label="Tiêu đề..."
                     variant="standard"
@@ -99,13 +106,14 @@ export default function Tags() {
                     }}
                 />
                 <div className={cx('under_main')}>
-                    <div className={cx('mail_content')}>
-                        <div 
-                        contenteditable="true"
-                        onChange={(e) => setMail({...mail,content: e.target.value})}
-                        >
-                            
-                        </div>
+                    <div className={cx('contain-textarea')}>
+                        <textarea
+                            placeholder='Nội dung'
+                            value={mail.content}
+                            onChange={(e) => {
+                                setMail({ ...mail, content: e.target.value });
+                            }}
+                        ></textarea>
                     </div>
                     <div className={cx('bottom')}>
                         <Button

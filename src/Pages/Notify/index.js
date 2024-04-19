@@ -5,7 +5,6 @@ import Footer from '../../Components/Footer'
 import SideBar from './SideBar';
 import Tablemail from './TableMail';
 import InputMail from './InputMail/InputMail.jsx'
-
 import GetMail from '../../firebase/Notify/GetMail.js';
 
 const cx = classNames.bind(styles)
@@ -19,7 +18,7 @@ function Notify() {
   const [listData, setListData] = useState([]);
 
   useEffect(() => {
-    GetMail(1, status, setListData);
+    GetMail("NS44208", status, setListData);
   }, [status, inputmail])
   //--------------------------BACKEND----------------------------
 

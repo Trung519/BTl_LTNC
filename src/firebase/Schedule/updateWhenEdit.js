@@ -8,9 +8,6 @@ const Updatewhenedit = async (listEdit) => {
     const snapshot = await get(dataRef);
     let listSchedule = snapshot.exists() ? snapshot.val() : []; // Dữ liệu hiện có
 
-    console.log(listSchedule)
-    console.log(listEdit)
-
     listSchedule.map(schedule => {
         listEdit.map(item => {
             if (schedule.id_schedule == item.id_schedule) {
@@ -18,8 +15,6 @@ const Updatewhenedit = async (listEdit) => {
             }
         })
     })
-
-    console.log(listSchedule)
 
     //Ghi dữ liệu mới vào Firebase
     await set(ref(database, 'Schedule'), listSchedule);
