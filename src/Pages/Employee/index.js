@@ -13,6 +13,7 @@ import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { getData } from "../../services/firebase";
 import ConfirmDelete from "./Components/ConfirmDelete";
 import Footer from "../../Components/Footer";
+import UpdateSuccess from "../../Components/UpdateSuccess";
 
 const cx = classNames.bind(styles);
 function Employee() {
@@ -23,6 +24,7 @@ function Employee() {
 
   const [rowToEdit, setRowToEdit] = useState(null);
   const [dataEmp, setDataEmp] = useState([]);
+  const [alertAddSuccess, setAlertAddSuccess] = useState(false);
   useEffect(() => {
     getData().then((post) => {
       setDataEmp(post["Employee"] ?? []);
@@ -108,7 +110,7 @@ function Employee() {
             <th>Ngày sinh</th>
             <th>Bằng cấp</th>
             <th>Bộ Phận Khoa</th>
-            <th>Nhân viên</th>
+            <th>Chức vụ</th>
             <th>Thao tác</th>
           </thead>
           <tbody>
@@ -119,7 +121,7 @@ function Employee() {
                   <td className={cx("col-id")}>{item.ID}</td>
                   <td
                     className={cx("head-first")}
-                  >{`${item.FirstName} ${item.LastName}`}</td>
+                  >{`${item.LastName} ${item.FirstName}`}</td>
                   <td>{item.Gender}</td>
                   <td>{item.birthDay} </td>
                   <td>{item.AcademicDegree}</td>
@@ -183,6 +185,7 @@ function Employee() {
         rowToEdit={rowToEdit}
         dataEmp={dataEmp}
         setDataEmp={setDataEmp}
+        setAlertAddSuccess={setAlertAddSuccess}
       />
       <ConfirmDelete
         confirmDelete={confirmDelete}
@@ -190,6 +193,7 @@ function Employee() {
         setDataEmp={setDataEmp}
         ID={rowToEdit}
       />
+      {alertAddSuccess && <UpdateSuccess />}
       <Footer />
     </div>
   );

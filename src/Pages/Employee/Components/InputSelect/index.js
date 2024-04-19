@@ -45,7 +45,7 @@ function getStyles(name, department, theme) {
   };
 }
 
-export default function InputSelect({ formState, setFormState }) {
+export default function InputSelect({ formState, setFormState, disabled }) {
   const theme = useTheme();
 
   const handleChange = (event) => {
@@ -64,7 +64,9 @@ export default function InputSelect({ formState, setFormState }) {
   return (
     <div>
       <FormControl fullWidth sx={{ marginTop: "10px" }}>
-        <InputLabel id="demo-multiple-name-label">Bộ Phận Khoa</InputLabel>
+        <InputLabel disabled={disabled} id="demo-multiple-name-label">
+          Bộ Phận Khoa
+        </InputLabel>
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
@@ -73,6 +75,7 @@ export default function InputSelect({ formState, setFormState }) {
           input={<OutlinedInput label="Name" />}
           MenuProps={MenuProps}
           fullWidth
+          disabled={disabled}
         >
           {names.map((name) => (
             <MenuItem
