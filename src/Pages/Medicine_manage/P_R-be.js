@@ -36,7 +36,7 @@ export function AddData_Med(Id_Med, name, origin, HSD, cost, sellPrice, stock) {
     stock: stock,
   })
     .then(() => {
-      alert("Medicine Added Successfully");
+      // alert("Medicine Added Successfully");
     })
     .catch((error) => {
       alert("Unsuccessful");
@@ -54,7 +54,7 @@ export function UpdateData(Id_Med, name, origin, HSD, cost, sellPrice, stock) {
     stock: stock,
   })
     .then(() => {
-      alert("Data Updated Successfully");
+      // alert("Data Updated Successfully");
     })
     .catch((error) => {
       alert("Data Updated Unsuccessful");
@@ -65,7 +65,7 @@ export function DeleteData(name) {
   remove(ref(db, "Medicine_manage/" + name))
     .then(() => {
       // window.location.reload();
-      alert("Data Deleted Successfully");
+      // alert("Data Deleted Successfully");
     })
     .catch((error) => {
       alert("Unsuccessful");

@@ -13,6 +13,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import FormControl from "@mui/material/FormControl";
 import { UpdateData } from "../P_R-be";
+import { toast } from "react-toastify";
+
 const DialogModify = (props) => {
   console.log("render");
   const {
@@ -64,6 +66,17 @@ const DialogModify = (props) => {
             stock: formJson.stock,
           };
           console.log("HSD", formJson.HSD);
+          toast.success("Chập nhật thành công !", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            // transition: Bounce,
+          });
 
           // console.log(indexInListMedicine);
           setNewListMedicineAndRender([...temp]);

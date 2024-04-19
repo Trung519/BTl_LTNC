@@ -14,6 +14,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import FormControl from "@mui/material/FormControl";
 import { AddData_Med } from "../P_R-be";
+import { toast } from "react-toastify";
 const DialogAdd = (props) => {
   const {
     newFormOpen,
@@ -57,7 +58,17 @@ const DialogAdd = (props) => {
             sellPrice: formJson.sellPrice,
             stock: formJson.stock,
           };
-          console.log(newMedicine);
+          toast.success("Thêm thành công !", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            // transition: Bounce,
+          });
           setNewListMedicineAndRender([newMedicine, ...newListMedicine]);
           setNewFormOpen(false);
         },
