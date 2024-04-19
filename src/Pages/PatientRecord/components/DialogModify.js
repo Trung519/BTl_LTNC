@@ -18,7 +18,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { UpdateData } from "../P_R_be";
 import { toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 
 const DialogModify = (props) => {
   const {
@@ -167,8 +166,22 @@ const DialogModify = (props) => {
                 value={row.CCCD}
                 // size="medium"
                 variant="standard"
+                onClick={() => {
+                  toast.warn("Không thể cập nhật số CCCD !", {
+                    position: "top-right",
+                    autoClose: 2500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    // transition: Bounce,
+                  });
+                }}
                 InputProps={{
                   readOnly: true,
+                  // onClick = {()=>{}}
                 }}
               ></TextField>
             </Grid>

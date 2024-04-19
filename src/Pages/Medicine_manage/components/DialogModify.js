@@ -117,6 +117,23 @@ const DialogModify = (props) => {
               fullWidth
               variant="standard"
               defaultValue={row.name}
+              onClick={() => {
+                toast.warn("Không thể cập nhật tên thuốc !", {
+                  position: "top-right",
+                  autoClose: 2500,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                  // transition: Bounce,
+                });
+              }}
+              InputProps={{
+                readOnly: true,
+                // onClick = {()=>{}}
+              }}
             />
           </Grid>
           <Grid item xs={1} sm={2} md={3}>

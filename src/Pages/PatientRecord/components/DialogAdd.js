@@ -58,7 +58,11 @@ const DialogAdd = (props) => {
       fullWidth
       maxWidth="sm"
       open={newFormOpen}
-      onClose={handleCloseNewFormOpen}
+      onClose={() => {
+        handleCloseNewFormOpen();
+        setCCCD("");
+        setNewGender("");
+      }}
       PaperProps={{
         component: "form",
         onSubmit: (event) => {
@@ -98,9 +102,10 @@ const DialogAdd = (props) => {
             };
             console.log("newPatient", newPatient);
             setNewPatientsAndRender([newPatient, ...newPatients]);
+            setCCCD("");
+            setNewGender("");
             handleCloseNewFormOpen();
           } else {
-            setCCCD("");
             toast.error("CCCD không đúng định dạng !", {
               position: "top-right",
               autoClose: 2500,
@@ -112,6 +117,7 @@ const DialogAdd = (props) => {
               theme: "light",
               // transition: Bounce,
             });
+            setCCCD("");
           }
         },
       }}

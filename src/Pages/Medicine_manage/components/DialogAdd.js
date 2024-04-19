@@ -58,7 +58,7 @@ const DialogAdd = (props) => {
             sellPrice: formJson.sellPrice,
             stock: formJson.stock,
           };
-          toast.success("Thêm thành công !", {
+          toast.success("Thêm thuốc thành công !", {
             position: "top-right",
             autoClose: 2500,
             hideProgressBar: false,
@@ -135,6 +135,11 @@ const DialogAdd = (props) => {
                   id="HSD"
                   name="HSD"
                   label="HSD"
+                  slotProps={{
+                    textField: {
+                      required: true,
+                    },
+                  }}
                   // sx={{ padding: 0 }}
                   // format="DD/MM/YYYY"
                 ></DatePicker>
@@ -149,7 +154,7 @@ const DialogAdd = (props) => {
               id="cost"
               name="cost"
               label="Giá nhập"
-              type="text"
+              type="number"
               fullWidth
               variant="standard"
             />
@@ -161,7 +166,7 @@ const DialogAdd = (props) => {
               id="sellPrice"
               name="sellPrice"
               label="Giá bán"
-              type="text"
+              type="number"
               fullWidth
               variant="standard"
             />
@@ -173,7 +178,7 @@ const DialogAdd = (props) => {
               id="stock"
               name="stock"
               label="Tồn kho"
-              type="text"
+              type="number"
               fullWidth
               variant="standard"
             />
