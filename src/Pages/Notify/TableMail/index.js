@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import styles from './TableMail.module.scss'
 import classNames from 'classnames/bind'
 import Mailcontent from './Mailcontent'
