@@ -289,7 +289,7 @@ function ModalFormAdd({
                       <option>Bác sỹ</option>
                       <option>Y tá</option>
                       <option>Dược sỹ</option>
-                      <option>Hậu cần</option>
+                      {/* <option>Hậu cần</option> */}
                     </select>
                   </div>
                 </div>
