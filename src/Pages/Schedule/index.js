@@ -1,11 +1,11 @@
 import classNames from 'classnames/bind'
 import styles from './Schedule.module.scss'
-import React, { Component } from 'react'
+import React, { Component, useRef } from 'react'
 import Footer from '../../Components/Footer'
 
 // --------------Firebase--------------
 import { useState, useEffect, useCallback } from 'react';
-import { addNewSchedule, searchIdDoctorByName, searchNameDoctorByID, setListSchedule } from '../../Components/Firebase/FireBase';
+import { addNewSchedule, searchIdDoctorByName, searchNameDoctorByID, setListSchedule } from '../../firebase/Schedule/FireBase.js'
 
 import Updatewhenedit from '../../firebase/Schedule/updateWhenEdit.js'
 import updateWhenRemove from '../../firebase/Schedule/updateWhenRemove.js';
@@ -14,19 +14,17 @@ import updateWhenRemove from '../../firebase/Schedule/updateWhenRemove.js';
 const cx = classNames.bind(styles)
 var number = 0
 
-export default function Schedule() {
+export default function Schedule({ user }) {
     var [edit, setEdit] = useState(false)               // Edit mode
     var [add, setAdd] = useState(false)                 // Add mode
     var [page, setPage] = useState(0)                   // Current page number
-    var [searchbool, setSearchbool] = useState(true)    // (for search bar) true -> found ... false -> not found 
-    var [doctorbool, setDoctorbool] = useState(true)    // (for doctor in add mode) true -> found ... false -> not found
 
     // --------------START BACKEND <KHÔNG PHẬN SỰ MIỄN VÀO>--------------
     const [listdata, setListdata] = useState([]);
 
     const [form, setForm] = useState({
-        id_Doctor: "",
-        name_Doctor: "",
+        id_Doctor: user.typeEmp === 'Bác sỹ' ? user.id : "",
+        name_Doctor: user.typeEmp === 'Bác sỹ' ? user.name : "",
         time: "",
         date: "",
         name_Patient: "",
@@ -40,15 +38,19 @@ export default function Schedule() {
     const [namePatientSearch, setNamePatientSearch] = useState("")
 
     useEffect(() => {
-        setListSchedule(namePatientSearch, setListdata);
+        setListSchedule(user, namePatientSearch, setListdata);
     }, [namePatientSearch]);
 
     useEffect(() => {
-        searchIdDoctorByName(form.name_Doctor, setSuggestions);
+        if (user.typeEmp !== "Bác sỹ") {
+            searchIdDoctorByName(user, form.name_Doctor, setSuggestions);
+        }
     }, [form.name_Doctor])
 
     useEffect(() => {
-        searchNameDoctorByID(form.id_Doctor, setSuggestionsID)
+        if (user.typeEmp !== "Bác sỹ") {
+            searchNameDoctorByID(user, form.id_Doctor, setSuggestionsID)
+        }
     }, [form.id_Doctor])
 
     const handleSelectSuggestion = (suggestion) => {
@@ -61,19 +63,40 @@ export default function Schedule() {
         setUlshow(false)
     }
 
-    const handleCollectData = (e) => {
-        const { name, value } = e.target;
-        setForm({
-            ...form,
-            [name]: value
-        });
+    const checkNum = (str) => {
+        if (str.length > 12) return false;
+        for (var i = 0; i < str.length; i++) {
+            if (str[i] < '0' || str[i] > '9') return false;
+        }
+        return true;
     }
+
+    const handleCollectData = (e) => {
+        if (user.typeEmp === "Bác sỹ" && (e.target.name === "id_Doctor" || e.target.name === "name_Doctor")) return;
+
+        if (e.target.name === 'name_CCCD') {
+            if (checkNum(e.target.value)) {
+                const { name, value } = e.target;
+                setForm({
+                    ...form,
+                    [name]: value
+                });
+            }
+        }
+        else {
+            const { name, value } = e.target;
+            setForm({
+                ...form,
+                [name]: value
+            });
+        }
+    }
+
     const handleNamePatientChange = (e) => {
         setNamePatientSearch(e.target.value);
-        if(listdata.length == 0) setSearchbool(false)
-        else setSearchbool(true)
         setPage(0)
     }
+
     const submitForm = () => {
         const checkValue = new Promise((resolve, reject) => {
             if (
@@ -83,7 +106,8 @@ export default function Schedule() {
                 form.date === "" ||
                 form.name_Patient === "" ||
                 form.name_CCCD === "" ||
-                form.room === ""
+                form.room === "" ||
+                form.name_CCCD.length != 12
             ) {
                 resolve(false);
             } else {
@@ -101,6 +125,7 @@ export default function Schedule() {
         });
     };
 
+
     const [listEdit, setListEdit] = useState([]);
     const [listRemove, setListRemove] = useState([]);
 
@@ -117,7 +142,6 @@ export default function Schedule() {
     }
 
     const isSelectedToEdit = (key, status) => {
-        console.log(key);
         if (isEdited(key, status)) return;
         else {
             const newData = {
@@ -156,7 +180,7 @@ export default function Schedule() {
 
     // ---------------END BACKEND <KHÔNG PHẬN SỰ MIỄN VÀO>---------------  
 
-    var [ulshow, setUlshow] = useState(true)
+    var [ulshow, setUlshow] = useState(false)
 
     var handleAdd = useCallback(() => {
         setAdd(prev => !prev)
@@ -173,17 +197,16 @@ export default function Schedule() {
                     <div className={cx('schedule-wrapper')}>
                         <div className={cx('schedule-title')}>
                             <p>Lịch làm việc</p>
-                            <div className={cx('schedule-title-right')}>
+                            {user.typeEmp !== "Dược sỹ" && <div className={cx('schedule-title-right')}>
                                 <button onClick={handleAdd}>Thêm cuộc hẹn</button>
                                 <button onClick={() => setEdit(true)}>Chỉnh sửa</button>
                                 <button className={cx('no-click')}>Hoàn tất</button>
-                            </div>
+                            </div>}
                         </div>
                         <div className={cx('schedule-search')}>
                             <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'
                                 onChange={handleNamePatientChange}></input>
                             <i class={cx("fas fa-search", 'search')}></i>
-                            {searchbool || <p>Không tìm thấy !</p>}
                         </div>
                         <div className={cx('schedule-content')}>
                             <div className={cx('schedule-table')}>
@@ -214,17 +237,17 @@ export default function Schedule() {
                                                     <div className={cx('col-md-1', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{listdata[page * 10 + index].Name_doctor}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')}>
-                                                        {<p>{listdata[page * 10 + index].Hour_in + ", " + listdata[page * 10 + index].Date_in}</p>}
+                                                        {<p>{listdata[page * 10 + index].Time + ", " + listdata[page * 10 + index].Date}</p>}
                                                     </div>
                                                     <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].Patient}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].CCCD}</div>
                                                     <div className={cx('col-md-1', 'schedule-table-Room')}>{listdata[page * 10 + index].Room}</div>
                                                     <div className={cx('col-md-1', 'ahuhu', 'schedule-table-Status', `Status-${handleColor(page * 10 + index)}`)}>
-                                                        <select name="select-in-normal" disabled id='Linh'>
+                                                        <select className={cx('select-status')} name="select-in-normal" disabled>
                                                             <option className={cx('option1')} value={listdata[page * 10 + index].Status}>{listdata[page * 10 + index].Status}</option>
                                                             <option className={cx('option2')} value="Xong">Xong</option>
                                                             <option className={cx('option3')} value="Đang khám">Đang khám</option>
-                                                            <option className={cx('option4')} value="Đang chờ">Đang chờ</option>
+                                                            <option className={cx('option4')} value="Đang chờ">Chưa khám</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -261,17 +284,16 @@ export default function Schedule() {
                     <div className={cx('schedule-wrapper')}>
                         <div className={cx('schedule-title')}>
                             <p>Lịch làm việc</p>
-                            <div className={cx('schedule-title-right')}>
-                                <button className={cx('no-click')}>Thêm cuộc hẹn</button>
-                                <button className={cx('no-click')}>Chỉnh sửa</button>
-                                <button onClick={handleEdit}>Hoàn tất</button>
-                            </div>
+                            {user.typeEmp !== "Dược sỹ" && <div className={cx('schedule-title-right')}>
+                                <button onClick={handleAdd}>Thêm cuộc hẹn</button>
+                                <button onClick={() => setEdit(true)}>Chỉnh sửa</button>
+                                <button className={cx('no-click')}>Hoàn tất</button>
+                            </div>}
                         </div>
                         <div className={cx('schedule-search')}>
                             <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'
                                 onChange={handleNamePatientChange}></input>
                             <i class={cx("fas fa-search", 'search')}></i>
-                            {searchbool || <p>Không tìm thấy !</p>}
                         </div>
                         <div className={cx('schedule-content')}>
                             <div className={cx('schedule-table')}>
@@ -299,40 +321,44 @@ export default function Schedule() {
                                             return (
                                                 <div key={listdata[index].id_schedule} className={cx('row', 'line-row', `line${count}`)}>
                                                     <div style={{ display: 'none' }} className={cx('col-md-1', 'schedule-table-index')}>{page * 10 + index + 1}</div>
-                                                    <div className={cx('col-md-1', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
-                                                    <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{listdata[page * 10 + index].Name_doctor}</div>
+                                                    <div className={cx('col-md-1', 'schedule-table-ID_doctor')} contentEditable>{listdata[page * 10 + index].ID_doctor}</div>
+                                                    <div className={cx('col-md-2', 'schedule-table-Name_doctor')} contentEditable>{listdata[page * 10 + index].Name_doctor}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')}>
-                                                        {<p>{listdata[page * 10 + index].Hour_in + ", " + listdata[page * 10 + index].Date_in}</p>}
+                                                        {<p>{listdata[page * 10 + index].Time + ", " + listdata[page * 10 + index].Date}</p>}
                                                     </div>
-                                                    <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].Patient}</div>
-                                                    <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].CCCD}</div>
-                                                    <div className={cx('col-md-1', 'schedule-table-Room')}>{listdata[page * 10 + index].Room}</div>
+                                                    <div className={cx('col-md-2', 'schedule-table-Patient')} contentEditable>{listdata[page * 10 + index].Patient}</div>
+                                                    <div className={cx('col-md-2', 'schedule-table-Patient')} contentEditable>{listdata[page * 10 + index].CCCD}</div>
+                                                    <div className={cx('col-md-1', 'schedule-table-Room')} contentEditable>{listdata[page * 10 + index].Room}</div>
                                                     <div className={cx('col-md-2', `schedule-icons-${handleColor(page * 10 + index)}`, 'schedule-table-Status', 'schedule-icons')}>
                                                         {handleColor(page * 10 + index) === 'done' && (
-                                                            <select name="select-in-edit"
+                                                            <select
+                                                                className={cx('select-status')}
+                                                                name="select-in-edit"
                                                                 onChange={(e) => isSelectedToEdit(listdata[page * 10 + index].id_schedule, e.target.value)}
                                                             >
                                                                 <option value="Xong">Xong</option>
                                                                 <option value="Đang khám">Đang khám</option>
-                                                                <option value="Đang chờ">Đang chờ</option>
+                                                                <option value="Chưa khám">Chưa khám</option>
                                                             </select>
                                                         )}
                                                         {handleColor(page * 10 + index) === 'doing' && (
-                                                            <select name="select-in-edit"
+                                                            <select 
+                                                            name="select-in-edit"
+                                                            className={cx('select-status')}
                                                                 onChange={(e) => isSelectedToEdit(listdata[page * 10 + index].id_schedule, e.target.value)}
                                                             >
                                                                 <option value="Xong">Xong</option>
                                                                 <option value="Đang khám" selected>Đang khám</option>
-                                                                <option value="Đang chờ">Đang chờ</option>
+                                                                <option value="Chưa khám">Chưa khám</option>
                                                             </select>
                                                         )}
                                                         {handleColor(page * 10 + index) === 'pending' && (
-                                                            <select name="select-in-edit"
+                                                            <select className={cx('select-status')} name="select-in-edit"
                                                                 onChange={(e) => isSelectedToEdit(listdata[page * 10 + index].id_schedule, e.target.value)}
                                                             >
                                                                 <option value="Xong">Xong</option>
                                                                 <option value="Đang khám">Đang khám</option>
-                                                                <option selected value="Đang chờ">Đang chờ</option>
+                                                                <option selected value="Chưa khám">Chưa khám</option>
                                                             </select>
                                                         )}
                                                         <svg class="svg-inline--fa fa-trash-alt fa-w-14" aria-hidden="true" data-prefix="far" data-icon="trash-alt"
@@ -373,11 +399,11 @@ export default function Schedule() {
                     <div className={cx('schedule-wrapper')}>
                         <div className={cx('schedule-title')}>
                             <p>Lịch làm việc</p>
-                            <div className={cx('schedule-title-right')}>
+                            {user.typeEmp !== "Dược sỹ" && <div className={cx('schedule-title-right')}>
                                 <button onClick={handleAdd}>Thêm cuộc hẹn</button>
-                                <button onClick={handleEdit}>Chỉnh sửa</button>
+                                <button onClick={() => setEdit(true)}>Chỉnh sửa</button>
                                 <button className={cx('no-click')}>Hoàn tất</button>
-                            </div>
+                            </div>}
                         </div>
                         <div className={cx('schedule-search')}>
                             <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'
@@ -414,17 +440,17 @@ export default function Schedule() {
                                                     <div className={cx('col-md-1', 'schedule-table-ID_doctor')}>{listdata[page * 10 + index].ID_doctor}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Name_doctor')}>{listdata[page * 10 + index].Name_doctor}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')}>
-                                                        {<p>{listdata[page * 10 + index].Hour_in + ", " + listdata[page * 10 + index].Date_in}</p>}
+                                                        {<p>{listdata[page * 10 + index].Time + ", " + listdata[page * 10 + index].Date}</p>}
                                                     </div>
                                                     <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].Patient}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Patient')}>{listdata[page * 10 + index].CCCD}</div>
                                                     <div className={cx('col-md-1', 'schedule-table-Room')}>{listdata[page * 10 + index].Room}</div>
                                                     <div className={cx('col-md-1', 'ahuhu', 'schedule-table-Status', `Status-${handleColor(page * 10 + index)}`)}>
-                                                        <select name="select-in-normal" disabled>
+                                                        <select className={cx('select-status')} name="select-in-normal" disabled>
                                                             <option className={cx('option1')} value={listdata[page * 10 + index].Status}>{listdata[page * 10 + index].Status}</option>
                                                             <option className={cx('option2')} value="Xong">Xong</option>
                                                             <option className={cx('option3')} value="Đang khám">Đang khám</option>
-                                                            <option className={cx('option4')} value="Đang chờ">Đang chờ</option>
+                                                            <option className={cx('option4')} value="Chưa khám">Chưa khám</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -451,12 +477,117 @@ export default function Schedule() {
                     </div>
                     <div className={cx('schedule-add')}>
                         <div className={cx('contain-form')}>
+                            <div className={cx('form-title')}>
+                                <span>Thêm lịch hẹn</span>
+                            </div>
+                            <div className={cx('form-doctor')}>
+                                <div className={cx('doctor-id')}>
+                                    <input
+                                        type='text'
+                                        placeholder='ID Bác Sĩ'
+                                        value={user.typeEmp === "Bác sỹ" ? user.id : form.id_Doctor}
+                                        name="id_Doctor"
+                                        onChange={handleCollectData}
+                                        onClick={() => {
+                                            setUlshow(true);
+                                        }}
+                                        readOnly={user.typeEmp === "Bác sỹ"}
+
+                                    ></input>
+                                    {user.typeEmp !== "Bác sỹ" && ulshow && <ul className={cx('ul-id')}>
+                                        {suggestionsID.map((suggestion, index) => {
+                                            if (index > 4 || form.id_Doctor == '') { }
+                                            else {
+                                                return (
+                                                    <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
+                                                        {suggestion.ID}
+                                                    </li>
+                                                )
+                                            }
+                                        })}
+                                    </ul>}
+                                </div>
+                                <div className={cx('doctor-name')}>
+                                    <input
+                                        type='text'
+                                        placeholder='Tên Bác Sĩ'
+                                        value={user.typeEmp === "Bác sỹ" ? user.name : form.name_Doctor}
+                                        name="name_Doctor"
+                                        onChange={handleCollectData}
+                                        readOnly={user.typeEmp === "Bác sỹ"}
+                                        onClick={() => {
+                                            setUlshow(true)
+                                            setSuggestionsID([])
+                                        }}></input>
+                                    {user.typeEmp !== "Bác sỹ" && ulshow && <ul className={cx('ul-name')}>
+                                        {suggestions.map((suggestion, index) => {
+                                            if (index > 4 || form.name_Doctor == '') { }
+                                            else {
+                                                return (
+                                                    <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
+                                                        {`${suggestion.FirstName} ${suggestion.LastName}`}
+                                                    </li>
+                                                )
+                                            }
+                                        })}
+                                    </ul>}
+                                </div>
+
+                            </div>
+                            <div className={cx('form-time')}>
+                                <div className={cx('form-time-time')}>
+                                    <input
+                                        type='time'
+                                        value={form.time}
+                                        name="time"
+                                        onChange={handleCollectData}
+                                    ></input>
+                                </div>
+                                <div className={cx('form-time-date')}>
+                                    <input
+                                        type='date'
+                                        value={form.date}
+                                        name="date"
+                                        onChange={handleCollectData}></input>
+                                </div>
+                            </div>
+                            <div className={cx('form-other')}>
+                                <input
+                                    type='text'
+                                    placeholder='Tên bệnh nhân'
+                                    value={form.name_Patient}
+                                    name="name_Patient"
+                                    onChange={handleCollectData}
+                                ></input>
+                                <input
+                                    type='text'
+                                    placeholder='CCCD'
+                                    value={form.name_CCCD}
+                                    name="name_CCCD"
+                                    onChange={handleCollectData}
+                                ></input>
+                                <input
+                                    type='text'
+                                    placeholder='Phòng'
+                                    value={form.room}
+                                    name="room"
+                                    onChange={handleCollectData}
+                                ></input>
+                            </div>
+                            <div className={cx('form-button')}>
+                                <button onClick={handleAdd}>HỦY</button>
+                                <button onClick={submitForm}>XÁC NHẬN</button>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <div className={cx('schedule-add')}>
+                        <div className={cx('contain-form')}>
                             <div className={cx('schedule-form')}>
                                 <div className={cx('form-close')} onClick={handleAdd}>
                                     <i className={cx("fas fa-times")}></i>
                                 </div>
                                 <div className={cx('form-title')}>
-                                    <h3>THÊM LỊCH HẸN</h3>
+                                    <span>Thêm lịch hẹn</span>
                                 </div>
                                 <h5>Bác Sĩ:</h5>
                                 <div className={cx('form-doctor')}>
@@ -528,7 +659,7 @@ export default function Schedule() {
                             </div>
                         </div>
 
-                    </div>
+                    </div> */}
                 </div>
                 <Footer />
             </>

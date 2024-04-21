@@ -7,20 +7,17 @@ import { StatusContext } from '../..';
 const cx = classNames.bind(styles)
 
 export default function Mailcontent({ listemail, num, unShow }) {
-    const[nameSender, setNameSender] = useState("");
+    const [content, setContent] = useState(""); // State để lưu nội dung email
 
     var mail = listemail[num];
     const status = useContext(StatusContext)
-    console.log(1)
     var handleClick = useCallback(() => {
         unShow();
     }, [])
 
-
     useEffect(() => {
-        getUserNameByID(mail.sender_id, setNameSender);
+        setContent(mail.content); // Cập nhật nội dung email khi num thay đổi
     }, [num])
-
 
     return (
         <div className={cx('email-content')}>
@@ -31,12 +28,12 @@ export default function Mailcontent({ listemail, num, unShow }) {
                 </div>
                 <div className={cx('content-belowheader')}>
                     <div className={cx('belowheader-name')}>
-                        <span className={cx('sender')}>{ nameSender }</span>
-                        <span className={cx('receiver')}>đến {mail.receive}</span>
+                        <div className={cx('sender')}>{mail.sender.username}</div>
+                        <div className={cx('receiver')}>đến {mail.receiver[0].username}</div>
                     </div>
-                    <div className={cx('time')}></div>
+                    <div className={cx('time')}>{mail.hour} {mail.date}</div>
                 </div>
-                <div className={cx('content-body')}></div>
+                <div className={cx('content-body')} dangerouslySetInnerHTML={{ __html: content }}></div>
             </div>
         </div>
     )

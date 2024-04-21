@@ -1,15 +1,14 @@
-import { getData, writeUserData } from "../../services/firebase";
-import { v4 as uuidv4 } from "uuid";
-
+import { getData, writeUserData } from '../../services/firebase';
+import { v4 as uuidv4} from 'uuid'
+import ConfirmDeleteMaintain from '../../Components/ConfirmDeleteMaintain';
 // import Select from 'react-select';
-import "./EquipmentsManage.scss";
-import { useState, useEffect, useCallback } from "react";
-import Modal from "../../Components/Modal/Modal";
-import ConfirmDeleteMaintain from "../../Components/ConfirmDeleteMaintain";
+import './EquipmentsManage.scss';
+import { useState, useEffect, useCallback } from 'react';
+import Modal from '../../Components/Modal/Modal';
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faColonSign, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 import TextField from "@mui/material/TextField";
 import {
@@ -30,11 +29,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { Button } from "bootstrap";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { FlareSharp, Troubleshoot } from "@mui/icons-material";
-import { sassTrue } from "sass";
-import { faCreativeCommonsNcJp } from "@fortawesome/free-brands-svg-icons";
 import ConfirmDeleteUse from "../../Components/ConfirmDeleteUse";
 import Footer from "../../Components/Footer";
 import InputBorrower from "./Components/InputBorrower";
@@ -973,27 +968,31 @@ const CustomTablePagination = styled(TablePagination)(
      display: none;
    }
     & .${classes.toolbar}  {
-     display: flex;
-     flex-direction: column;
-     align-items: flex-start;
-     gap: 8px;
-     padding: 4px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 4px 0;
+  
       @media (min-width: 768px) {
-       flex-direction: row;
-       align-items: center;
-     }
-   }
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+  
     & .${classes.selectLabel} {
-     margin: 0;
-   }
+      margin: 0;
+    }
+  
     & .${classes.select}{
-     font-family: 'IBM Plex Sans', sans-serif;
-     padding: 2px 0 2px 4px;
-     border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]};
-     border-radius: 6px;
-     background-color: transparent;
-     color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
-     transition: all 100ms ease;
+      font-family: 'IBM Plex Sans', sans-serif;
+      padding: 2px 0 2px 4px;
+      border: 1px solid ${theme.palette.mode === 'dark' ? grey[800] : grey[200]};
+      border-radius: 6px; 
+      background-color: transparent;
+      color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+      transition: all 100ms ease;
+  
       &:hover {
        background-color: ${
          theme.palette.mode === "dark" ? grey[800] : grey[50]
@@ -1008,30 +1007,35 @@ const CustomTablePagination = styled(TablePagination)(
      }
    }
     & .${classes.displayedRows} {
-     margin: 0;
+      margin: 0;
+  
       @media (min-width: 768px) {
-       margin-left: auto;
-     }
-   }
+        margin-left: auto;
+      }
+    }
+  
     & .${classes.actions} {
-     display: flex;
-     gap: 6px;
-     border: transparent;
-     text-align: center;
-   }
+      display: flex;
+      gap: 6px;
+      border: transparent;
+      text-align: center;
+    }
+  
     & .${classes.actions} > button {
-     display: flex;
-     align-items: center;
-     padding: 0;
-     border: transparent;
-     border-radius: 50%;
-     background-color: transparent;
-     border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]};
-     color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
-     transition: all 120ms ease;
+      display: flex;
+      align-items: center;
+      padding: 0;
+      border: transparent;
+      border-radius: 50%;
+      background-color: transparent;
+      border: 1px solid ${theme.palette.mode === 'dark' ? grey[800] : grey[200]};
+      color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+      transition: all 120ms ease;
+  
       > svg {
-       font-size: 22px;
-     }
+        font-size: 22px;
+      }
+  
       &:hover {
        background-color: ${
          theme.palette.mode === "dark" ? grey[800] : grey[50]
