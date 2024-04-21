@@ -342,7 +342,9 @@ export default function Schedule({ user }) {
                                                             </select>
                                                         )}
                                                         {handleColor(page * 10 + index) === 'doing' && (
-                                                            <select name="select-in-edit"
+                                                            <select 
+                                                            name="select-in-edit"
+                                                            className={cx('select-status')}
                                                                 onChange={(e) => isSelectedToEdit(listdata[page * 10 + index].id_schedule, e.target.value)}
                                                             >
                                                                 <option value="Xong">Xong</option>
