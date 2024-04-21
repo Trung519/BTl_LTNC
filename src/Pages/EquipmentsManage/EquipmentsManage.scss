@@ -229,6 +229,7 @@
 }
 
 #header-container{
+    height: 65px;
     display: flex;
     position: relative;
     margin-bottom: 1rem;
@@ -236,11 +237,13 @@
     border-spacing: 1rem;
     align-items: flex-end;
 }
+#header-box{
+    border-bottom: 2px solid #3497F9;
+}
 
 #header-page{
     text-align: right;
     color: #3E454D;
-    font-family:'Arial', sans-serif;
     font-family:'Arial', sans-serif;
     font-weight: 500;
     text-transform: uppercase;

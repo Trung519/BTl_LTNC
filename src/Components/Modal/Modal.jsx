@@ -79,7 +79,7 @@ export default function Modal({
               // placeholder="Tên"
               autoComplete="off"
             />
-            <label htmlFor="name">Tên</label>
+            <label htmlFor="name">Tên*</label>
           </div>
 
           <div className="input-wrap">
@@ -92,7 +92,7 @@ export default function Modal({
               // placeholder="Loại"
               autoComplete="off"
             />
-            <label htmlFor="type">Loại</label>
+            <label htmlFor="type">Loại*</label>
           </div>
 
           {/* <div>
@@ -112,7 +112,7 @@ export default function Modal({
               // placeholder="Phòng"
               autoComplete="off"
             />
-            <label htmlFor="room">Phòng</label>
+            <label htmlFor="room">Phòng*</label>
           </div>
 
           <div id="description" className="input-wrap">
@@ -142,7 +142,10 @@ export default function Modal({
             </select>
           </div>
           <div id="btn-container">
-            <div id="submit-btn" type="submit" onClick={handleSubmit}>
+            <div className="submit-btn" onClick={closeModal}>
+              Hủy
+            </div>
+            <div className="submit-btn" type="submit" onClick={handleSubmit}>
               Lưu
             </div>
           </div>
