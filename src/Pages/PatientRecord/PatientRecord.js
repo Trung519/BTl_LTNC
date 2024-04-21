@@ -27,7 +27,8 @@ export default function PatientRecord() {
       }
     });
   }, []);
-  // console.log("Hellobabefdsfdssdsf", patients);
+
+  /////hehehehheheheeh
 
   const [newFormOpen, setNewFormOpen] = React.useState(false);
   const [renderPatientList, setRenderPatientList] = React.useState([]); //Render ra những thứ cần render

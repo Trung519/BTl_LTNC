@@ -14,10 +14,21 @@ import Schedule from "../../Pages/Schedule";
 import LoginForm from "../LoginForrm/LoginForm";
 import SignUpForm from "../SignupForm/SignUpForm";
 import Employee from "../../Pages/Employee";
+import ErrorAccess from "../ErrorAccess";
+
 import { NavDropdown } from "react-bootstrap";
 const cx = classNames.bind(styles);
 
-function Header(props) {
+function Header({ user }) {
+  const handleExit = () => {
+    localStorage.removeItem("id");
+    localStorage.removeItem("name");
+    localStorage.removeItem("department");
+    localStorage.removeItem("typeEmp");
+
+    window.location.assign("/home");
+  }
+
   return (
     <>
       <Router>
@@ -58,19 +69,24 @@ function Header(props) {
                   <p>KTX khu A ĐHQG - TPHCM</p>
                 </div>
               </div>
-
-              <div className={cx("header-wrapper-right", "col-md-3")}>
-                <button>
-                  <Link className={cx("link")} to={"/login"}>
-                    Đăng nhập
-                  </Link>
-                </button>
-                <button>
-                  <Link className={cx("link")} to={"/signup"}>
-                    Đăng ký
-                  </Link>
-                </button>
-              </div>
+              {user.typeEmp !== "normal" ?
+                <div className={cx("header-wrapper-right", "col-md-3")}>
+                  <button onClick={handleExit}>Đăng xuất</button>
+                </div>
+                :
+                <div className={cx("header-wrapper-right", "col-md-3")}>
+                  <button>
+                    <Link className={cx("link")} to={"/login"}>
+                      Đăng nhập
+                    </Link>
+                  </button>
+                  <button>
+                    <Link className={cx("link")} to={"/signup"}>
+                      Đăng ký
+                    </Link>
+                  </button>
+                </div>
+              }
             </div>
           </div>
         </div>
@@ -86,28 +102,63 @@ function Header(props) {
                   navbarScroll
                 >
                   {
-                    props.user.typeEmp === "normal" ?
+                    user.typeEmp === "Quản trị" ? (
                       <>
                         <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>
-                        <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Thông báo</Nav.Link>
-                        <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Hồ sơ bệnh án</Nav.Link>
-                        <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Lịch làm việc</Nav.Link>
-                        <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Quản lý</Nav.Link>
+                        <Nav.Link className={cx('nav-action')} as={Link} to='/announcement'>Thông báo</Nav.Link>
+                        <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient'>Hồ sơ bệnh án</Nav.Link>
+                        <Nav.Link className={cx('nav-action')} as={Link} to='/appointment'>Lịch làm việc</Nav.Link>
+                        <NavDropdown className={cx('nav-action', 'nav-action-last')} title='Quản lý'>
+                          <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/equip_manage'>Quản lý thiết bị</NavDropdown.Item>
+                          <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/medicine_manage'>Quản lý thuốc</NavDropdown.Item>
+                          <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/employee'>Quản lý nhân viên</NavDropdown.Item>
+                        </NavDropdown>
                       </>
-                      : (
-                        props.user.typeEmp === "Bác sỹ" ?
+                    ) : (
+                      user.typeEmp === "Trưởng khoa" ? (
+                        <>
+                          <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>
+                          <Nav.Link className={cx('nav-action')} as={Link} to='/announcement'>Thông báo</Nav.Link>
+                          <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient'>Hồ sơ bệnh án</Nav.Link>
+                          <Nav.Link className={cx('nav-action')} as={Link} to='/appointment'>Lịch làm việc</Nav.Link>
+                          <NavDropdown className={cx('nav-action', 'nav-action-last')} title='Quản lý'>
+                            <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/equip_manage'>Quản lý thiết bị</NavDropdown.Item>
+                            <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/employee'>Quản lý nhân viên</NavDropdown.Item>
+                          </NavDropdown>
+                        </>
+                      ) : (
+                        user.typeEmp === "Bác sỹ" || user.typeEmp === "Y tá" ? (
                           <>
                             <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>
                             <Nav.Link className={cx('nav-action')} as={Link} to='/announcement'>Thông báo</Nav.Link>
                             <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient'>Hồ sơ bệnh án</Nav.Link>
                             <Nav.Link className={cx('nav-action')} as={Link} to='/appointment'>Lịch làm việc</Nav.Link>
-                            <NavDropdown className={cx('nav-action', 'nav-action-last')} title='Quản lý'>
-                              <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/equip_manage'>Quản lý thiết bị</NavDropdown.Item>
-                              <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/medicine_manage'>Quản lý thuốc</NavDropdown.Item>
-                            </NavDropdown>
+                            <Nav.Link className={cx('nav-action')} as={Link} to='/equip_manage'>Quản lý thiết bị</Nav.Link>
                           </>
-                          : ""
+                        ) : (
+                          user.typeEmp === "Dược sĩ" ? (
+                            <>
+                              <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>
+                              <Nav.Link className={cx('nav-action')} as={Link} to='/announcement'>Thông báo</Nav.Link>
+                              <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient'>Hồ sơ bệnh án</Nav.Link>
+                              <Nav.Link className={cx('nav-action')} as={Link} to='/appointment'>Lịch làm việc</Nav.Link>
+                              <NavDropdown className={cx('nav-action', 'nav-action-last')} title='Quản lý'>
+                                <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/equip_manage'>Quản lý thiết bị</NavDropdown.Item>
+                                <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/medicine_manage'>Quản lý thuốc</NavDropdown.Item>
+                              </NavDropdown>
+                            </>
+                          ) : (
+                            <>
+                              <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>
+                              <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Thông báo</Nav.Link>
+                              <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Hồ sơ bệnh án</Nav.Link>
+                              <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Lịch làm việc</Nav.Link>
+                              <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Quản lý</Nav.Link>
+                            </>
+                          )
+                        )
                       )
+                    )
                   }
                 </Nav>
               </Navbar.Collapse>
@@ -118,22 +169,28 @@ function Header(props) {
           <Routes>
             <Route path="/home" element={<Home />} />
             <Route path="/announcement" element={
-              localStorage.getItem("typeEmp") === "Bác sỹ" ? <Notify /> : <Home />
+              user.typeEmp === "normal" ? <LoginForm /> : <Notify user={user} />
             } />
-            <Route path="/file-patient" element={<PatientRecord />} />
+            <Route path="/file-patient" element={
+              user.typeEmp === "normal" ? <LoginForm /> : <PatientRecord />
+            } />
             <Route path="/appointment" element={
-              localStorage.getItem("typeEmp") === "Bác sỹ" ? <Schedule /> : <Home />
-            } />
-            <Route path="/equip_manage" element={
-              localStorage.getItem("typeEmp") === "Bác sỹ" ? <EquipmentsManage /> : <Home />
+              user.typeEmp === "normal" ? <LoginForm /> : <Schedule user={user} />
             } />
             <Route path="/medicine_manage" element={
-              localStorage.getItem("typeEmp") === "Bác sỹ" ? <Medicine_manage /> : <Home />
+              user.typeEmp === "normal" ? <LoginForm /> : (
+                user.typeEmp === "Trưởng khoa" || user.typeEmp === "Bác sỹ" || user.typeEmp === "Y tá" ? <ErrorAccess /> : <Medicine_manage />
+              )
+            } />
+            <Route path="/equip_manage" element={
+              user.typeEmp === "normal" ? <LoginForm /> : <EquipmentsManage />
             } />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignUpForm />} />
             <Route path="/employee" element={
-              localStorage.getItem("typeEmp") === "Bác sỹ" ? <Employee /> : <Home />
+              user.typeEmp === "normal" ? <LoginForm /> : (
+                user.typeEmp === "Dược sỹ" || user.typeEmp === "Bác sỹ" || user.typeEmp === "Y tá" ? <ErrorAccess /> : <Employee />
+              )
             } />
           </Routes>
         </div>

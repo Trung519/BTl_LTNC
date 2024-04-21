@@ -16,7 +16,7 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles)
 
-export default function Tags() {
+export default function Tags({user}) {
     //-------------------------------------Backend-------------------------------------
     const [listUser, setListUsers] = useState([]);
 
@@ -50,8 +50,8 @@ export default function Tags() {
 
 
         const sender = {
-            id: 1,
-            userName: "nguyenphap242"
+            id: user.id,
+            userName: user.name
         }
 
         SendMail(sender, newMail, setMail)

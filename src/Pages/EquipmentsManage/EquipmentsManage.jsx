@@ -590,6 +590,8 @@ export default function EquipmentsManage({}) {
                             style={{ color: "#1a9cff" }}
                           />
                         </button>
+
+                        
                       </div>
                     </td>
                   </tr>

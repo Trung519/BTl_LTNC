@@ -14,19 +14,17 @@ import updateWhenRemove from '../../firebase/Schedule/updateWhenRemove.js';
 const cx = classNames.bind(styles)
 var number = 0
 
-export default function Schedule() {
+export default function Schedule({ user }) {
     var [edit, setEdit] = useState(false)               // Edit mode
     var [add, setAdd] = useState(false)                 // Add mode
     var [page, setPage] = useState(0)                   // Current page number
-    var [searchbool, setSearchbool] = useState(true)    // (for search bar) true -> found ... false -> not found 
-    var [doctorbool, setDoctorbool] = useState(true)    // (for doctor in add mode) true -> found ... false -> not found
 
     // --------------START BACKEND <KHÔNG PHẬN SỰ MIỄN VÀO>--------------
     const [listdata, setListdata] = useState([]);
 
     const [form, setForm] = useState({
-        id_Doctor: "",
-        name_Doctor: "",
+        id_Doctor: user.typeEmp === 'Bác sỹ' ? user.id : "",
+        name_Doctor: user.typeEmp === 'Bác sỹ' ? user.name : "",
         time: "",
         date: "",
         name_Patient: "",
@@ -40,15 +38,19 @@ export default function Schedule() {
     const [namePatientSearch, setNamePatientSearch] = useState("")
 
     useEffect(() => {
-        setListSchedule(namePatientSearch, setListdata);
+        setListSchedule(user, namePatientSearch, setListdata);
     }, [namePatientSearch]);
 
     useEffect(() => {
-        searchIdDoctorByName(form.name_Doctor, setSuggestions);
+        if (user.typeEmp !== "Bác sỹ") {
+            searchIdDoctorByName(user, form.name_Doctor, setSuggestions);
+        }
     }, [form.name_Doctor])
 
     useEffect(() => {
-        searchNameDoctorByID(form.id_Doctor, setSuggestionsID)
+        if (user.typeEmp !== "Bác sỹ") {
+            searchNameDoctorByID(user, form.id_Doctor, setSuggestionsID)
+        }
     }, [form.id_Doctor])
 
     const handleSelectSuggestion = (suggestion) => {
@@ -62,23 +64,24 @@ export default function Schedule() {
     }
 
     const checkNum = (str) => {
-        if(str.length > 12) return false;
-        for(var i = 0; i < str.length; i++){
-            if(str[i] < '0' || str[i] > '9') return false;
+        if (str.length > 12) return false;
+        for (var i = 0; i < str.length; i++) {
+            if (str[i] < '0' || str[i] > '9') return false;
         }
         return true;
     }
 
     const handleCollectData = (e) => {
+        if (user.typeEmp === "Bác sỹ" && (e.target.name === "id_Doctor" || e.target.name === "name_Doctor")) return;
+
         if (e.target.name === 'name_CCCD') {
-            if ( checkNum(e.target.value)) {
+            if (checkNum(e.target.value)) {
                 const { name, value } = e.target;
                 setForm({
                     ...form,
                     [name]: value
                 });
             }
- 
         }
         else {
             const { name, value } = e.target;
@@ -91,8 +94,6 @@ export default function Schedule() {
 
     const handleNamePatientChange = (e) => {
         setNamePatientSearch(e.target.value);
-        if (listdata.length == 0) setSearchbool(false)
-        else setSearchbool(true)
         setPage(0)
     }
 
@@ -196,17 +197,16 @@ export default function Schedule() {
                     <div className={cx('schedule-wrapper')}>
                         <div className={cx('schedule-title')}>
                             <p>Lịch làm việc</p>
-                            <div className={cx('schedule-title-right')}>
+                            {user.typeEmp !== "Dược sỹ" && <div className={cx('schedule-title-right')}>
                                 <button onClick={handleAdd}>Thêm cuộc hẹn</button>
                                 <button onClick={() => setEdit(true)}>Chỉnh sửa</button>
                                 <button className={cx('no-click')}>Hoàn tất</button>
-                            </div>
+                            </div>}
                         </div>
                         <div className={cx('schedule-search')}>
                             <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'
                                 onChange={handleNamePatientChange}></input>
                             <i class={cx("fas fa-search", 'search')}></i>
-                            {searchbool || <p>Không tìm thấy !</p>}
                         </div>
                         <div className={cx('schedule-content')}>
                             <div className={cx('schedule-table')}>
@@ -284,17 +284,16 @@ export default function Schedule() {
                     <div className={cx('schedule-wrapper')}>
                         <div className={cx('schedule-title')}>
                             <p>Lịch làm việc</p>
-                            <div className={cx('schedule-title-right')}>
-                                <button className={cx('no-click')}>Thêm cuộc hẹn</button>
-                                <button className={cx('no-click')}>Chỉnh sửa</button>
-                                <button onClick={handleEdit}>Hoàn tất</button>
-                            </div>
+                            {user.typeEmp !== "Dược sỹ" && <div className={cx('schedule-title-right')}>
+                                <button onClick={handleAdd}>Thêm cuộc hẹn</button>
+                                <button onClick={() => setEdit(true)}>Chỉnh sửa</button>
+                                <button className={cx('no-click')}>Hoàn tất</button>
+                            </div>}
                         </div>
                         <div className={cx('schedule-search')}>
                             <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'
                                 onChange={handleNamePatientChange}></input>
                             <i class={cx("fas fa-search", 'search')}></i>
-                            {searchbool || <p>Không tìm thấy !</p>}
                         </div>
                         <div className={cx('schedule-content')}>
                             <div className={cx('schedule-table')}>
@@ -398,11 +397,11 @@ export default function Schedule() {
                     <div className={cx('schedule-wrapper')}>
                         <div className={cx('schedule-title')}>
                             <p>Lịch làm việc</p>
-                            <div className={cx('schedule-title-right')}>
+                            {user.typeEmp !== "Dược sỹ" && <div className={cx('schedule-title-right')}>
                                 <button onClick={handleAdd}>Thêm cuộc hẹn</button>
-                                <button onClick={handleEdit}>Chỉnh sửa</button>
+                                <button onClick={() => setEdit(true)}>Chỉnh sửa</button>
                                 <button className={cx('no-click')}>Hoàn tất</button>
-                            </div>
+                            </div>}
                         </div>
                         <div className={cx('schedule-search')}>
                             <input maxLength={100} placeholder='Tên bệnh nhân...' type='text'
@@ -484,13 +483,16 @@ export default function Schedule() {
                                     <input
                                         type='text'
                                         placeholder='ID Bác Sĩ'
-                                        value={form.id_Doctor} name="id_Doctor"
+                                        value={user.typeEmp === "Bác sỹ" ? user.id : form.id_Doctor}
+                                        name="id_Doctor"
                                         onChange={handleCollectData}
                                         onClick={() => {
-                                            setUlshow(true)
+                                            setUlshow(true);
                                         }}
+                                        readOnly={user.typeEmp === "Bác sỹ"}
+
                                     ></input>
-                                    {ulshow && <ul className={cx('ul-id')}>
+                                    {user.typeEmp !== "Bác sỹ" && ulshow && <ul className={cx('ul-id')}>
                                         {suggestionsID.map((suggestion, index) => {
                                             if (index > 4 || form.id_Doctor == '') { }
                                             else {
@@ -507,13 +509,15 @@ export default function Schedule() {
                                     <input
                                         type='text'
                                         placeholder='Tên Bác Sĩ'
-                                        value={form.name_Doctor} name="name_Doctor"
+                                        value={user.typeEmp === "Bác sỹ" ? user.name : form.name_Doctor}
+                                        name="name_Doctor"
                                         onChange={handleCollectData}
+                                        readOnly={user.typeEmp === "Bác sỹ"}
                                         onClick={() => {
                                             setUlshow(true)
                                             setSuggestionsID([])
                                         }}></input>
-                                    {ulshow && <ul className={cx('ul-name')}>
+                                    {user.typeEmp !== "Bác sỹ" && ulshow && <ul className={cx('ul-name')}>
                                         {suggestions.map((suggestion, index) => {
                                             if (index > 4 || form.name_Doctor == '') { }
                                             else {

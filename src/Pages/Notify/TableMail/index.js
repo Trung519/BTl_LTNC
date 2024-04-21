@@ -3,9 +3,12 @@ import styles from './TableMail.module.scss'
 import classNames from 'classnames/bind'
 import Mailcontent from './Mailcontent'
 
+import { RemoveReceivedMails } from '../../../firebase/Notify/ReceivedMails'
+import { RemoveSentMails } from '../../../firebase/Notify/SentMails'
+
 const cx = classNames.bind(styles)
 
-export default function Tablemail({ listdata, status }) {
+export default function Tablemail({ listdata, status, user }) {
     const [page, setPage] = useState(0)             // Phan trang provip
     const listEmail = listdata;
     const [showcontent, setShowcontent] = useState(false)
@@ -15,19 +18,35 @@ export default function Tablemail({ listdata, status }) {
         setPage(e.target.value)
     }, [])
 
-    var handleClickcheckbox = useCallback((e) => {
+    var handleClickcheckbox = (e) => {
         e.stopPropagation()
-    }, [])
+    }
 
     var handleShowcontent = useCallback((page, index) => {
         setShowcontent(true);
         setNumemail(page * 10 + index)
     }, [])
- 
+
     var handleUnshowcontent = useCallback(() => {
         setShowcontent(false);
     }, [])
-    
+
+    const removeEmail = () => {
+        const listID = [];
+        const checkboxInputs = document.querySelectorAll('input[type="checkbox"]');
+        checkboxInputs.forEach(checkbox => {
+            if (checkbox.checked) {
+                listID.push(checkbox.id);
+            }
+        });
+
+        if (status === 'received_mail') {
+            RemoveReceivedMails(user, listID);
+        }
+        else RemoveSentMails(user, listID);
+
+    }
+
     return (
         <div className={cx('tablemail-wrapper')}>
             {!showcontent &&
@@ -51,16 +70,17 @@ export default function Tablemail({ listdata, status }) {
                             else {
                                 let count = index % 2
                                 return (
-                                    <div onClick={() => handleShowcontent(page, index)} key={page * 10 + index + 1} className={cx('row', 'line-row', `line${count}`)}>
-                                        <div onClick={(e) => handleClickcheckbox(e)} className={cx('col-md-1','contain-checkbox')}>
+                                    <div onClick={() => handleShowcontent(page, index)} key={page * 10 + index} className={cx('row', 'line-row', `line${count}`)}>
+                                        <div onClick={(e) => handleClickcheckbox(e)} className={cx('col-md-1', 'contain-checkbox')}>
                                             <input
                                                 type='checkbox'
+                                                id={listEmail[page * 10 + index].mail_id}
                                             ></input>
                                         </div>
                                         <div className={cx('col-md-2', 'sender-col')}>
                                             {status === 'received_mail' ?
                                                 listEmail[page * 10 + index].sender.username
-                                                : 'Tôi' 
+                                                : 'Tôi'
                                             }
                                         </div>
                                         <div className={cx('col-md-8', 'content-col')}>
@@ -78,8 +98,7 @@ export default function Tablemail({ listdata, status }) {
                     </div>
                     <div className={cx('notify-footer')}>
                         <div className={cx('notify-footer-left')}>
-                            <button>Xóa hết</button>
-                            <button>Xóa</button>
+                            <button onClick={removeEmail}>Xóa</button>
                         </div>
                         <div className={cx('tablemail-pages')}>
                             {Array.from({ length: Math.ceil(listEmail.length / 10) }, (_, index) => (

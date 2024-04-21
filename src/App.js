@@ -9,7 +9,8 @@ function App() {
   const user = {
     id: localStorage.getItem('id') ? localStorage.getItem('id') : "normal",
     typeEmp: localStorage.getItem('typeEmp') ? localStorage.getItem('typeEmp') : "normal",
-    name: localStorage.getItem('name') ? localStorage.getItem('name') : "normal"
+    name: localStorage.getItem('name') ? localStorage.getItem('name') : "normal",
+    department: localStorage.getItem("department") ? localStorage.getItem("department") : "normal"
   };
 
   return (
