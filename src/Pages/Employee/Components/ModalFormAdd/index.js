@@ -313,7 +313,7 @@ function ModalFormAdd({
                 <div className="col-1">
                   <button
                     id="submit-btn"
-                    className={cx("btn-save", { disable: read })}
+                    className={cx("btn-save", { disable: read }  )}
                     type="submit"
                     onClick={handleAddEmp}
                     disabled={read}

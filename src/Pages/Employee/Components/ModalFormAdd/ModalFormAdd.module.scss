@@ -1,37 +1,53 @@
-.modal-content{
+.modal-content {
   width: 50%;
   margin: auto;
   background-color: white;
   padding: 24px;
- 
+
 }
 
-.title{
+.title {
   font-size: 20px;
   padding: 0;
-} 
-.form-input{
+}
+
+.form-input {
   display: flex;
 }
-.info-select{
+
+.info-select {
   // display: flex;
   padding-top: 10px;
-  label{
+
+  label {
     margin-right: 10px;
   }
 }
 
-.header-page{
+.header-page {
   display: flex;
   align-items: center;
   border-bottom: #CFCFCF 0.5px solid;
 
 }
 
-.error-alert{
+.error-alert {
   margin: 0 0 4px auto;
 }
 
-.disable{
+.disable {
   display: none;
+}
+
+.btn-save {
+  padding: 4px;
+  font-family: 'Arial', sans-serif;
+  margin: 0 5px;
+  background-color: #3497F9;
+  outline: none;
+  border-radius: 6px;
+  border: none;
+  font-weight: bold;
+  color: white;
+
 }
