@@ -1,8 +1,7 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import styles from './TableMail.module.scss'
 import classNames from 'classnames/bind'
 import Mailcontent from './Mailcontent'
-import getUserNameByID from '../../../firebase/Notify/getUserNameByID'
 
 const cx = classNames.bind(styles)
 
@@ -41,42 +40,43 @@ export default function Tablemail({ listdata, status }) {
                     <p>Thời gian</p>
                 </div>
             </div><div className={cx('content-container')}>
-                    {Array.from({ length: 10 }, (_, index) => {
-                        if (page * 10 + index + 1 > listEmail.length) { }
-                        else {
-                            let count = index % 2
-                            return (
-                                <div onClick={() => handleShowcontent(page, index)} key={page * 10 + index + 1} className={cx('row', 'line-row', `line${count}`)}>
-                                    <div className={cx('col-md-1')}>
-                                        <input type='checkbox'></input>
+                    {
+                        Array.from({ length: 10 }, (_, index) => {
+                            if (page * 10 + index + 1 > listEmail.length) { }
+                            else {
+                                let count = index % 2
+                                return (
+                                    <div onClick={() => handleShowcontent(page, index)} key={page * 10 + index + 1} className={cx('row', 'line-row', `line${count}`)}>
+                                        <div className={cx('col-md-1')}>
+                                            <input type='checkbox'></input>
+                                        </div>
+                                        <div className={cx('col-md-2', 'sender-col')}>
+                                            {status === 'received_mail' ?
+                                                listEmail[page * 10 + index].sender.username
+                                                : listEmail[page * 10 + index].receiver.map((email) => email.username
+                                                )}
+                                        </div>
+                                        <div className={cx('col-md-8', 'content-col')}>
+                                            <span className={cx('content-title')}>{listEmail[page * 10 + index].subject}</span>
+                                            <span className={cx('barrie')}>-</span>
+                                            <span className={cx('content-content')}>{` ${listEmail[page * 10 + index].content}`}</span>
+                                        </div>
+                                        <div className={cx('col-md-1', 'time-col')}>
+                                            <p> {listEmail[page * 10 + index].hour}</p>
+                                            <p> {listEmail[page * 10 + index].date}</p>
+                                        </div>
                                     </div>
-                                    <div className={cx('col-md-2', 'sender-col')}>
-                                        {status == 'received_mail' ?
-                                            listEmail[page * 10 + index].sender.username
-                                            : listEmail[page * 10 + index].receiver.map((email) => email.username
-                    )}
-                                    </div>
-                                    <div className={cx('col-md-8', 'content-col')}>
-                                        <span className={cx('content-title')}>{listEmail[page * 10 + index].subject}</span>
-                                        <span className={cx('barrie')}>-</span>
-                                        <span className={cx('content-content')}>{` ${listEmail[page * 10 + index].content}`}</span>
-                                    </div>
-                                    <div className={cx('col-md-1', 'time-col')}>
-                                        <p> {listEmail[page * 10 + index].hour}</p>
-                                        <p> {listEmail[page * 10 + index].date}</p>
-                                    </div>
-                                </div>
-                            )
-                        }
-
-                    })}
+                                )
+                            }
+                        })
+                    }
                 </div><div className={cx('tablemail-pages')}>
                     {Array.from({ length: Math.ceil(listEmail.length / 10) }, (_, index) => (
                         <button
                             onClick={handleChangepage}
                             value={index}
                             key={index}
-                            className={cx(`page-${page == index ? 'current' : ''}`)}
+                            className={cx(`page-${page === index ? 'current' : ''}`)}
                         >
                             {index + 1}
                         </button>

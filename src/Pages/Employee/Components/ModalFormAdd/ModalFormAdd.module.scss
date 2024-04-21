@@ -3,16 +3,22 @@
   margin: auto;
   background-color: white;
   padding: 24px;
-  
+ 
 }
 
 .title{
   font-size: 20px;
   padding: 0;
-}
+} 
 .form-input{
   display: flex;
-  
+}
+.info-select{
+  // display: flex;
+  padding-top: 10px;
+  label{
+    margin-right: 10px;
+  }
 }
 
 .header-page{
@@ -24,4 +30,8 @@
 
 .error-alert{
   margin: 0 0 4px auto;
+}
+
+.disable{
+  display: none;
 }

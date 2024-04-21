@@ -31,6 +31,7 @@ function InputBorrower({ inputSearch, setInputSearch }) {
         className={cx("input-user")}
         placeholder="Nhập ID hoặc tên người mượn"
         value={inputSearch}
+        autoFocus
         onChange={(e) => {
           setInputSearch(e.target.value);
           if (e.target.value !== "") setDisplayList(true);
@@ -46,7 +47,7 @@ function InputBorrower({ inputSearch, setInputSearch }) {
                   setDisplayList(false);
                 }}
               >
-                <div>{`${item.FirstName} ${item.LastName}`}</div>
+                <div>{`${item.LastName} ${item.FirstName}`}</div>
                 <span>-{item.ID}</span>
               </li>
             );
