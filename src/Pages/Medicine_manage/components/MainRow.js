@@ -12,6 +12,8 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DialogInfo from "./DialogInfo";
 import DialogModify from "./DialogModify";
 import { DeleteData } from "../P_R-be";
+import { toast } from "react-toastify";
+
 const MainRow = (props) => {
   const { row, setNewListMedicineAndRender, newListMedicine, index } = props;
   const [infoFormOpen, setInfoFormOpen] = React.useState(false);
@@ -84,6 +86,17 @@ const MainRow = (props) => {
             const temp = newListMedicine;
             temp.splice(indexInListMedicine, 1);
             setNewListMedicineAndRender([...temp]);
+            toast.error("Xóa thành công !", {
+              position: "top-right",
+              autoClose: 2500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              // transition: Bounce,
+            });
           }}
         >
           <DeleteOutlineIcon></DeleteOutlineIcon>

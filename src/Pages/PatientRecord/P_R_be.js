@@ -48,7 +48,7 @@ export function AddData(fullName, birthDay, newGender, CCCD, BHYT, address) {
     // history: [{ a: "a" }],
   })
     .then(() => {
-      alert("Data Added Successfully");
+      // alert("Data Added Successfully");
     })
     .catch((error) => {
       alert("Unsuccessful");
@@ -103,7 +103,7 @@ export function AddHist(CCCD, newHistory) {
         // Cập nhật lại thông tin bệnh nhân trong bảng PatientRecord
         update(patientRef, patientData)
           .then(() => {
-            alert("History Added Successfully");
+            // alert("History Added Successfully");
           })
           .catch((error) => {
             alert("Unsuccessful");
@@ -144,7 +144,7 @@ export function Add_Med(CCCD, histIndex, medicine, usage, dosagePerDay, unit) {
 
         update(patientRef, patientData)
           .then(() => {
-            alert("Medicine Added Successfully");
+            // alert("Medicine Added Successfully");
           })
           .catch((error) => {
             alert("Unsuccessful");
@@ -180,7 +180,7 @@ export function UpdateData(fullName, birthDay, newGender, CCCD, BHYT) {
     BHYT: BHYT,
   })
     .then(() => {
-      alert("Data Updated Successfully");
+      // alert("Data Updated Successfully");
     })
     .catch((error) => {
       alert("Data Updated Unsuccessful");
@@ -191,7 +191,7 @@ export function DeleteData(CCCD) {
   remove(ref(db, "PatientRecord/" + CCCD))
     .then(() => {
       // window.location.reload();
-      alert("Data Deleted Successfully");
+      // alert("Data Deleted Successfully");
     })
     .catch((error) => {
       alert("Unsuccessful");

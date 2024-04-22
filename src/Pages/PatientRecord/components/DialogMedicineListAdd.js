@@ -80,10 +80,8 @@ const DialogMedicineListAdd = (props) => {
                 inputRef={nameValue}
               /> */}
               <Autocomplete
-                // sx={{ width: 300, marginLeft: "15px" }}
-                sx={{ marginTop: "8px" }}
+                sx={{ marginTop: "11px" }}
                 id="name"
-                // name="name"
                 options={listMedicine}
                 getOptionLabel={(option) => {
                   return option.name;
