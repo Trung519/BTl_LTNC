@@ -92,7 +92,7 @@ const MainRow = (props) => {
             const temp = newListMedicine;
             temp.splice(indexInListMedicine, 1);
             setNewListMedicineAndRender([...temp]);
-            toast.error("Xóa thành công !", {
+            toast.success("Xóa thành công !", {
               position: "top-right",
               autoClose: 2500,
               hideProgressBar: false,
