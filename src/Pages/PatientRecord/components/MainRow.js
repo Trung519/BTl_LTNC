@@ -88,14 +88,14 @@ function MainRow(props) {
             {openSubRow ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell>{index + 1}</TableCell>
-        <TableCell>{"BN" + row.CCCD.slice(-6)}</TableCell>
-        <TableCell align="left">{row.fullName}</TableCell>
-        <TableCell>{row.gender}</TableCell>
-        <TableCell>{row.CCCD}</TableCell>
-        <TableCell>{row.BHYT}</TableCell>
-        <TableCell>{row.birthDay}</TableCell>
-        <TableCell>
+        {/* <TableCell>{index + 1}</TableCell> */}
+        <TableCell align="center">{"BN" + row.CCCD.slice(-6)}</TableCell>
+        <TableCell>{row.fullName}</TableCell>
+        <TableCell align="center">{row.gender}</TableCell>
+        <TableCell align="center">{row.CCCD}</TableCell>
+        <TableCell align="center">{row.BHYT}</TableCell>
+        <TableCell align="center">{row.birthDay}</TableCell>
+        <TableCell align="center">
           <IconButton
             aria-label="info"
             size="small"
