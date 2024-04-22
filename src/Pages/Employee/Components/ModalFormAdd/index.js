@@ -8,10 +8,15 @@ import InputSelect from "../InputSelect";
 import { Alert } from "@mui/material";
 import Fade from "@mui/material/Fade";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+
 import dayjs from "dayjs";
-import { v4 as uuidv4 } from "uuid";
-import { getData, writeUserData } from "../../../../services/firebase";
-import { Construction, Key } from "@mui/icons-material";
+import { writeUserData } from "../../../../services/firebase";
 
 const cx = classNames.bind(styles);
 function getFormattedDate() {
@@ -25,18 +30,6 @@ function getFormattedDate() {
 
   // Trả về ngày đã định dạng
   return `${day}/${month}/${year}`;
-}
-function isValidAge(birthDayString) {
-  // format dd/mm/yyyy;
-  if (birthDayString) {
-    // console.log("birthDay", birthDayString);
-    const [day, month, year] = birthDayString.split("/");
-    const birthDay = new Date(`${year}-${month}-${day}`);
-    const today = new Date();
-    const age = today.getFullYear() - birthDay.getFullYear();
-    return age >= 18;
-  }
-  return false;
 }
 
 function ModalFormAdd({
@@ -54,7 +47,6 @@ function ModalFormAdd({
   //     setDataEmp(post["Employee"] ?? []);
   //   });
   // }, []);
-  console.log(read);
 
   const [formState, setFormState] = useState([]);
   const [msgError, setMsgError] = useState("");
@@ -65,23 +57,55 @@ function ModalFormAdd({
       setFormState(findEmp);
     } else {
       setFormState({
-        AcademicDegree: "Cử nhân",
+        AcademicDegree: "",
         Department: "",
         FirstName: "",
-        Gender: "Nam",
+        Gender: "",
         ID: "",
         LastName: "",
         birthDay: getFormattedDate(),
-        typeEmp: "Bác sỹ",
+        typeEmp: "",
       });
     }
   }, [rowToEdit]);
   const [displayAlertError, setDisplayAlertError] = useState(false);
+  function isValidAge(birthDayString) {
+    // format dd/mm/yyyy;
+    if (birthDayString) {
+      // console.log("birthDay", birthDayString);
+      const [day, month, year] = birthDayString.split("/");
+      const birthDay = new Date(`${year}-${month}-${day}`);
+      const today = new Date();
+      const age = today.getFullYear() - birthDay.getFullYear();
+      if (age < 18) {
+        setMsgError("Nhân viên chưa đủ 18 tuổi !");
+        setDisplayAlertError(true);
+        setTimeout(() => {
+          setDisplayAlertError(false);
+        }, 3000);
+        return false;
+      }
+      return true;
+    }
+    setMsgError("Vui lòng nhập ngày sinh !");
+    setDisplayAlertError(true);
+    setTimeout(() => {
+      setDisplayAlertError(false);
+    }, 3000);
+    return false;
+  }
 
   const handleDateChange = (newDate) => {
     const formattedDate = dayjs(newDate).format("DD/MM/YYYY");
     setFormState((prev) => ({ ...prev, birthDay: formattedDate }));
   };
+
+  // const handleChangeBirthDate = (e) => {
+  //   // const [year, month, day] = e.target.value.split("-");
+  //   // const date = `${day}/${month}/${year}`;
+  //   // console.log(date);
+  //   setFormState((prev) => ({ ...prev, birthDay: e.target.value }));
+  // };
   const isValidEmp = () => {
     // let admin = dataEmp.filter((item) => item.typeEmp === "Quản trị");
     // let dean = dataEmp.filter((item) => item.typeEmp === "Trưởng khoa");
@@ -89,28 +113,46 @@ function ModalFormAdd({
     // let nurse = dataEmp.filter((item) => item.typeEmp === "Y tá");
     // let pharmacist = dataEmp.filter((item) => item.typeEmp === "Dược sỹ");
     // let supporter = dataEmp.filter((item) => item.typeEmp === "Hậu cần");
+    if (!rowToEdit) {
+      setFormState((prev) => {
+        let newEmp = prev;
+        const randomNumber = Math.floor(Math.random() * 10000000);
 
-    setFormState((prev) => {
-      let newEmp = prev;
-      const randomNumber = Math.floor(Math.random() * 100000);
-      if (newEmp.typeEmp === "Bác sỹ") {
-        newEmp.ID = "BS" + randomNumber.toString().padStart(5, "0");
-      } else if (newEmp.typeEmp === "Y tá") {
-        newEmp.ID = "NS" + randomNumber.toString().padStart(5, "0");
-      } else if (newEmp.typeEmp === "Dược sỹ") {
-        newEmp.ID = "PH" + randomNumber.toString().padStart(5, "0");
-      } else if (newEmp.typeEmp === "Hậu cần") {
-        newEmp.ID = "SP" + randomNumber.toString().padStart(5, "0");
-      } else if (newEmp.typeEmp === "Quản trị") {
-        newEmp.ID = "AD" + randomNumber.toString().padStart(5, "0");
-      } else if (newEmp.typeEmp === "Trưởng khoa") {
-        newEmp.ID = "DN" + randomNumber.toString().padStart(5, "0");
-      }
+        newEmp.ID = randomNumber.toString().padStart(7, "0");
+        return newEmp;
+      });
+    }
 
-      return newEmp;
-    });
     const values = Object.values(formState);
-    return !values.includes("");
+    if (values.includes("")) {
+      setMsgError("Vui lòng không để trống thông tin !");
+      setDisplayAlertError(true);
+      setTimeout(() => {
+        setDisplayAlertError(false);
+      }, 3000);
+      return false;
+    }
+    if (formState.typeEmp === "Trưởng khoa") {
+      let findDean = dataEmp.find(
+        (item) =>
+          item.Department === formState.Department &&
+          item.typeEmp === "Trưởng khoa" &&
+          item.ID !== formState.ID
+      );
+      if (findDean) {
+        console.log(findDean);
+        setMsgError(
+          `${findDean.ID} đang là Trưởng khoa ${formState.Department}`
+        );
+        setDisplayAlertError(true);
+        setTimeout(() => {
+          setDisplayAlertError(false);
+        }, 3000);
+        return false;
+      }
+    }
+
+    return true;
   };
   const handleAddEmp = () => {
     if (isValidEmp() && isValidAge(formState.birthDay)) {
@@ -124,6 +166,17 @@ function ModalFormAdd({
           writeUserData(newdataEmp, "/Employee");
           return newdataEmp;
         });
+        toast.success("Cập nhật thành công !", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          // transition: Bounce,
+        });
       } else {
         // luu du lieu moi vao va set ve trang thai ban dau
         setDataEmp((prev) => {
@@ -131,33 +184,30 @@ function ModalFormAdd({
           // console.log("newdataEMp", newDataEmp);
           writeUserData(newDataEmp, "/Employee");
           setFormState({
-            AcademicDegree: "Cử nhân",
+            AcademicDegree: "",
             Department: "",
             FirstName: "",
             Gender: "Nam",
             ID: "",
             LastName: "",
             birthDay: getFormattedDate(),
-            typeEmp: "Bác sỹ",
+            typeEmp: "",
           });
           return newDataEmp;
         });
+        toast.success("Thêm Nhân viên thành công !", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          // transition: Bounce,
+        });
       }
       setDisplayForm(false);
-      setAlertAddSuccess(true);
-      setTimeout(() => {
-        setAlertAddSuccess(false);
-      }, 3000);
-    } else {
-      if (!isValidEmp()) {
-        setMsgError("Vui lòng không để trống thông tin !");
-      } else if (!isValidAge()) {
-        setMsgError("Nhân viên chưa đủ 18 tuổi !");
-      }
-      setDisplayAlertError(true);
-      setTimeout(() => {
-        setDisplayAlertError(false);
-      }, 3000);
     }
   };
   // console.log("dataEmp", dataEmp);
@@ -229,7 +279,7 @@ function ModalFormAdd({
               <div className="row row-cols-1 row-cols-lg-2 ">
                 <div className="col">
                   <div className={cx("info-select")}>
-                    <label>Bằng cấp</label>
+                    {/* <label>Bằng cấp</label>
                     <select
                       value={formState.AcademicDegree}
                       onChange={(e) =>
@@ -241,14 +291,36 @@ function ModalFormAdd({
                       disabled={read}
                     >
                       <option>Cử nhân</option>
-                      <option>Thạc sỹ</option>
-                      <option>Tiến sỹ</option>
-                    </select>
+                      <option>Thạc sĩ</option>
+                      <option>Tiến sĩ</option>
+                    </select> */}
+
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">
+                        Bằng Cấp
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={formState.AcademicDegree}
+                        label="Bằng Cấp"
+                        onChange={(e) =>
+                          setFormState({
+                            ...formState,
+                            AcademicDegree: e.target.value,
+                          })
+                        }
+                      >
+                        <MenuItem value={"Cử Nhân"}>Cử Nhân</MenuItem>
+                        <MenuItem value={"Thạc Sĩ"}>Thạc Sĩ</MenuItem>
+                        <MenuItem value={"Tiến Sĩ"}>Tiến Sĩ</MenuItem>
+                      </Select>
+                    </FormControl>
                   </div>
                 </div>
                 <div className="col">
                   <div className={cx("info-select")}>
-                    <label>Giới tính</label>
+                    {/* <label>Giới tính</label>
                     <select
                       value={formState.Gender}
                       onChange={(e) =>
@@ -259,7 +331,28 @@ function ModalFormAdd({
                       <option>Nam</option>
                       <option>Nữ</option>
                       <option>Khác</option>
-                    </select>
+                    </select> */}
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">
+                        Giới Tính
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={formState.Gender}
+                        label="Giới Tính"
+                        onChange={(e) =>
+                          setFormState({
+                            ...formState,
+                            Gender: e.target.value,
+                          })
+                        }
+                      >
+                        <MenuItem value={"Nam"}>Nam</MenuItem>
+                        <MenuItem value={"Nữ"}>Nữ</MenuItem>
+                        <MenuItem value={"Khác"}>Khác</MenuItem>
+                      </Select>
+                    </FormControl>
                   </div>
                 </div>
               </div>
@@ -276,7 +369,7 @@ function ModalFormAdd({
 
                 <div className="col">
                   <div className={cx("info-select")}>
-                    <label>Chức vụ</label>
+                    {/* <label>Chức vụ</label>
                     <select
                       value={formState.typeEmp}
                       onChange={(e) =>
@@ -286,14 +379,37 @@ function ModalFormAdd({
                     >
                       <option>Quản trị</option>
                       <option>Trưởng khoa</option>
-                      <option>Bác sỹ</option>
+                      <option>Bác sĩ</option>
                       <option>Y tá</option>
-                      <option>Dược sỹ</option>
-                      {/* <option>Hậu cần</option> */}
-                    </select>
+                      <option>Dược sĩ</option>
+                      <option>Hậu cần</option>
+                    </select> */}
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">
+                        Chức Vụ
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={formState.typeEmp}
+                        label="Chức Vụ"
+                        onChange={(e) =>
+                          setFormState({
+                            ...formState,
+                            typeEmp: e.target.value,
+                          })
+                        }
+                      >
+                        <MenuItem value={"Quản trị"}>Quản trị</MenuItem>
+                        <MenuItem value={"Trưởng khoa"}>Trưởng khoa</MenuItem>
+                        <MenuItem value={"Bác sĩ"}>Bác sĩ</MenuItem>
+                        <MenuItem value={"Y tá"}>Y tá</MenuItem>
+                        <MenuItem value={"Dược sĩ"}>Dược sĩ</MenuItem>
+                      </Select>
+                    </FormControl>
                   </div>
                 </div>
-                <div className="col">
+                {/* <div className="col">
                   <LocalizationProvider
                     dateAdapter={AdapterDayjs}
                     disabled={read}
@@ -307,13 +423,43 @@ function ModalFormAdd({
                       disabled={read}
                     />
                   </LocalizationProvider>
+                </div> */}
+                <div className="col">
+                  {/* <div className={cx("input-date")}>
+                    <input
+                      type="date"
+                      name="date"
+                      value={formState.birthDay}
+                      onChange={handleChangeBirthDate}
+                    ></input>
+                    <label htmlFor="date">Ngày sinh</label>
+                  </div> */}
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={["DatePicker"]}>
+                      <DatePicker
+                        label="Ngày Sinh"
+                        // value={formState.birthDay}
+                        value={dayjs(formState.birthDay, "DD/MM/YYYY")}
+                        onChange={handleDateChange}
+                        format="DD/MM/YYYY"
+                        referenceDate={dayjs("22/04/2024", "DD/MM/YYYY")}
+                        disabled={read}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
                 </div>
               </div>
               <div className="row justify-content-md-center">
-                <div className="col-1">
+                <div className={cx("btn-action")}>
+                  <button
+                    className={cx("btn-save", { disable: read })}
+                    onClick={() => setDisplayForm(false)}
+                  >
+                    Hủy
+                  </button>
                   <button
                     id="submit-btn"
-                    className={cx("btn-save", { disable: read }  )}
+                    className={cx("btn-save", { disable: read })}
                     type="submit"
                     onClick={handleAddEmp}
                     disabled={read}
