@@ -28,7 +28,8 @@ const Medicine_manage = () => {
     Medicine().then((post) => {
       if (post != null) {
         setNewListMedicineAndRender(Object.values(post));
-        console.log("render", Object.values(post));
+        // *******Lấy dữ liệu về từ db
+        // console.log("render", Object.values(post));
         handleLoadingDone();
       }
     });
@@ -246,7 +247,6 @@ const Medicine_manage = () => {
             >
               <Table sx={{ marginBottom: "20px" }}>
                 <colgroup>
-                  {/* <col style={{ width: "2%" }} /> */}
                   <col style={{ width: "10%" }} />
                   <col style={{ width: "20%" }} />
                   <col style={{ width: "10%" }} />

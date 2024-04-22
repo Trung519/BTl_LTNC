@@ -28,7 +28,8 @@ export default function PatientRecord() {
     Patients().then((post) => {
       if (post != null) {
         setNewPatientsAndRender(Object.values(post));
-        console.log("render", Object.values(post));
+        //*********Lấy dữ liệu về từ db
+        // console.log("render", Object.values(post));
         handleLoadingDone();
       }
     });
@@ -339,6 +340,7 @@ export default function PatientRecord() {
                         color: "#000000",
                         // bgcolor: "#08107D",
                         fontSize: "18px",
+                        fontWeight: "550",
                       }}
                     >
                       Mã BN
@@ -348,6 +350,7 @@ export default function PatientRecord() {
                         color: "#000000",
                         // bgcolor: "#08107D",
                         fontSize: "18px",
+                        fontWeight: "550",
                       }}
                       align="left"
                     >
@@ -359,6 +362,7 @@ export default function PatientRecord() {
                         color: "#000000",
                         // bgcolor: "#08107D",
                         fontSize: "18px",
+                        fontWeight: "550",
                       }}
                     >
                       Giới tính
@@ -369,6 +373,7 @@ export default function PatientRecord() {
                         color: "#000000",
                         // bgcolor: "#08107D",
                         fontSize: "18px",
+                        fontWeight: "550",
                       }}
                     >
                       CCCD
@@ -379,6 +384,7 @@ export default function PatientRecord() {
                         color: "#000000",
                         // bgcolor: "#08107D",
                         fontSize: "18px",
+                        fontWeight: "550",
                       }}
                     >
                       BHYT
@@ -389,6 +395,7 @@ export default function PatientRecord() {
                         color: "#000000",
                         // bgcolor: "#08107D",
                         fontSize: "18px",
+                        fontWeight: "550",
                       }}
                     >
                       Ngày sinh
@@ -399,6 +406,7 @@ export default function PatientRecord() {
                         color: "#000000",
                         // bgcolor: "#08107D",
                         fontSize: "18px",
+                        fontWeight: "550",
                       }}
                     >
                       Thao tác

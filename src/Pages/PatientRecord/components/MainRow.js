@@ -101,7 +101,7 @@ function MainRow(props) {
             size="small"
             color="info"
             onClick={() => {
-              setInfoFormOpen(!infoFormOpen);
+              setInfoFormOpen(true);
             }}
           >
             <InfoOutlinedIcon></InfoOutlinedIcon>
@@ -113,13 +113,15 @@ function MainRow(props) {
             row={row}
           ></DialogInfo>
           <IconButton
+            // **********Button để chỉnh sửa
             aria-label="edit"
             size="small"
-            onClick={() => setmodifyFormOpen(!modifyFormOpen)}
+            onClick={() => setmodifyFormOpen(true)}
           >
             <EditOutlinedIcon></EditOutlinedIcon>
           </IconButton>
           {/* DialogModify */}
+
           <DialogModify
             modifyFormOpen={modifyFormOpen}
             // patients={patients}
@@ -175,15 +177,17 @@ function MainRow(props) {
               >
                 Lịch sử khám
               </Typography>
+              {/* ********button thêm lịch sử khám */}
               <IconButton
                 aria-label="add"
                 size="small"
                 color="info"
-                onClick={() => setAddHistoryFormOpen(!addHistoryFormOpen)}
+                onClick={() => setAddHistoryFormOpen(true)}
               >
                 <AddCircleIcon></AddCircleIcon>
               </IconButton>
               {/* DialogHistoryAdd */}
+
               <DialogHistoryAdd
                 addHistoryFormOpen={addHistoryFormOpen}
                 setAddHistoryFormOpen={setAddHistoryFormOpen}
@@ -199,12 +203,67 @@ function MainRow(props) {
               ></DialogHistoryAdd>
 
               <Table size="small" aria-label="history">
+                <colgroup>
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "20%" }} />
+                </colgroup>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Ngày</TableCell>
-                    <TableCell>Bác sĩ phụ trách</TableCell>
-                    <TableCell>Chẩn đoán</TableCell>
-                    <TableCell>Đơn thuốc</TableCell>
+                    <TableCell
+                      sx={{
+                        color: "#000000",
+                        // bgcolor: "#08107D",
+                        fontSize: "16px",
+                        fontWeight: "530",
+                      }}
+                    >
+                      Ngày
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: "#000000",
+                        // bgcolor: "#08107D",
+                        fontSize: "16px",
+                        fontWeight: "530",
+                      }}
+                    >
+                      Bác sĩ phụ trách
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: "#000000",
+                        // bgcolor: "#08107D",
+                        fontSize: "16px",
+                        fontWeight: "530",
+                      }}
+                    >
+                      Chẩn đoán
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        color: "#000000",
+                        // bgcolor: "#08107D",
+                        fontSize: "16px",
+                        fontWeight: "530",
+                      }}
+                    >
+                      Đơn thuốc
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        color: "#000000",
+                        // bgcolor: "#08107D",
+                        fontSize: "16px",
+                        fontWeight: "530",
+                      }}
+                    >
+                      Đã bốc thuốc
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -212,6 +271,7 @@ function MainRow(props) {
                   {historyList.length !== 0 ? (
                     historyList.map((historyRow, index) => (
                       <HistoryRow
+                        CCCD={row.CCCD}
                         key={index}
                         historyRow={historyRow}
                         index={index}

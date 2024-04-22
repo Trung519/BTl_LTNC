@@ -68,7 +68,7 @@ export function AddHist(CCCD, newHistory) {
         }
         patientData = {
           ...patientData,
-          history: [newHistory, ...patientData.history],
+          history: [...patientData.history, newHistory],
         };
 
         // Lấy danh sách thuốc từ lịch sử mới thêm
@@ -112,6 +112,30 @@ export function AddHist(CCCD, newHistory) {
       } else {
         alert("Patient Record not found");
       }
+    })
+    .catch((error) => {
+      alert("Error fetching patient record");
+      console.error("Error fetching patient record:", error);
+    });
+}
+export function getMedCheck(CCCD, index) {
+  const historyRef = ref(db, "PatientRecord/" + CCCD + "/history/" + index);
+  console.log(historyRef);
+  get(historyRef)
+    .then((snapshot) => {
+      let historyData = snapshot.val();
+      historyData = {
+        ...historyData,
+        getMed: true,
+      };
+      update(historyRef, historyData)
+        .then(() => {
+          // alert("History Added Successfully");
+        })
+        .catch((error) => {
+          alert("Unsuccessful");
+          console.error("Error updating patient record:", error);
+        });
     })
     .catch((error) => {
       alert("Error fetching patient record");
