@@ -11,8 +11,8 @@
     background-color: #c2e7ff;
     border-radius: 16px;
     align-items: center;
-    padding: 10px 15px;
-    padding-bottom: 16px;
+    padding: 3% 5%;
+    padding-bottom: 5%;
     border: none;
 
     svg {
@@ -26,7 +26,7 @@
         display: flex;
         margin: auto 0;
         margin-left: 25%;
-        font-size: 23px;
+        font-size: 140%;
         font-weight: 500;
     }
 
@@ -100,5 +100,33 @@
 
     &:hover{
         background-color:#e1e0e0;
+    }
+}
+
+.forall{
+    background-color: #c6c7fc;
+
+    &:hover{
+        background-color: #c6c7fc;
+    }
+}
+
+@media screen and (max-width:1400px){
+
+    .write{
+        p{
+            font-size: 110%;
+        }
+    }
+    .send{
+        p{
+            font-size: 13px;
+        }
+    }
+
+    .receive{
+        p{
+            font-size: 13px;
+        }
     }
 }

@@ -1,21 +1,24 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import styles from './TableMail.module.scss'
 import classNames from 'classnames/bind'
 import Mailcontent from './Mailcontent'
-
+import Pagination from "@mui/material/Pagination";
 import { RemoveReceivedMails } from '../../../firebase/Notify/ReceivedMails'
 import { RemoveSentMails } from '../../../firebase/Notify/SentMails'
+import { toast } from "react-toastify";
+
 
 const cx = classNames.bind(styles)
 
 export default function Tablemail({ listdata, status, user }) {
-    const [page, setPage] = useState(0)             // Phan trang provip
+    const [page, setPage] = useState(1)             // Phan trang provip
     const listEmail = listdata;
     const [showcontent, setShowcontent] = useState(false)
     const [numemail, setNumemail] = useState(0)
+    const rowsPerPage = 10;
 
-    var handleChangepage = useCallback((e) => {
-        setPage(e.target.value)
+    var handleChangepage = useCallback((e,p) => {
+        setPage(p)
     }, [])
 
     var handleClickcheckbox = (e) => {
@@ -24,7 +27,7 @@ export default function Tablemail({ listdata, status, user }) {
 
     var handleShowcontent = useCallback((page, index) => {
         setShowcontent(true);
-        setNumemail(page * 10 + index)
+        setNumemail((page - 1) * 10 + index)
     }, [])
 
     var handleUnshowcontent = useCallback(() => {
@@ -44,7 +47,17 @@ export default function Tablemail({ listdata, status, user }) {
             RemoveReceivedMails(user, listID);
         }
         else RemoveSentMails(user, listID);
-
+        toast.success("Xóa thư thành công !", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            // transition: Bounce,
+        });
     }
 
     return (
@@ -66,30 +79,34 @@ export default function Tablemail({ listdata, status, user }) {
                     </div>
                     <div className={cx('content-container')}>
                         {Array.from({ length: 10 }, (_, index) => {
-                            if (page * 10 + index + 1 > listEmail.length) { }
+                            if ((page - 1) * 10 + index + 1 > listEmail.length) { }
                             else {
                                 let count = index % 2
                                 return (
-                                    <div onClick={() => handleShowcontent(page, index)} key={page * 10 + index} className={cx('row', 'line-row', `line${count}`)}>
+                                    <div onClick={() => handleShowcontent(page, index)} key={(page - 1) * 10 + index} className={cx('row', 'line-row', `line${count}`)}>
                                         <div onClick={(e) => handleClickcheckbox(e)} className={cx('col-md-1', 'contain-checkbox')}>
                                             <input
                                                 type='checkbox'
-                                                id={listEmail[page * 10 + index].mail_id}
+                                                id={listEmail[(page - 1) * 10 + index].mail_id}
                                             ></input>
                                         </div>
                                         <div className={cx('col-md-2', 'sender-col')}>
                                             {status === 'received_mail' ?
-                                                listEmail[page * 10 + index].sender.username
-                                                : 'Tôi'
+                                                listEmail[(page - 1) * 10 + index].sender.username
+                                                : status === 'sent' ? 
+                                                'Tôi' :
+                                                listEmail[(page - 1) * 10 + index].sender.username === '' ?
+                                                'Tôi' :
+                                                listEmail[(page - 1) * 10 + index].sender.username
                                             }
                                         </div>
                                         <div className={cx('col-md-8', 'content-col')}>
-                                            <span className={cx('content-title')}>{listEmail[page * 10 + index].subject}</span>
+                                            <span className={cx('content-title')}>{listEmail[(page - 1) * 10 + index].subject}</span>
                                             <span className={cx('barrie')}>-</span>
-                                            <span className={cx('content-content')}>{` ${listEmail[page * 10 + index].content.split('<br>')[0]}`}</span>
+                                            <span className={cx('content-content')}>{` ${listEmail[(page - 1) * 10 + index].content.split('<br>')[0]}`}</span>
                                         </div>
                                         <div className={cx('col-md-1', 'time-col')}>
-                                            <p> {listEmail[page * 10 + index].date}</p>
+                                            <p> {listEmail[(page - 1) * 10 + index].date}</p>
                                         </div>
                                     </div>
                                 )
@@ -98,19 +115,18 @@ export default function Tablemail({ listdata, status, user }) {
                     </div>
                     <div className={cx('notify-footer')}>
                         <div className={cx('notify-footer-left')}>
-                            <button onClick={removeEmail}>Xóa</button>
+                            <button onClick={() => removeEmail()}>Xóa</button>
                         </div>
                         <div className={cx('tablemail-pages')}>
-                            {Array.from({ length: Math.ceil(listEmail.length / 10) }, (_, index) => (
-                                <button
-                                    onClick={handleChangepage}
-                                    value={index}
-                                    key={index}
-                                    className={cx(`page-${page == index ? 'current' : ''}`)}
-                                >
-                                    {index + 1}
-                                </button>
-                            ))}
+                            <Pagination
+                                color="primary"
+                                onChange={handleChangepage}
+                                page={page}
+                                count={Math.ceil(listEmail.length / rowsPerPage)}
+                                rowsPerPage={10}
+                                showFirstButton
+                                showLastButton
+                            />
                         </div>
                     </div>
 

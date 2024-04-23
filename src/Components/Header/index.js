@@ -15,11 +15,14 @@ import LoginForm from "../LoginForrm/LoginForm";
 import SignUpForm from "../SignupForm/SignUpForm";
 import Employee from "../../Pages/Employee";
 import ErrorAccess from "../ErrorAccess";
-
+import {useState} from 'react'
 import { NavDropdown } from "react-bootstrap";
+
 const cx = classNames.bind(styles);
 
 function Header({ user }) {
+  const [showdiv, setShowdiv] = useState(false)
+
   const handleExit = () => {
     localStorage.removeItem("id");
     localStorage.removeItem("name");
@@ -27,6 +30,10 @@ function Header({ user }) {
     localStorage.removeItem("typeEmp");
 
     window.location.assign("/home");
+  }
+
+  const handleShowdiv = () => {
+    setShowdiv(prev => !prev)
   }
 
   return (
@@ -69,9 +76,14 @@ function Header({ user }) {
                   <p>KTX khu A ĐHQG - TPHCM</p>
                 </div>
               </div>
-              {user.typeEmp !== "normal" ?
-                <div className={cx("header-wrapper-right", "col-md-3")}>
-                  <button onClick={handleExit}>Đăng xuất</button>
+              {user.typeEmp !== "normal" ?  // typeEmp === "normal" Se la dang nhap/dang xuat
+                <div onClick={handleShowdiv} className={cx("header-wrapper-right", "col-md-3", "create-box")}>
+                  <svg className={cx("header-wrapper-right-ava", "svg-inline--fa fa-user-circle fa-w-16")} aria-hidden="true" data-prefix="fas" data-icon="user-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg=""><path fill="currentColor" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8.4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"></path></svg>
+                  <div className={cx('header-wrapper-right-name')}>{user.name}</div>
+                  <svg 
+                  class="svg-inline--fa fa-chevron-down fa-w-14" aria-hidden="true" data-prefix="fas" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path></svg>
+                  {showdiv && 
+                  <div onClick={handleExit} className={cx('logout-user')}>Đăng xuất</div>}
                 </div>
                 :
                 <div className={cx("header-wrapper-right", "col-md-3")}>
