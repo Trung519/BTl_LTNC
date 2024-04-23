@@ -42,7 +42,7 @@ import ModalFormAdd from "../Employee/Components/ModalFormAdd";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
-export default function EquipmentsManage({}) {
+export default function EquipmentsManage({ }) {
   const [idToEdit, setidToEdit] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [data, setData] = useState([]);
@@ -723,7 +723,7 @@ export default function EquipmentsManage({}) {
                                           </div>
                                         </td>
                                         <td className="maintain-data">
-                                          <button
+                                          {/* <button
                                             className="action-btn"
                                             id="delete-btn"
                                             type="submit"
@@ -739,7 +739,16 @@ export default function EquipmentsManage({}) {
                                                 )
                                               }
                                             />
-                                          </button>
+                                          </button> */}
+                                          <IconButton
+                                            aria-label="delete"
+                                            size="small"
+                                            color="error"
+                                            onClick={() => onClickDeleteMaintain(
+                                              row.id_maintain)}
+                                          >
+                                            <DeleteOutlineIcon></DeleteOutlineIcon>
+                                          </IconButton>
                                         </td>
                                       </tr>
                                     ))}
@@ -859,7 +868,7 @@ export default function EquipmentsManage({}) {
                                           </div>
                                         </td>
                                         <td className="data-use">
-                                          <button
+                                          {/* <button
                                             className="action-btn"
                                             id="delete-btn"
                                             type="submit"
@@ -873,7 +882,18 @@ export default function EquipmentsManage({}) {
                                                 onClickDeleteUse(row.id_use)
                                               }
                                             />
-                                          </button>
+                                          </button> */}
+
+                                          <IconButton
+                                            aria-label="delete"
+                                            size="small"
+                                            color="error"
+                                            onClick={() => onClickDeleteUse(row.id_use)}
+
+                                          >
+                                            <DeleteOutlineIcon></DeleteOutlineIcon>
+                                          </IconButton>
+
                                         </td>
                                       </tr>
                                     ))}
@@ -1018,24 +1038,21 @@ const CustomTablePagination = styled(TablePagination)(
     & .${classes.select}{
       font-family: 'IBM Plex Sans', sans-serif;
       padding: 2px 0 2px 4px;
-      border: 1px solid ${
-        theme.palette.mode === "dark" ? grey[800] : grey[200]
-      };
+      border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
+    };
       border-radius: 6px; 
       background-color: transparent;
       color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
       transition: all 100ms ease;
   
       &:hover {
-       background-color: ${
-         theme.palette.mode === "dark" ? grey[800] : grey[50]
-       };
+       background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[50]
+    };
        border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
      }
       &:focus {
-       outline: 3px solid ${
-         theme.palette.mode === "dark" ? blue[400] : blue[200]
-       };
+       outline: 3px solid ${theme.palette.mode === "dark" ? blue[400] : blue[200]
+    };
        border-color: ${blue[400]};
      }
    }
@@ -1061,9 +1078,8 @@ const CustomTablePagination = styled(TablePagination)(
       border: transparent;
       border-radius: 50%;
       background-color: transparent;
-      border: 1px solid ${
-        theme.palette.mode === "dark" ? grey[800] : grey[200]
-      };
+      border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
+    };
       color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
       transition: all 120ms ease;
   
@@ -1072,23 +1088,20 @@ const CustomTablePagination = styled(TablePagination)(
       }
   
       &:hover {
-       background-color: ${
-         theme.palette.mode === "dark" ? grey[800] : grey[50]
-       };
+       background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[50]
+    };
        border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
      }
       &:focus {
-       outline: 3px solid ${
-         theme.palette.mode === "dark" ? blue[400] : blue[200]
-       };
+       outline: 3px solid ${theme.palette.mode === "dark" ? blue[400] : blue[200]
+    };
        border-color: ${blue[400]};
      }
       &:disabled {
        opacity: 0.3;
        &:hover {
-         border: 1px solid ${
-           theme.palette.mode === "dark" ? grey[800] : grey[200]
-         };
+         border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
+    };
          background-color: transparent;
        }
      }
