@@ -5,6 +5,7 @@ import Navbar from "react-bootstrap/Navbar";
 import classNames from "classnames/bind";
 import styles from "./Header.module.scss";
 import Logo from "../assets/Logo.png";
+import Logo1 from "../assets/Logo1.png"
 import Home from "../../Pages/Home";
 import EquipmentsManage from "../../Pages/EquipmentsManage";
 import Medicine_manage from "../../Pages/Medicine_manage";
@@ -38,7 +39,7 @@ function Header({ user }) {
               <div className={cx("header-wrapper-left", "col-md-2")}>
                 <Nav.Link as={Link} to="/home">
                   <div className={cx("header-logo")}>
-                    <img alt="" src={Logo}></img>
+                    <img alt="" src={Logo1}></img>
                   </div>
                 </Nav.Link>
               </div>
