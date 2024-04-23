@@ -115,6 +115,11 @@ const DialogInfo = (props) => {
                   id="HSD"
                   name="HSD"
                   label="HSD"
+                  slotProps={{
+                    textField: {
+                      required: true,
+                    },
+                  }}
                   // sx={{ padding: 0 }}
                 ></DatePicker>
                 {/* <DateField label="HSD" defaultValue={dayjs(row.HSD)} /> */}

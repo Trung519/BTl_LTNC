@@ -16,6 +16,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
+import { toast } from "react-toastify";
 
 const DialogHistoryAdd = (props) => {
   const {
@@ -31,6 +32,10 @@ const DialogHistoryAdd = (props) => {
     DialogMedicineListAdd,
     setAddMedicineListFormOpen,
   } = props;
+  const handleErrorDate = (date) => {
+    var initial = date.split(/\//);
+    return [initial[1], initial[0], initial[2]].join("/"); //=> 'mm/dd/yyyy'
+  };
   const [listNewMedicine, setListNewMedicine] = React.useState([]);
 
   return (
@@ -56,6 +61,17 @@ const DialogHistoryAdd = (props) => {
           setHistoryList([newHistory, ...historyList]);
           setAddHistoryFormOpen(false);
           setListNewMedicine([]);
+          toast.success("Thêm lần khám thành công !", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            // transition: Bounce,
+          });
         },
       }}
       // sx={{ width: "100%", maxWidth: "1000px" }}
@@ -99,7 +115,7 @@ const DialogHistoryAdd = (props) => {
                     // sx={{ padding: 0 }}
                     format="DD/MM/YYYY"
                     readOnly
-                    value={dayjs(row.BirthDay, "DD/MM/YYYY")}
+                    value={dayjs(handleErrorDate(row.birthDay))}
                   ></DatePicker>
                 </FormControl>
               </LocalizationProvider>{" "}
@@ -159,6 +175,7 @@ const DialogHistoryAdd = (props) => {
 
             <Grid item xs={1} sm={3} md={8}>
               <TextField
+                required
                 margin="dense"
                 id="doctor"
                 name="doctor"
@@ -182,16 +199,22 @@ const DialogHistoryAdd = (props) => {
                     name="date"
                     // sx={{ padding: 0 }}
                     format="DD/MM/YYYY"
+                    slotProps={{
+                      textField: {
+                        required: true,
+                      },
+                    }}
                   ></DatePicker>
                 </FormControl>
               </LocalizationProvider>{" "}
             </Grid>
             <Grid item xs={1} sm={3} md={12}>
               <TextField
+                required
                 margin="dense"
                 id="disease"
                 name="disease"
-                label="Chuẩn đoán"
+                label="Chẩn đoán"
                 type="text"
                 fullWidth
                 variant="standard"

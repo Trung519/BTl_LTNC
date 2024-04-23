@@ -23,6 +23,7 @@ import DialogMedicineListAdd from "./DialogMedicineListAdd";
 import DialogHistoryAdd from "./DialogHistoryAdd";
 import DialogModify from "./DialogModify";
 import DialogInfo from "./DialogInfo";
+import { toast } from "react-toastify";
 
 function MainRow(props) {
   const { row, setNewPatientsAndRender, newPatients, index } = props;
@@ -145,6 +146,17 @@ function MainRow(props) {
               // console.log("af", row.history);
 
               DeleteData(row.CCCD);
+              toast.success("Xóa thành công !", {
+                position: "top-right",
+                autoClose: 2500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                // transition: Bounce,
+              });
             }}
           >
             <DeleteOutlineIcon></DeleteOutlineIcon>

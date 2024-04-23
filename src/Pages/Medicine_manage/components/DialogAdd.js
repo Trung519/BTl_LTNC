@@ -14,6 +14,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import FormControl from "@mui/material/FormControl";
 import { AddData_Med } from "../P_R-be";
+import { toast } from "react-toastify";
 const DialogAdd = (props) => {
   const {
     newFormOpen,
@@ -57,7 +58,17 @@ const DialogAdd = (props) => {
             sellPrice: formJson.sellPrice,
             stock: formJson.stock,
           };
-          console.log(newMedicine);
+          toast.success("Thêm thuốc thành công !", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            // transition: Bounce,
+          });
           setNewListMedicineAndRender([newMedicine, ...newListMedicine]);
           setNewFormOpen(false);
         },
@@ -124,6 +135,11 @@ const DialogAdd = (props) => {
                   id="HSD"
                   name="HSD"
                   label="HSD"
+                  slotProps={{
+                    textField: {
+                      required: true,
+                    },
+                  }}
                   // sx={{ padding: 0 }}
                   // format="DD/MM/YYYY"
                 ></DatePicker>
@@ -138,7 +154,7 @@ const DialogAdd = (props) => {
               id="cost"
               name="cost"
               label="Giá nhập"
-              type="text"
+              type="number"
               fullWidth
               variant="standard"
             />
@@ -150,7 +166,7 @@ const DialogAdd = (props) => {
               id="sellPrice"
               name="sellPrice"
               label="Giá bán"
-              type="text"
+              type="number"
               fullWidth
               variant="standard"
             />
@@ -162,7 +178,7 @@ const DialogAdd = (props) => {
               id="stock"
               name="stock"
               label="Tồn kho"
-              type="text"
+              type="number"
               fullWidth
               variant="standard"
             />

@@ -6,7 +6,7 @@ import RandomKey from "../RandomKey";
 
 
 
-  export const SendMail = async (sender, newMail, callback) => {
+  export const SendMail = async (SENDER, newMail, callback) => {
     try {
         if (callback && typeof callback === 'function') {
             callback({
@@ -25,25 +25,37 @@ import RandomKey from "../RandomKey";
         const idNewMail = RandomKey();
 
         const listIDs = TransferUserNameIntoID(newMail.receivers);
+
+        const receiver = [];
+
+        for (let i in listIDs) {
+            receiver.push({
+                id: listIDs[i],
+                username: newMail.receivers[i].LastName + " " + newMail.receivers[i].FirstName,
+            })
+        }
+
         
         const newData = {
-            mail_id: idNewMail,
-            sender_id: sender.id,
-            sender: sender.userName,
-            receiver_id: listIDs,
             content: newMail.content,
-            subject: newMail.title,
-            hour: newMail.time.split(' ')[0],
-            date: newMail.time.split(' ')[1]
+            date: newMail.time.split(' ')[1],
+            hour: newMail.time.split(' ')[0],   
+            mail_id: idNewMail,
+            sender:{
+                id: SENDER.id,
+                username: SENDER.userName,
+            },
+            receiver: receiver,
+            subject: newMail.title
         };
 
         const updatedData = [...mailsData, newData];
         await set(ref(database, 'Notify/Mails/'), updatedData);
 
-        await AddSentMails(idNewMail, sender.id);
+        await AddSentMails(idNewMail, SENDER.id);
         await AddReceivedMails(idNewMail, listIDs);
     } catch (error) {
-        console.error("Error in SendMail:", error);
+        console.log("Error in SendMail:", error);
     }
 };
 

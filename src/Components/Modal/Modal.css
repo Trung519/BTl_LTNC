@@ -110,7 +110,7 @@
 
 .submit-btn {
     color: #1976d2;
-    background-color: none;
+    background-color: transparent;
     font-family: 'Arial', sans-serif;
     border: none;
     padding: 12px;

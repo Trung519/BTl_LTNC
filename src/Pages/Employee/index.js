@@ -34,6 +34,7 @@ function Employee() {
     getData().then((post) => {
       setDataEmp(post["Employee"] ?? []);
       handleLoadingDone();
+      setRowToEdit(-1);
     });
   }, []);
 
@@ -57,7 +58,7 @@ function Employee() {
       );
     }
   });
-  const emptyRows = Math.max(0, page * rowsPerPage - dataEmp.length);
+  const emptyRows = Math.max(0, page * rowsPerPage - filterDataEmp.length);
   const handleSearch = (e) => {
     let lowerCase = e.target.value.toLowerCase();
     setInputSearch(lowerCase);
@@ -88,9 +89,7 @@ function Employee() {
           </button>
 
           <div id="header-box">
-            <h1 className={cx("header-page")}>
-              Quản lý nhân viên y tế
-            </h1>
+            <h1 className={cx("header-page")}>Quản lý nhân viên y tế</h1>
           </div>
         </div>
         <div className="search">
@@ -185,7 +184,7 @@ function Employee() {
                         color="error"
                         onClick={() => {
                           setRowToEdit(item.ID);
-                          setConfirmDelete(true)
+                          setConfirmDelete(true);
                         }}
                       >
                         <DeleteOutlineIcon></DeleteOutlineIcon>
@@ -194,7 +193,7 @@ function Employee() {
                   </td>
                 </tr>
               ))}
-            <tr style={{ height: 56 * emptyRows }}></tr>
+            <tr style={{ height: 55 * emptyRows }}></tr>
           </tbody>
           <tfoot>
             <tr></tr>
@@ -206,7 +205,7 @@ function Employee() {
             onChange={handleChange}
             page={page}
             count={Math.ceil(dataEmp.length / rowsPerPage)}
-            rowsPerPage={5}
+            // rowsPerPage={5}
             showFirstButton
             showLastButton
           />

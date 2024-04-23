@@ -1,6 +1,6 @@
 .tablemail-wrapper {
     width: 100%;
-    height: 37rem;
+    height: 100%;
 }
 
 .primary-row {
@@ -34,66 +34,105 @@
     border-bottom: 1px solid gray;
 }
 
+.contain-checkbox{
+    margin:auto 0;
+}
+
 .sender-col {
     display: flex;
     justify-content: start;
     white-space: nowrap;
     overflow: hidden;
     font-weight: 480;
-    margin:auto 0;
+    margin: auto 0;
 }
 
 .content-col {
     display: flex;
     justify-content: start;
-    margin:auto 0;
+    margin: auto 0;
+    overflow: hidden;
 
     .content-title {
+        margin:auto 0;
+        width: 15%;
         font-weight: 480;
         font-size: 16px;
         white-space: nowrap;
         overflow: hidden;
     }
 
-    .content-content{
-        font-weight: 400;
-        font-size: 12px;
-        color:#adadad;
+    .content-content {
         margin:auto 0;
+        font-weight: 400;
+        width: 85%;
+        overflow: hidden;
+        font-size: 12px;
+        color: #adadad;
+        margin: auto 0;
     }
 }
 
 .time-col {
     font-size: 12px;
-  
+    margin:auto 0;
 
-    p{
-        text-align:center;
-        margin:auto 0;
+
+    p {
+        text-align: center;
+        margin: auto 0;
     }
 }
 
-.barrie{
-    margin:0 1%;
+.barrie {
+    margin: 0 1%;
+}
+
+.notify-footer {
+    margin-top:3%;
+    // background-color:#edecec;
+    border-radius: 7px;
+    display:flex;
+    justify-content: space-between;
+    width: 100%;
+
+    .notify-footer-left {
+        display:flex;
+        width: 75%;
+        justify-content: end;
+        button {
+            border: none;
+            background-color: unset;
+            margin: auto 1%;
+            padding: 1% 3%;
+            transition: 0.3s;
+            border-radius: 5px;
+
+            &:hover {
+                background-color: #bbdafa;
+            }
+        }
+    }
 }
 
 .tablemail-pages {
-    width: 80%;
+    width: 23%;
     display: flex;
-    justify-content: end;
-    margin-top: 2%;
+    // justify-content: end;
+    justify-content: start;
+    
 
     button {
         border: none;
         border-radius: 7px;
         background-color: white;
-        color:#3497F9;
+        color: #3497F9;
         padding: 3px 10px;
-        margin-right:2%;
+        margin-right: 2%;
     }
 
-    .page-current{
+    .page-current {
         background-color: #3497F9;
-        color:white;
+        color: white;
     }
 }
