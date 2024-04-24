@@ -7,9 +7,7 @@ import { useState, useEffect, useCallback } from "react";
 import Modal from "../../Components/Modal/Modal";
 import Pagination from "@mui/material/Pagination";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 import TextField from "@mui/material/TextField";
 import {
@@ -42,7 +40,7 @@ import ModalFormAdd from "../Employee/Components/ModalFormAdd";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
-export default function EquipmentsManage({ }) {
+export default function EquipmentsManage({}) {
   const [idToEdit, setidToEdit] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [data, setData] = useState([]);
@@ -162,6 +160,17 @@ export default function EquipmentsManage({ }) {
       equipmentsRows.filter((item, idx) => item.id !== idToEdit)
     );
     setDisplayConfirm(false);
+    toast.error("Xóa thành công !", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      // transition: Bounce,
+    });
   }, [idToEdit]);
 
   function handleEditRow(id) {
@@ -213,8 +222,10 @@ export default function EquipmentsManage({ }) {
   const clickAdd = (id) => {
     if (!isAvailable(id)) {
       setAlertIsMaintaining(true);
+      setArrayAlertErrorMaintain(...arrayAlertErrorMaintain, id);
       setTimeout(() => {
         setAlertIsMaintaining(false);
+        setArrayAlertErrorMaintain([]);
       }, 3000);
     } else {
       let newFormsState = formsState;
@@ -293,6 +304,17 @@ export default function EquipmentsManage({ }) {
     writeUserData(newDataMaintain, "/Maintain");
     setMaintain(newDataMaintain);
     setAlertDeteteMaintain(false);
+    toast.error("Xóa thành công !", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      // transition: Bounce,
+    });
   };
 
   function getFormattedDate() {
@@ -357,10 +379,12 @@ export default function EquipmentsManage({ }) {
       }
       setFormsUseState(newFormsUseState);
     } else {
+      setArrayAlertErrorUse(...arrayAlertErrorUse, id);
       setMsgErrorUse("Thiết bị đang được bảo trì hoặc sử dụng !");
       setAlertIsUsing(true);
       setTimeout(() => {
         setAlertIsUsing(false);
+        setArrayAlertErrorUse([]);
       }, 3000);
     }
   };
@@ -447,8 +471,11 @@ export default function EquipmentsManage({ }) {
       return newDataUse;
     });
   };
+  const [arrayAlertErrorUse, setArrayAlertErrorUse] = useState([]);
+  const [arrayAlertErrorMaintain, setArrayAlertErrorMaintain] = useState([]);
   const [alertDeleteUse, setAlertDeleteUse] = useState(false);
   const [rowtoDeleteUse, setRowtoDeleteUse] = useState(null);
+
   const onClickDeleteUse = (id) => {
     setRowtoDeleteUse(id);
     setAlertDeleteUse(true);
@@ -460,6 +487,17 @@ export default function EquipmentsManage({ }) {
     writeUserData(newDataUse, "/Use");
     setUse(newDataUse);
     setAlertDeleteUse(false);
+    toast.error("Xóa thành công !", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      // transition: Bounce,
+    });
   };
   const [msgErrorUse, setMsgErrorUse] = useState("");
   const [loading, setLoading] = useState(true);
@@ -627,7 +665,12 @@ export default function EquipmentsManage({ }) {
                                   >
                                     <AddCircleIcon></AddCircleIcon>
                                   </IconButton>
-                                  <Fade in={alertIsMaintaining}>
+                                  <Fade
+                                    in={
+                                      alertIsMaintaining &&
+                                      arrayAlertErrorMaintain.includes(row.id)
+                                    }
+                                  >
                                     <Alert
                                       variant="outlined"
                                       severity="error"
@@ -744,8 +787,11 @@ export default function EquipmentsManage({ }) {
                                             aria-label="delete"
                                             size="small"
                                             color="error"
-                                            onClick={() => onClickDeleteMaintain(
-                                              row.id_maintain)}
+                                            onClick={() =>
+                                              onClickDeleteMaintain(
+                                                row.id_maintain
+                                              )
+                                            }
                                           >
                                             <DeleteOutlineIcon></DeleteOutlineIcon>
                                           </IconButton>
@@ -777,7 +823,12 @@ export default function EquipmentsManage({ }) {
                                   >
                                     <AddCircleIcon></AddCircleIcon>
                                   </IconButton>
-                                  <Fade in={alertIsUsing}>
+                                  <Fade
+                                    in={
+                                      alertIsUsing &&
+                                      arrayAlertErrorUse.includes(row.id)
+                                    }
+                                  >
                                     <Alert
                                       variant="outlined"
                                       severity="error"
@@ -888,12 +939,12 @@ export default function EquipmentsManage({ }) {
                                             aria-label="delete"
                                             size="small"
                                             color="error"
-                                            onClick={() => onClickDeleteUse(row.id_use)}
-
+                                            onClick={() =>
+                                              onClickDeleteUse(row.id_use)
+                                            }
                                           >
                                             <DeleteOutlineIcon></DeleteOutlineIcon>
                                           </IconButton>
-
                                         </td>
                                       </tr>
                                     ))}
@@ -1038,21 +1089,24 @@ const CustomTablePagination = styled(TablePagination)(
     & .${classes.select}{
       font-family: 'IBM Plex Sans', sans-serif;
       padding: 2px 0 2px 4px;
-      border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
-    };
+      border: 1px solid ${
+        theme.palette.mode === "dark" ? grey[800] : grey[200]
+      };
       border-radius: 6px; 
       background-color: transparent;
       color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
       transition: all 100ms ease;
   
       &:hover {
-       background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[50]
-    };
+       background-color: ${
+         theme.palette.mode === "dark" ? grey[800] : grey[50]
+       };
        border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
      }
       &:focus {
-       outline: 3px solid ${theme.palette.mode === "dark" ? blue[400] : blue[200]
-    };
+       outline: 3px solid ${
+         theme.palette.mode === "dark" ? blue[400] : blue[200]
+       };
        border-color: ${blue[400]};
      }
    }
@@ -1078,8 +1132,9 @@ const CustomTablePagination = styled(TablePagination)(
       border: transparent;
       border-radius: 50%;
       background-color: transparent;
-      border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
-    };
+      border: 1px solid ${
+        theme.palette.mode === "dark" ? grey[800] : grey[200]
+      };
       color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
       transition: all 120ms ease;
   
@@ -1088,20 +1143,23 @@ const CustomTablePagination = styled(TablePagination)(
       }
   
       &:hover {
-       background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[50]
-    };
+       background-color: ${
+         theme.palette.mode === "dark" ? grey[800] : grey[50]
+       };
        border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
      }
       &:focus {
-       outline: 3px solid ${theme.palette.mode === "dark" ? blue[400] : blue[200]
-    };
+       outline: 3px solid ${
+         theme.palette.mode === "dark" ? blue[400] : blue[200]
+       };
        border-color: ${blue[400]};
      }
       &:disabled {
        opacity: 0.3;
        &:hover {
-         border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
-    };
+         border: 1px solid ${
+           theme.palette.mode === "dark" ? grey[800] : grey[200]
+         };
          background-color: transparent;
        }
      }

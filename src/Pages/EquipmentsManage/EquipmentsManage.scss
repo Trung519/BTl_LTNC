@@ -145,7 +145,8 @@
     text-align: left;
 }
 .maintain-data:nth-child(4){
-    align-items: center ;
+    text-align: center ;
+    
 }
 
 // .maintain-data button {
@@ -153,12 +154,13 @@
 // }
 
 .state-maintain{
-    margin-right: 10px;
+   // margin-right: 10px;
     width: 150px;
     text-align: center;
+    margin: 0 auto;
 }
 .state-use{
-    margin-right: 10px;
+    //margin-right: 10px;
     text-align: center;
     
 }
@@ -168,7 +170,6 @@
     background-color: white;
     border: #3E454D 2px solid;
     padding: 4px;
-
     &:hover{
         background-color: #58aafc;
         cursor: pointer;
@@ -187,7 +188,7 @@
 }
 
 .data-use:nth-child(4){
-    text-align: center;
+    text-align: center ;
 }
 
 .btn-confirm-return{
@@ -296,7 +297,8 @@
         width: 100%;
         padding: 4px;
         font-family: 'Arial', sans-serif;
-        margin: 0 5px;
+       
+
         background-color: #3497F9;
         outline: none;
         border-radius: 6px;
