@@ -56,9 +56,10 @@ const DialogHistoryAdd = (props) => {
             doctor: formJson.doctor,
             disease: formJson.disease,
             medicineList: listNewMedicine,
+            getMed: false,
           };
           AddHist(row.CCCD, newHistory);
-          setHistoryList([newHistory, ...historyList]);
+          setHistoryList([...historyList, newHistory]);
           setAddHistoryFormOpen(false);
           setListNewMedicine([]);
           toast.success("Thêm lần khám thành công !", {
@@ -183,6 +184,11 @@ const DialogHistoryAdd = (props) => {
                 type="text"
                 fullWidth
                 variant="standard"
+                //bỏ user vào cái value là được
+                value={"Dương Hoàng Khôi"}
+                InputProps={{
+                  readOnly: true,
+                }}
               />
             </Grid>
             <Grid item xs={1} sm={3} md={4}>
