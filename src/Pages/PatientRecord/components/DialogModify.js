@@ -17,6 +17,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { UpdateData } from "../P_R_be";
+import { toast } from "react-toastify";
 
 const DialogModify = (props) => {
   const {
@@ -72,6 +73,17 @@ const DialogModify = (props) => {
           // setRenderPatientList(patients[indexInPatients])
           // console.log(patients);
           setmodifyFormOpen(false);
+          toast.success("Cập nhật thành công !", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            // transition: Bounce,
+          });
         },
       }}
       // sx={{ width: "100%", maxWidth: "1000px" }}
@@ -151,9 +163,26 @@ const DialogModify = (props) => {
                 type="text"
                 // inputProps={{ min: 0, style: { textAlign: "left" } }}
                 fullWidth
-                defaultValue={row.CCCD}
+                value={row.CCCD}
                 // size="medium"
                 variant="standard"
+                onClick={() => {
+                  toast.warn("Không thể cập nhật số CCCD !", {
+                    position: "top-right",
+                    autoClose: 2500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    // transition: Bounce,
+                  });
+                }}
+                InputProps={{
+                  readOnly: true,
+                  // onClick = {()=>{}}
+                }}
               ></TextField>
             </Grid>
             <Grid item xs={1} sm={2} md={4.5}>

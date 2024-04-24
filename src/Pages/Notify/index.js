@@ -10,7 +10,7 @@ import GetMail from '../../firebase/Notify/GetMail.js';
 const cx = classNames.bind(styles)
 export const StatusContext = createContext()
 
-function Notify() {
+function Notify({user}) {
   //----------------------------BACKEND----------------------------
   const [status, setStatus] = useState('received_mail')
   const [inputmail, setInputmail] = useState(false);
@@ -18,7 +18,7 @@ function Notify() {
   const [listData, setListData] = useState([]);
 
   useEffect(() => {
-    GetMail("NS44208", status, setListData);
+    GetMail(user, status, setListData);
   }, [status, inputmail])
   //--------------------------BACKEND----------------------------
 
@@ -40,17 +40,19 @@ function Notify() {
                 status={status}
                 handleClick={handleClickStatus}
                 handleMail={handleInputmail}
+                user={user}
               />
             </div>
             <div className={cx('table-mail')}>
               <Tablemail
                 listdata={listData}
                 status={status}
+                user={user}
               />
             </div>
           </div>
           <div className={cx('input-mail')}>
-            {inputmail && <InputMail />}
+            {inputmail && <InputMail user={user}/>}
           </div>
         </div>
         <Footer />

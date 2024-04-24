@@ -12,7 +12,9 @@ const firebaseConfig = {
     measurementId: "G-WYRWK424BJ"
 };
 
-export const GetReceivedMails = (userID, callback) => {
+export const GetReceivedMails = (user, callback = function (err) {
+    console.log(err);
+}) => {
     const database = getDatabase();
     const dataRef = ref(database, 'Notify/ReceivedMails/');
 
@@ -20,22 +22,21 @@ export const GetReceivedMails = (userID, callback) => {
         const dataID = snapshot.val();
 
         const dataRefMails = ref(database, 'Notify/Mails/');
-        const listMails = [];
 
         onValue(dataRefMails, (snapshotMails) => {
             const mails = snapshotMails.val();
 
+            const listMails = [];
+
             for (let i = mails.length - 1; i >= 0; i--) {
                 for (let key in dataID) {
-                    if (dataID[key].receiver_id == userID && dataID[key].mail_id == mails[i].mail_id) {
+                    if (dataID[key].receiver_id == user.id && dataID[key].mail_id == mails[i].mail_id) {
                         listMails.push(mails[i])
                     }
                 }
             }
 
-            if (callback && typeof callback === 'function') {
-                callback(listMails);
-            }
+            callback(listMails);
         })
     })
 };
@@ -62,7 +63,7 @@ export const AddReceivedMails = async (mailID, listID) => {
 };
 
 
-export const RemoveReceivedMails = async (userID, listMailIDs) => {
+export const RemoveReceivedMails = async (user, listMailIDs) => {
     const database = getDatabase();
     const dataRef = ref(database, 'Notify/ReceivedMails/');
 
@@ -73,7 +74,7 @@ export const RemoveReceivedMails = async (userID, listMailIDs) => {
     // Loại bỏ các email có trong danh sách listMailIDs
     const newData = dataReceivedMails.filter(mail => {
         const isToRemove = listMailIDs.some(mailToRemove => {
-            return mailToRemove.mail_id == mail.mail_id && userID == mail.receiver_id;
+            return mailToRemove === mail.mail_id && user.id === mail.receiver_id;
         });
         // Trả về true để giữ email, false để loại bỏ email đó khỏi danh sách
         return !isToRemove;

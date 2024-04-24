@@ -3,118 +3,6 @@
 import { getDatabase, ref, set, remove, push, get, child, onValue } from "firebase/database";
 import RandomKey from "../RandomKey.js";
 
-
-// Hàm cập nhật dữ liệu
-export const updateData = async (data) => {
-  const database = getDatabase();
-  const newData = {
-    name: data.name,
-    email: data.email,
-    sdt: data.sdt,
-    mssv: data.mssv
-  };
-  await set(ref(database, 'yourCollectionName/' + data.mssv), newData)
-};
-/*---------------------Hàm thêm data---------------------*/
-export const addData = async (data) => {
-  const database = getDatabase();
-  const dataRef = ref(database, 'Notify/');
-
-  const newData = {
-    Title: data.title,
-    Receiver: data.receiver,
-    Content: data.content,
-    SentTime: data.sentTime,
-    Seen: false
-  };
-
-  const snapshot = await get(dataRef); // Lấy dữ liệu từ cơ sở dữ liệu
-  const dataCount = snapshot.exists() ? Object.keys(snapshot.val()).length : 0; // Đếm số lượng dữ liệu hiện có
-  await set(child(ref(database, 'Notify/'), `${dataCount}`), newData); // Thêm dữ liệu mới
-};
-
-//--------------------------------------------------------------------
-
-export const deleteData = async (mssv) => {
-  const database = getDatabase();
-  await remove(ref(database, 'yourCollectionName/' + mssv))
-};
-
-
-
-/*---------------------Hàm tìm kiếm data---------------------*/
-
-// ---------Hướng dẫn sử dụng hàm tìm kiếm data--------- //
-// import React, { useState, useEffect } from "react";
-// import { searchDataByMssv } from "./yourUtilityFile";
-
-// function YourComponent() {
-//   const [data, setData] = useState(null);
-
-//   useEffect(() => {
-//     searchDataByMssv("yourMssvValue", setData);
-//   }, []);
-
-//   return (
-//     <div>
-//       {/* Your component JSX */}
-//     </div>
-//   );
-// }
-
-// export default YourComponent;
-
-// ---------------Hàm mẫu--------------- //
-export const searchDataByMssv = (mssv, callback) => {
-  const database = getDatabase();
-  const dataRef = ref(database, 'yourCollectionName/');
-
-  onValue(dataRef, (snapshot) => {
-    const data = snapshot.val();
-    if (data) {
-      const user = Object.values(data).find(user => user.mssv === mssv);
-      if (user) {
-        //Có thể thay đổi hàm callback tùy theo yêu cầu bài toán
-        callback({
-          name: user.name,
-          mssv: user.mssv,
-          email: user.email,
-          sdt: user.sdt
-        });
-      } else {
-        callback(null);
-      }
-    } else {
-      callback(null);
-    }
-  });
-};
-
-// ---------------Kết thúc hàm mẫu--------------- //
-
-// export const searchNameDoctor = (name, callback) => {
-//   const database = getDatabase();
-//   const dataRef = ref(database, 'Employee/Doctor/');
-
-//   onValue(dataRef, (snapshot) => {
-//     const data = snapshot.val();
-//     if (data) {
-//       const doctor = Object.values(data).map(doctor => {
-//           const nameDoctor = doctor.FirstName + " " + doctor.LastName;
-//           if (nameDoctor.toLowerCase.includes(name.toLowerCase)) {
-//             callback(
-//             ...listContainString, doctor.id
-//             )
-//           }
-//       });
-//     }
-//   });
-// };
-
-
-
-
-
 //----------------------------Hàm cho Schedule-----------------------
 export const addNewSchedule = async (data, callback) => {
   const database = getDatabase();
@@ -133,7 +21,6 @@ export const addNewSchedule = async (data, callback) => {
     Room: data.room,
     Status: "Chưa khám",
     Time: data.time
-    
   };
 
   // Di chuyển dữ liệu hiện có xuống một cấp
@@ -158,54 +45,143 @@ export const addNewSchedule = async (data, callback) => {
   })
 };
 
-export const searchIdDoctorByName = (name, callback) => {
+export const searchIdDoctorByName = (user, name, callback = () => {
+  console.log("ERROR in searchIdDoctorByName");
+}) => {
   const database = getDatabase();
   const dataRef = ref(database, 'Employee/');
 
   onValue(dataRef, (snapshot) => {
     const data = snapshot.val();
     if (data) {
-      const filteredSuggestions = Object.values(data).filter(doctor => {
-        const nameDoctor = doctor.FirstName + " " + doctor.LastName;
-        return nameDoctor.toLowerCase().includes(name.toLowerCase());
-      });
-      callback(filteredSuggestions);
+      if (data === "") {
+        if (user.typeEmp === "Quản trị") callback(data);
+        else {
+          const filteredSuggestions = Object.values(data).filter(doctor => {
+            return user.department === doctor.Department;
+          });
+          console.log(filteredSuggestions, "dasda");
+          callback(filteredSuggestions);
+        }
+      }
+      else if (user.typeEmp === "Quản trị") {
+        const filteredSuggestions = Object.values(data).filter(doctor => {
+          const nameDoctor = doctor.FirstName + " " + doctor.LastName;
+          return nameDoctor.toLowerCase().includes(name.toLowerCase());
+        });
+        callback(filteredSuggestions);
+      }
+      else {
+        const filteredSuggestions = Object.values(data).filter(doctor => {
+          const nameDoctor = doctor.FirstName + " " + doctor.LastName;
+          return user.department === doctor.Department && nameDoctor.toLowerCase().includes(name.toLowerCase());
+        });
+        callback(filteredSuggestions);
+      }
     } else {
       callback([]);
     }
   });
 };
 
-export const searchNameDoctorByID = (id, callback) => {
+export const searchNameDoctorByID = (user, id, callback = () => {
+  console.log("ERROR in searchNameDoctorByID");
+}) => {
   const database = getDatabase();
   const dataRef = ref(database, 'Employee/');
 
   onValue(dataRef, (snapshot) => {
     const data = snapshot.val();
     if (data) {
-      const filteredSuggestions = Object.values(data).filter(doctor => {
-        return doctor.ID.includes(id);
-      });
-      callback(filteredSuggestions);
+      if (id === "") {
+        if (user.typeEmp === "Quản trị") callback(data);
+        else {
+          const filteredSuggestions = Object.values(data).filter(doctor => {
+            return user.department === doctor.Department;
+          });
+          callback(filteredSuggestions);
+        }
+      }
+      else if (user.typeEmp === "Quản trị") {
+        const filteredSuggestions = Object.values(data).filter(doctor => {
+          return doctor.ID.toLowerCase().includes(id.toLowerCase());
+        });
+        callback(filteredSuggestions);
+      }
+      else {
+        const filteredSuggestions = Object.values(data).filter(doctor => {
+          return user.department === doctor.Department && doctor.ID.includes(id);
+        });
+        callback(filteredSuggestions);
+      }
     } else {
       callback([]);
     }
   });
 };
 
-export const setListSchedule = (name, callback) => {
+const isSameDepartment = (typeDepartment, id = -1) => {
+  const database = getDatabase();
+  const dataRefSchedule = ref(database, 'Employee/');
+
+  onValue(dataRefSchedule, (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      const listEmployee = Object.values(data).filter(employee => {
+        if (employee.Department === typeDepartment) {
+          if (id === -1) return true;
+          else return employee.ID === id;
+        }
+      });
+
+      return listEmployee;
+    }
+    else {
+      console.log("Error in isSameDepartment!")
+    }
+  });
+};
+
+export const setListSchedule = (user, name, callback = () => {
+  console.log("ERROR in setListSchedule");
+}) => {
   const database = getDatabase();
   const dataRefSchedule = ref(database, 'Schedule/');
 
   onValue(dataRefSchedule, (snapshot) => {
     const data = snapshot.val();
-    if (data) {
+    if (data && name === "") {
+      const listSchedule = Object.values(data).filter(schedule => {
+        if (user.typeEmp === "Bác sỹ") return schedule.ID_doctor === user.id;
+        else if (user.typeEmp === "Quản trị") return true;
+        else {
+          return isSameDepartment(user.department);
+        }
+      });
+      callback(listSchedule);
+    }
+    else if (data && user.typeEmp === "Quản trị") {
       const listSchedule = Object.values(data).filter(schedule => {
         const namePatient = schedule.Patient;
         return namePatient.toLowerCase().includes(name.toLowerCase());
       });
       callback(listSchedule);
-    } else {
+    }
+    else if (data && user.typeEmp === "Bác sỹ") {
+      const listSchedule = Object.values(data).filter(schedule => {
+        const namePatient = schedule.Patient;
+        return namePatient.toLowerCase().includes(name.toLowerCase()) && schedule.ID_doctor === user.id;
+      });
+      callback(listSchedule);
+    }
+    else if (data && user.typeEmp !== "Bác sỹ") {
+      const listSchedule = Object.values(data).filter(schedule => {
+        const namePatient = schedule.Patient;
+        return namePatient.toLowerCase().includes(name.toLowerCase()) && isSameDepartment(user.department, schedule.ID_doctor);
+      });
+      callback(listSchedule);
+    }
+    else {
       callback([]);
     }
   });

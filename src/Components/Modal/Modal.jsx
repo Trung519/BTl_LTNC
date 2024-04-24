@@ -4,7 +4,12 @@ import { useState } from "react";
 import { Alert } from "@mui/material";
 import Fade from "@mui/material/Fade";
 
-export default function Modal({ closeModal, onSubmit, defaultValue }) {
+export default function Modal({
+  closeModal,
+  onSubmit,
+  defaultValue,
+  setAlertAddSuccess,
+}) {
   const [equimentState, setequimentState] = useState(
     defaultValue || {
       name: "",
@@ -40,6 +45,10 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
       onSubmit(equimentState);
 
       closeModal();
+      setAlertAddSuccess(true);
+      setTimeout(() => {
+        setAlertAddSuccess(false);
+      }, 3000);
     }
   }
 
@@ -67,6 +76,8 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
               name="name"
               onChange={handleChange}
               value={equimentState.name}
+              // placeholder="Tên"
+              autoComplete="off"
             />
             <label htmlFor="name">Tên</label>
           </div>
@@ -78,6 +89,8 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
               name="type"
               onChange={handleChange}
               value={equimentState.type}
+              // placeholder="Loại"
+              autoComplete="off"
             />
             <label htmlFor="type">Loại</label>
           </div>
@@ -90,27 +103,29 @@ export default function Modal({ closeModal, onSubmit, defaultValue }) {
                         </div> */}
 
           <div className="input-wrap">
-
             <input
               required
               type="text"
               name="room"
               onChange={handleChange}
               value={equimentState.room}
+              // placeholder="Phòng"
+              autoComplete="off"
             />
             <label htmlFor="room">Phòng</label>
           </div>
 
           <div id="description" className="input-wrap">
-          
             <input
               required
               type="text"
               name="description"
               onChange={handleChange}
               value={equimentState.description}
+              // placeholder="Mô tả"
+              autoComplete="off"
             />
-              <label htmlFor="description">Mô tả</label>
+            <label htmlFor="description">Mô tả</label>
           </div>
 
           <div id="status-box">
