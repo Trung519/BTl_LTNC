@@ -533,8 +533,7 @@ export default function EquipmentsManage({ user }) {
           >
             {" "}
             + Thêm mới
-          </button>
-          }
+          </button>}
           <div id="header-box">
             <h1 id="header-page">Quản lý Thiết bị</h1>
           </div>
@@ -1090,8 +1089,9 @@ const CustomTablePagination = styled(TablePagination)(
     & .${classes.select}{
       font-family: 'IBM Plex Sans', sans-serif;
       padding: 2px 0 2px 4px;
-      border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
-    };
+      border: 1px solid ${
+        theme.palette.mode === "dark" ? grey[800] : grey[200]
+      };
       border-radius: 6px; 
       background-color: transparent;
       color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
@@ -1130,8 +1130,9 @@ const CustomTablePagination = styled(TablePagination)(
       border: transparent;
       border-radius: 50%;
       background-color: transparent;
-      border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
-    };
+      border: 1px solid ${
+        theme.palette.mode === "dark" ? grey[800] : grey[200]
+      };
       color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
       transition: all 120ms ease;
   
