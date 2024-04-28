@@ -19,6 +19,13 @@ function Notify({ user }) {
   var [loading, setLoading] = useState(true)
   const [listData, setListData] = useState([]);
 
+  //Table mail
+  const [page, setPage] = useState(1)             // Phan trang provip
+  //Mailcontent
+  const [showcontent, setShowcontent] = useState(false)
+  const [numemail, setNumemail] = useState(0)
+
+
   useEffect(() => {
     GetMail(user, status, setListData);
   }, [status, inputmail])
@@ -32,10 +39,25 @@ function Notify({ user }) {
 
   var handleClickStatus = (temp) => {
     setStatus(temp)
+    setPage(1);
+    setShowcontent(false)
   }
 
   var handleInputmail = () => {
     setInputmail(prev => !prev)
+  }
+
+  var handleMainChangepage = (e,p) => {
+    setPage(p);
+  }
+
+  var handleMainUnshowcontent = () => {
+    setShowcontent(false)
+  }
+
+  var handleMainSetShowcontent = (page, index) => {
+    setShowcontent(true);
+    setNumemail((page - 1) * 10 + index)
   }
 
   return (
@@ -60,9 +82,15 @@ function Notify({ user }) {
             </div>
             <div className={cx('table-mail')}>
               <Tablemail
+                handleMainChangepage={handleMainChangepage}
+                page={page}
                 listdata={listData}
                 status={status}
                 user={user}
+                showcontent={showcontent}
+                handleMainSetShowcontent={handleMainSetShowcontent}
+                numemail={numemail}
+                handleMainUnshowcontent={handleMainUnshowcontent}
               />
             </div>
           </div>

@@ -10,15 +10,13 @@ import { toast } from "react-toastify";
 
 const cx = classNames.bind(styles)
 
-export default function Tablemail({ listdata, status, user }) {
-    const [page, setPage] = useState(1)             // Phan trang provip
+export default function Tablemail({ listdata, status, user, page, handleMainChangepage, showcontent, handleMainSetShowcontent, numemail, handleMainUnshowcontent }) {
+    
     const listEmail = listdata;
-    const [showcontent, setShowcontent] = useState(false)
-    const [numemail, setNumemail] = useState(0)
     const rowsPerPage = 10;
 
     var handleChangepage = useCallback((e,p) => {
-        setPage(p)
+        handleMainChangepage(e,p);
     }, [])
 
     var handleClickcheckbox = (e) => {
@@ -26,12 +24,11 @@ export default function Tablemail({ listdata, status, user }) {
     }
 
     var handleShowcontent = useCallback((page, index) => {
-        setShowcontent(true);
-        setNumemail((page - 1) * 10 + index)
+        handleMainSetShowcontent(page,index)
     }, [])
 
     var handleUnshowcontent = useCallback(() => {
-        setShowcontent(false);
+        handleMainUnshowcontent();
     }, [])
 
     const removeEmail = () => {

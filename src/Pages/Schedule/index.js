@@ -23,6 +23,7 @@ export default function Schedule({ user }) {
     var [add, setAdd] = useState(false)                 // Add mode
     var [page, setPage] = useState(1)                   // Current page number
     var [loading, setLoading] = useState(true)
+    const [selectedId, setSelectedId] = useState(null);
     const rowsPerPage = 10;
 
     // --------------START BACKEND <KHÔNG PHẬN SỰ MIỄN VÀO>--------------
@@ -173,7 +174,7 @@ export default function Schedule({ user }) {
         }
     }
 
-    setTimeout(handleLoadingDone,500);
+    setTimeout(handleLoadingDone, 500);
 
     var handleEdit = (() => {
         setEdit(prev => !prev)
@@ -213,8 +214,10 @@ export default function Schedule({ user }) {
         }
     })
 
-    const isSelectedToRemove = (key) => {
+    const isSelectedToRemove = (e, key) => {
         const isFound = listRemove.find(item => item.id_schedule === key);
+
+        setSelectedId(key);
 
         if (isFound) {
             const newList = listRemove.filter(item => item.id_schedule !== key);
@@ -258,7 +261,7 @@ export default function Schedule({ user }) {
                                 <button onClick={() => {
                                     setEdit(true)
                                     setLoading(true)
-                                    }}>Chỉnh sửa</button>
+                                }}>Chỉnh sửa</button>
                             </div>}
                         </div>
                         <div className={cx('schedule-search')}>
@@ -349,7 +352,7 @@ export default function Schedule({ user }) {
                             <p>Lịch làm việc</p>
                             {user.typeEmp !== "Dược sỹ" && <div className={cx('schedule-title-right')}>
                                 <button onClick={handleAdd} className={cx('no-click')}>Thêm cuộc hẹn</button>
-                                <button onClick={() => {handleEdit();setLoading(true)}}>Hoàn tất</button>
+                                <button onClick={() => { handleEdit(); setLoading(true) }}>Hoàn tất</button>
                             </div>}
                         </div>
                         <div className={cx('schedule-search')}>
@@ -424,12 +427,16 @@ export default function Schedule({ user }) {
                                                             </select>
                                                         )}
                                                         <svg
-                                                            onClick={() => isSelectedToRemove(listdata[(page - 1) * 10 + index].id_schedule)}
-                                                            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DeleteOutlineIcon"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM8 9h8v10H8zm7.5-5-1-1h-5l-1 1H5v2h14V4z"></path></svg>
-                                                        {/* <svg class="svg-inline--fa fa-trash-alt fa-w-14" aria-hidden="true" data-prefix="far" data-icon="trash-alt"
-                                                            role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""
-                                                            
-                                                        ><path fill="currentColor" d="M192 188v216c0 6.627-5.373 12-12 12h-24c-6.627 0-12-5.373-12-12V188c0-6.627 5.373-12 12-12h24c6.627 0 12 5.373 12 12zm100-12h-24c-6.627 0-12 5.373-12 12v216c0 6.627 5.373 12 12 12h24c6.627 0 12-5.373 12-12V188c0-6.627-5.373-12-12-12zm132-96c13.255 0 24 10.745 24 24v12c0 6.627-5.373 12-12 12h-20v336c0 26.51-21.49 48-48 48H80c-26.51 0-48-21.49-48-48V128H12c-6.627 0-12-5.373-12-12v-12c0-13.255 10.745-24 24-24h74.411l34.018-56.696A48 48 0 0 1 173.589 0h100.823a48 48 0 0 1 41.16 23.304L349.589 80H424zm-269.611 0h139.223L276.16 50.913A6 6 0 0 0 271.015 48h-94.028a6 6 0 0 0-5.145 2.913L154.389 80zM368 128H80v330a6 6 0 0 0 6 6h276a6 6 0 0 0 6-6V128z"></path></svg> */}
+                                                            onClick={(e) => isSelectedToRemove(e, listdata[(page - 1) * 10 + index].id_schedule)}
+                                                            style={{ transform: selectedId === listdata[(page - 1) * 10 + index].id_schedule ? 'scale(1.5)' : 'scale(1)',
+                                                            color: selectedId === listdata[(page - 1) * 10 + index].id_schedule ? 'red' : '' }}
+                                                            className={cx(`MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root ${selectedId === listdata[(page - 1) * 10 + index].id_schedule ? 'choosen-to-remove' : ''}`)}
+                                                            focusable="false"
+                                                            aria-hidden="true"
+                                                            viewBox="0 0 24 24"
+                                                            data-testid="DeleteOutlineIcon">
+                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM8 9h8v10H8zm7.5-5-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                        </svg>
                                                     </div>
                                                 </div>
                                             )
