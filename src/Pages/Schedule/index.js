@@ -16,7 +16,6 @@ import { addNewSchedule, searchIdDoctorByName, searchNameDoctorByID, setListSche
 
 import Updatewhenedit from '../../firebase/Schedule/updateWhenEdit.js'
 import updateWhenRemove from '../../firebase/Schedule/updateWhenRemove.js';
-import CofirmModalDeleteSchedule from '../../Components/CofirmModalDeleteSchedule';
 // --------------End Firebase--------------
 
 const cx = classNames.bind(styles)
