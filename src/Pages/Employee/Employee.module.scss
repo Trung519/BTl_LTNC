@@ -1,29 +1,27 @@
-
-
 .header-page{
+  text-align: right;
   color: #3E454D;
+  font-family:'Arial', sans-serif;
   font-weight: 500;
   text-transform: uppercase;
   font-size:x-large;
-  border-bottom: #CFCFCF 0.5px solid;
-  margin-top: 45px;
-  padding-bottom: 14px;
-  font-weight: 500;
-  position: relative;
-  margin-bottom: 15px;
 }
 
 .btn-add-new{
   color: white;
   background-color: #3497F9;
-  font-size: 16px;
+  font-family: 'Arial', sans-serif;
   font-weight: bold;
   border: none;
-  border-radius: 12px;
-  padding: 14px 12px;
+  padding: 12px;
   position: absolute;
   right: 0;
-  top: 18px;
+  border-radius: 12px;
+  &:hover{
+      background-color: #58aafc;
+      cursor: pointer;
+  }
+  margin-bottom: 7px;
 }
 .table-emp{
   width: 100%;
@@ -35,13 +33,12 @@
   th{
     padding: 10px;
   }
- 
-  
-  
 }
+
 .head-first{
   text-align: left;
 }
+
 .some-btn{
   display: flex;
   justify-content: space-evenly;
