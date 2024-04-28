@@ -121,6 +121,15 @@
     margin:0 auto;
 }
 
+.change-color{
+    background-color: #1F2B6C;
+}
+
+
+#Change-Color.nav-link[aria-expanded="true"]{
+        color:rgb(197, 230, 250);
+}
+
 .show{
     color:rgb(197, 230, 250);
 }
