@@ -602,7 +602,7 @@ export default function EquipmentsManage({ user }) {
                       <td className="table-data-item">
                         <span>{row.status}</span>
                       </td>
-                      <td className="table-data-item">
+                      {user.typeEmp === "Quản trị" && <td className="table-data-item">
                         <div id="action-btn-container">
                           {/* <button
                           className="action-btn"
@@ -632,7 +632,7 @@ export default function EquipmentsManage({ user }) {
                             <DeleteOutlineIcon></DeleteOutlineIcon>
                           </IconButton>
                         </div>
-                      </td>
+                      </td>}
                     </tr>
                     {expandedRows.includes(row.id) && (
                       <tr>
@@ -642,7 +642,7 @@ export default function EquipmentsManage({ user }) {
                             timeout="auto"
                             unmountOnExit
                           >
-                            <Box
+                            {(user.typeEmp === "Quản trị" || user.typeEmp === "Trưởng khoa") && <Box
                               sx={{
                                 margin: 1,
                                 bgcolor: "#F1F8FF",
@@ -800,7 +800,7 @@ export default function EquipmentsManage({ user }) {
                                     ))}
                                 </tbody>
                               </table>
-                            </Box>
+                            </Box>}
                             <Box
                               sx={{
                                 margin: 1,
@@ -1089,9 +1089,8 @@ const CustomTablePagination = styled(TablePagination)(
     & .${classes.select}{
       font-family: 'IBM Plex Sans', sans-serif;
       padding: 2px 0 2px 4px;
-      border: 1px solid ${
-        theme.palette.mode === "dark" ? grey[800] : grey[200]
-      };
+      border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
+    };
       border-radius: 6px; 
       background-color: transparent;
       color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
@@ -1130,9 +1129,8 @@ const CustomTablePagination = styled(TablePagination)(
       border: transparent;
       border-radius: 50%;
       background-color: transparent;
-      border: 1px solid ${
-        theme.palette.mode === "dark" ? grey[800] : grey[200]
-      };
+      border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
+    };
       color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
       transition: all 120ms ease;
   
