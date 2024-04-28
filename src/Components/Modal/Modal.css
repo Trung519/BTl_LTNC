@@ -34,7 +34,6 @@
     font-size: 16px;
     font-weight: normal;
     pointer-events: none;
-    left: 10px;
     top: 10px;
     transition: 300ms ease all;
 }
@@ -53,13 +52,19 @@
     width:90%;
     background: none;
     color: #3E454D;
+    font-weight: 500;
     font-size: 18px;
     padding: 10px;
     display: block;
     border: none;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 0.5px solid #3E454D;
     &:focus {
-        outline:none
+        outline:none;
+        border-bottom: 1px solid #328dd2;
+
+    }
+    &:hover {
+        border-bottom: 1px solid #3E454D;
     }
 }
 
@@ -81,7 +86,7 @@
 .modal-content select {
     margin-top: 1rem;
     border: 0;
-    border-bottom: 2px solid lightgray;
+    border-bottom: 0.5px solid #3E454D;
     outline: 0;
     font-size: medium;
     color: #3E454D;
@@ -103,26 +108,26 @@
     margin-bottom: 1rem;
 }
 
-#submit-btn {
-    color: white;
-    background-color: #3497F9;
+.submit-btn {
+    color: #1976d2;
+    background-color: transparent;
     font-family: 'Arial', sans-serif;
-    font-weight: bold;
     border: none;
     padding: 12px;
     border-radius: 12px;
-    margin-top: 1rem;
 
     &:hover {
-        background-color: #58aafc;
+        background-color: rgb(244,249,253);
         cursor: pointer;
     }
 }
 
 
 #btn-container {
+    margin-top: 2rem;
+    border-top: 1px solid #ccc;
     display: flex;
-    justify-content: center;
+    justify-content:end;
     align-content: center;
 }
 
