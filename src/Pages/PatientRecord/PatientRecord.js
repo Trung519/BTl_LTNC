@@ -20,8 +20,7 @@ import Pagination from "@mui/material/Pagination";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-export default function PatientRecord() {
-  // let [patients, setPatient] = React.useState([]);
+export default function PatientRecord({ user }) {
   console.log("re-render patient-record");
 
   React.useEffect(() => {
@@ -88,7 +87,7 @@ export default function PatientRecord() {
       <Backdrop
         sx={{ color: "#fff", zIndex: 1 }}
         open={loading}
-        // onClick={handleLoadingDone}
+      // onClick={handleLoadingDone}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -400,17 +399,35 @@ export default function PatientRecord() {
                     >
                       Ngày sinh
                     </TableCell>
-                    <TableCell
-                      align="center"
-                      sx={{
-                        color: "#000000",
-                        // bgcolor: "#08107D",
-                        fontSize: "18px",
-                        fontWeight: "550",
-                      }}
-                    >
-                      Thao tác
-                    </TableCell>
+                    {
+                      user.typeEmp === 'Quản trị' ?
+                        (
+                          <TableCell
+                            align="center"
+                            sx={{
+                              color: "#000000",
+                              // bgcolor: "#08107D",
+                              fontSize: "18px",
+                              fontWeight: "550",
+                            }}
+                          >
+                            Thao tác
+                          </TableCell>
+                        ) :
+                        (
+                          <TableCell
+                            align="center"
+                            sx={{
+                              color: "#000000",
+                              // bgcolor: "#08107D",
+                              fontSize: "18px",
+                              fontWeight: "550",
+                            }}
+                          >
+                            Xem thêm
+                          </TableCell>
+                        )
+                    }
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -422,6 +439,7 @@ export default function PatientRecord() {
                         index={index}
                         row={row}
                         setNewPatientsAndRender={setNewPatientsAndRender}
+                        user={user}
                       ></MainRow>
                     );
                   })}

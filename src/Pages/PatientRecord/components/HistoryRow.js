@@ -6,7 +6,7 @@ import DialogMedicineList from "./DialogMedicineList";
 import DialogGetMed from "./DialogGetMed";
 import { toast } from "react-toastify";
 const HistoryRow = (props) => {
-  const { historyRow, index, CCCD } = props;
+  const { historyRow, index, CCCD, user, pharmacist } = props;
   // console.log("historyRow", historyRow);
   const [medicineListDialogOpen, setMedicineListDialogOpen] =
     React.useState(false);
@@ -14,7 +14,7 @@ const HistoryRow = (props) => {
   const [getMedDialog, setGetMedDialog] = React.useState(false);
   const handleGetMed = () => {
     if (getMed) {
-      toast.info("Toa thuốc đã được lấy bởi dược sĩ Dương Hoàng Khôi", {
+      toast.info(`Toa thuốc đã được lấy bởi dược sĩ ${user.name}`, {
         position: "top-right",
         autoClose: 2500,
         hideProgressBar: false,
@@ -59,33 +59,33 @@ const HistoryRow = (props) => {
         > */}
 
         {/* ********Xác nhận lấy thuốc */}
-        {getMed ? (
-          <Button
-            variant="contained"
-            onClick={() => {
-              handleGetMed();
-            }}
-            sx={{ width: "110px" }}
-          >
-            Đã bốc
-          </Button>
-        ) : (
-          <Button
-            variant="outlined"
-            onClick={() => {
-              handleGetMed();
-            }}
-            sx={{ width: "110px" }}
-          >
-            Xác nhận
-          </Button>
-        )}
+        {
+          getMed ? `Được xác nhận bởi ${pharmacist.name}` : (
+            user.typeEmp === 'Dược sỹ' || user.typeEmp === 'Quản trị'? (
+              <Button
+              variant="outlined"
+              onClick={() => {
+                handleGetMed();
+              }}
+              sx={{ width: "110px" }}
+            >
+              Xác nhận
+            </Button>
+            ) : "Chưa được xác nhận"
+          ) 
+        }
         <DialogGetMed
           setGetMedDialog={setGetMedDialog}
           getMedDialog={getMedDialog}
-          setGetMed={setGetMed}
+          setGetMed={() => {
+            setGetMed();
+          }}          
           CCCD={CCCD}
           index={index}
+          pharmacist = {{            
+            name: user.name,
+            id: user.id
+          }}
         ></DialogGetMed>
         {/* </IconButton> */}
       </TableCell>

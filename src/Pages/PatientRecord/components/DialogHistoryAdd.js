@@ -31,6 +31,7 @@ const DialogHistoryAdd = (props) => {
     row,
     DialogMedicineListAdd,
     setAddMedicineListFormOpen,
+    namePharmacist
   } = props;
   const handleErrorDate = (date) => {
     var initial = date.split(/\//);
@@ -185,7 +186,7 @@ const DialogHistoryAdd = (props) => {
                 fullWidth
                 variant="standard"
                 //bỏ user vào cái value là được
-                value={"Dương Hoàng Khôi"}
+                value={namePharmacist}
                 InputProps={{
                   readOnly: true,
                 }}

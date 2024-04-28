@@ -118,7 +118,7 @@ export function AddHist(CCCD, newHistory) {
       console.error("Error fetching patient record:", error);
     });
 }
-export function getMedCheck(CCCD, index) {
+export function getMedCheck(CCCD, index, pharmacist) {
   const historyRef = ref(db, "PatientRecord/" + CCCD + "/history/" + index);
   console.log(historyRef);
   get(historyRef)
@@ -127,6 +127,7 @@ export function getMedCheck(CCCD, index) {
       historyData = {
         ...historyData,
         getMed: true,
+        pharmacist: pharmacist
       };
       update(historyRef, historyData)
         .then(() => {

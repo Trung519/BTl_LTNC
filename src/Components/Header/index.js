@@ -172,7 +172,7 @@ function Header({ user }) {
               user.typeEmp === "normal" ? <LoginForm /> : <Notify user={user} />
             } />
             <Route path="/file-patient" element={
-              user.typeEmp === "normal" ? <LoginForm /> : <PatientRecord />
+              user.typeEmp === "normal" ? <LoginForm /> : <PatientRecord user={user} />
             } />
             <Route path="/appointment" element={
               user.typeEmp === "normal" ? <LoginForm /> : <Schedule user={user} />

@@ -26,7 +26,7 @@ import DialogInfo from "./DialogInfo";
 import { toast } from "react-toastify";
 
 function MainRow(props) {
-  const { row, setNewPatientsAndRender, newPatients, index } = props;
+  const { row, setNewPatientsAndRender, newPatients, index, user } = props;
   // console.log("row", row);
 
   // const [patient, setPatient] = React.useState([]);
@@ -95,75 +95,99 @@ function MainRow(props) {
         <TableCell align="center">{row.CCCD}</TableCell>
         <TableCell align="center">{row.BHYT}</TableCell>
         <TableCell align="center">{row.birthDay}</TableCell>
-        <TableCell align="center">
-          <IconButton
-            aria-label="info"
-            size="small"
-            color="info"
-            onClick={() => {
-              setInfoFormOpen(true);
-            }}
-          >
-            <InfoOutlinedIcon></InfoOutlinedIcon>
-          </IconButton>
-          {/* DialogInfo */}
-          <DialogInfo
-            infoFormOpen={infoFormOpen}
-            setInfoFormOpen={setInfoFormOpen}
-            row={row}
-          ></DialogInfo>
-          <IconButton
-            // **********Button để chỉnh sửa
-            aria-label="edit"
-            size="small"
-            onClick={() => setmodifyFormOpen(true)}
-          >
-            <EditOutlinedIcon></EditOutlinedIcon>
-          </IconButton>
-          {/* DialogModify */}
+        {user.typeEmp === 'Quản trị' ?
+          (
+            <TableCell align="center">
+              <IconButton
+                aria-label="info"
+                size="small"
+                color="info"
+                onClick={() => {
+                  setInfoFormOpen(true);
+                }}
+              >
+                <InfoOutlinedIcon></InfoOutlinedIcon>
+              </IconButton>
+              {/* DialogInfo */}
+              <DialogInfo
+                infoFormOpen={infoFormOpen}
+                setInfoFormOpen={setInfoFormOpen}
+                row={row}
+              ></DialogInfo>
 
-          <DialogModify
-            modifyFormOpen={modifyFormOpen}
-            // patients={patients}
-            newPatients={newPatients}
-            indexInPatients={indexInPatients}
-            setNewPatientsAndRender={setNewPatientsAndRender}
-            row={row}
-            newGender={newGender}
-            handleChangeGender={handleChangeGender}
-            setmodifyFormOpen={setmodifyFormOpen}
-          ></DialogModify>
-          <IconButton
-            aria-label="delete"
-            size="small"
-            color="error"
-            onClick={(event) => {
-              // console.log(indexInPatients);
-              // console.log(e.CCCD);
-              // console.log(row.CCCD);
-              // console.log("bf", row.history);
-              event.preventDefault();
-              newPatients.splice(indexInPatients, 1);
-              setNewPatientsAndRender([...newPatients]);
-              // console.log("af", row.history);
+              <IconButton
+                // **********Button để chỉnh sửa
+                aria-label="edit"
+                size="small"
+                onClick={() => setmodifyFormOpen(true)}
+              >
+                <EditOutlinedIcon></EditOutlinedIcon>
+              </IconButton>
+              {/* DialogModify */}
+              <DialogModify
+                modifyFormOpen={modifyFormOpen}
+                // patients={patients}
+                newPatients={newPatients}
+                indexInPatients={indexInPatients}
+                setNewPatientsAndRender={setNewPatientsAndRender}
+                row={row}
+                newGender={newGender}
+                handleChangeGender={handleChangeGender}
+                setmodifyFormOpen={setmodifyFormOpen}
+              ></DialogModify>
 
-              DeleteData(row.CCCD);
-              toast.success("Xóa thành công !", {
-                position: "top-right",
-                autoClose: 2500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                // transition: Bounce,
-              });
-            }}
-          >
-            <DeleteOutlineIcon></DeleteOutlineIcon>
-          </IconButton>
-        </TableCell>
+              <IconButton
+                aria-label="delete"
+                size="small"
+                color="error"
+                onClick={(event) => {
+                  // console.log(indexInPatients);
+                  // console.log(e.CCCD);
+                  // console.log(row.CCCD);
+                  // console.log("bf", row.history);
+                  event.preventDefault();
+                  newPatients.splice(indexInPatients, 1);
+                  setNewPatientsAndRender([...newPatients]);
+                  // console.log("af", row.history);
+
+                  DeleteData(row.CCCD);
+                  toast.success("Xóa thành công !", {
+                    position: "top-right",
+                    autoClose: 2500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    // transition: Bounce,
+                  });
+                }}
+              >
+                <DeleteOutlineIcon></DeleteOutlineIcon>
+              </IconButton>
+            </TableCell>
+          ) :
+          (
+            <TableCell align="center">
+              <IconButton
+                aria-label="info"
+                size="small"
+                color="info"
+                onClick={() => {
+                  setInfoFormOpen(true);
+                }}
+              >
+                <InfoOutlinedIcon></InfoOutlinedIcon>
+              </IconButton>
+              {/* DialogInfo */}
+              <DialogInfo
+                infoFormOpen={infoFormOpen}
+                setInfoFormOpen={setInfoFormOpen}
+                row={row}
+              ></DialogInfo>
+            </TableCell>
+          )}
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
@@ -178,30 +202,32 @@ function MainRow(props) {
                 Lịch sử khám
               </Typography>
               {/* ********button thêm lịch sử khám */}
-              <IconButton
-                aria-label="add"
-                size="small"
-                color="info"
-                onClick={() => setAddHistoryFormOpen(true)}
-              >
-                <AddCircleIcon></AddCircleIcon>
-              </IconButton>
-              {/* DialogHistoryAdd */}
-
-              <DialogHistoryAdd
-                addHistoryFormOpen={addHistoryFormOpen}
-                setAddHistoryFormOpen={setAddHistoryFormOpen}
-                AddHist={AddHist}
-                historyList={historyList}
-                // listNewMedicine={listNewMedicine}
-                setHistoryList={setHistoryList}
-                // setListNewMedicine={setListNewMedicine}
-                row={row}
-                DialogMedicineListAdd={DialogMedicineListAdd}
-                setAddMedicineListFormOpen={setAddMedicineListFormOpen}
-                addMedicineListFormOpen={addMedicineListFormOpen}
-              ></DialogHistoryAdd>
-
+              {user.typeEmp === "Bác sỹ" || user.typeEmp === "Trưởng khoa" || user.typeEmp === "Quản trị" ? (
+                <>
+                  <IconButton
+                    aria-label="add"
+                    size="small"
+                    color="info"
+                    onClick={() => setAddHistoryFormOpen(true)}
+                  >
+                    <AddCircleIcon></AddCircleIcon>
+                  </IconButton>
+                  <DialogHistoryAdd
+                    addHistoryFormOpen={addHistoryFormOpen}
+                    setAddHistoryFormOpen={setAddHistoryFormOpen}
+                    AddHist={AddHist}
+                    historyList={historyList}
+                    // listNewMedicine={listNewMedicine}
+                    setHistoryList={setHistoryList}
+                    // setListNewMedicine={setListNewMedicine}
+                    row={row}
+                    DialogMedicineListAdd={DialogMedicineListAdd}
+                    setAddMedicineListFormOpen={setAddMedicineListFormOpen}
+                    addMedicineListFormOpen={addMedicineListFormOpen}
+                    namePharmacist={user.name}
+                  ></DialogHistoryAdd>
+                </>
+              ) : ""}
               <Table size="small" aria-label="history">
                 <colgroup>
                   <col style={{ width: "20%" }} />
@@ -262,7 +288,7 @@ function MainRow(props) {
                         fontWeight: "530",
                       }}
                     >
-                      Đã bốc thuốc
+                      Tình trạng đơn thuốc
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -275,6 +301,8 @@ function MainRow(props) {
                         key={index}
                         historyRow={historyRow}
                         index={index}
+                        user={user}
+                        pharmacist={historyRow.pharmacist ? historyRow.pharmacist : "undifined"}
                       />
                     ))
                   ) : (

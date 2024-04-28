@@ -129,6 +129,23 @@ export default function Schedule({ user }) {
     const [listEdit, setListEdit] = useState([]);
     const [listRemove, setListRemove] = useState([]);
 
+    var handleChangeData = (key, status, value, isRemove = false) => {
+        const newListData = [...listdata];
+
+        const data = newListData[key];
+
+        if (isRemove === true) {
+            const newData = [...data, isRemove];
+            newListData[key] = newData;
+            setListEdit(newListData);
+        }
+        else {
+            data.status = value;
+            newListData[key] = data;
+            setListEdit(newListData);
+        }
+    }
+
     const isEdited = (key, status) => {
         for (let i = 0; i < listEdit.length; i++) {
             if (listEdit[i].id_schedule === key) {
@@ -153,15 +170,17 @@ export default function Schedule({ user }) {
     }
 
     var handleEdit = (() => {
-        setEdit(prev => !prev)
-        if (listEdit.length > 0) {
-            Updatewhenedit(listEdit);
-            setListEdit([]);
-        }
-        if (listRemove.length > 0) {
-            updateWhenRemove(listRemove)
-            setListRemove([]);
-        }
+        // setEdit(prev => !prev)
+        // if (listEdit.length > 0) {
+        //     Updatewhenedit(listEdit);
+        //     setListEdit([]);
+        // }
+        // if (listRemove.length > 0) {
+        //     updateWhenRemove(listRemove)
+        //     setListRemove([]);
+        // }
+
+        console.log(listEdit);
     })
 
     const isSelectedToRemove = (key) => {
@@ -287,7 +306,7 @@ export default function Schedule({ user }) {
                             {user.typeEmp !== "Dược sỹ" && <div className={cx('schedule-title-right')}>
                                 <button onClick={handleAdd}>Thêm cuộc hẹn</button>
                                 <button onClick={() => setEdit(true)}>Chỉnh sửa</button>
-                                <button className={cx('no-click')}>Hoàn tất</button>
+                                <button onClick={handleEdit}className={cx('no-click')}>Hoàn tất</button>
                             </div>}
                         </div>
                         <div className={cx('schedule-search')}>
@@ -320,10 +339,15 @@ export default function Schedule({ user }) {
 
                                             return (
                                                 <div key={listdata[index].id_schedule} className={cx('row', 'line-row', `line${count}`)}>
-                                                    <div style={{ display: 'none' }} className={cx('col-md-1', 'schedule-table-index')}>{page * 10 + index + 1}</div>
-                                                    <div className={cx('col-md-1', 'schedule-table-ID_doctor')} contentEditable>{listdata[page * 10 + index].ID_doctor}</div>
+                                                    <div style={{ display: 'none' }} 
+                                                        className={cx('col-md-1', 'schedule-table-index')}
+                                            
+                                                    >{page * 10 + index + 1}</div>
+                                                    <div className={cx('col-md-1', 'schedule-table-ID_doctor')} contentEditable
+                                                        onChange = {handleChangeData()}
+                                                    >{listdata[page * 10 + index].ID_doctor}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Name_doctor')} contentEditable>{listdata[page * 10 + index].Name_doctor}</div>
-                                                    <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')}>
+                                                    <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')} contentEditable>
                                                         {<p>{listdata[page * 10 + index].Time + ", " + listdata[page * 10 + index].Date}</p>}
                                                     </div>
                                                     <div className={cx('col-md-2', 'schedule-table-Patient')} contentEditable>{listdata[page * 10 + index].Patient}</div>

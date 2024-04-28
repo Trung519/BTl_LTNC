@@ -9,13 +9,13 @@ import { toast } from "react-toastify";
 import { getMedCheck } from "../P_R_be";
 
 const DialogGetMed = (props) => {
-  const { getMedDialog, setGetMedDialog, setGetMed, CCCD, index } = props;
+  const { getMedDialog, setGetMedDialog, setGetMed, CCCD, index, pharmacist } = props;
   const confirmAndQuit = () => {
     // setGetMedDialog(false);
     setGetMed(true);
-    getMedCheck(CCCD, index);
+    getMedCheck(CCCD, index, pharmacist);
     setGetMedDialog(false);
-    toast.success("Dược sĩ Dương Hoàng Khôi xác nhận lấy thuốc thành công ", {
+    toast.success(`Dược sĩ ${pharmacist.name} xác nhận lấy thuốc thành công`, {
       position: "top-right",
       autoClose: 2500,
       hideProgressBar: false,
@@ -42,7 +42,7 @@ const DialogGetMed = (props) => {
       <DialogTitle>{"Xác nhận đã bốc thuốc?"}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          Dược sĩ: Dương Hoàng Khôi
+          Dược sĩ: {pharmacist.name}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
