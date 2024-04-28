@@ -16,7 +16,7 @@ import Footer from "../../Components/Footer";
 import UpdateSuccess from "../../Components/UpdateSuccess";
 
 const cx = classNames.bind(styles);
-function Employee() {
+function Employee({ user }) {
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
   const [displayForm, setDisplayForm] = useState(false);
@@ -111,7 +111,7 @@ function Employee() {
             <th>Bằng cấp</th>
             <th>Bộ Phận Khoa</th>
             <th>Chức vụ</th>
-            <th>Thao tác</th>
+            {user.typeEmp === "Quản trị" && <th>Thao tác</th>}
           </thead>
           <tbody>
             {filterDataEmp
@@ -127,7 +127,7 @@ function Employee() {
                   <td>{item.AcademicDegree}</td>
                   <td>{item.Department}</td>
                   <td>{item.typeEmp}</td>
-                  <td>
+                  {user.typeEmp === "Quản trị" && <td>
                     <div className={cx("some-btn")}>
                       <button
                         className="action-btn"
@@ -158,7 +158,7 @@ function Employee() {
                         />
                       </button>
                     </div>
-                  </td>
+                  </td>}
                 </tr>
               ))}
             <tr style={{ height: 56 * emptyRows }}></tr>

@@ -7,6 +7,8 @@ import Pagination from "@mui/material/Pagination";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
+import ConfirmModalDeleteSchedule from "../../Components/CofirmModalDeleteSchedule";
+
 
 // --------------Firebase--------------
 import { useState, useEffect, useCallback } from 'react';
@@ -147,108 +149,82 @@ export default function Schedule({ user }) {
         });
     };
 
+    const [showEdit, setShowEdit] = useState(false);
+    const [formEdit, setFormEdit] = useState({
+        id_schedule: "",
+        ID_doctor: user.typeEmp === 'Bác sỹ' ? user.id : "",
+        Name_doctor: user.typeEmp === 'Bác sỹ' ? user.name : "",
+        Time: "",
+        Date: "",
+        Patient: "",
+        Room: "",
+        CCCD: "",
+        Status: "",
+    });
 
-    const [listEdit, setListEdit] = useState([]);
-    const [listRemove, setListRemove] = useState([]);
-
-    var handleChangeData = (key, status, value, isRemove = false) => {
-        const newListData = [...listdata];
-
-        const data = newListData[key];
-
-        if (isRemove === true) {
-            const newData = [...data, isRemove];
-            newListData[key] = newData;
-            setListEdit(newListData);
-        }
-        else {
-            data.status = value;
-            newListData[key] = data;
-            setListEdit(newListData);
-        }
+    const handleEditForm = async (form) => {
+        await setFormEdit(form);
+        setShowEdit(true);
     }
 
-    const isEdited = (key, status) => {
-        for (let i = 0; i < listEdit.length; i++) {
-            if (listEdit[i].id_schedule === key) {
-                const list = [...listEdit]
-                list[i].status = status;
-                setListEdit(list);
-                return true;
+    const handleCollectDataWhenEdit = (e) => {
+        if (user.typeEmp === "Bác sỹ" && (e.target.name === "ID_doctor" || e.target.name === "Name_doctor")) return;
+
+        const edit = { ...formEdit };
+
+        if (e.target.name === 'CCCD') {
+            if (checkNum(e.target.value)) {
+                const { name, value } = e.target;
+                edit[name] = value;
+                setFormEdit(edit);
             }
         }
-        return false;
-    }
-
-    const isSelectedToEdit = (key, status) => {
-        if (isEdited(key, status)) return;
         else {
-            const newData = {
-                id_schedule: key,
-                status: status
-            }
-            setListEdit(prev => [...prev, newData])
+            const { name, value } = e.target;
+            edit[name] = value;
+            setFormEdit(edit);
         }
     }
+
+    const submitFormWhenEdit = async () => {
+        await Updatewhenedit(formEdit);
+        toast.success("Chỉnh sửa thành công !", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            // transition: Bounce,
+        })
+        setShowEdit(false);
+    }
+
+    const handleDeleteRow = (id) => {
+        updateWhenRemove(id);
+        toast.success("Xóa lịch hẹn thành công !", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            // transition: Bounce,
+        });
+    }
+
 
     setTimeout(handleLoadingDone, 500);
 
     var handleEdit = (() => {
         setEdit(prev => !prev)
-        if (listEdit.length > 0) {
-            Updatewhenedit(listEdit);
-            setListEdit([]);
-        }
-        if (listRemove.length > 0) {
-            updateWhenRemove(listRemove)
-            setListRemove([]);
-        }
-        if (listEdit.length > 0) {
-            toast.success("Chỉnh sửa thành công !", {
-                position: "top-right",
-                autoClose: 2500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                // transition: Bounce,
-            });
-        }
-        else if (listRemove.length > 0 && listEdit.length <= 0) {
-            toast.success("Xóa thành công !", {
-                position: "top-right",
-                autoClose: 2500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                // transition: Bounce,
-            });
-        }
     })
 
-    const isSelectedToRemove = (e, key) => {
-        const isFound = listRemove.find(item => item.id_schedule === key);
-
-        setSelectedId(key);
-
-        if (isFound) {
-            const newList = listRemove.filter(item => item.id_schedule !== key);
-        }
-        else {
-            const newData = {
-                id_schedule: key
-            }
-            setListRemove(prev => [...prev, newData])
-        }
-    }
-
     // ---------------END BACKEND <KHÔNG PHẬN SỰ MIỄN VÀO>---------------  
-
     var [ulshow, setUlshow] = useState(false)
 
     var handleAdd = useCallback(() => {
@@ -369,7 +345,10 @@ export default function Schedule({ user }) {
                             <p>Lịch làm việc</p>
                             {user.typeEmp !== "Dược sỹ" && <div className={cx('schedule-title-right')}>
                                 <button onClick={handleAdd} className={cx('no-click')}>Thêm cuộc hẹn</button>
-                                <button onClick={() => { handleEdit(); setLoading(true) }}>Hoàn tất</button>
+                                <button onClick={() => {
+                                    handleEdit();
+                                    setLoading(true)
+                                }}>Hoàn tất</button>
                             </div>}
                         </div>
                         <div className={cx('schedule-search')}>
@@ -401,57 +380,43 @@ export default function Schedule({ user }) {
                                             }
 
                                             return (
-                                                <div key={listdata[index].id_schedule} className={cx('row', 'line-row', `line${count}`)}>
+                                                <div key={listdata[(page - 1) * 10 + index].id_schedule}
+                                                    className={cx('row', 'line-row', `line${count}`)}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleEditForm(listdata[(page - 1) * 10 + index])
+                                                    }}>
                                                     <div style={{ display: 'none' }} className={cx('col-md-1', 'schedule-table-index')}>{(page - 1) * 10 + index + 1}</div>
-                                                    <div className={cx('col-md-1', 'schedule-table-ID_doctor')} contentEditable>{listdata[(page - 1) * 10 + index].ID_doctor}</div>
-                                                    <div className={cx('col-md-2', 'schedule-table-Name_doctor')} contentEditable>{listdata[(page - 1) * 10 + index].Name_doctor}</div>
+                                                    <div className={cx('col-md-1', 'schedule-table-ID_doctor')} >{listdata[(page - 1) * 10 + index].ID_doctor}</div>
+                                                    <div className={cx('col-md-2', 'schedule-table-Name_doctor')} >{listdata[(page - 1) * 10 + index].Name_doctor}</div>
                                                     <div className={cx('col-md-2', 'schedule-table-Time_in', 'edit-time')}>
                                                         {<p>{listdata[(page - 1) * 10 + index].Time + ", " + listdata[(page - 1) * 10 + index].Date}</p>}
                                                     </div>
-                                                    <div className={cx('col-md-2', 'schedule-table-Patient')} contentEditable>{listdata[(page - 1) * 10 + index].Patient}</div>
-                                                    <div className={cx('col-md-2', 'schedule-table-Patient')} contentEditable>{listdata[(page - 1) * 10 + index].CCCD}</div>
-                                                    <div className={cx('col-md-1', 'schedule-table-Room')} contentEditable>{listdata[(page - 1) * 10 + index].Room}</div>
-                                                    <div className={cx('col-md-2', `schedule-icons-${handleColor((page - 1) * 10 + index)}`, 'schedule-table-Status', 'schedule-icons')}>
-                                                        {handleColor((page - 1) * 10 + index) === 'done' && (
-                                                            <select
-                                                                className={cx('select-status')}
-                                                                name="select-in-edit"
-                                                                onChange={(e) => isSelectedToEdit(listdata[(page - 1) * 10 + index].id_schedule, e.target.value)}
-                                                            >
-                                                                <option value="Xong">Xong</option>
-                                                                <option value="Đang khám">Đang khám</option>
-                                                                <option value="Chưa khám">Chưa khám</option>
-                                                            </select>
-                                                        )}
-                                                        {handleColor((page - 1) * 10 + index) === 'doing' && (
-                                                            <select
-                                                                name="select-in-edit"
-                                                                className={cx('select-status')}
-                                                                onChange={(e) => isSelectedToEdit(listdata[(page - 1) * 10 + index].id_schedule, e.target.value)}
-                                                            >
-                                                                <option value="Xong">Xong</option>
-                                                                <option value="Đang khám" selected>Đang khám</option>
-                                                                <option value="Chưa khám">Chưa khám</option>
-                                                            </select>
-                                                        )}
-                                                        {handleColor((page - 1) * 10 + index) === 'pending' && (
-                                                            <select className={cx('select-status')} name="select-in-edit"
-                                                                onChange={(e) => isSelectedToEdit(listdata[(page - 1) * 10 + index].id_schedule, e.target.value)}
-                                                            >
-                                                                <option value="Xong">Xong</option>
-                                                                <option value="Đang khám">Đang khám</option>
-                                                                <option selected value="Chưa khám">Chưa khám</option>
-                                                            </select>
+                                                    <div className={cx('col-md-2', 'schedule-table-Patient')} >{listdata[(page - 1) * 10 + index].Patient}</div>
+                                                    <div className={cx('col-md-2', 'schedule-table-Patient')} >{listdata[(page - 1) * 10 + index].CCCD}</div>
+                                                    <div className={cx('col-md-1', 'schedule-table-Room')} >{listdata[(page - 1) * 10 + index].Room}</div>
+                                                    <div className={cx('col-md-2', `schedule-icons-${handleColor((page - 1) * 10 + index)}`, 'schedule-table-Status', 'schedule-icons')} onClick={e => e.preventDefault()}>
+                                                        {listdata[(page - 1) * 10 + index].Status === 'Xong' ? (
+                                                            <div className={cx('select-status')} style={{ padding: 0 }}>Xong</div>
+                                                        ) : listdata[(page - 1) * 10 + index].Status === 'Đang khám' ? (
+                                                            <div className={cx('select-status')} style={{ padding: 0 }}>Đang khám</div>
+                                                        ) : (
+                                                            <div className={cx('select-status')} style={{ padding: 0 }}>Chưa khám</div>
                                                         )}
                                                         <svg
-                                                            onClick={(e) => isSelectedToRemove(e, listdata[(page - 1) * 10 + index].id_schedule)}
-                                                            style={{ transform: selectedId === listdata[(page - 1) * 10 + index].id_schedule ? 'scale(1.5)' : 'scale(1)',
-                                                            color: selectedId === listdata[(page - 1) * 10 + index].id_schedule ? 'red' : '' }}
+                                                            style={{
+                                                                transform: selectedId === listdata[(page - 1) * 10 + index].id_schedule ? 'scale(1.5)' : 'scale(1)',
+                                                                color: selectedId === listdata[(page - 1) * 10 + index].id_schedule ? 'red' : ''
+                                                            }}
                                                             className={cx(`MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root ${selectedId === listdata[(page - 1) * 10 + index].id_schedule ? 'choosen-to-remove' : ''}`)}
                                                             focusable="false"
                                                             aria-hidden="true"
                                                             viewBox="0 0 24 24"
-                                                            data-testid="DeleteOutlineIcon">
+                                                            data-testid="DeleteOutlineIcon"
+                                                            onClick={e => {
+                                                                e.stopPropagation();
+                                                                handleDeleteRow(listdata[(page - 1) * 10 + index].id_schedule);
+                                                            }}>
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM8 9h8v10H8zm7.5-5-1-1h-5l-1 1H5v2h14V4z"></path>
                                                         </svg>
                                                     </div>
@@ -474,9 +439,145 @@ export default function Schedule({ user }) {
                             />
                         </div>
                     </div>
+                    {showEdit && <div className={cx('schedule-add')}>
+                        <div className={cx('contain-form')} style={{ height: "400px", padding: "5px 10px" }}>
+                            <div className={cx('form-title')}>
+                                <span>Chỉnh sửa cuộc hẹn</span>
+                            </div>
+                            <div className={cx('form-doctor')}>
+                                <div className={cx('doctor-id')}>
+                                    <input
+                                        type='text'
+                                        placeholder='ID Bác Sĩ'
+                                        value={user.typeEmp === "Bác sỹ" ? user.id : formEdit.ID_doctor}
+                                        name="ID_doctor"
+                                        onChange={handleCollectDataWhenEdit}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setUlshow(true);
+
+                                        }}
+                                        readOnly={user.typeEmp === "Bác sỹ"}
+                                    ></input>
+                                    {user.typeEmp !== "Bác sỹ" && ulshow && <ul className={cx('ul-id')}>
+                                        {suggestionsID.map((suggestion, index) => {
+                                            if (index > 4 || form.id_Doctor == '') { }
+                                            else {
+                                                return (
+                                                    <li key={index} onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleSelectSuggestion(suggestion)
+                                                    }}>
+                                                        {suggestion.ID}
+                                                    </li>
+                                                )
+                                            }
+                                        })}
+                                    </ul>}
+                                </div>
+                                <div className={cx('doctor-name')}>
+                                    <input
+                                        type='text'
+                                        placeholder='Tên Bác Sĩ'
+                                        value={user.typeEmp === "Bác sỹ" ? user.name : formEdit.Name_doctor}
+                                        name="Name_doctor"
+                                        onChange={handleCollectDataWhenEdit}
+                                        readOnly={user.typeEmp === "Bác sỹ"}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setUlshow(true)
+                                            setSuggestionsID([])
+                                        }}></input>
+                                    {user.typeEmp !== "Bác sỹ" && ulshow && <ul className={cx('ul-name')}>
+                                        {suggestions.map((suggestion, index) => {
+                                            if (index > 4 || form.name_Doctor == '') { }
+                                            else {
+                                                return (
+                                                    <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
+                                                        {`${suggestion.FirstName} ${suggestion.LastName}`}
+                                                    </li>
+                                                )
+                                            }
+                                        })}
+                                    </ul>}
+                                </div>
+                            </div>
+                            <div className={cx('form-time')}>
+                                <div className={cx('form-time-time')}>
+                                    <input
+                                        type='time'
+                                        value={formEdit.Time}
+                                        name="Time"
+                                        onChange={handleCollectDataWhenEdit}
+                                    ></input>
+                                </div>
+                                <div className={cx('form-time-date')}>
+                                    <input
+                                        type='date'
+                                        value={formEdit.Date}
+                                        name="date"
+                                        onChange={handleCollectDataWhenEdit}></input>
+                                </div>
+                            </div>
+                            <div className={cx('form-other-1')}>
+                                <input
+                                    type='text'
+                                    placeholder='Tên bệnh nhân'
+                                    value={formEdit.Patient}
+                                    name="Patient"
+                                    onChange={handleCollectDataWhenEdit}
+                                ></input>
+                                <input
+                                    type='text'
+                                    placeholder='CCCD'
+                                    value={formEdit.CCCD}
+                                    name="CCCD"
+                                    onChange={handleCollectDataWhenEdit}
+                                ></input>
+                                {/* <input
+                                    type='text'
+                                    placeholder='Phòng'
+                                    value={formEdit.Room}
+                                    name="Room"
+                                    onChange={handleCollectDataWhenEdit}
+                                ></input> */}
+                            </div>
+                            <div className={cx('form-other-1')}>
+                                <input
+                                    type='text'
+                                    placeholder='Phòng'
+                                    value={formEdit.Room}
+                                    name="Room"
+                                    onChange={handleCollectDataWhenEdit}
+                                ></input>
+                                <select
+                                    value={formEdit.Status}
+                                    name="Status"
+                                    onChange={handleCollectDataWhenEdit}
+                                    style={{
+                                        width: "45%",
+                                        border: "none",
+                                        padding: "2% 5%",
+                                        borderBottom: "1.5px solid #adadad", // Thêm dấu chấm phẩy ở đây
+                                    }}
+                                >
+                                    <option value="Xong" selected={formEdit.Status === "Xong"}>Xong</option>
+                                    <option value="Đang khám" selected={formEdit.Status === "Đang khám"}>Đang khám</option>
+                                    <option value="Chưa khám" selected={formEdit.Status === "Chưa khám"}>Chưa khám</option>
+                                </select>
+                            </div>
+                            <div className={cx('form-button')} >
+                                <button onClick={() => setShowEdit(false)}>HỦY</button>
+                                <button onClick={e => {
+                                    e.preventDefault();
+                                    submitFormWhenEdit();
+                                }}>XÁC NHẬN</button>
+                            </div>
+                        </div>
+                    </div>}
                 </div>
                 <Footer />
-            </div>
+            </div >
         )
     }
     else {

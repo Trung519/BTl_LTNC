@@ -1,5 +1,5 @@
 import { getData, writeUserData } from '../../services/firebase';
-import { v4 as uuidv4} from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 import ConfirmDeleteMaintain from '../../Components/ConfirmDeleteMaintain';
 // import Select from 'react-select';
 import './EquipmentsManage.scss';
@@ -38,7 +38,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import UpdateSuccess from "../../Components/UpdateSuccess";
 import ModalFormAdd from "../Employee/Components/ModalFormAdd";
 
-export default function EquipmentsManage({}) {
+export default function EquipmentsManage({ user }) {
   const [idToEdit, setidToEdit] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [data, setData] = useState([]);
@@ -481,7 +481,7 @@ export default function EquipmentsManage({}) {
         </div> */}
 
         <div id="header-container">
-          <button
+          {user.typeEmp === "Quản trị" && <button
             id="addnew-btn"
             onClick={() => {
               setModalOpen(true);
@@ -490,7 +490,7 @@ export default function EquipmentsManage({}) {
           >
             {" "}
             + Thêm mới
-          </button>
+          </button>}
           <h1 id="header-page">Quản lý Thiết bị</h1>
         </div>
         <div className="search">
@@ -521,14 +521,14 @@ export default function EquipmentsManage({}) {
             <th className="table-head-item">Phòng cất trữ</th>
             <th className="table-head-item">Mô tả</th>
             <th className="table-head-item">Trạng thái</th>
-            <th className="table-head-item">Thao tác</th>
+            {user.typeEmp === "Quản trị" && <th className="table-head-item">Thao tác</th>}
           </thead>
           <tbody>
             {(rowsPerPage > 0
               ? filteredData.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              )
               : filteredData
             ).map((row, index) => {
               return (
@@ -561,7 +561,7 @@ export default function EquipmentsManage({}) {
                     <td className="table-data-item">
                       <span>{row.status}</span>
                     </td>
-                    <td className="table-data-item">
+                    {user.typeEmp === "Quản trị" && <td className="table-data-item">
                       <div id="action-btn-container">
                         <button
                           className="action-btn"
@@ -586,7 +586,7 @@ export default function EquipmentsManage({}) {
                           />
                         </button>
                       </div>
-                    </td>
+                    </td>}
                   </tr>
                   <tr>
                     <td className="collapse-row" colSpan={7}>
@@ -595,7 +595,7 @@ export default function EquipmentsManage({}) {
                         timeout="auto"
                         unmountOnExit
                       >
-                        <Box
+                        {(user.typeEmp === "Quản trị" || user.typeEmp === "Trưởng khoa") && <Box
                           sx={{
                             margin: 1,
                             bgcolor: "#F1F8FF",
@@ -726,7 +726,7 @@ export default function EquipmentsManage({}) {
                                 ))}
                             </tbody>
                           </table>
-                        </Box>
+                        </Box>}
                         <Box
                           sx={{
                             margin: 1,
@@ -737,14 +737,14 @@ export default function EquipmentsManage({}) {
                           <Typography variant="h6" gutterBottom component="div">
                             <div className="swaper-title">
                               <span>Lịch sử sử dụng</span>
-                              <IconButton
+                              {user.typeEmp !== "Dược sỹ" && <IconButton
                                 aria-label="add"
                                 size="small"
                                 color="info"
                                 onClick={() => clickAddUse(row.id)}
                               >
                                 <AddCircleIcon></AddCircleIcon>
-                              </IconButton>
+                              </IconButton>}
                               <Fade in={alertIsUsing}>
                                 <Alert
                                   variant="outlined"
@@ -994,15 +994,13 @@ const CustomTablePagination = styled(TablePagination)(
       transition: all 100ms ease;
   
       &:hover {
-       background-color: ${
-         theme.palette.mode === "dark" ? grey[800] : grey[50]
-       };
+       background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[50]
+    };
        border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
      }
       &:focus {
-       outline: 3px solid ${
-         theme.palette.mode === "dark" ? blue[400] : blue[200]
-       };
+       outline: 3px solid ${theme.palette.mode === "dark" ? blue[400] : blue[200]
+    };
        border-color: ${blue[400]};
      }
    }
@@ -1037,23 +1035,20 @@ const CustomTablePagination = styled(TablePagination)(
       }
   
       &:hover {
-       background-color: ${
-         theme.palette.mode === "dark" ? grey[800] : grey[50]
-       };
+       background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[50]
+    };
        border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
      }
       &:focus {
-       outline: 3px solid ${
-         theme.palette.mode === "dark" ? blue[400] : blue[200]
-       };
+       outline: 3px solid ${theme.palette.mode === "dark" ? blue[400] : blue[200]
+    };
        border-color: ${blue[400]};
      }
       &:disabled {
        opacity: 0.3;
        &:hover {
-         border: 1px solid ${
-           theme.palette.mode === "dark" ? grey[800] : grey[200]
-         };
+         border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
+    };
          background-color: transparent;
        }
      }

@@ -192,17 +192,17 @@ function Header({ user }) {
             } />
             <Route path="/medicine_manage" element={
               user.typeEmp === "normal" ? <LoginForm /> : (
-                user.typeEmp === "Trưởng khoa" || user.typeEmp === "Bác sỹ" || user.typeEmp === "Y tá" ? <ErrorAccess /> : <Medicine_manage />
+                user.typeEmp === "Trưởng khoa" || user.typeEmp === "Bác sỹ" || user.typeEmp === "Y tá" ? <ErrorAccess /> : <Medicine_manage user={user} />
               )
             } />
             <Route path="/equip_manage" element={
-              user.typeEmp === "normal" ? <LoginForm /> : <EquipmentsManage />
+              user.typeEmp === "normal" ? <LoginForm /> : <EquipmentsManage user={user}/>
             } />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignUpForm />} />
             <Route path="/employee" element={
               user.typeEmp === "normal" ? <LoginForm /> : (
-                user.typeEmp === "Dược sỹ" || user.typeEmp === "Bác sỹ" || user.typeEmp === "Y tá" ? <ErrorAccess /> : <Employee />
+                user.typeEmp === "Dược sỹ" || user.typeEmp === "Bác sỹ" || user.typeEmp === "Y tá" ? <ErrorAccess /> : <Employee user={user}/>
               )
             } />
           </Routes>
