@@ -6,7 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { memo } from "react";
 
-function ConfirmModalDeleteSchedule({ displayConfirm, setDisplayConfirm, handleDeleteRow, content }) {
+function ConfirmModalDeleteSchedule({ displayConfirm, setDisplayConfirm, handleDeleteRow, key }) {
     const handlClose = () => {
         setDisplayConfirm(false);
     };
@@ -20,11 +20,11 @@ function ConfirmModalDeleteSchedule({ displayConfirm, setDisplayConfirm, handleD
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {content.content ? content.content : "Bạn chắc chắn muốn bỏ thiết bị này?"}
+                    Bạn chắc chắc muốn xóa bỏ lịch hẹn này?
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        {content.title ? content.title : "Thiết bị sau khi xóa sẽ không thể khôi phục"}
+                        Lịch hẹn không thể hoàn tác sau khi xóa
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -33,7 +33,7 @@ function ConfirmModalDeleteSchedule({ displayConfirm, setDisplayConfirm, handleD
                         handlClose()
                     }}>Không</Button>
                     <Button onClick={
-                        handleDeleteRow} autoFocus>
+                        handleDeleteRow(key)} autoFocus>
                         Đồng ý
                     </Button>
                 </DialogActions>
