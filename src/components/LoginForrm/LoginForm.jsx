@@ -81,7 +81,7 @@ export default function LoginForm(props) {
                     localStorage.setItem("id", employee.ID ? employee.ID : " ");
                     localStorage.setItem("department", employee.Department ? employee.Department : " ");
 
-                    window.location.assign("/home");
+                    window.location.assign("/");
                 }
             });
         }
