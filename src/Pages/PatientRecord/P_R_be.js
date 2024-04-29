@@ -1,15 +1,7 @@
 // Import the functions you need from the SDKs you need
+import { toast } from "react-toastify";
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import {
-  TableBody,
-  TableCell,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  Paper,
-} from "@mui/material";
-import { onValue } from "firebase/database";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
 import {
   getDatabase,
@@ -89,6 +81,20 @@ export function AddHist(CCCD, newHistory) {
                 let medicineData = medicineSnapshot.val();
                 // Giảm số lượng tồn kho
                 medicineData.stock -= quantity;
+                // if (medicineData.stock < 0) {
+                //   medicineData.stock += quantity;
+                //   toast.error("Số lượng trong kho không đủ !", {
+                //     position: "top-right",
+                //     autoClose: 2500,
+                //     hideProgressBar: false,
+                //     closeOnClick: true,
+                //     pauseOnHover: true,
+                //     draggable: true,
+                //     progress: undefined,
+                //     theme: "light",
+                //     // transition: Bounce,
+                //   });
+                // }
                 // Cập nhật lại thông tin thuốc trong bảng Medicine
                 update(medicineRef, medicineData);
               } else {
@@ -127,7 +133,7 @@ export function getMedCheck(CCCD, index, pharmacist) {
       historyData = {
         ...historyData,
         getMed: true,
-        pharmacist: pharmacist
+        pharmacist: pharmacist,
       };
       update(historyRef, historyData)
         .then(() => {
@@ -141,6 +147,38 @@ export function getMedCheck(CCCD, index, pharmacist) {
     .catch((error) => {
       alert("Error fetching patient record");
       console.error("Error fetching patient record:", error);
+    });
+}
+export function getMedicineUnit(drugName) {
+  const medicineRef = ref(db, "Medicine_manage/" + drugName);
+  get(medicineRef)
+    .then((medicineSnapshot) => {
+      if (medicineSnapshot.exists()) {
+        let medicineData = medicineSnapshot.val();
+        // Giảm số lượng tồn kho
+        // medicineData.stock -= quantity;
+        // if (medicineData.stock < 0) {
+        //   medicineData.stock += quantity;
+        //   toast.error("Số lượng trong kho không đủ !", {
+        //     position: "top-right",
+        //     autoClose: 2500,
+        //     hideProgressBar: false,
+        //     closeOnClick: true,
+        //     pauseOnHover: true,
+        //     draggable: true,
+        //     progress: undefined,
+        //     theme: "light",
+        //     // transition: Bounce,
+        //   });
+        // }
+        // Cập nhật lại thông tin thuốc trong bảng Medicine
+        update(medicineRef, medicineData);
+      } else {
+        alert("Medicine not found: " + drugName);
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching medicine data:", error);
     });
 }
 
@@ -223,3 +261,8 @@ export function DeleteData(CCCD) {
       console.log(error);
     });
 }
+export const getMedicineUnit2 = async () => {
+  const response = await get(child(dbRef, "Medicine_manage/"));
+  const posts = await response.val();
+  return posts;
+};
