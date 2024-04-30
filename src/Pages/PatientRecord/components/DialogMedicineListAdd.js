@@ -19,9 +19,6 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Medicine } from "../../Medicine_manage/P_R-be";
 import Autocomplete from "@mui/material/Autocomplete";
-import { getMedicineUnit2 } from "../P_R_be";
-import { toast } from "react-toastify";
-
 const DialogMedicineListAdd = (props) => {
   const {
     listNewMedicine,
@@ -31,28 +28,7 @@ const DialogMedicineListAdd = (props) => {
     setAddMedicineListFormOpen,
     Add_Med,
   } = props;
-  // let DBmedicine;
-  React.useEffect(() => {
-    getMedicineUnit2().then((post) => {
-      if (post != null) {
-        //*********Lấy dữ liệu về từ db
-        // DBmedicine = Object.values(post);
-        // console.log("DBmedicine", DBmedicine);
-        setDBmedicine(Object.values(post));
-      }
-    });
-  }, []);
 
-  const getUnit = (drugName) => {
-    const foundDrug = DBmedicine.find((drug) => drug.name === drugName);
-    if (foundDrug) {
-      return foundDrug.stock;
-    } else {
-      return -1;
-    }
-  };
-
-  const [DBmedicine, setDBmedicine] = React.useState([]);
   const [listMedicine, setListMedicine] = React.useState([]);
   const [medicineAddList, setMedicineAddList] = React.useState(listNewMedicine);
   const nameValue = React.useRef();
@@ -155,7 +131,7 @@ const DialogMedicineListAdd = (props) => {
                 id="unit"
                 name="unit"
                 label="Số lượng"
-                type="number"
+                type="text"
                 fullWidth
                 variant="standard"
                 inputRef={unitValue}
@@ -175,51 +151,17 @@ const DialogMedicineListAdd = (props) => {
                     dosageValue.current.value &&
                     unitValue.current.value
                   ) {
-                    let unitDrug = getUnit(nameValue.current.value);
-
-                    if (unitDrug - unitValue.current.value >= 0) {
-                      const newMedicineElement = {
-                        medicine: nameValue.current.value,
-                        usage: usageValue.current.value,
-                        dosagePerDay: dosageValue.current.value,
-                        unit: unitValue.current.value,
-                      };
-                      nameValue.current.value = "";
-                      usageValue.current.value = "";
-                      dosageValue.current.value = "";
-                      unitValue.current.value = "";
-                      setMedicineAddList((prev) => [
-                        newMedicineElement,
-                        ...prev,
-                      ]);
-                    } else {
-                      toast.error(
-                        `Số lượng ${nameValue.current.value} trong kho còn lại ${unitDrug}`,
-                        {
-                          position: "top-right",
-                          autoClose: 2500,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                          theme: "light",
-                          // transition: Bounce,
-                        }
-                      );
-                    }
-                  } else {
-                    toast.error("Vui lòng nhập đủ các trường", {
-                      position: "top-right",
-                      autoClose: 2500,
-                      hideProgressBar: false,
-                      closeOnClick: true,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
-                      theme: "light",
-                      // transition: Bounce,
-                    });
+                    const newMedicineElement = {
+                      medicine: nameValue.current.value,
+                      usage: usageValue.current.value,
+                      dosagePerDay: dosageValue.current.value,
+                      unit: unitValue.current.value,
+                    };
+                    nameValue.current.value = "";
+                    usageValue.current.value = "";
+                    dosageValue.current.value = "";
+                    unitValue.current.value = "";
+                    setMedicineAddList((prev) => [newMedicineElement, ...prev]);
                   }
                 }}
               >
