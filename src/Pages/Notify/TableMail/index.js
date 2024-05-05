@@ -84,7 +84,7 @@ export default function Tablemail({ listdata, status, user, page, handleMainChan
                                         <div onClick={(e) => handleClickcheckbox(e)} className={cx('col-md-1', 'contain-checkbox')}>
                                             <input
                                                 type='checkbox'
-                                                id={listEmail[(page - 1) * 10 + index].mail_id}
+                                                id={listEmail[(page - 1) * 10 + index].mail_id ? listEmail[(page - 1) * 10 + index].mail_id : -1} 
                                             ></input>
                                         </div>
                                         <div className={cx('col-md-2', 'sender-col')}>
