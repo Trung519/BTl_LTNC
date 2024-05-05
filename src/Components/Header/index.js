@@ -56,7 +56,7 @@ function Header({ user }) {
                 </div>
                 <div className={cx("info")}>
                   <h4>Liên hệ</h4>
-                  <p>0987.654.321</p>
+                  <p>0834800368</p>
                 </div>
               </div>
               <div className={cx("header-wrapper-info", "col-md-2")}>
@@ -74,7 +74,7 @@ function Header({ user }) {
                 </div>
                 <div className={cx("info")}>
                   <h4>Địa chỉ</h4>
-                  <p>KTX khu A ĐHQG - TPHCM</p>
+                  <p>Khu phố Tân Lập, Phường Đông Hòa, TP. Dĩ An, Tỉnh Bình Dương </p>
                 </div>
               </div>
               {user.typeEmp !== "normal" ?  // typeEmp === "normal" Se la dang nhap/dang xuat
