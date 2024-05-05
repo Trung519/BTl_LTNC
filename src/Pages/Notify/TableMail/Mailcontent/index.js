@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState, useContext } from 'react';
 import styles from './Mailcontent.module.scss'
 import classNames from 'classnames/bind'
-import getUserNameByID from '../../../../firebase/Notify/getUserNameByID';
 import { StatusContext } from '../..';
 
 const cx = classNames.bind(styles)

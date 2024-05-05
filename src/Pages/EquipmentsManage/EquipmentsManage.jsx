@@ -40,7 +40,7 @@ import ModalFormAdd from "../Employee/Components/ModalFormAdd";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
-export default function EquipmentsManage({}) {
+export default function EquipmentsManage({ user }) {
   const [idToEdit, setidToEdit] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [data, setData] = useState([]);
@@ -524,7 +524,7 @@ export default function EquipmentsManage({}) {
         </div> */}
 
         <div id="header-container">
-          <button
+          {user.typeEmp === "Quản trị" && <button
             id="addnew-btn"
             onClick={() => {
               setModalOpen(true);
@@ -533,7 +533,7 @@ export default function EquipmentsManage({}) {
           >
             {" "}
             + Thêm mới
-          </button>
+          </button>}
           <div id="header-box">
             <h1 id="header-page">Quản lý Thiết bị</h1>
           </div>
@@ -566,7 +566,7 @@ export default function EquipmentsManage({}) {
             <th className="table-head-item">Phòng cất trữ</th>
             <th className="table-head-item">Mô tả</th>
             <th className="table-head-item">Trạng thái</th>
-            <th className="table-head-item">Thao tác</th>
+            {user.typeEmp === "Quản trị" && <th className="table-head-item">Thao tác</th>}
           </thead>
           <tbody>
             {filteredData
@@ -602,7 +602,7 @@ export default function EquipmentsManage({}) {
                       <td className="table-data-item">
                         <span>{row.status}</span>
                       </td>
-                      <td className="table-data-item">
+                      {user.typeEmp === "Quản trị" && <td className="table-data-item">
                         <div id="action-btn-container">
                           {/* <button
                           className="action-btn"
@@ -632,7 +632,7 @@ export default function EquipmentsManage({}) {
                             <DeleteOutlineIcon></DeleteOutlineIcon>
                           </IconButton>
                         </div>
-                      </td>
+                      </td>}
                     </tr>
                     {expandedRows.includes(row.id) && (
                       <tr>
@@ -642,7 +642,7 @@ export default function EquipmentsManage({}) {
                             timeout="auto"
                             unmountOnExit
                           >
-                            <Box
+                            {(user.typeEmp === "Quản trị" || user.typeEmp === "Trưởng khoa") && <Box
                               sx={{
                                 margin: 1,
                                 bgcolor: "#F1F8FF",
@@ -800,7 +800,7 @@ export default function EquipmentsManage({}) {
                                     ))}
                                 </tbody>
                               </table>
-                            </Box>
+                            </Box>}
                             <Box
                               sx={{
                                 margin: 1,
@@ -1089,24 +1089,21 @@ const CustomTablePagination = styled(TablePagination)(
     & .${classes.select}{
       font-family: 'IBM Plex Sans', sans-serif;
       padding: 2px 0 2px 4px;
-      border: 1px solid ${
-        theme.palette.mode === "dark" ? grey[800] : grey[200]
-      };
+      border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
+    };
       border-radius: 6px; 
       background-color: transparent;
       color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
       transition: all 100ms ease;
   
       &:hover {
-       background-color: ${
-         theme.palette.mode === "dark" ? grey[800] : grey[50]
-       };
+       background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[50]
+    };
        border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
      }
       &:focus {
-       outline: 3px solid ${
-         theme.palette.mode === "dark" ? blue[400] : blue[200]
-       };
+       outline: 3px solid ${theme.palette.mode === "dark" ? blue[400] : blue[200]
+    };
        border-color: ${blue[400]};
      }
    }
@@ -1132,9 +1129,8 @@ const CustomTablePagination = styled(TablePagination)(
       border: transparent;
       border-radius: 50%;
       background-color: transparent;
-      border: 1px solid ${
-        theme.palette.mode === "dark" ? grey[800] : grey[200]
-      };
+      border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
+    };
       color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
       transition: all 120ms ease;
   
@@ -1143,23 +1139,20 @@ const CustomTablePagination = styled(TablePagination)(
       }
   
       &:hover {
-       background-color: ${
-         theme.palette.mode === "dark" ? grey[800] : grey[50]
-       };
+       background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[50]
+    };
        border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
      }
       &:focus {
-       outline: 3px solid ${
-         theme.palette.mode === "dark" ? blue[400] : blue[200]
-       };
+       outline: 3px solid ${theme.palette.mode === "dark" ? blue[400] : blue[200]
+    };
        border-color: ${blue[400]};
      }
       &:disabled {
        opacity: 0.3;
        &:hover {
-         border: 1px solid ${
-           theme.palette.mode === "dark" ? grey[800] : grey[200]
-         };
+         border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
+    };
          background-color: transparent;
        }
      }

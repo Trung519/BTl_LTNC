@@ -66,7 +66,7 @@ const DialogModify = (props) => {
             stock: formJson.stock,
           };
           console.log("HSD", formJson.HSD);
-          toast.success("Chập nhật thành công !", {
+          toast.success("Cập nhật thành công !", {
             position: "top-right",
             autoClose: 2500,
             hideProgressBar: false,

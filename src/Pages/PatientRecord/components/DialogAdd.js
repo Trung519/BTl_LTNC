@@ -101,7 +101,7 @@ const DialogAdd = (props) => {
               address: formJson.address,
             };
             console.log("newPatient", newPatient);
-            setNewPatientsAndRender([newPatient, ...newPatients]);
+            setNewPatientsAndRender([...newPatients, newPatient]);
             setCCCD("");
             setNewGender("");
             handleCloseNewFormOpen();

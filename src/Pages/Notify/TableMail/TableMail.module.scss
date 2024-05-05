@@ -1,6 +1,6 @@
 .tablemail-wrapper {
     width: 100%;
-    height: 100%;
+    padding-top:1%;
 }
 
 .primary-row {
@@ -89,7 +89,7 @@
 }
 
 .notify-footer {
-    margin-top:3%;
+    padding-top:3%;
     // background-color:#edecec;
     border-radius: 7px;
     display:flex;
@@ -98,13 +98,13 @@
 
     .notify-footer-left {
         display:flex;
-        width: 75%;
-        justify-content: end;
+        width: 10%;
+        justify-content: center;
         button {
             border: none;
             background-color: unset;
             margin: auto 1%;
-            padding: 1% 3%;
+            padding: 5% 20%;
             transition: 0.3s;
             border-radius: 5px;
 
@@ -116,23 +116,8 @@
 }
 
 .tablemail-pages {
-    width: 23%;
+    width: 85%;
     display: flex;
-    // justify-content: end;
     justify-content: start;
     
-
-    button {
-        border: none;
-        border-radius: 7px;
-        background-color: white;
-        color: #3497F9;
-        padding: 3px 10px;
-        margin-right: 2%;
-    }
-
-    .page-current {
-        background-color: #3497F9;
-        color: white;
-    }
 }

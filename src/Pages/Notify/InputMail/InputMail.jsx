@@ -3,14 +3,11 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
-
+import { toast } from 'react-toastify';
 import { GetUserData } from '../../../firebase/Notify/GetUserData';
 import { SendMail } from '../../../firebase/Notify/SendMail';
-
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-
 import styles from './InputMail.module.scss';
 import classNames from 'classnames/bind';
 
@@ -55,6 +52,17 @@ export default function Tags({user}) {
         }
 
         SendMail(sender, newMail, setMail)
+        toast.success("Thư đã được gửi !", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            // transition: Bounce,
+        });
     }
     //-------------------------------------Backend-------------------------------------
     const [show, setShow] = useState(true);

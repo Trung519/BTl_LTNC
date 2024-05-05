@@ -1,3 +1,12 @@
+#backgroundE {
+    background: #F1F8FF;
+    position: relative;
+    justify-content: center;
+    align-content: center;
+    padding-top: 1rem;
+    // padding-bottom: 1rem;
+}
+
 .schedule {
     background-color: #f6f8fc;
     display: flex;
@@ -5,6 +14,7 @@
     justify-content: center;
     padding-bottom: 3%;
     width: 90rem;
+    max-width: 90vw;
     margin: 0 auto;
     height: 70rem;
 }
@@ -63,6 +73,7 @@
     margin-top: 3%;
     padding-bottom: 2%;
     height: 95%;
+    position: relative;
 }
 
 .line-row {
@@ -149,6 +160,7 @@
         transition: 0.2s;
         margin-left: 20px;
         margin-right: 25px;
+        color: black;
 
         &:hover {
             scale: 1.5;
@@ -182,7 +194,8 @@
 .schedule-table-ID_doctor,
 .schedule-table-Name_doctor,
 .schedule-table-Patient,
-.schedule-table-Room {
+.schedule-table-Room,
+.schedule-table-Time_in {
     display: flex;
     align-items: center;
     justify-content: start;
@@ -190,7 +203,7 @@
 
 .edit-time {
     padding-top: 1.5%;
-    margin:auto 0;
+    margin: auto 0;
 }
 
 .schedule-add {
@@ -211,6 +224,7 @@
     height: 340px;
     border-radius: 5px;
     background-color: #fff;
+    padding: 10px 5px;
 }
 
 .form-title {
@@ -275,6 +289,39 @@
     }
 }
 
+.form-other-1 {
+    display: flex;
+    width: 100%;
+    padding: 2% 5%;
+    justify-content: space-between;
+    height: 20%;
+
+    input {
+        width: 45%;
+        border: none;
+        padding: 2% 5;
+        border-bottom: 1.5px solid #adadad;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .select {
+        .option {
+            width: 45%;
+            border: none;
+            padding: 2% 5;
+            border-bottom: 1.5px solid #adadad;
+            background:  red;
+    
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+}
+
 .form-other {
     display: flex;
     justify-content: space-around;
@@ -313,11 +360,13 @@
     }
 }
 
-.doctor-id, .doctor-name{
-    position:relative;
+.doctor-id,
+.doctor-name {
+    position: relative;
 }
 
-.ul-id, .ul-name {
+.ul-id,
+.ul-name {
     position: absolute;
     list-style: none;
     background-color: white;
@@ -326,172 +375,12 @@
     margin: 0 auto;
     border-radius: 10px;
     left: 0%;
-    border:1px solid #adadad;
+    border: 1px solid #adadad;
 
     li {
         width: 100%;
     }
 }
-
-// .schedule-add {
-//     width: 100vw;
-//     height: 100vh;
-//     background-color: rgb(0, 0, 0, 0.3);
-//     position: fixed;
-//     top: 0;
-
-//     .contain-form {
-//         width: 100%;
-//         height: 100vh;
-//         display: flex;
-//         justify-content: center;
-//         align-items: center;
-//     }
-
-//     .schedule-form {
-//         width: 650px;
-//         height: 450px;
-//         background-color: white;
-//         border-radius: 5px;
-//         padding: 25px 2%;
-//         color:black;
-//         position: relative;
-//     }
-// }
-
-// .form-close {
-//     position: absolute;
-//     right: 5%;
-//     top: 2%;
-//     font-size: 40px;
-// }
-
-// h5 {
-//     text-align: start;
-//     margin: 3% 1%;
-//     font-size: 25px;
-// }
-
-// .form-title {
-//     text-align: start;
-//     margin: bottom 2%;
-//     font-size: 20px;
-//     font-weight: 520;
-//     font-family: Arial, Helvetica, sans-serif;
-// }
-
-
-
-// .form-doctor {
-//     display: flex;
-//     justify-content: space-between;
-
-//     .doctor-id {
-//         width: 50%;
-//         position: relative;
-//         margin-left:13%;
-
-//         .input-search {
-//             width: 70%;
-//             border-radius: 10px;
-//             border: none;
-//             padding: 3% 5%;
-//         }
-
-//         .ul-id {
-//             position: absolute;
-//             list-style: none;
-//             background-color: white;
-//             color: black;
-//             width: 62%;
-//             margin: 0 auto;
-//             border-radius: 10px;
-//             left: 19%;
-
-//             li {
-//                 margin-right: 30px;
-//             }
-//         }
-//     }
-
-//     .doctor-name {
-//         width: 50%;
-//         position: relative;
-
-//         .input-search {
-//             width: 70%;
-//             border-radius: 10px;
-//             border: none;
-//             padding: 3% 5%;
-//         }
-
-//         .ul-name {
-//             position: absolute;
-//             list-style: none;
-//             background-color: white;
-//             color: black;
-//             width: 62%;
-//             margin: 0 auto;
-//             border-radius: 10px;
-//             left: 19%;
-
-//             li {
-//                 margin-right: 30px;
-//             }
-//         }
-//     }
-// }
-
-// .form-time {
-
-//     .form-time-input {
-//         display: flex;
-//         justify-content: space-between;
-//         padding: 0 10%;
-//         margin:0 3%;
-//     }
-
-//     input {
-//         width: 41%;
-//         border: none;
-//         border-radius: 10px;
-//         padding: 1.5% 5%;
-//     }
-// }
-
-// .form-others {
-//     .form-others-input {
-//         display: flex;
-//         flex-wrap: wrap;
-//         justify-content: space-between;
-
-//         input {
-//             width: 30%;
-//             border: none;
-//             border-radius: 10px;
-//             padding: 1.5% 5%;
-//         }
-//     }
-// }
-
-// .form-vali {
-//     margin-top: 5%;
-//     display:flex;
-//     justify-content: center;
-
-//     button {
-//         border: none;
-//         border-radius: 10px;
-//         padding: 1.5% 10%;
-//         background-color: rgb(176, 223, 247);
-//         transition: 0.4s;
-
-//         &:hover {
-//             background-color: rgb(157, 200, 221);
-
-//         }
-//     }
-// }
 
 
 .no-change {
@@ -500,23 +389,13 @@
 
 .schedule-pages {
     width: 80%;
-    display: flex;
-    justify-content: end;
-    margin-top: 2%;
-
-    button {
-        border: none;
-        border-radius: 7px;
-        background-color: white;
-        color: #3497F9;
-        padding: 3px 10px;
-        margin-right: 2%;
-    }
-
-    .page-current {
-        background-color: #3497F9;
-        color: white;
-    }
+    // display: flex;
+    // justify-content: start;
+    // margin-top: 2%;
+    // margin-left:2%;
+    position: absolute;
+    bottom: 5%;
+    left: 3%;
 }
 
 .not-found {
@@ -553,4 +432,10 @@
 
 .select-done {
     color: green;
+}
+
+@media screen and (max-width:1263px) {
+    .schedule {
+        font-size: 14px;
+    }
 }

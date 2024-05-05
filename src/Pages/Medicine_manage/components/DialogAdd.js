@@ -69,7 +69,7 @@ const DialogAdd = (props) => {
             theme: "light",
             // transition: Bounce,
           });
-          setNewListMedicineAndRender([newMedicine, ...newListMedicine]);
+          setNewListMedicineAndRender([...newListMedicine, newMedicine]);
           setNewFormOpen(false);
         },
       }}
