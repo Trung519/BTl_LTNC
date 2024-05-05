@@ -11,7 +11,13 @@ function GetMails(callback = () => {
 
     onValue(dataRef, (snapshot) => {
         const mails = snapshot.val();
-        callback(mails);
+        
+        const listEmail = []
+
+        for (let i = mails.length - 1; i >= 0; i--){
+            listEmail.push(mails[i])
+        }
+        callback(listEmail)
     })
 }
 

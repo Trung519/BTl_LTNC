@@ -14,6 +14,7 @@ export default function Tablemail({ listdata, status, user, page, handleMainChan
     
     const listEmail = listdata;
     const rowsPerPage = 10;
+    //const temp = listEmail[(page - 1) * 10 + index].receiver[0].username;
 
     var handleChangepage = useCallback((e,p) => {
         handleMainChangepage(e,p);
@@ -21,6 +22,10 @@ export default function Tablemail({ listdata, status, user, page, handleMainChan
 
     var handleClickcheckbox = (e) => {
         e.stopPropagation()
+    }
+
+    var returnReceivername = (list) => {
+        return list.receiver[0].username
     }
 
     var handleShowcontent = useCallback((page, index) => {
@@ -65,7 +70,7 @@ export default function Tablemail({ listdata, status, user, page, handleMainChan
                         <div className={cx('col-md-1', 'primary-checkbox')}>
                         </div>
                         <div className={cx('col-md-2', 'primary-sender')}>
-                            <p>Người gửi</p>
+                        {status === 'received_mail' || status ==='all' ?<p>Người gửi</p>:<p>Người nhận</p>}
                         </div>
                         <div className={cx('col-md-8', 'primary-content')}>
                             <p>Nội dung</p>
@@ -88,13 +93,9 @@ export default function Tablemail({ listdata, status, user, page, handleMainChan
                                             ></input>
                                         </div>
                                         <div className={cx('col-md-2', 'sender-col')}>
-                                            {status === 'received_mail' ?
-                                                listEmail[(page - 1) * 10 + index].sender.username
-                                                : status === 'sent' ? 
-                                                'Tôi' :
-                                                listEmail[(page - 1) * 10 + index].sender.username === '' ?
-                                                'Tôi' :
-                                                listEmail[(page - 1) * 10 + index].sender.username
+                                            {status === 'received_mail' || status ==='all' ?
+                                                listEmail[(page - 1) * 10 + index].sender.username :
+                                                returnReceivername(listEmail[(page - 1) * 10 + index])
                                             }
                                         </div>
                                         <div className={cx('col-md-8', 'content-col')}>
@@ -112,7 +113,7 @@ export default function Tablemail({ listdata, status, user, page, handleMainChan
                     </div>
                     <div className={cx('notify-footer')}>
                         <div className={cx('notify-footer-left')}>
-                            <button onClick={() => removeEmail()}>Xóa</button>
+                            {status !== 'all' && <button onClick={() => removeEmail()}>Xóa</button>}
                         </div>
                         <div className={cx('tablemail-pages')}>
                             <Pagination
