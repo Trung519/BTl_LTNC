@@ -229,6 +229,8 @@ const Medicine_manage = () => {
               setNewFormOpen={setNewFormOpen}
               setNewListMedicineAndRender={setNewListMedicineAndRender}
               newListMedicine={newListMedicine}
+              setEmptyRows={setEmptyRows}
+              emptyRows={emptyRows}
               // createMedicine={createMedicine}
             ></DialogAdd>
             {/* </Grid> */}
@@ -317,7 +319,7 @@ const Medicine_manage = () => {
                         fontSize: "17px",
                       }}
                     >
-                      Tồn kho&nbsp;(hộp)
+                      Tồn kho&nbsp;(viên)
                     </TableCell>
                     <TableCell
                       align="center"
@@ -359,6 +361,8 @@ const Medicine_manage = () => {
                       row={row}
                       setNewListMedicineAndRender={setNewListMedicineAndRender}
                       newListMedicine={newListMedicine}
+                      emptyRows={emptyRows}
+                      setEmptyRows={setEmptyRows}
                       // listMedicine={listMedicine}
                     ></MainRow>
                   ))}
