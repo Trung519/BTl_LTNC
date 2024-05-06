@@ -1,14 +1,13 @@
-import { getData, writeUserData } from '../../services/firebase';
-import { v4 as uuidv4} from 'uuid'
-import ConfirmDeleteMaintain from '../../Components/ConfirmDeleteMaintain';
+import { getData, writeUserData } from "../../services/firebase";
+import { v4 as uuidv4 } from "uuid";
+import ConfirmDeleteMaintain from "../../Components/ConfirmDeleteMaintain";
 // import Select from 'react-select';
-import './EquipmentsManage.scss';
-import { useState, useEffect, useCallback } from 'react';
-import Modal from '../../Components/Modal/Modal';
+import "./EquipmentsManage.scss";
+import { useState, useEffect, useCallback } from "react";
+import Modal from "../../Components/Modal/Modal";
+import Pagination from "@mui/material/Pagination";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { toast } from "react-toastify";
 
 import TextField from "@mui/material/TextField";
 import {
@@ -37,16 +36,19 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import UpdateSuccess from "../../Components/UpdateSuccess";
 import ModalFormAdd from "../Employee/Components/ModalFormAdd";
+//Import icon
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
-export default function EquipmentsManage({}) {
+export default function EquipmentsManage({ user }) {
   const [idToEdit, setidToEdit] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [data, setData] = useState([]);
   const [equipmentsRows, setEquipmentsRows] = useState([]);
   const [maintain, setMaintain] = useState([]);
   const [use, setUse] = useState([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useState(1);
+  const rowsPerPage = 10;
   const [displayAlert, setDisplayAlert] = useState(false);
   const [displayConfirm, setDisplayConfirm] = useState(false);
   const [dataEmp, setDataEmp] = useState([]);
@@ -158,6 +160,17 @@ export default function EquipmentsManage({}) {
       equipmentsRows.filter((item, idx) => item.id !== idToEdit)
     );
     setDisplayConfirm(false);
+    toast.error("Xóa thành công !", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      // transition: Bounce,
+    });
   }, [idToEdit]);
 
   function handleEditRow(id) {
@@ -191,15 +204,16 @@ export default function EquipmentsManage({}) {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
-  const emptyRows =
-    page > 0
-      ? Math.max(0, (1 + page) * rowsPerPage - equipmentsRows.length)
-      : 0;
+  // const emptyRows =
+  //   page > 0
+  //     ? Math.max(0, (1 + page) * rowsPerPage - equipmentsRows.length)
+  //     : 0;
+  const emptyRows = Math.max(0, page * rowsPerPage - filteredData.length);
 
   // maintain
   const [alertDeleteMaintain, setAlertDeteteMaintain] = useState(false);
@@ -208,8 +222,10 @@ export default function EquipmentsManage({}) {
   const clickAdd = (id) => {
     if (!isAvailable(id)) {
       setAlertIsMaintaining(true);
+      setArrayAlertErrorMaintain(...arrayAlertErrorMaintain, id);
       setTimeout(() => {
         setAlertIsMaintaining(false);
+        setArrayAlertErrorMaintain([]);
       }, 3000);
     } else {
       let newFormsState = formsState;
@@ -288,6 +304,17 @@ export default function EquipmentsManage({}) {
     writeUserData(newDataMaintain, "/Maintain");
     setMaintain(newDataMaintain);
     setAlertDeteteMaintain(false);
+    toast.error("Xóa thành công !", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      // transition: Bounce,
+    });
   };
 
   function getFormattedDate() {
@@ -352,10 +379,12 @@ export default function EquipmentsManage({}) {
       }
       setFormsUseState(newFormsUseState);
     } else {
+      setArrayAlertErrorUse(...arrayAlertErrorUse, id);
       setMsgErrorUse("Thiết bị đang được bảo trì hoặc sử dụng !");
       setAlertIsUsing(true);
       setTimeout(() => {
         setAlertIsUsing(false);
+        setArrayAlertErrorUse([]);
       }, 3000);
     }
   };
@@ -442,8 +471,11 @@ export default function EquipmentsManage({}) {
       return newDataUse;
     });
   };
+  const [arrayAlertErrorUse, setArrayAlertErrorUse] = useState([]);
+  const [arrayAlertErrorMaintain, setArrayAlertErrorMaintain] = useState([]);
   const [alertDeleteUse, setAlertDeleteUse] = useState(false);
   const [rowtoDeleteUse, setRowtoDeleteUse] = useState(null);
+
   const onClickDeleteUse = (id) => {
     setRowtoDeleteUse(id);
     setAlertDeleteUse(true);
@@ -455,6 +487,17 @@ export default function EquipmentsManage({}) {
     writeUserData(newDataUse, "/Use");
     setUse(newDataUse);
     setAlertDeleteUse(false);
+    toast.error("Xóa thành công !", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      // transition: Bounce,
+    });
   };
   const [msgErrorUse, setMsgErrorUse] = useState("");
   const [loading, setLoading] = useState(true);
@@ -481,7 +524,7 @@ export default function EquipmentsManage({}) {
         </div> */}
 
         <div id="header-container">
-          <button
+          {user.typeEmp === "Quản trị" && <button
             id="addnew-btn"
             onClick={() => {
               setModalOpen(true);
@@ -490,8 +533,10 @@ export default function EquipmentsManage({}) {
           >
             {" "}
             + Thêm mới
-          </button>
-          <h1 id="header-page">Quản lý Thiết bị</h1>
+          </button>}
+          <div id="header-box">
+            <h1 id="header-page">Quản lý Thiết bị</h1>
+          </div>
         </div>
         <div className="search">
           <TextField
@@ -521,60 +566,45 @@ export default function EquipmentsManage({}) {
             <th className="table-head-item">Phòng cất trữ</th>
             <th className="table-head-item">Mô tả</th>
             <th className="table-head-item">Trạng thái</th>
-            <th className="table-head-item">Thao tác</th>
+            {user.typeEmp === "Quản trị" && <th className="table-head-item">Thao tác</th>}
           </thead>
           <tbody>
-            {(rowsPerPage > 0
-              ? filteredData.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-              : filteredData
-            ).map((row, index) => {
-              return (
-                <>
-                  <tr key={index}>
-                    <td className="table-data-item">
-                      <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={(event) => handleExpandRow(event, row.id)}
-                      >
-                        {expandState[row.id] ? (
-                          <KeyboardArrowUpIcon />
-                        ) : (
-                          <KeyboardArrowDownIcon />
-                        )}
-                      </IconButton>
-                    </td>
-                    <td className="table-data-item">
-                      {
-                        <div>
-                          <span>{row.name}</span> <br />
-                          {/* <span id="txt-id">{row.id}</span> */}
-                        </div>
-                      }
-                    </td>
-                    <td className="table-data-item">{row.type}</td>
-                    <td className="table-data-item">{row.room}</td>
-                    <td className="table-data-item">{row.description}</td>
-                    <td className="table-data-item">
-                      <span>{row.status}</span>
-                    </td>
-                    <td className="table-data-item">
-                      <div id="action-btn-container">
-                        <button
-                          className="action-btn"
-                          id="delete-btn"
-                          type="submit"
-                          onClick={() => handleOnclickDelete(row.id)}
+            {filteredData
+              .slice(page * rowsPerPage - rowsPerPage, page * rowsPerPage)
+              .map((row, index) => {
+                return (
+                  <>
+                    <tr key={index}>
+                      <td className="table-data-item">
+                        <IconButton
+                          aria-label="expand row"
+                          size="small"
+                          onClick={(event) => handleExpandRow(event, row.id)}
                         >
-                          <FontAwesomeIcon
-                            icon={faTrashCan}
-                            style={{ color: "#ff3333" }}
-                          />
-                        </button>
-                        <button
+                          {expandState[row.id] ? (
+                            <KeyboardArrowUpIcon />
+                          ) : (
+                            <KeyboardArrowDownIcon />
+                          )}
+                        </IconButton>
+                      </td>
+                      <td className="table-data-item">
+                        {
+                          <div>
+                            <span>{row.name}</span> <br />
+                            {/* <span id="txt-id">{row.id}</span> */}
+                          </div>
+                        }
+                      </td>
+                      <td className="table-data-item">{row.type}</td>
+                      <td className="table-data-item">{row.room}</td>
+                      <td className="table-data-item">{row.description}</td>
+                      <td className="table-data-item">
+                        <span>{row.status}</span>
+                      </td>
+                      {user.typeEmp === "Quản trị" && <td className="table-data-item">
+                        <div id="action-btn-container">
+                          {/* <button
                           className="action-btn"
                           id="edit-btn"
                           type="submit"
@@ -584,321 +614,393 @@ export default function EquipmentsManage({}) {
                             icon={faPenToSquare}
                             style={{ color: "#1a9cff" }}
                           />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="collapse-row" colSpan={7}>
-                      <Collapse
-                        in={expandedRows.includes(row.id)}
-                        timeout="auto"
-                        unmountOnExit
-                      >
-                        <Box
-                          sx={{
-                            margin: 1,
-                            bgcolor: "#F1F8FF",
-                            padding: "10px",
-                          }}
-                        >
-                          <Typography variant="h6" gutterBottom component="div">
-                            <div className="swaper-title">
-                              <span>Lịch sử bảo dưỡng</span>
+                        </button> */}
+                          <IconButton
+                            aria-label="edit"
+                            size="small"
+                            onClick={() => handleEditRow(row.id)}
+                          >
+                            <EditOutlinedIcon></EditOutlinedIcon>
+                          </IconButton>
 
-                              <IconButton
-                                aria-label="add"
-                                size="small"
-                                color="info"
-                                onClick={() => clickAdd(row.id)}
+                          <IconButton
+                            aria-label="delete"
+                            size="small"
+                            color="error"
+                            onClick={() => handleOnclickDelete(row.id)}
+                          >
+                            <DeleteOutlineIcon></DeleteOutlineIcon>
+                          </IconButton>
+                        </div>
+                      </td>}
+                    </tr>
+                    {expandedRows.includes(row.id) && (
+                      <tr>
+                        <td className="collapse-row" colSpan={7}>
+                          <Collapse
+                            in={expandedRows.includes(row.id)}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            {(user.typeEmp === "Quản trị" || user.typeEmp === "Trưởng khoa") && <Box
+                              sx={{
+                                margin: 1,
+                                bgcolor: "#F1F8FF",
+                                padding: "10px",
+                              }}
+                            >
+                              <Typography
+                                variant="h6"
+                                gutterBottom
+                                component="div"
                               >
-                                <AddCircleIcon></AddCircleIcon>
-                              </IconButton>
-                              <Fade in={alertIsMaintaining}>
-                                <Alert
-                                  variant="outlined"
-                                  severity="error"
-                                  className="error-add-maintain"
-                                >
-                                  Thiết bị đang được bảo trì hoặc sử dụng !
-                                </Alert>
-                              </Fade>
-                            </div>
-                          </Typography>
-                          <table className="collapse-table">
-                            <thead>
-                              <th className="maintain-header">Thời gian</th>
-                              <th className="maintain-header">
-                                Thời gian hoàn thành
-                              </th>
-                              <th className="maintain-header">Nội dung</th>
-                              {formsState.includes(row.id) ? (
-                                <th className="maintain-header"></th>
-                              ) : (
-                                <>
+                                <div className="swaper-title">
+                                  <span>Lịch sử bảo dưỡng</span>
+
+                                  <IconButton
+                                    aria-label="add"
+                                    size="small"
+                                    color="info"
+                                    onClick={() => clickAdd(row.id)}
+                                  >
+                                    <AddCircleIcon></AddCircleIcon>
+                                  </IconButton>
+                                  <Fade
+                                    in={
+                                      alertIsMaintaining &&
+                                      arrayAlertErrorMaintain.includes(row.id)
+                                    }
+                                  >
+                                    <Alert
+                                      variant="outlined"
+                                      severity="error"
+                                      className="error-add-maintain"
+                                    >
+                                      Thiết bị đang được bảo trì hoặc sử dụng !
+                                    </Alert>
+                                  </Fade>
+                                </div>
+                              </Typography>
+                              <table className="collapse-table">
+                                <thead>
+                                  <th className="maintain-header">Thời gian</th>
                                   <th className="maintain-header">
-                                    Trạng thái
+                                    Thời gian hoàn thành
                                   </th>
-                                  <th className="maintain-header">Thao tác</th>
-                                </>
-                              )}
-                            </thead>
-                            <tbody>
-                              {formsState.includes(row.id) && (
-                                <tr>
-                                  <td className="maintain-data">{`${getFormattedDate()}`}</td>
-                                  <td className="maintain-data">---</td>
-                                  <td className="maintain-data">
-                                    <input
-                                      className="input-content"
-                                      type="text"
-                                      autoFocus
-                                      autoComplete="off"
-                                    ></input>
-                                  </td>
-                                  <td className="maintain-data">
-                                    <button
-                                      className="btn-use"
-                                      onClick={() => addMaintain(row.id)}
-                                    >
-                                      Thêm
-                                    </button>
-                                    <button
-                                      className="btn-use"
-                                      onClick={() => cancelAddMaintain(row.id)}
-                                    >
-                                      Hủy
-                                    </button>
-                                  </td>
-                                </tr>
-                              )}
-
-                              {maintain
-                                .filter((item) => item.id === row.id)
-                                .map((row, index) => (
-                                  <tr>
-                                    <td className="maintain-data">
-                                      {row.time}
-                                    </td>
-                                    <td className="maintain-data">
-                                      {row.time_finish}
-                                    </td>
-                                    <td className="maintain-data">
-                                      {row.content}
-                                    </td>
-                                    <td className="maintain-data">
-                                      <div className="state-maintain">
-                                        {" "}
-                                        {row.state ? (
-                                          <span>Đã bảo trì</span>
-                                        ) : (
-                                          <button
-                                            onClick={() =>
-                                              setStateMaintain(row.id_maintain)
-                                            }
-                                            className="btn-confirm-maintain"
-                                          >
-                                            Xác nhận bảo trì
-                                          </button>
-                                        )}{" "}
-                                      </div>
-                                    </td>
-                                    <td className="maintain-data">
-                                      <button
-                                        className="action-btn"
-                                        id="delete-btn"
-                                        type="submit"
-                                      >
-                                        <FontAwesomeIcon
-                                          icon={faTrashCan}
-                                          style={{
-                                            color: "#ff3333",
-                                          }}
+                                  <th className="maintain-header">Nội dung</th>
+                                  {formsState.includes(row.id) ? (
+                                    <th className="maintain-header"></th>
+                                  ) : (
+                                    <>
+                                      <th className="maintain-header">
+                                        Trạng thái
+                                      </th>
+                                      <th className="maintain-header">
+                                        Thao tác
+                                      </th>
+                                    </>
+                                  )}
+                                </thead>
+                                <tbody>
+                                  {formsState.includes(row.id) && (
+                                    <tr>
+                                      <td className="maintain-data">{`${getFormattedDate()}`}</td>
+                                      <td className="maintain-data">---</td>
+                                      <td className="maintain-data">
+                                        <input
+                                          className="input-content"
+                                          type="text"
+                                          autoFocus
+                                          autoComplete="off"
+                                        ></input>
+                                      </td>
+                                      <td className="maintain-data">
+                                        <button
+                                          className="btn-use"
+                                          onClick={() => addMaintain(row.id)}
+                                        >
+                                          Thêm
+                                        </button>
+                                        <button
+                                          className="btn-use"
                                           onClick={() =>
-                                            onClickDeleteMaintain(
-                                              row.id_maintain
-                                            )
+                                            cancelAddMaintain(row.id)
                                           }
-                                        />
-                                      </button>
-                                    </td>
-                                  </tr>
-                                ))}
-                            </tbody>
-                          </table>
-                        </Box>
-                        <Box
-                          sx={{
-                            margin: 1,
-                            bgcolor: "#F1F8FF",
-                            padding: "10px",
-                          }}
-                        >
-                          <Typography variant="h6" gutterBottom component="div">
-                            <div className="swaper-title">
-                              <span>Lịch sử sử dụng</span>
-                              <IconButton
-                                aria-label="add"
-                                size="small"
-                                color="info"
-                                onClick={() => clickAddUse(row.id)}
+                                        >
+                                          Hủy
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  )}
+
+                                  {maintain
+                                    .filter((item) => item.id === row.id)
+                                    .map((row, index) => (
+                                      <tr>
+                                        <td className="maintain-data">
+                                          {row.time}
+                                        </td>
+                                        <td className="maintain-data">
+                                          {row.time_finish}
+                                        </td>
+                                        <td className="maintain-data">
+                                          {row.content}
+                                        </td>
+                                        <td className="maintain-data">
+                                          <div className="state-maintain">
+                                            {" "}
+                                            {row.state ? (
+                                              <span>Đã bảo trì</span>
+                                            ) : (
+                                              <button
+                                                onClick={() =>
+                                                  setStateMaintain(
+                                                    row.id_maintain
+                                                  )
+                                                }
+                                                className="btn-confirm-maintain"
+                                              >
+                                                Xác nhận bảo trì
+                                              </button>
+                                            )}{" "}
+                                          </div>
+                                        </td>
+                                        <td className="maintain-data">
+                                          {/* <button
+                                            className="action-btn"
+                                            id="delete-btn"
+                                            type="submit"
+                                          >
+                                            <FontAwesomeIcon
+                                              icon={faTrashCan}
+                                              style={{
+                                                color: "#ff3333",
+                                              }}
+                                              onClick={() =>
+                                                onClickDeleteMaintain(
+                                                  row.id_maintain
+                                                )
+                                              }
+                                            />
+                                          </button> */}
+                                          <IconButton
+                                            aria-label="delete"
+                                            size="small"
+                                            color="error"
+                                            onClick={() =>
+                                              onClickDeleteMaintain(
+                                                row.id_maintain
+                                              )
+                                            }
+                                          >
+                                            <DeleteOutlineIcon></DeleteOutlineIcon>
+                                          </IconButton>
+                                        </td>
+                                      </tr>
+                                    ))}
+                                </tbody>
+                              </table>
+                            </Box>}
+                            <Box
+                              sx={{
+                                margin: 1,
+                                bgcolor: "#F1F8FF",
+                                padding: "10px",
+                              }}
+                            >
+                              <Typography
+                                variant="h6"
+                                gutterBottom
+                                component="div"
                               >
-                                <AddCircleIcon></AddCircleIcon>
-                              </IconButton>
-                              <Fade in={alertIsUsing}>
-                                <Alert
-                                  variant="outlined"
-                                  severity="error"
-                                  className="error-add-maintain"
-                                >
-                                  {msgErrorUse}
-                                </Alert>
-                              </Fade>
-                            </div>
-                          </Typography>
-                          <table className="collapse-table">
-                            <thead>
-                              <th className="header-use">Thời gian</th>
-                              <th className="header-use">Thời gian trả</th>
-                              <th className="header-use">Người sử dụng</th>
-                              {formsUseState.includes(row.id) ? (
-                                <th className="header-use"></th>
-                              ) : (
-                                <>
-                                  <th className="header-use">Trạng thái</th>
-                                  <th className="header-use">Thao tác</th>
-                                </>
-                              )}
-                            </thead>
-                            <tbody>
-                              {formsUseState.includes(row.id) && (
-                                <tr>
-                                  <td className="data-use">{`${getFormattedDate()}`}</td>
-                                  <td className="data-use">---</td>
-                                  <td className="data-use">
-                                    <InputBorrower
-                                      inputSearch={inputborrower}
-                                      setInputSearch={setInputBorrower}
-                                    />
-                                  </td>
-                                  <td className="data-use">
-                                    <button
-                                      className="btn-use"
-                                      onClick={() => handleAddUse(row.id)}
+                                <div className="swaper-title">
+                                  <span>Lịch sử sử dụng</span>
+                                  <IconButton
+                                    aria-label="add"
+                                    size="small"
+                                    color="info"
+                                    onClick={() => clickAddUse(row.id)}
+                                  >
+                                    <AddCircleIcon></AddCircleIcon>
+                                  </IconButton>
+                                  <Fade
+                                    in={
+                                      alertIsUsing &&
+                                      arrayAlertErrorUse.includes(row.id)
+                                    }
+                                  >
+                                    <Alert
+                                      variant="outlined"
+                                      severity="error"
+                                      className="error-add-maintain"
                                     >
-                                      Thêm
-                                    </button>
-                                    <button
-                                      className="btn-use"
-                                      onClick={() =>
-                                        onClickCancelAddUse(row.id)
-                                      }
-                                    >
-                                      Hủy
-                                    </button>
-                                  </td>
-                                </tr>
-                              )}
+                                      {msgErrorUse}
+                                    </Alert>
+                                  </Fade>
+                                </div>
+                              </Typography>
+                              <table className="collapse-table">
+                                <thead>
+                                  <th className="header-use">Thời gian</th>
+                                  <th className="header-use">Thời gian trả</th>
+                                  <th className="header-use">Người sử dụng</th>
+                                  {formsUseState.includes(row.id) ? (
+                                    <th className="header-use"></th>
+                                  ) : (
+                                    <>
+                                      <th className="header-use">Trạng thái</th>
+                                      <th className="header-use">Thao tác</th>
+                                    </>
+                                  )}
+                                </thead>
+                                <tbody>
+                                  {formsUseState.includes(row.id) && (
+                                    <tr>
+                                      <td className="data-use">{`${getFormattedDate()}`}</td>
+                                      <td className="data-use">---</td>
+                                      <td className="data-use">
+                                        <InputBorrower
+                                          inputSearch={inputborrower}
+                                          setInputSearch={setInputBorrower}
+                                        />
+                                      </td>
+                                      <td className="data-use">
+                                        <button
+                                          className="btn-use"
+                                          onClick={() => handleAddUse(row.id)}
+                                        >
+                                          Thêm
+                                        </button>
+                                        <button
+                                          className="btn-use"
+                                          onClick={() =>
+                                            onClickCancelAddUse(row.id)
+                                          }
+                                        >
+                                          Hủy
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  )}
 
-                              {use
-                                .filter((item) => item.id === row.id)
-                                .map((row, index) => (
-                                  <tr>
-                                    <td className="data-use">{row.time}</td>
-                                    <td className="data-use">
-                                      {row.time_finish}
-                                    </td>
-                                    <td className="data-use">
-                                      <div
-                                        className="row-borrower"
-                                        onClick={() => {
-                                          setIdToRead(row.borrower);
-                                          setDisplayForm(true);
-                                        }}
-                                      >
-                                        {row.borrower}
-                                      </div>
-                                    </td>
-                                    <td className="data-use">
-                                      <div className="state-use">
-                                        {row.state ? (
-                                          <span>Đã trả</span>
-                                        ) : (
-                                          <button
-                                            className="btn-confirm-return"
+                                  {use
+                                    .filter((item) => item.id === row.id)
+                                    .map((row, index) => (
+                                      <tr>
+                                        <td className="data-use">{row.time}</td>
+                                        <td className="data-use">
+                                          {row.time_finish}
+                                        </td>
+                                        <td className="data-use">
+                                          <div
+                                            className="row-borrower"
+                                            onClick={() => {
+                                              setIdToRead(row.borrower);
+                                              setDisplayForm(true);
+                                            }}
+                                          >
+                                            {row.borrower}
+                                          </div>
+                                        </td>
+                                        <td className="data-use">
+                                          <div className="state-use">
+                                            {row.state ? (
+                                              <span>Đã trả</span>
+                                            ) : (
+                                              <button
+                                                className="btn-confirm-return"
+                                                onClick={() =>
+                                                  setStateUse(row.id_use)
+                                                }
+                                              >
+                                                Xác nhận trả
+                                              </button>
+                                            )}
+                                          </div>
+                                        </td>
+                                        <td className="data-use">
+                                          {/* <button
+                                            className="action-btn"
+                                            id="delete-btn"
+                                            type="submit"
+                                          >
+                                            <FontAwesomeIcon
+                                              icon={faTrashCan}
+                                              style={{
+                                                color: "#ff3333",
+                                              }}
+                                              onClick={() =>
+                                                onClickDeleteUse(row.id_use)
+                                              }
+                                            />
+                                          </button> */}
+
+                                          <IconButton
+                                            aria-label="delete"
+                                            size="small"
+                                            color="error"
                                             onClick={() =>
-                                              setStateUse(row.id_use)
+                                              onClickDeleteUse(row.id_use)
                                             }
                                           >
-                                            Xác nhận trả
-                                          </button>
-                                        )}
-                                      </div>
-                                    </td>
-                                    <td className="data-use">
-                                      <button
-                                        className="action-btn"
-                                        id="delete-btn"
-                                        type="submit"
-                                      >
-                                        <FontAwesomeIcon
-                                          icon={faTrashCan}
-                                          style={{
-                                            color: "#ff3333",
-                                          }}
-                                          onClick={() =>
-                                            onClickDeleteUse(row.id_use)
-                                          }
-                                        />
-                                      </button>
-                                    </td>
-                                  </tr>
-                                ))}
-                            </tbody>
-                          </table>
-                        </Box>
-                      </Collapse>
-                    </td>
-                  </tr>
-                </>
-              );
-            })}
-            {emptyRows > 0 && (
-              <tr style={{ height: 41 * emptyRows }}>
-                <td colSpan={7} aria-hidden />
-              </tr>
-            )}
+                                            <DeleteOutlineIcon></DeleteOutlineIcon>
+                                          </IconButton>
+                                        </td>
+                                      </tr>
+                                    ))}
+                                </tbody>
+                              </table>
+                            </Box>
+                          </Collapse>
+                        </td>
+                      </tr>
+                    )}
+                  </>
+                );
+              })}
+            {emptyRows > 0 && <tr style={{ height: 55 * emptyRows }}></tr>}
           </tbody>
           <tfoot>
-            <tr>
-              <CustomTablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                colSpan={7}
-                count={equipmentsRows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                labelRowsPerPage={"Số hàng hiển thị:"}
-                slotProps={{
-                  select: {
-                    "aria-label": "rows per page",
-                  },
-                  actions: {
-                    showFirstButton: true,
-                    showLastButton: true,
-                    slots: {
-                      firstPageIcon: FirstPageRoundedIcon,
-                      lastPageIcon: LastPageRoundedIcon,
-                      nextPageIcon: ChevronRightRoundedIcon,
-                      backPageIcon: ChevronLeftRoundedIcon,
-                    },
-                  },
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </tr>
+            {/* <tr>
+                            <CustomTablePagination
+                                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                                colSpan={7}
+                                count={equipmentsRows.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                labelRowsPerPage={"Số hàng hiển thị:"}
+                                slotProps={{
+                                    select: {
+                                        "aria-label": "rows per page",
+                                    },
+                                    actions: {
+                                        showFirstButton: true,
+                                        showLastButton: true,
+                                        slots: {
+                                            firstPageIcon: FirstPageRoundedIcon,
+                                            lastPageIcon: LastPageRoundedIcon,
+                                            nextPageIcon: ChevronRightRoundedIcon,
+                                            backPageIcon: ChevronLeftRoundedIcon,
+                                        },
+                                    },
+                                }}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                        </tr> */}
           </tfoot>
         </table>
+        <div className="pagination-equip">
+          <Pagination
+            color="primary"
+            onChange={handleChangePage}
+            page={page}
+            count={Math.ceil(equipmentsRows.length / rowsPerPage)}
+            // rowsPerPage={5}
+            showFirstButton
+            showLastButton
+          />
+        </div>
         {modalOpen && (
           <Modal
             closeModal={() => {
@@ -987,22 +1089,21 @@ const CustomTablePagination = styled(TablePagination)(
     & .${classes.select}{
       font-family: 'IBM Plex Sans', sans-serif;
       padding: 2px 0 2px 4px;
-      border: 1px solid ${theme.palette.mode === 'dark' ? grey[800] : grey[200]};
+      border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
+    };
       border-radius: 6px; 
       background-color: transparent;
-      color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+      color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
       transition: all 100ms ease;
   
       &:hover {
-       background-color: ${
-         theme.palette.mode === "dark" ? grey[800] : grey[50]
-       };
+       background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[50]
+    };
        border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
      }
       &:focus {
-       outline: 3px solid ${
-         theme.palette.mode === "dark" ? blue[400] : blue[200]
-       };
+       outline: 3px solid ${theme.palette.mode === "dark" ? blue[400] : blue[200]
+    };
        border-color: ${blue[400]};
      }
    }
@@ -1028,8 +1129,9 @@ const CustomTablePagination = styled(TablePagination)(
       border: transparent;
       border-radius: 50%;
       background-color: transparent;
-      border: 1px solid ${theme.palette.mode === 'dark' ? grey[800] : grey[200]};
-      color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+      border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
+    };
+      color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
       transition: all 120ms ease;
   
       > svg {
@@ -1037,23 +1139,20 @@ const CustomTablePagination = styled(TablePagination)(
       }
   
       &:hover {
-       background-color: ${
-         theme.palette.mode === "dark" ? grey[800] : grey[50]
-       };
+       background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[50]
+    };
        border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
      }
       &:focus {
-       outline: 3px solid ${
-         theme.palette.mode === "dark" ? blue[400] : blue[200]
-       };
+       outline: 3px solid ${theme.palette.mode === "dark" ? blue[400] : blue[200]
+    };
        border-color: ${blue[400]};
      }
       &:disabled {
        opacity: 0.3;
        &:hover {
-         border: 1px solid ${
-           theme.palette.mode === "dark" ? grey[800] : grey[200]
-         };
+         border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[200]
+    };
          background-color: transparent;
        }
      }

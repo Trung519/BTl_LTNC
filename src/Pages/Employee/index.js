@@ -15,8 +15,13 @@ import ConfirmDelete from "./Components/ConfirmDelete";
 import Footer from "../../Components/Footer";
 import UpdateSuccess from "../../Components/UpdateSuccess";
 
+//fixed icon
+import IconButton from "@mui/material/IconButton";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+
 const cx = classNames.bind(styles);
-function Employee() {
+function Employee({ user }) {
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
   const [displayForm, setDisplayForm] = useState(false);
@@ -29,6 +34,7 @@ function Employee() {
     getData().then((post) => {
       setDataEmp(post["Employee"] ?? []);
       handleLoadingDone();
+      setRowToEdit(-1);
     });
   }, []);
 
@@ -52,7 +58,7 @@ function Employee() {
       );
     }
   });
-  const emptyRows = Math.max(0, page * rowsPerPage - dataEmp.length);
+  const emptyRows = Math.max(0, page * rowsPerPage - filterDataEmp.length);
   const handleSearch = (e) => {
     let lowerCase = e.target.value.toLowerCase();
     setInputSearch(lowerCase);
@@ -71,8 +77,7 @@ function Employee() {
         <CircularProgress color="inherit" />
       </Backdrop>
       <div id="container">
-        <h1 className={cx("header-page")}>
-          Quản lý nhân viên y tế
+        <div id="header-container">
           <button
             onClick={() => {
               setDisplayForm(true);
@@ -82,7 +87,11 @@ function Employee() {
           >
             +Thêm mới
           </button>
-        </h1>
+
+          <div id="header-box">
+            <h1 className={cx("header-page")}>Quản lý nhân viên y tế</h1>
+          </div>
+        </div>
         <div className="search">
           <TextField
             id="outlined-basic"
@@ -111,7 +120,7 @@ function Employee() {
             <th>Bằng cấp</th>
             <th>Bộ Phận Khoa</th>
             <th>Chức vụ</th>
-            <th>Thao tác</th>
+            {user.typeEmp === "Quản trị" && <th>Thao tác</th>}
           </thead>
           <tbody>
             {filterDataEmp
@@ -127,9 +136,9 @@ function Employee() {
                   <td>{item.AcademicDegree}</td>
                   <td>{item.Department}</td>
                   <td>{item.typeEmp}</td>
-                  <td>
+                  {user.typeEmp === "Quản trị" && <td>
                     <div className={cx("some-btn")}>
-                      <button
+                      {/* <button
                         className="action-btn"
                         id="delete-btn"
                         type="submit"
@@ -142,8 +151,8 @@ function Employee() {
                           icon={faTrashCan}
                           style={{ color: "#ff3333" }}
                         />
-                      </button>
-                      <button
+                      </button> */}
+                      {/* <button
                         className="action-btn"
                         id="edit-btn"
                         type="submit"
@@ -156,12 +165,35 @@ function Employee() {
                           icon={faPenToSquare}
                           style={{ color: "#1a9cff" }}
                         />
-                      </button>
+                      </button> */}
+
+                      <IconButton
+                        aria-label="edit"
+                        size="small"
+                        onClick={() => {
+                          setDisplayForm(true);
+                          setRowToEdit(item.ID);
+                        }}
+                      >
+                        <EditOutlinedIcon></EditOutlinedIcon>
+                      </IconButton>
+
+                      <IconButton
+                        aria-label="delete"
+                        size="small"
+                        color="error"
+                        onClick={() => {
+                          setRowToEdit(item.ID);
+                          setConfirmDelete(true);
+                        }}
+                      >
+                        <DeleteOutlineIcon></DeleteOutlineIcon>
+                      </IconButton>
                     </div>
-                  </td>
+                  </td>}
                 </tr>
               ))}
-            <tr style={{ height: 56 * emptyRows }}></tr>
+            <tr style={{ height: 55 * emptyRows }}></tr>
           </tbody>
           <tfoot>
             <tr></tr>
@@ -173,7 +205,7 @@ function Employee() {
             onChange={handleChange}
             page={page}
             count={Math.ceil(dataEmp.length / rowsPerPage)}
-            rowsPerPage={5}
+            // rowsPerPage={5}
             showFirstButton
             showLastButton
           />

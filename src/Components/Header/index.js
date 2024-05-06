@@ -55,7 +55,7 @@ function Header({ user }) {
                 </div>
                 <div className={cx("info")}>
                   <h4>Liên hệ</h4>
-                  <p>0987.654.321</p>
+                  <p>0834800368</p>
                 </div>
               </div>
               <div className={cx("header-wrapper-info", "col-md-2")}>
@@ -73,7 +73,7 @@ function Header({ user }) {
                 </div>
                 <div className={cx("info")}>
                   <h4>Địa chỉ</h4>
-                  <p>KTX khu A ĐHQG - TPHCM</p>
+                  <p>Khu phố Tân Lập, Phường Đông Hòa, TP. Dĩ An, Tỉnh Bình Dương </p>
                 </div>
               </div>
               {user.typeEmp !== "normal" ?  // typeEmp === "normal" Se la dang nhap/dang xuat
@@ -184,24 +184,24 @@ function Header({ user }) {
               user.typeEmp === "normal" ? <LoginForm /> : <Notify user={user} />
             } />
             <Route path="/file-patient" element={
-              user.typeEmp === "normal" ? <LoginForm /> : <PatientRecord />
+              user.typeEmp === "normal" ? <LoginForm /> : <PatientRecord user={user} />
             } />
             <Route path="/appointment" element={
               user.typeEmp === "normal" ? <LoginForm /> : <Schedule user={user} />
             } />
             <Route path="/medicine_manage" element={
               user.typeEmp === "normal" ? <LoginForm /> : (
-                user.typeEmp === "Trưởng khoa" || user.typeEmp === "Bác sỹ" || user.typeEmp === "Y tá" ? <ErrorAccess /> : <Medicine_manage />
+                user.typeEmp === "Trưởng khoa" || user.typeEmp === "Bác sỹ" || user.typeEmp === "Y tá" ? <ErrorAccess /> : <Medicine_manage user={user} />
               )
             } />
             <Route path="/equip_manage" element={
-              user.typeEmp === "normal" ? <LoginForm /> : <EquipmentsManage />
+              user.typeEmp === "normal" ? <LoginForm /> : <EquipmentsManage user={user}/>
             } />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignUpForm />} />
             <Route path="/employee" element={
               user.typeEmp === "normal" ? <LoginForm /> : (
-                user.typeEmp === "Dược sỹ" || user.typeEmp === "Bác sỹ" || user.typeEmp === "Y tá" ? <ErrorAccess /> : <Employee />
+                user.typeEmp === "Dược sỹ" || user.typeEmp === "Bác sỹ" || user.typeEmp === "Y tá" ? <ErrorAccess /> : <Employee user={user}/>
               )
             } />
           </Routes>

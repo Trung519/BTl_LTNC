@@ -21,6 +21,8 @@ const DialogAdd = (props) => {
     setNewFormOpen,
     setNewListMedicineAndRender,
     newListMedicine,
+    emptyRows,
+    setEmptyRows,
     // createMedicine,
   } = props;
   return (
@@ -69,7 +71,8 @@ const DialogAdd = (props) => {
             theme: "light",
             // transition: Bounce,
           });
-          setNewListMedicineAndRender([newMedicine, ...newListMedicine]);
+          setNewListMedicineAndRender([...newListMedicine, newMedicine]);
+          setEmptyRows(Math.max(0, emptyRows - 1));
           setNewFormOpen(false);
         },
       }}

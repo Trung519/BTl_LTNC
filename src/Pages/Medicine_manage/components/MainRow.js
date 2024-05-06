@@ -15,29 +15,42 @@ import { DeleteData } from "../P_R-be";
 import { toast } from "react-toastify";
 
 const MainRow = (props) => {
-  const { row, setNewListMedicineAndRender, newListMedicine, index } = props;
+  const {
+    row,
+    setNewListMedicineAndRender,
+    newListMedicine,
+    index,
+    emptyRows,
+    setEmptyRows,
+  } = props;
   const [infoFormOpen, setInfoFormOpen] = React.useState(false);
   const [modifyFormOpen, setModifyFormOpen] = React.useState(false);
   const indexInListMedicine = newListMedicine.findIndex((e) => {
-    return e.STT === row.STT;
+    return e.name === row.name;
   });
+  function numberWithCommas(x) {
+    // x = x.toString();
+    var pattern = /(-?\d+)(\d{3})/;
+    while (pattern.test(x)) x = x.replace(pattern, "$1,$2");
+    return x;
+  }
   return (
     <TableRow
       key={row.medicineID}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
-      <TableCell
+      {/* <TableCell
       // component="th" scope="row"
       >
         {index + 1}
-      </TableCell>
-      <TableCell>{row.medicineID}</TableCell>
+      </TableCell> */}
+      <TableCell align="center">{row.medicineID}</TableCell>
       <TableCell>{row.name}</TableCell>
       <TableCell>{row.origin}</TableCell>
-      <TableCell>{row.HSD}</TableCell>
-      <TableCell>{row.stock}</TableCell>
-      <TableCell>{row.cost}</TableCell>
-      <TableCell>{row.sellPrice}</TableCell>
+      <TableCell align="center">{row.HSD}</TableCell>
+      <TableCell align="center">{row.stock}</TableCell>
+      <TableCell align="center">{numberWithCommas(row.cost)}</TableCell>
+      <TableCell align="center">{numberWithCommas(row.sellPrice)}</TableCell>
       <TableCell>
         <IconButton
           aria-label="info"
@@ -83,10 +96,12 @@ const MainRow = (props) => {
           color="error"
           onClick={() => {
             DeleteData(row.name);
+            setEmptyRows(Math.min(emptyRows + 1, 7));
             const temp = newListMedicine;
             temp.splice(indexInListMedicine, 1);
+            console.log("indexInListMedicine", indexInListMedicine);
             setNewListMedicineAndRender([...temp]);
-            toast.error("Xóa thành công !", {
+            toast.success("Xóa thành công !", {
               position: "top-right",
               autoClose: 2500,
               hideProgressBar: false,

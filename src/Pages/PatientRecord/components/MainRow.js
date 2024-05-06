@@ -26,7 +26,7 @@ import DialogInfo from "./DialogInfo";
 import { toast } from "react-toastify";
 
 function MainRow(props) {
-  const { row, setNewPatientsAndRender, newPatients, index } = props;
+  const { row, setNewPatientsAndRender, newPatients, index, user } = props;
   // console.log("row", row);
 
   // const [patient, setPatient] = React.useState([]);
@@ -88,80 +88,106 @@ function MainRow(props) {
             {openSubRow ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell>{index + 1}</TableCell>
-        <TableCell>{"BN" + row.CCCD.slice(-6)}</TableCell>
-        <TableCell align="left">{row.fullName}</TableCell>
-        <TableCell>{row.gender}</TableCell>
-        <TableCell>{row.CCCD}</TableCell>
-        <TableCell>{row.BHYT}</TableCell>
-        <TableCell>{row.birthDay}</TableCell>
-        <TableCell>
-          <IconButton
-            aria-label="info"
-            size="small"
-            color="info"
-            onClick={() => {
-              setInfoFormOpen(!infoFormOpen);
-            }}
-          >
-            <InfoOutlinedIcon></InfoOutlinedIcon>
-          </IconButton>
-          {/* DialogInfo */}
-          <DialogInfo
-            infoFormOpen={infoFormOpen}
-            setInfoFormOpen={setInfoFormOpen}
-            row={row}
-          ></DialogInfo>
-          <IconButton
-            aria-label="edit"
-            size="small"
-            onClick={() => setmodifyFormOpen(!modifyFormOpen)}
-          >
-            <EditOutlinedIcon></EditOutlinedIcon>
-          </IconButton>
-          {/* DialogModify */}
-          <DialogModify
-            modifyFormOpen={modifyFormOpen}
-            // patients={patients}
-            newPatients={newPatients}
-            indexInPatients={indexInPatients}
-            setNewPatientsAndRender={setNewPatientsAndRender}
-            row={row}
-            newGender={newGender}
-            handleChangeGender={handleChangeGender}
-            setmodifyFormOpen={setmodifyFormOpen}
-          ></DialogModify>
-          <IconButton
-            aria-label="delete"
-            size="small"
-            color="error"
-            onClick={(event) => {
-              // console.log(indexInPatients);
-              // console.log(e.CCCD);
-              // console.log(row.CCCD);
-              // console.log("bf", row.history);
-              event.preventDefault();
-              newPatients.splice(indexInPatients, 1);
-              setNewPatientsAndRender([...newPatients]);
-              // console.log("af", row.history);
+        {/* <TableCell>{index + 1}</TableCell> */}
+        <TableCell align="center">{"BN" + row.CCCD.slice(-6)}</TableCell>
+        <TableCell>{row.fullName}</TableCell>
+        <TableCell align="center">{row.gender}</TableCell>
+        <TableCell align="center">{row.CCCD}</TableCell>
+        <TableCell align="center">{row.BHYT}</TableCell>
+        <TableCell align="center">{row.birthDay}</TableCell>
+        {user.typeEmp === 'Quản trị' ?
+          (
+            <TableCell align="center">
+              <IconButton
+                aria-label="info"
+                size="small"
+                color="info"
+                onClick={() => {
+                  setInfoFormOpen(true);
+                }}
+              >
+                <InfoOutlinedIcon></InfoOutlinedIcon>
+              </IconButton>
+              {/* DialogInfo */}
+              <DialogInfo
+                infoFormOpen={infoFormOpen}
+                setInfoFormOpen={setInfoFormOpen}
+                row={row}
+              ></DialogInfo>
 
-              DeleteData(row.CCCD);
-              toast.success("Xóa thành công !", {
-                position: "top-right",
-                autoClose: 2500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                // transition: Bounce,
-              });
-            }}
-          >
-            <DeleteOutlineIcon></DeleteOutlineIcon>
-          </IconButton>
-        </TableCell>
+              <IconButton
+                // **********Button để chỉnh sửa
+                aria-label="edit"
+                size="small"
+                onClick={() => setmodifyFormOpen(true)}
+              >
+                <EditOutlinedIcon></EditOutlinedIcon>
+              </IconButton>
+              {/* DialogModify */}
+              <DialogModify
+                modifyFormOpen={modifyFormOpen}
+                // patients={patients}
+                newPatients={newPatients}
+                indexInPatients={indexInPatients}
+                setNewPatientsAndRender={setNewPatientsAndRender}
+                row={row}
+                newGender={newGender}
+                handleChangeGender={handleChangeGender}
+                setmodifyFormOpen={setmodifyFormOpen}
+              ></DialogModify>
+
+              <IconButton
+                aria-label="delete"
+                size="small"
+                color="error"
+                onClick={(event) => {
+                  // console.log(indexInPatients);
+                  // console.log(e.CCCD);
+                  // console.log(row.CCCD);
+                  // console.log("bf", row.history);
+                  event.preventDefault();
+                  newPatients.splice(indexInPatients, 1);
+                  setNewPatientsAndRender([...newPatients]);
+                  // console.log("af", row.history);
+
+                  DeleteData(row.CCCD);
+                  toast.success("Xóa thành công !", {
+                    position: "top-right",
+                    autoClose: 2500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    // transition: Bounce,
+                  });
+                }}
+              >
+                <DeleteOutlineIcon></DeleteOutlineIcon>
+              </IconButton>
+            </TableCell>
+          ) :
+          (
+            <TableCell align="center">
+              <IconButton
+                aria-label="info"
+                size="small"
+                color="info"
+                onClick={() => {
+                  setInfoFormOpen(true);
+                }}
+              >
+                <InfoOutlinedIcon></InfoOutlinedIcon>
+              </IconButton>
+              {/* DialogInfo */}
+              <DialogInfo
+                infoFormOpen={infoFormOpen}
+                setInfoFormOpen={setInfoFormOpen}
+                row={row}
+              ></DialogInfo>
+            </TableCell>
+          )}
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
@@ -175,36 +201,95 @@ function MainRow(props) {
               >
                 Lịch sử khám
               </Typography>
-              <IconButton
-                aria-label="add"
-                size="small"
-                color="info"
-                onClick={() => setAddHistoryFormOpen(!addHistoryFormOpen)}
-              >
-                <AddCircleIcon></AddCircleIcon>
-              </IconButton>
-              {/* DialogHistoryAdd */}
-              <DialogHistoryAdd
-                addHistoryFormOpen={addHistoryFormOpen}
-                setAddHistoryFormOpen={setAddHistoryFormOpen}
-                AddHist={AddHist}
-                historyList={historyList}
-                // listNewMedicine={listNewMedicine}
-                setHistoryList={setHistoryList}
-                // setListNewMedicine={setListNewMedicine}
-                row={row}
-                DialogMedicineListAdd={DialogMedicineListAdd}
-                setAddMedicineListFormOpen={setAddMedicineListFormOpen}
-                addMedicineListFormOpen={addMedicineListFormOpen}
-              ></DialogHistoryAdd>
-
+              {/* ********button thêm lịch sử khám */}
+              {user.typeEmp === "Bác sỹ" || user.typeEmp === "Trưởng khoa" || user.typeEmp === "Quản trị" ? (
+                <>
+                  <IconButton
+                    aria-label="add"
+                    size="small"
+                    color="info"
+                    onClick={() => setAddHistoryFormOpen(true)}
+                  >
+                    <AddCircleIcon></AddCircleIcon>
+                  </IconButton>
+                  <DialogHistoryAdd
+                    addHistoryFormOpen={addHistoryFormOpen}
+                    setAddHistoryFormOpen={setAddHistoryFormOpen}
+                    AddHist={AddHist}
+                    historyList={historyList}
+                    // listNewMedicine={listNewMedicine}
+                    setHistoryList={setHistoryList}
+                    // setListNewMedicine={setListNewMedicine}
+                    row={row}
+                    DialogMedicineListAdd={DialogMedicineListAdd}
+                    setAddMedicineListFormOpen={setAddMedicineListFormOpen}
+                    addMedicineListFormOpen={addMedicineListFormOpen}
+                    namePharmacist={user.name}
+                  ></DialogHistoryAdd>
+                </>
+              ) : ""}
               <Table size="small" aria-label="history">
+                <colgroup>
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "20%" }} />
+                </colgroup>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Ngày</TableCell>
-                    <TableCell>Bác sĩ phụ trách</TableCell>
-                    <TableCell>Chẩn đoán</TableCell>
-                    <TableCell>Đơn thuốc</TableCell>
+                    <TableCell
+                      sx={{
+                        color: "#000000",
+                        // bgcolor: "#08107D",
+                        fontSize: "16px",
+                        fontWeight: "530",
+                      }}
+                    >
+                      Ngày
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: "#000000",
+                        // bgcolor: "#08107D",
+                        fontSize: "16px",
+                        fontWeight: "530",
+                      }}
+                    >
+                      Bác sĩ phụ trách
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        color: "#000000",
+                        // bgcolor: "#08107D",
+                        fontSize: "16px",
+                        fontWeight: "530",
+                      }}
+                    >
+                      Chẩn đoán
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        color: "#000000",
+                        // bgcolor: "#08107D",
+                        fontSize: "16px",
+                        fontWeight: "530",
+                      }}
+                    >
+                      Đơn thuốc
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        color: "#000000",
+                        // bgcolor: "#08107D",
+                        fontSize: "16px",
+                        fontWeight: "530",
+                      }}
+                    >
+                      Tình trạng đơn thuốc
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -212,9 +297,12 @@ function MainRow(props) {
                   {historyList.length !== 0 ? (
                     historyList.map((historyRow, index) => (
                       <HistoryRow
+                        CCCD={row.CCCD}
                         key={index}
                         historyRow={historyRow}
                         index={index}
+                        user={user}
+                        pharmacist={historyRow.pharmacist ? historyRow.pharmacist : "undifined"}
                       />
                     ))
                   ) : (

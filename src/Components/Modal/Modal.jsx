@@ -3,6 +3,7 @@ import "./Modal.css";
 import { useState } from "react";
 import { Alert } from "@mui/material";
 import Fade from "@mui/material/Fade";
+import { toast } from "react-toastify";
 
 export default function Modal({
   closeModal,
@@ -27,28 +28,47 @@ export default function Modal({
       [e.target.name]: e.target.value,
     });
   }
-  const [displayError, setDipslayError] = useState(false);
+  // const [displayError, setDipslayError] = useState(false);
   function isInValid() {
     let values = Object.values(equimentState);
     return values.includes("");
   }
 
   function handleSubmit(e) {
-    if (isInValid()) {
-      setDipslayError(true);
-      setTimeout(() => {
-        setDipslayError(false);
-      }, 3000);
-    } else {
+    if (!isInValid()) {
       e.preventDefault();
-
+      if (defaultValue) {
+        toast.success("Cập nhật thành công !", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          // transition: Bounce,
+        });
+      } else {
+        toast.success("Thêm Thiết bị thành công !", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          // transition: Bounce,
+        });
+      }
       onSubmit(equimentState);
 
       closeModal();
-      setAlertAddSuccess(true);
-      setTimeout(() => {
-        setAlertAddSuccess(false);
-      }, 3000);
+      // setAlertAddSuccess(true);
+      // setTimeout(() => {
+      //   setAlertAddSuccess(false);
+      // }, 3000);
     }
   }
 
@@ -62,9 +82,9 @@ export default function Modal({
       }}
     >
       <div className="modal-content">
-        {displayError && (
+        {/* {displayError && (
           <span className="alert-error">Vui lòng không để trống thông tin</span>
-        )}
+        )} */}
         <div className="modalE-header">
           <h1>Thêm thông tin thiết bị</h1>
         </div>
@@ -79,7 +99,7 @@ export default function Modal({
               // placeholder="Tên"
               autoComplete="off"
             />
-            <label htmlFor="name">Tên</label>
+            <label htmlFor="name">Tên*</label>
           </div>
 
           <div className="input-wrap">
@@ -92,7 +112,7 @@ export default function Modal({
               // placeholder="Loại"
               autoComplete="off"
             />
-            <label htmlFor="type">Loại</label>
+            <label htmlFor="type">Loại*</label>
           </div>
 
           {/* <div>
@@ -112,7 +132,7 @@ export default function Modal({
               // placeholder="Phòng"
               autoComplete="off"
             />
-            <label htmlFor="room">Phòng</label>
+            <label htmlFor="room">Phòng*</label>
           </div>
 
           <div id="description" className="input-wrap">
@@ -142,9 +162,12 @@ export default function Modal({
             </select>
           </div>
           <div id="btn-container">
-            <div id="submit-btn" type="submit" onClick={handleSubmit}>
-              Lưu
+            <div className="submit-btn" onClick={closeModal}>
+              Hủy
             </div>
+            <button className="submit-btn" type="submit" onClick={handleSubmit}>
+              Lưu
+            </button>
           </div>
         </form>
       </div>

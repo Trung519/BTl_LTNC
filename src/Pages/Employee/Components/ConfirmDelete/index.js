@@ -5,6 +5,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { writeUserData } from "../../../../services/firebase";
+import { toast } from "react-toastify";
 
 function ConfirmDelete({ confirmDelete, setConfirmDelete, setDataEmp, ID }) {
   const handleClose = () => {
@@ -16,6 +17,17 @@ function ConfirmDelete({ confirmDelete, setConfirmDelete, setDataEmp, ID }) {
       let newDataEmp = prev.filter((item) => item.ID !== ID);
       writeUserData(newDataEmp, "/Employee");
       return newDataEmp;
+    });
+    toast.error("Xóa thành công !", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      // transition: Bounce,
     });
   };
   return (

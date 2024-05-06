@@ -105,8 +105,8 @@
 
 .contact-items {
     display: flex;
-    margin-left: 11%;
-
+    align-items: center;
+    justify-content: center;
     svg {
         margin-right: 20px;
         font-size: 30px;
