@@ -4,12 +4,9 @@ import Pagination from "@mui/material/Pagination";
 import styles from "./Employee.module.scss";
 import ModalFormAdd from "./Components/ModalFormAdd";
 import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { getData } from "../../services/firebase";
 import ConfirmDelete from "./Components/ConfirmDelete";
 import Footer from "../../Components/Footer";

@@ -1,5 +1,4 @@
 import * as React from "react";
-import dayjs from "dayjs";
 import "dayjs/locale/en-gb";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";

@@ -1,10 +1,9 @@
 import Container from "react-bootstrap/Container";
-import { BrowserRouter as Router, Routes, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import classNames from "classnames/bind";
 import styles from "./Header.module.scss";
-import Logo from "../assets/Logo.png";
 import Logo1 from "../assets/Logo1.png"
 import Home from "../../Pages/Home";
 import EquipmentsManage from "../../Pages/EquipmentsManage";

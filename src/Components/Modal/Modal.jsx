@@ -1,8 +1,6 @@
 import "./Modal.css";
 
 import { useState } from "react";
-import { Alert } from "@mui/material";
-import Fade from "@mui/material/Fade";
 import { toast } from "react-toastify";
 
 export default function Modal({

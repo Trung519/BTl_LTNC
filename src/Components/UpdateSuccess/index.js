@@ -1,6 +1,5 @@
 import classNames from "classnames/bind";
 import styles from "./UpdateSuccess.module.scss";
-import { Update } from "@mui/icons-material";
 import { memo } from "react";
 
 const cx = classNames.bind(styles);
