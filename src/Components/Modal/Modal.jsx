@@ -86,7 +86,7 @@ export default function Modal({
           <span className="alert-error">Vui lòng không để trống thông tin</span>
         )} */}
         <div className="modalE-header">
-          <h1>Thêm thông tin thiết bị</h1>
+          <h1>Thông tin thiết bị</h1>
         </div>
         <form className="form-data">
           <div className="input-wrap">
