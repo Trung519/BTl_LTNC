@@ -8,7 +8,7 @@ import Logo1 from "../assets/Logo1.png"
 import Home from "../../Pages/Home";
 import EquipmentsManage from "../../Pages/EquipmentsManage";
 import Medicine_manage from "../../Pages/Medicine_manage";
-import Notify from "../../Pages/Notify";
+import Newnotify from "../../Pages/Newnotify";
 import PatientRecord from "../../Pages/PatientRecord";
 import Schedule from "../../Pages/Schedule";
 import LoginForm from "../LoginForrm/LoginForm";
@@ -181,7 +181,7 @@ function Header({ user }) {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/announcement" element={
-              user.typeEmp === "normal" ? <LoginForm /> : <Notify user={user} />
+              user.typeEmp === "normal" ? <LoginForm /> : <Newnotify user={user} />
             } />
             <Route path="/file-patient" element={
               user.typeEmp === "normal" ? <LoginForm /> : <PatientRecord user={user} />
