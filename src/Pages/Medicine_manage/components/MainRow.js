@@ -15,11 +15,18 @@ import { DeleteData } from "../P_R-be";
 import { toast } from "react-toastify";
 
 const MainRow = (props) => {
-  const { row, setNewListMedicineAndRender, newListMedicine, index } = props;
+  const {
+    row,
+    setNewListMedicineAndRender,
+    newListMedicine,
+    index,
+    emptyRows,
+    setEmptyRows,
+  } = props;
   const [infoFormOpen, setInfoFormOpen] = React.useState(false);
   const [modifyFormOpen, setModifyFormOpen] = React.useState(false);
   const indexInListMedicine = newListMedicine.findIndex((e) => {
-    return e.STT === row.STT;
+    return e.name === row.name;
   });
   function numberWithCommas(x) {
     // x = x.toString();
@@ -89,8 +96,10 @@ const MainRow = (props) => {
           color="error"
           onClick={() => {
             DeleteData(row.name);
+            setEmptyRows(Math.min(emptyRows + 1, 7));
             const temp = newListMedicine;
             temp.splice(indexInListMedicine, 1);
+            console.log("indexInListMedicine", indexInListMedicine);
             setNewListMedicineAndRender([...temp]);
             toast.success("Xóa thành công !", {
               position: "top-right",
