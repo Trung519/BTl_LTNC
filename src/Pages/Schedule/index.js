@@ -40,6 +40,19 @@ export default function Schedule({ user }) {
         room: ""
     });
 
+    const [showEdit, setShowEdit] = useState(false);
+    const [formEdit, setFormEdit] = useState({
+        id_schedule: "",
+        ID_doctor: user.typeEmp === 'Bác sỹ' ? user.id : "",
+        Name_doctor: user.typeEmp === 'Bác sỹ' ? user.name : "",
+        Time: "",
+        Date: "",
+        Patient: "",
+        Room: "",
+        CCCD: "",
+        Status: "",
+    });
+
     const [suggestions, setSuggestions] = useState([]);
 
     const [suggestionsID, setSuggestionsID] = useState([]);
@@ -66,13 +79,31 @@ export default function Schedule({ user }) {
         }
     }, [form.id_Doctor])
 
+    useEffect(() => {
+        if (user.typeEmp !== "Bác sỹ") {
+            searchIdDoctorByName(user, formEdit.Name_doctor, setSuggestions);
+        }
+    }, [formEdit.Name_doctor])
+
+    useEffect(() => {
+        if (user.typeEmp !== "Bác sỹ") {
+            searchNameDoctorByID(user, formEdit.ID_doctor, setSuggestionsID)
+        }
+    }, [formEdit.ID_doctor])
+
     const handleSelectSuggestion = (suggestion) => {
         setForm({
             ...form,
             id_Doctor: suggestion.ID,
             name_Doctor: `${suggestion.FirstName} ${suggestion.LastName}`
         });
+        setFormEdit({
+            ...formEdit,
+            ID_doctor: suggestion.ID,
+            Name_doctor: `${suggestion.FirstName} ${suggestion.LastName}`
+        })
         setSuggestions([]);
+        setSuggestionsID([])
         setUlshow(false)
     }
 
@@ -148,19 +179,6 @@ export default function Schedule({ user }) {
             }
         });
     };
-
-    const [showEdit, setShowEdit] = useState(false);
-    const [formEdit, setFormEdit] = useState({
-        id_schedule: "",
-        ID_doctor: user.typeEmp === 'Bác sỹ' ? user.id : "",
-        Name_doctor: user.typeEmp === 'Bác sỹ' ? user.name : "",
-        Time: "",
-        Date: "",
-        Patient: "",
-        Room: "",
-        CCCD: "",
-        Status: "",
-    });
 
     const handleEditForm = async (form) => {
         await setFormEdit(form);
@@ -406,9 +424,9 @@ export default function Schedule({ user }) {
                                                         <svg
                                                             style={{
                                                                 transform: selectedId === listdata[(page - 1) * 10 + index].id_schedule ? 'scale(1.5)' : 'scale(1)',
-                                                                color: selectedId === listdata[(page - 1) * 10 + index].id_schedule ? 'red' : ''
+                                                                color: '#d32f2f !important;'
                                                             }}
-                                                            className={cx(`MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root ${selectedId === listdata[(page - 1) * 10 + index].id_schedule ? 'choosen-to-remove' : ''}`)}
+                                                            className={cx('color-red',`MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root ${selectedId === listdata[(page - 1) * 10 + index].id_schedule ? 'choosen-to-remove' : ''}`)}
                                                             focusable="false"
                                                             aria-hidden="true"
                                                             viewBox="0 0 24 24"
@@ -453,19 +471,16 @@ export default function Schedule({ user }) {
                                         name="ID_doctor"
                                         onChange={handleCollectDataWhenEdit}
                                         onClick={(e) => {
-                                            e.preventDefault();
                                             setUlshow(true);
-
                                         }}
                                         readOnly={user.typeEmp === "Bác sỹ"}
                                     ></input>
                                     {user.typeEmp !== "Bác sỹ" && ulshow && <ul className={cx('ul-id')}>
                                         {suggestionsID.map((suggestion, index) => {
-                                            if (index > 4 || form.id_Doctor == '') { }
+                                            if (index > 4 || formEdit.ID_doctor == '') { }
                                             else {
                                                 return (
                                                     <li key={index} onClick={(e) => {
-                                                        e.preventDefault();
                                                         handleSelectSuggestion(suggestion)
                                                     }}>
                                                         {suggestion.ID}
@@ -484,13 +499,12 @@ export default function Schedule({ user }) {
                                         onChange={handleCollectDataWhenEdit}
                                         readOnly={user.typeEmp === "Bác sỹ"}
                                         onClick={(e) => {
-                                            e.preventDefault();
                                             setUlshow(true)
                                             setSuggestionsID([])
                                         }}></input>
                                     {user.typeEmp !== "Bác sỹ" && ulshow && <ul className={cx('ul-name')}>
                                         {suggestions.map((suggestion, index) => {
-                                            if (index > 4 || form.name_Doctor == '') { }
+                                            if (index > 4 || formEdit.Name_doctor == '') { }
                                             else {
                                                 return (
                                                     <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
@@ -765,86 +779,6 @@ export default function Schedule({ user }) {
                             </div>
                         </div>
                     </div>
-                    {/* <div className={cx('schedule-add')}>
-                        <div className={cx('contain-form')}>
-                            <div className={cx('schedule-form')}>
-                                <div className={cx('form-close')} onClick={handleAdd}>
-                                    <i className={cx("fas fa-times")}></i>
-                                </div>
-                                <div className={cx('form-title')}>
-                                    <span>Thêm lịch hẹn</span>
-                                </div>
-                                <h5>Bác Sĩ:</h5>
-                                <div className={cx('form-doctor')}>
-                                    <div className={cx('doctor-id')}>
-                                        <input type='text' placeholder='ID bác sĩ...' value={form.id_Doctor} name="id_Doctor"
-                                            onChange={handleCollectData}
-                                            onClick={() => {
-                                                setUlshow(true)
-                                                //setSuggestions([])
-                                            }}>
-                                        </input>
-                                        {ulshow && <ul className={cx('ul-id')}>
-                                            {suggestionsID.map((suggestion, index) => {
-                                                if (index > 4 || form.id_Doctor == '') { }
-                                                else {
-                                                    return (
-                                                        <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
-                                                            {suggestion.ID}
-                                                        </li>
-                                                    )
-                                                }
-                                            })}
-                                        </ul>}
-                                    </div>
-                                    <div className={cx('doctor-name')}>
-                                        <input type='text' placeholder='Tên bác sĩ...' value={form.name_Doctor} name="name_Doctor"
-                                            onChange={handleCollectData}
-                                            onClick={() => {
-                                                setUlshow(true)
-                                                setSuggestionsID([])
-                                            }}>
-                                        </input>
-                                        {ulshow && <ul className={cx('ul-name')}>
-                                            {suggestions.map((suggestion, index) => {
-                                                if (index > 4 || form.name_Doctor == '') { }
-                                                else {
-                                                    return (
-                                                        <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
-                                                            {`${suggestion.FirstName} ${suggestion.LastName}`}
-                                                        </li>
-                                                    )
-                                                }
-                                            })}
-                                        </ul>}
-                                    </div>
-                                </div>
-                                <div className={cx('form-time')}>
-                                    <div className={cx('form-time-title')}>
-                                        <h5>Thời Gian Hẹn:</h5>
-                                    </div>
-                                    <div className={cx('form-time-input')}>
-                                        <input type='time' value={form.time} name="time" onChange={handleCollectData}></input>
-                                        <input type='date' value={form.date} name="date" onChange={handleCollectData}></input>
-                                    </div>
-                                </div>
-                                <div className={cx('form-others')}>
-                                    <div className={cx('form-others-title')}>
-                                        <h5>Ghi Chú:</h5>
-                                    </div>
-                                    <div className={cx('form-others-input')}>
-                                        <input type='text' placeholder='Tên bệnh nhân...' value={form.name_Patient} name="name_Patient" onChange={handleCollectData}></input>
-                                        <input type='number' placeholder='CCCD bệnh nhân...' value={form.name_CCCD} name="name_CCCD" onChange={handleCollectData}></input>
-                                        <input placeholder='Phòng...' type='text' value={form.room} name="room" onChange={handleCollectData}></input>
-                                    </div>
-                                </div>
-                                <div className={cx('form-vali')} onClick={submitForm}>
-                                    <button>Xác Nhận</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div> */}
                 </div>
                 <Footer />
             </div>

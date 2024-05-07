@@ -8,7 +8,7 @@ import Logo1 from "../assets/Logo1.png"
 import Home from "../../Pages/Home";
 import EquipmentsManage from "../../Pages/EquipmentsManage";
 import Medicine_manage from "../../Pages/Medicine_manage";
-import Notify from "../../Pages/Notify";
+import Newnotify from "../../Pages/Newnotify";
 import PatientRecord from "../../Pages/PatientRecord";
 import Schedule from "../../Pages/Schedule";
 import LoginForm from "../LoginForrm/LoginForm";
@@ -29,7 +29,7 @@ function Header({ user }) {
     localStorage.removeItem("department");
     localStorage.removeItem("typeEmp");
 
-    window.location.assign("/home");
+    window.location.assign("/");
   }
 
   const handleShowdiv = () => {
@@ -43,7 +43,7 @@ function Header({ user }) {
           <div className={cx("container", "header-wrapper")}>
             <div className={cx("row")}>
               <div className={cx("header-wrapper-left", "col-md-2")}>
-                <Nav.Link as={Link} to="/home">
+                <Nav.Link as={Link} to="/">
                   <div className={cx("header-logo")}>
                     <img alt="" src={Logo1}></img>
                   </div>
@@ -116,11 +116,11 @@ function Header({ user }) {
                   {
                     user.typeEmp === "Quản trị" ? (
                       <>
-                        <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>
+                        <Nav.Link className={cx('nav-action')} as={Link} to='/'>Trang chủ</Nav.Link>
                         <Nav.Link className={cx('nav-action')} as={Link} to='/announcement'>Thông báo</Nav.Link>
                         <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient'>Hồ sơ bệnh án</Nav.Link>
                         <Nav.Link className={cx('nav-action')} as={Link} to='/appointment'>Lịch làm việc</Nav.Link>
-                        <NavDropdown className={cx('nav-action', 'nav-action-last')} title='Quản lý'>
+                        <NavDropdown id="Change-Color" className={cx('nav-action', 'nav-action-last')} title='Quản lý'>
                           <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/equip_manage'>Quản lý thiết bị</NavDropdown.Item>
                           <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/medicine_manage'>Quản lý thuốc</NavDropdown.Item>
                           <NavDropdown.Item className={cx('nav-action1')} as={Link} to='/employee'>Quản lý nhân viên</NavDropdown.Item>
@@ -129,7 +129,7 @@ function Header({ user }) {
                     ) : (
                       user.typeEmp === "Trưởng khoa" ? (
                         <>
-                          <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>
+                          <Nav.Link className={cx('nav-action')} as={Link} to='/'>Trang chủ</Nav.Link>
                           <Nav.Link className={cx('nav-action')} as={Link} to='/announcement'>Thông báo</Nav.Link>
                           <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient'>Hồ sơ bệnh án</Nav.Link>
                           <Nav.Link className={cx('nav-action')} as={Link} to='/appointment'>Lịch làm việc</Nav.Link>
@@ -141,7 +141,7 @@ function Header({ user }) {
                       ) : (
                         user.typeEmp === "Bác sỹ" || user.typeEmp === "Y tá" ? (
                           <>
-                            <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>
+                            <Nav.Link className={cx('nav-action')} as={Link} to='/'>Trang chủ</Nav.Link>
                             <Nav.Link className={cx('nav-action')} as={Link} to='/announcement'>Thông báo</Nav.Link>
                             <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient'>Hồ sơ bệnh án</Nav.Link>
                             <Nav.Link className={cx('nav-action')} as={Link} to='/appointment'>Lịch làm việc</Nav.Link>
@@ -150,7 +150,7 @@ function Header({ user }) {
                         ) : (
                           user.typeEmp === "Dược sĩ" ? (
                             <>
-                              <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>
+                              <Nav.Link className={cx('nav-action')} as={Link} to='/'>Trang chủ</Nav.Link>
                               <Nav.Link className={cx('nav-action')} as={Link} to='/announcement'>Thông báo</Nav.Link>
                               <Nav.Link className={cx('nav-action')} as={Link} to='/file-patient'>Hồ sơ bệnh án</Nav.Link>
                               <Nav.Link className={cx('nav-action')} as={Link} to='/appointment'>Lịch làm việc</Nav.Link>
@@ -161,7 +161,7 @@ function Header({ user }) {
                             </>
                           ) : (
                             <>
-                              <Nav.Link className={cx('nav-action')} as={Link} to='/home'>Trang chủ</Nav.Link>
+                              <Nav.Link className={cx('nav-action')} as={Link} to='/'>Trang chủ</Nav.Link>
                               <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Thông báo</Nav.Link>
                               <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Hồ sơ bệnh án</Nav.Link>
                               <Nav.Link className={cx('nav-action')} as={Link} to='/login'>Lịch làm việc</Nav.Link>
@@ -179,9 +179,9 @@ function Header({ user }) {
         </div>
         <div>
           <Routes>
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/announcement" element={
-              user.typeEmp === "normal" ? <LoginForm /> : <Notify user={user} />
+              user.typeEmp === "normal" ? <LoginForm /> : <Newnotify user={user} />
             } />
             <Route path="/file-patient" element={
               user.typeEmp === "normal" ? <LoginForm /> : <PatientRecord user={user} />
