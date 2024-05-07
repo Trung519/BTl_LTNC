@@ -60,6 +60,7 @@ export default function Notifycontent({ listdata, status, user, page, handleMain
             RemoveReceivedMails(user, listID);
         }
         else RemoveSentMails(user, listID);
+        
         if(confirmdel >= 1){
             toast.success(`Xóa ${confirmdel} thông báo thành công !`, {
             position: "top-right",
@@ -71,6 +72,13 @@ export default function Notifycontent({ listdata, status, user, page, handleMain
             progress: undefined,
             theme: "light",
             // transition: Bounce,
+        });
+
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    
+        // Duyệt qua từng checkbox và chuyển chúng về trạng thái unchecked
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = false;
         });
     }
     else{
