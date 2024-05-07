@@ -13,7 +13,6 @@ const cx = classNames.bind(styles)
 
 export default function Notifycontent({ listdata, status, user, page, handleMainChangepage, showcontent, handleMainSetShowcontent, numemail, handleMainUnshowcontent }) {
     const [inputmail, setInputmail] = useState(false);
-    const listEmail = listdata;
     const rowsPerPage = 5;
     const [listData, setListData] = useState([]);
 
@@ -44,7 +43,7 @@ export default function Notifycontent({ listdata, status, user, page, handleMain
 
     useEffect(() => {
         GetMail(user, status, setListData);
-    }, [status, inputmail])
+    }, [user, status, inputmail])
 
     const removeEmail = () => {
         const listID = [];

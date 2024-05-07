@@ -1,17 +1,6 @@
 import { getDatabase, ref, get, set, onValue } from "firebase/database";
 import { useState, useEffect } from "react";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyCyI2BpMknXBSaZgOlsjId38ZvheRpXZLs",
-    authDomain: "btl-ltnc-9c22f.firebaseapp.com",
-    databaseURL: "https://btl-ltnc-9c22f-default-rtdb.firebaseio.com",
-    projectId: "btl-ltnc-9c22f",
-    storageBucket: "btl-ltnc-9c22f.appspot.com",
-    messagingSenderId: "157627430613",
-    appId: "1:157627430613:web:5248f93026848e6848945c",
-    measurementId: "G-WYRWK424BJ"
-};
-
 export const GetReceivedMails = (user, callback = function (err) {
     console.log(err);
 }) => {
@@ -47,7 +36,13 @@ export const AddReceivedMails = async (mailID, listID) => {
 
     // Lấy dữ liệu hiện có từ Firebase
     const snapshot = await get(dataRef);
-    const receivedMails = snapshot.exists() ? snapshot.val() : [];
+    let receivedMails = [];
+
+    if (snapshot.exists()) {
+        const data = snapshot.val();
+        // Check if data is an array, if not, convert it to an array
+        receivedMails = Array.isArray(data) ? data : Object.values(data);
+    }
 
     const updatedData = [...receivedMails];
 
@@ -61,6 +56,7 @@ export const AddReceivedMails = async (mailID, listID) => {
 
     await set(ref(database, 'Notify/ReceivedMails/'), updatedData);
 };
+
 
 
 export const RemoveReceivedMails = async (user, listMailIDs) => {
