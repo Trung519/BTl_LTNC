@@ -59,32 +59,31 @@ const HistoryRow = (props) => {
         > */}
 
         {/* ********Xác nhận lấy thuốc */}
-        {
-          getMed ? `Được xác nhận bởi ${pharmacist.name}` : (
-            user.typeEmp === 'Dược sỹ' || user.typeEmp === 'Quản trị'? (
-              <Button
-              variant="outlined"
-              onClick={() => {
-                handleGetMed();
-              }}
-              sx={{ width: "110px" }}
-            >
-              Xác nhận
-            </Button>
-            ) : "Chưa được xác nhận"
-          ) 
-        }
+        {getMed ? (
+          `Được xác nhận bởi ${user.name}`
+        ) : user.typeEmp === "Dược sỹ" || user.typeEmp === "Quản trị" ? (
+          <Button
+            variant="outlined"
+            onClick={() => {
+              handleGetMed();
+            }}
+            sx={{ width: "110px" }}
+          >
+            Xác nhận
+          </Button>
+        ) : (
+          "Chưa được xác nhận"
+        )}
         <DialogGetMed
           setGetMedDialog={setGetMedDialog}
           getMedDialog={getMedDialog}
-          setGetMed={() => {
-            setGetMed();
-          }}          
+          setGetMed={setGetMed}
+          getMed={getMed}
           CCCD={CCCD}
           index={index}
-          pharmacist = {{            
+          pharmacist={{
             name: user.name,
-            id: user.id
+            id: user.id,
           }}
         ></DialogGetMed>
         {/* </IconButton> */}
