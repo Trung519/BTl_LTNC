@@ -19,6 +19,7 @@ import {
   set,
   update,
   remove,
+  onValue
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
 const firebaseConfig = {
@@ -186,16 +187,29 @@ export function Add_Med(CCCD, histIndex, medicine, usage, dosagePerDay, unit) {
 }
 
 export const Patients = async () => {
-  const response = await get(child(dbRef, "PatientRecord/"));
-  const posts = await response.val();
-  return posts;
+  const database = getDatabase();
+  const dataRef = ref(database, 'PatientRecord/');
+
+  return new Promise((resolve, reject) => {
+    onValue(dataRef, (snapshot) => {
+      const record = snapshot.val();
+      const listRecord = [];
+
+      if (record) {
+        Object.keys(record).forEach(key => {
+          listRecord.push(record[key]);
+        });
+      }
+
+      resolve(listRecord);
+    }, (error) => {
+      reject(error);
+    });
+  });
 };
 
-export const getPatients = async (callback) => {
-  const response = await get(child(dbRef, "PatientRecord/"));
-  const posts = await response.val();
-  callback(posts);
-};
+
+
 export function UpdateData(fullName, birthDay, newGender, CCCD, BHYT) {
   update(ref(db, "PatientRecord/" + CCCD), {
     fullName: fullName,

@@ -32,8 +32,8 @@ export default function Schedule({ user }) {
     const [listdata, setListdata] = useState([]);
 
     const [form, setForm] = useState({
-        id_Doctor: user.typeEmp === 'Bác sỹ' ? user.id : "",
-        name_Doctor: user.typeEmp === 'Bác sỹ' ? user.name : "",
+        id_Doctor: user.typeEmp === 'Bác sĩ' ? user.id : "",
+        name_Doctor: user.typeEmp === 'Bác sĩ' ? user.name : "",
         time: "",
         date: "",
         name_Patient: "",
@@ -43,8 +43,8 @@ export default function Schedule({ user }) {
     const [showEdit, setShowEdit] = useState(false);
     const [formEdit, setFormEdit] = useState({
         id_schedule: "",
-        ID_doctor: user.typeEmp === 'Bác sỹ' ? user.id : "",
-        Name_doctor: user.typeEmp === 'Bác sỹ' ? user.name : "",
+        ID_doctor: user.typeEmp === 'Bác sĩ' ? user.id : "",
+        Name_doctor: user.typeEmp === 'Bác sĩ' ? user.name : "",
         Time: "",
         Date: "",
         Patient: "",
@@ -68,25 +68,25 @@ export default function Schedule({ user }) {
     }
 
     useEffect(() => {
-        if (user.typeEmp !== "Bác sỹ") {
+        if (user.typeEmp !== "Bác sĩ") {
             searchIdDoctorByName(user, form.name_Doctor, setSuggestions);
         }
     }, [form.name_Doctor])
 
     useEffect(() => {
-        if (user.typeEmp !== "Bác sỹ") {
+        if (user.typeEmp !== "Bác sĩ") {
             searchNameDoctorByID(user, form.id_Doctor, setSuggestionsID)
         }
     }, [form.id_Doctor])
 
     useEffect(() => {
-        if (user.typeEmp !== "Bác sỹ") {
+        if (user.typeEmp !== "Bác sĩ") {
             searchIdDoctorByName(user, formEdit.Name_doctor, setSuggestions);
         }
     }, [formEdit.Name_doctor])
 
     useEffect(() => {
-        if (user.typeEmp !== "Bác sỹ") {
+        if (user.typeEmp !== "Bác sĩ") {
             searchNameDoctorByID(user, formEdit.ID_doctor, setSuggestionsID)
         }
     }, [formEdit.ID_doctor])
@@ -107,6 +107,7 @@ export default function Schedule({ user }) {
         setUlshow(false)
     }
 
+
     const checkNum = (str) => {
         if (str.length > 12) return false;
         for (var i = 0; i < str.length; i++) {
@@ -116,7 +117,7 @@ export default function Schedule({ user }) {
     }
 
     const handleCollectData = (e) => {
-        if (user.typeEmp === "Bác sỹ" && (e.target.name === "id_Doctor" || e.target.name === "name_Doctor")) return;
+        if (user.typeEmp === "Bác sĩ" && (e.target.name === "id_Doctor" || e.target.name === "name_Doctor")) return;
 
         if (e.target.name === 'name_CCCD') {
             if (checkNum(e.target.value)) {
@@ -138,7 +139,7 @@ export default function Schedule({ user }) {
 
     const handleNamePatientChange = (e) => {
         setNamePatientSearch(e.target.value);
-        setPage(0)
+        setPage(1)
     }
 
     const submitForm = () => {
@@ -186,7 +187,7 @@ export default function Schedule({ user }) {
     }
 
     const handleCollectDataWhenEdit = (e) => {
-        if (user.typeEmp === "Bác sỹ" && (e.target.name === "ID_doctor" || e.target.name === "Name_doctor")) return;
+        if (user.typeEmp === "Bác sĩ" && (e.target.name === "ID_doctor" || e.target.name === "Name_doctor")) return;
 
         const edit = { ...formEdit };
 
@@ -292,8 +293,8 @@ export default function Schedule({ user }) {
                                     <div className={cx('col-md-1', 'schedule-table-Room')}>Phòng</div>
                                     <div className={cx('col-md-1', 'schedule-table-Status')}>Trạng Thái</div>
                                 </div>
-                                {
-                                    Array.from({ length: 10 }, (_, index) => {
+                                {   
+                                    listdata ? Array.from({ length: 10 }, (_, index) => {
                                         if ((page - 1) * 10 + index + 1 > listdata.length) { }
                                         else {
                                             let count = index % 2;
@@ -302,7 +303,9 @@ export default function Schedule({ user }) {
                                                 else if (listdata[indexx].Status == 'Đang khám') return 'doing'
                                                 else return 'pending'
                                             }
-
+                                            console.log(listdata)
+                                            console.log(listdata[1])
+                                            console.log(index, page)
                                             return (
                                                 <div key={index} className={cx('row', 'line-row', `line${count}`)}>
                                                     <div className={cx('col-md-1', 'schedule-table-index')}>{(page - 1) * 10 + index + 1}</div>
@@ -326,7 +329,7 @@ export default function Schedule({ user }) {
                                             )
                                         }
 
-                                    })
+                                    }) : ""
                                 }
                             </div>
                         </div>
@@ -467,15 +470,15 @@ export default function Schedule({ user }) {
                                     <input
                                         type='text'
                                         placeholder='ID Bác Sĩ'
-                                        value={user.typeEmp === "Bác sỹ" ? user.id : formEdit.ID_doctor}
+                                        value={user.typeEmp === "Bác sĩ" ? user.id : formEdit.ID_doctor}
                                         name="ID_doctor"
                                         onChange={handleCollectDataWhenEdit}
                                         onClick={(e) => {
                                             setUlshow(true);
                                         }}
-                                        readOnly={user.typeEmp === "Bác sỹ"}
+                                        readOnly={user.typeEmp === "Bác sĩ"}
                                     ></input>
-                                    {user.typeEmp !== "Bác sỹ" && ulshow && <ul className={cx('ul-id')}>
+                                    {user.typeEmp !== "Bác sĩ" && ulshow && <ul className={cx('ul-id')}>
                                         {suggestionsID.map((suggestion, index) => {
                                             if (index > 4 || formEdit.ID_doctor == '') { }
                                             else {
@@ -494,15 +497,15 @@ export default function Schedule({ user }) {
                                     <input
                                         type='text'
                                         placeholder='Tên Bác Sĩ'
-                                        value={user.typeEmp === "Bác sỹ" ? user.name : formEdit.Name_doctor}
+                                        value={user.typeEmp === "Bác sĩ" ? user.name : formEdit.Name_doctor}
                                         name="Name_doctor"
                                         onChange={handleCollectDataWhenEdit}
-                                        readOnly={user.typeEmp === "Bác sỹ"}
+                                        readOnly={user.typeEmp === "Bác sĩ"}
                                         onClick={(e) => {
                                             setUlshow(true)
                                             setSuggestionsID([])
                                         }}></input>
-                                    {user.typeEmp !== "Bác sỹ" && ulshow && <ul className={cx('ul-name')}>
+                                    {user.typeEmp !== "Bác sĩ" && ulshow && <ul className={cx('ul-name')}>
                                         {suggestions.map((suggestion, index) => {
                                             if (index > 4 || formEdit.Name_doctor == '') { }
                                             else {
@@ -684,16 +687,16 @@ export default function Schedule({ user }) {
                                     <input
                                         type='text'
                                         placeholder='ID Bác Sĩ'
-                                        value={user.typeEmp === "Bác sỹ" ? user.id : form.id_Doctor}
+                                        value={user.typeEmp === "Bác sĩ" ? user.id : form.id_Doctor}
                                         name="id_Doctor"
                                         onChange={handleCollectData}
                                         onClick={() => {
                                             setUlshow(true);
                                         }}
-                                        readOnly={user.typeEmp === "Bác sỹ"}
+                                        readOnly={user.typeEmp === "Bác sĩ"}
 
                                     ></input>
-                                    {user.typeEmp !== "Bác sỹ" && ulshow && <ul className={cx('ul-id')}>
+                                    {user.typeEmp !== "Bác sĩ" && ulshow && <ul className={cx('ul-id')}>
                                         {suggestionsID.map((suggestion, index) => {
                                             if (index > 4 || form.id_Doctor == '') { }
                                             else {
@@ -710,15 +713,15 @@ export default function Schedule({ user }) {
                                     <input
                                         type='text'
                                         placeholder='Tên Bác Sĩ'
-                                        value={user.typeEmp === "Bác sỹ" ? user.name : form.name_Doctor}
+                                        value={user.typeEmp === "Bác sĩ" ? user.name : form.name_Doctor}
                                         name="name_Doctor"
                                         onChange={handleCollectData}
-                                        readOnly={user.typeEmp === "Bác sỹ"}
+                                        readOnly={user.typeEmp === "Bác sĩ"}
                                         onClick={() => {
                                             setUlshow(true)
                                             setSuggestionsID([])
                                         }}></input>
-                                    {user.typeEmp !== "Bác sỹ" && ulshow && <ul className={cx('ul-name')}>
+                                    {user.typeEmp !== "Bác sĩ" && ulshow && <ul className={cx('ul-name')}>
                                         {suggestions.map((suggestion, index) => {
                                             if (index > 4 || form.name_Doctor == '') { }
                                             else {

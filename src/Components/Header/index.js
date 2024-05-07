@@ -139,7 +139,7 @@ function Header({ user }) {
                           </NavDropdown>
                         </>
                       ) : (
-                        user.typeEmp === "Bác sỹ" || user.typeEmp === "Y tá" ? (
+                        user.typeEmp === "Bác sĩ" || user.typeEmp === "Y tá" ? (
                           <>
                             <Nav.Link className={cx('nav-action')} as={Link} to='/'>Trang chủ</Nav.Link>
                             <Nav.Link className={cx('nav-action')} as={Link} to='/announcement'>Thông báo</Nav.Link>
@@ -191,7 +191,7 @@ function Header({ user }) {
             } />
             <Route path="/medicine_manage" element={
               user.typeEmp === "normal" ? <LoginForm /> : (
-                user.typeEmp === "Trưởng khoa" || user.typeEmp === "Bác sỹ" || user.typeEmp === "Y tá" ? <ErrorAccess /> : <Medicine_manage user={user} />
+                user.typeEmp === "Trưởng khoa" || user.typeEmp === "Bác sĩ" || user.typeEmp === "Y tá" ? <ErrorAccess /> : <Medicine_manage user={user} />
               )
             } />
             <Route path="/equip_manage" element={
@@ -201,7 +201,7 @@ function Header({ user }) {
             <Route path="/signup" element={<SignUpForm />} />
             <Route path="/employee" element={
               user.typeEmp === "normal" ? <LoginForm /> : (
-                user.typeEmp === "Dược sỹ" || user.typeEmp === "Bác sỹ" || user.typeEmp === "Y tá" ? <ErrorAccess /> : <Employee user={user}/>
+                user.typeEmp === "Dược sỹ" || user.typeEmp === "Bác sĩ" || user.typeEmp === "Y tá" ? <ErrorAccess /> : <Employee user={user}/>
               )
             } />
           </Routes>

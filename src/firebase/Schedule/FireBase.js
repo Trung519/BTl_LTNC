@@ -150,41 +150,38 @@ export const setListSchedule = (user, name, callback = () => {
 
   onValue(dataRefSchedule, (snapshot) => {
     const data = snapshot.val();
-    if (data && name === "") {
-      const listSchedule = Object.values(data).filter(schedule => {
-        if (user.typeEmp === "Bác sỹ") return schedule.ID_doctor === user.id;
-        else if (user.typeEmp === "Quản trị") return true;
-        else {
-          return isSameDepartment(user.department);
-        }
-      });
-      callback(listSchedule);
-    }
-    else if (data && user.typeEmp === "Quản trị") {
-      const listSchedule = Object.values(data).filter(schedule => {
-        const namePatient = schedule.Patient;
-        return namePatient.toLowerCase().includes(name.toLowerCase());
-      });
-      callback(listSchedule);
-    }
-    else if (data && user.typeEmp === "Bác sỹ") {
-      const listSchedule = Object.values(data).filter(schedule => {
-        const namePatient = schedule.Patient;
-        return namePatient.toLowerCase().includes(name.toLowerCase()) && schedule.ID_doctor === user.id;
-      });
-      callback(listSchedule);
-    }
-    else if (data && user.typeEmp !== "Bác sỹ") {
-      const listSchedule = Object.values(data).filter(schedule => {
-        const namePatient = schedule.Patient;
-        return namePatient.toLowerCase().includes(name.toLowerCase()) && isSameDepartment(user.department, schedule.ID_doctor);
-      });
-      callback(listSchedule);
-    }
-    else {
+
+    if (!data) {
       callback([]);
+      return;
     }
+
+    let listSchedule = [];
+
+    if (name === "") {
+      listSchedule = Object.values(data).filter(schedule => {
+        if (user.typeEmp === "Bác sĩ") {
+          return schedule.ID_doctor === user.id;
+        } else if (user.typeEmp !== "Quản trị") {
+          return isSameDepartment(user.department, schedule.ID_doctor);
+        }
+        return true;
+      });
+    } else {
+      const lowercaseName = name.toLowerCase();
+      listSchedule = Object.values(data).filter(schedule => {
+        const lowercasePatient = schedule.Patient.toLowerCase();
+        if (user.typeEmp === "Quản trị") {
+          return lowercasePatient.includes(lowercaseName);
+        } else if (user.typeEmp === "Bác sĩ") {
+          return lowercasePatient.includes(lowercaseName) && schedule.ID_doctor === user.id;
+        }
+        return lowercasePatient.includes(lowercaseName) && isSameDepartment(user.department, schedule.ID_doctor);
+      });
+    }
+
+    console.log(listSchedule);
+    callback(listSchedule);
   });
 };
-
 //------------------------Kết thúc hàm cho Schedule------------------
