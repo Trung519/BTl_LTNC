@@ -9,7 +9,6 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-import { onValue } from "firebase/database";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
 import {
   getDatabase,
