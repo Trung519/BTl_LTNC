@@ -11,31 +11,31 @@
         margin-right:2%;
         margin-top: 1%;
         margin-bottom: 1%;
-        width: 12%;
+        width: 5%;
         display: flex;
         position: relative;
         background-color: #c2e7ff;
         border-radius: 16px;
         align-items: center;
         padding: 0.8rem 0.8rem;
-        padding-bottom: 1%;
         border: none;
         flex-flow: row;
+        padding:1.5% 3.5%;
+        font-size: 1rem;
 
 
         svg {
             position: absolute;
-            font-size: 105%;
-            margin: auto 0;
+            left:10%;
             padding-top: 2%;
         }
 
         p {
-            display: flex;
             margin: auto 0;
+            position:absolute;
             margin-left: 25%;
-            font-size: 100%;
             font-weight: 500;
+            left:20%;
         }
 
         &:hover {
@@ -45,8 +45,8 @@
 }
 
 .trash-bin{
-    scale: 13%;
-    left: -60%;
+    scale:0.17;
+    margin-left:-60%;
 }
 
 .tablemail-pages{
