@@ -9,7 +9,8 @@ import { toast } from "react-toastify";
 import { getMedCheck } from "../P_R_be";
 
 const DialogGetMed = (props) => {
-  const { getMedDialog, setGetMedDialog, setGetMed, CCCD, index, pharmacist } = props;
+  const { getMedDialog, setGetMedDialog, setGetMed, CCCD, index, pharmacist } =
+    props;
   const confirmAndQuit = () => {
     // setGetMedDialog(false);
     setGetMed(true);
