@@ -5,7 +5,6 @@ import styles from "./SignUpForm.module.css";
 import doctorImage from "../assets/doctor_4x.png";
 import Alert from "@mui/material/Alert";
 import Fade from "@mui/material/Fade";
-import { Newspaper } from "@mui/icons-material";
 
 export default function SignUpForm() {
   const [account, setAccount] = useState([]);
