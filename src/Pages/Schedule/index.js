@@ -95,12 +95,12 @@ export default function Schedule({ user }) {
         setForm({
             ...form,
             id_Doctor: suggestion.ID,
-            name_Doctor: `${suggestion.FirstName} ${suggestion.LastName}`
+            name_Doctor: `${suggestion.LastName} ${suggestion.FirstName}`
         });
         setFormEdit({
             ...formEdit,
             ID_doctor: suggestion.ID,
-            Name_doctor: `${suggestion.FirstName} ${suggestion.LastName}`
+            Name_doctor: `${suggestion.LastName} ${suggestion.FirstName}`
         })
         setSuggestions([]);
         setSuggestionsID([])
@@ -511,7 +511,7 @@ export default function Schedule({ user }) {
                                             else {
                                                 return (
                                                     <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
-                                                        {`${suggestion.FirstName} ${suggestion.LastName}`}
+                                                        {`${suggestion.LastName} ${suggestion.FirstName}`}
                                                     </li>
                                                 )
                                             }
@@ -727,7 +727,7 @@ export default function Schedule({ user }) {
                                             else {
                                                 return (
                                                     <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
-                                                        {`${suggestion.FirstName} ${suggestion.LastName}`}
+                                                        {`${suggestion.LastName} ${suggestion.FirstName}`}
                                                     </li>
                                                 )
                                             }

@@ -58,23 +58,29 @@ export const searchIdDoctorByName = (user, name, callback = () => {
         if (user.typeEmp === "Quản trị") callback(data);
         else {
           const filteredSuggestions = Object.values(data).filter(doctor => {
-            return user.department === doctor.Department;
+            return (doctor.typeEmp === "Bác sĩ" 
+            || doctor.typeEmp === "Trưởng khoa") 
+              && user.department === doctor.Department;
           });
-          console.log(filteredSuggestions, "dasda");
           callback(filteredSuggestions);
         }
       }
       else if (user.typeEmp === "Quản trị") {
         const filteredSuggestions = Object.values(data).filter(doctor => {
           const nameDoctor = doctor.FirstName + " " + doctor.LastName;
-          return nameDoctor.toLowerCase().includes(name.toLowerCase());
+          return (doctor.typeEmp === "Bác sĩ" 
+          || doctor.typeEmp === "Trưởng khoa")
+          && nameDoctor.toLowerCase().includes(name.toLowerCase());
         });
         callback(filteredSuggestions);
       }
       else {
         const filteredSuggestions = Object.values(data).filter(doctor => {
           const nameDoctor = doctor.FirstName + " " + doctor.LastName;
-          return user.department === doctor.Department && nameDoctor.toLowerCase().includes(name.toLowerCase());
+          return (doctor.typeEmp === "Bác sĩ" 
+                || doctor.typeEmp === "Trưởng khoa") &&
+                 user.department === doctor.Department && 
+                 nameDoctor.toLowerCase().includes(name.toLowerCase());
         });
         callback(filteredSuggestions);
       }
@@ -97,20 +103,27 @@ export const searchNameDoctorByID = (user, id, callback = () => {
         if (user.typeEmp === "Quản trị") callback(data);
         else {
           const filteredSuggestions = Object.values(data).filter(doctor => {
-            return user.department === doctor.Department;
+            return (doctor.typeEmp === "Bác sĩ" 
+            || doctor.typeEmp === "Trưởng khoa")
+            && user.department === doctor.Department;
           });
           callback(filteredSuggestions);
         }
       }
       else if (user.typeEmp === "Quản trị") {
         const filteredSuggestions = Object.values(data).filter(doctor => {
-          return doctor.ID.toLowerCase().includes(id.toLowerCase());
+          return (doctor.typeEmp === "Bác sĩ" 
+          || doctor.typeEmp === "Trưởng khoa")
+          && doctor.ID.toLowerCase().includes(id.toLowerCase());
         });
         callback(filteredSuggestions);
       }
       else {
         const filteredSuggestions = Object.values(data).filter(doctor => {
-          return user.department === doctor.Department && doctor.ID.includes(id);
+          return (doctor.typeEmp === "Bác sĩ" 
+          || doctor.typeEmp === "Trưởng khoa")
+          &&  user.department === doctor.Department 
+          && doctor.ID.includes(id);
         });
         callback(filteredSuggestions);
       }

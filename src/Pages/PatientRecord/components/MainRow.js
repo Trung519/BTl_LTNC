@@ -202,7 +202,7 @@ function MainRow(props) {
                 Lịch sử khám
               </Typography>
               {/* ********button thêm lịch sử khám */}
-              {user.typeEmp === "Bác sỹ" || user.typeEmp === "Trưởng khoa" || user.typeEmp === "Quản trị" ? (
+              {user.typeEmp === "Bác sĩ" || user.typeEmp === "Trưởng khoa" || user.typeEmp === "Quản trị" ? (
                 <>
                   <IconButton
                     aria-label="add"
