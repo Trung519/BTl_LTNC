@@ -84,7 +84,7 @@ const DialogAdd = (props) => {
             toast.success("Thêm bệnh nhân thành công !", {
               position: "top-right",
               autoClose: 2500,
-              hideProgressBar: falsecd ,
+              hideProgressBar: false ,
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,

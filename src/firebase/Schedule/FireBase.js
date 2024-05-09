@@ -192,8 +192,6 @@ export const setListSchedule = (user, name, callback = () => {
         return lowercasePatient.includes(lowercaseName) && isSameDepartment(user.department, schedule.ID_doctor);
       });
     }
-
-    console.log(listSchedule);
     callback(listSchedule);
   });
 };

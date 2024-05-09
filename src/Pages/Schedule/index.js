@@ -16,6 +16,7 @@ import { addNewSchedule, searchIdDoctorByName, searchNameDoctorByID, setListSche
 
 import Updatewhenedit from '../../firebase/Schedule/updateWhenEdit.js'
 import updateWhenRemove from '../../firebase/Schedule/updateWhenRemove.js';
+import isValidRoom from '../../firebase/Schedule/isValidRoom.js';
 // --------------End Firebase--------------
 
 const cx = classNames.bind(styles)
@@ -143,20 +144,10 @@ export default function Schedule({ user }) {
     }
 
     const submitForm = () => {
-        const checkValue = new Promise((resolve, reject) => {
-            if (
-                form.id_Doctor === "" ||
-                form.name_Doctor === "" ||
-                form.time === "" ||
-                form.date === "" ||
-                form.name_Patient === "" ||
-                form.name_CCCD === "" ||
-                form.room === "" ||
-                form.name_CCCD.length != 12
-            ) {
-                resolve(false);
-            } else {
-                toast.success("Thêm lịch hẹn thành công !", {
+        if (user.typeEmp === "Bác sĩ") {
+            if (form.time === "" || form.date === "" ||
+                form.name_Patient === "" || form.name_CCCD === "" || form.room === "" || form.name_CCCD.length != 12) {
+                toast.error("Vui lòng điền đầy đủ thông tin!", {
                     position: "top-right",
                     autoClose: 2500,
                     hideProgressBar: false,
@@ -167,18 +158,94 @@ export default function Schedule({ user }) {
                     theme: "light",
                     // transition: Bounce,
                 });
-                resolve(true);
-            }
-        });
-
-        checkValue.then((isValid) => {
-            if (isValid) {
-                setAdd(false);
-                addNewSchedule(form, setForm);
             } else {
-                alert("Vui lòng nhập đầy đủ thông tin !");
+                isValidRoom(form.time, form.date, form.room).then(isAvailable => {
+                    if (!isAvailable) {
+                        toast.success("Thêm lịch hẹn thành công !", {
+                            position: "top-right",
+                            autoClose: 2500,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                            // transition: Bounce,
+                        });
+
+
+                        // setAdd(false);
+                        // addNewSchedule(form, setForm);
+                    }
+                    else {
+                        toast.error("Phòng này đã có người hẹn vào giờ bạn chọn!", {
+                            position: "top-right",
+                            autoClose: 2500,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                            // transition: Bounce,
+                        });
+                    }
+                }).catch(error => {
+                    console.error(error);
+                });
             }
-        });
+        }
+        else {
+            if (form.id_Doctor === "" || form.name_Doctor === "" || form.time === "" || form.date === "" ||
+                form.name_Patient === "" || form.name_CCCD === "" || form.room === "" || form.name_CCCD.length != 12) {
+                toast.error("Vui lòng điền đầy đủ thông tin!", {
+                    position: "top-right",
+                    autoClose: 2500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    // transition: Bounce,
+                });
+            } else {
+                isValidRoom(form.time, form.date, form.room).then(isAvailable => {
+                    if (!isAvailable) {
+                        toast.success("Thêm lịch hẹn thành công !", {
+                            position: "top-right",
+                            autoClose: 2500,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                            // transition: Bounce,
+                        });
+
+
+                        // setAdd(false);
+                        // addNewSchedule(form, setForm);
+                    }
+                    else {
+                        toast.error("Phòng này đã có người hẹn vào giờ bạn chọn!", {
+                            position: "top-right",
+                            autoClose: 2500,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                            // transition: Bounce,
+                        });
+                    }
+                }).catch(error => {
+                    console.error(error);
+                });
+            }
+        }
     };
 
     const handleEditForm = async (form) => {
@@ -206,19 +273,106 @@ export default function Schedule({ user }) {
     }
 
     const submitFormWhenEdit = async () => {
-        await Updatewhenedit(formEdit);
-        toast.success("Chỉnh sửa thành công !", {
-            position: "top-right",
-            autoClose: 2500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            // transition: Bounce,
-        })
-        setShowEdit(false);
+        if (user.typeEmp === "Bác sĩ") {
+            if (formEdit.Time === "" || formEdit.Date === "" ||
+            formEdit.Patient === "" || formEdit.CCCD === "" || formEdit.Room === "" || formEdit.CCCD.length != 12) {
+                toast.error("Vui lòng điền đầy đủ thông tin!", {
+                    position: "top-right",
+                    autoClose: 2500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    // transition: Bounce,
+                });
+            } else {
+                isValidRoom(formEdit.Time, formEdit.Date, formEdit.Room, formEdit.id_schedule).then(isAvailable => {
+                    if (!isAvailable) {
+                        toast.success("Chỉnh sửa thành công!", {
+                            position: "top-right",
+                            autoClose: 2500,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                            // transition: Bounce,
+                        });
+
+                        Updatewhenedit(formEdit);
+                        setShowEdit(false);
+                    }
+                    else {
+                        toast.error("Phòng này đã có người hẹn vào giờ bạn chọn!", {
+                            position: "top-right",
+                            autoClose: 2500,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                            // transition: Bounce,
+                        });
+                    }
+                }).catch(error => {
+                    console.error(error);
+                });
+            }
+        }
+        else {
+            if (formEdit.ID_doctor === "" || formEdit.Name_doctor === "" || formEdit.Time === "" || formEdit.Date === "" ||
+            formEdit.Patient === "" || formEdit.CCCD === "" || formEdit.Room === "" || formEdit.CCCD.length != 12) {
+                toast.error("Vui lòng điền đầy đủ thông tin!", {
+                    position: "top-right",
+                    autoClose: 2500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    // transition: Bounce,
+                });
+            } else {
+                isValidRoom(formEdit.Time, formEdit.Date, formEdit.Room, formEdit.id_schedule).then(isAvailable => {
+                    if (!isAvailable) {
+                        toast.success("Chỉnh sửa thành công!", {
+                            position: "top-right",
+                            autoClose: 2500,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                            // transition: Bounce,
+                        });
+
+                        Updatewhenedit(formEdit);
+                        setShowEdit(false);
+                    }
+                    else {
+                        toast.error("Phòng này đã có người hẹn vào giờ bạn chọn!", {
+                            position: "top-right",
+                            autoClose: 2500,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                            // transition: Bounce,
+                        });
+                    }
+                }).catch(error => {
+                    console.error(error);
+                });
+            }
+        }
     }
 
     const handleDeleteRow = (id) => {
@@ -293,7 +447,7 @@ export default function Schedule({ user }) {
                                     <div className={cx('col-md-1', 'schedule-table-Room')}>Phòng</div>
                                     <div className={cx('col-md-1', 'schedule-table-Status')}>Trạng Thái</div>
                                 </div>
-                                {   
+                                {
                                     listdata ? Array.from({ length: 10 }, (_, index) => {
                                         if ((page - 1) * 10 + index + 1 > listdata.length) { }
                                         else {
@@ -303,9 +457,6 @@ export default function Schedule({ user }) {
                                                 else if (listdata[indexx].Status == 'Đang khám') return 'doing'
                                                 else return 'pending'
                                             }
-                                            console.log(listdata)
-                                            console.log(listdata[1])
-                                            console.log(index, page)
                                             return (
                                                 <div key={index} className={cx('row', 'line-row', `line${count}`)}>
                                                     <div className={cx('col-md-1', 'schedule-table-index')}>{(page - 1) * 10 + index + 1}</div>
@@ -429,7 +580,7 @@ export default function Schedule({ user }) {
                                                                 transform: selectedId === listdata[(page - 1) * 10 + index].id_schedule ? 'scale(1.5)' : 'scale(1)',
                                                                 color: '#d32f2f !important;'
                                                             }}
-                                                            className={cx('color-red',`MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root ${selectedId === listdata[(page - 1) * 10 + index].id_schedule ? 'choosen-to-remove' : ''}`)}
+                                                            className={cx('color-red', `MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root ${selectedId === listdata[(page - 1) * 10 + index].id_schedule ? 'choosen-to-remove' : ''}`)}
                                                             focusable="false"
                                                             aria-hidden="true"
                                                             viewBox="0 0 24 24"
