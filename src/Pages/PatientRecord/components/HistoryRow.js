@@ -60,7 +60,7 @@ const HistoryRow = (props) => {
 
         {/* ********Xác nhận lấy thuốc */}
         {getMed ? (
-          `Được xác nhận bởi ${user.name}`
+          `Được xác nhận bởi ${pharmacist.name}`
         ) : user.typeEmp === "Dược sỹ" || user.typeEmp === "Quản trị" ? (
           <Button
             variant="outlined"
