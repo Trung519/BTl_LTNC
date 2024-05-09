@@ -683,7 +683,7 @@ export default function Schedule({ user }) {
                                     <input
                                         type='date'
                                         value={formEdit.Date}
-                                        name="date"
+                                        name="Date"
                                         onChange={handleCollectDataWhenEdit}></input>
                                 </div>
                             </div>
